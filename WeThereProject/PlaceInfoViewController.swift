@@ -11,8 +11,10 @@ class PlaceInfoViewController: UIViewController {
 
     var receiceName = ""
     var receiveImage: UIImage?
+    var receiveSub = ""
     
     @IBOutlet var txtPlacename: UILabel!
+    @IBOutlet var txtPlaceSub: UILabel!
     @IBOutlet var placeImg: UIImageView!
     
     override func viewDidLoad() {
@@ -21,11 +23,13 @@ class PlaceInfoViewController: UIViewController {
         // Do any additional setup after loading the view.
         
         txtPlacename.text = receiceName
+        txtPlaceSub.text = receiveSub
         placeImg.image = receiveImage
     }
     
-    func recievePlace(_ name: String, image: UIImage){
+    func recievePlace(_ name: String, subname: String, image: UIImage){
         receiceName = name
+        receiveSub = subname
         receiveImage = image
     }
     

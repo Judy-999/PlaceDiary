@@ -12,6 +12,7 @@ class AddPlaceViewController: UIViewController, UINavigationControllerDelegate, 
 
     @IBOutlet var placeImageView: UIImageView!
     @IBOutlet var tfPlaceName: UITextField!
+    @IBOutlet var tfPlaceSub: UITextField!
     @IBOutlet var btnPhoto: UIButton!
     
     let imagePicker: UIImagePickerController! = UIImagePickerController()
@@ -27,8 +28,12 @@ class AddPlaceViewController: UIViewController, UINavigationControllerDelegate, 
     
     @IBAction func btnAddPlace(_ sender: UIButton){
         placeTitles.append(tfPlaceName.text!)
-        placeImages.append(selectedImage)  //임시
+        placeImages.append(selectedImage)
+        placeSubTitles.append(tfPlaceSub.text!)
+        
         tfPlaceName.placeholder = "이름을 입력하세요."
+        tfPlaceSub.placeholder = "위치를 입력하세요."
+        
         _ = navigationController?.popViewController(animated: true)
     }
 

@@ -9,6 +9,7 @@ import UIKit
 
 var placeTitles = ["새로운 플레이스"]
 var placeImages = [UIImage?]()
+var placeSubTitles = ["서브 타이틀"]
 
 class PlaceTableViewController: UITableViewController {
 
@@ -22,7 +23,7 @@ class PlaceTableViewController: UITableViewController {
 
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         self.navigationItem.leftBarButtonItem = self.editButtonItem    //목록 수정버튼 사용
-        placeImages.append(UIImage(named: "example.jpeg"))
+        placeImages.append(UIImage(named: "example.jpeg"))  //예제 플레이스
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -47,8 +48,9 @@ class PlaceTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "placeCell", for: indexPath)
 
-        cell.textLabel?.text = placeTitles[(indexPath as NSIndexPath).row]   //임시
-        cell.imageView?.image = placeImages[(indexPath as NSIndexPath).row]  //임시
+        cell.textLabel?.text = placeTitles[(indexPath as NSIndexPath).row]
+        cell.imageView?.image = placeImages[(indexPath as NSIndexPath).row]
+        cell.detailTextLabel?.text = placeSubTitles[(indexPath as NSIndexPath).row]
 
         return cell
     }
@@ -79,7 +81,17 @@ class PlaceTableViewController: UITableViewController {
     
     // Override to support rearranging the table view.
     override func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath) {
-
+        let titleToMove = placeTitles[(fromIndexPath as NSIndexPath).row]
+        let imageToMove = placeImages[(fromIndexPath as NSIndexPath).row]
+        let subToMove = placeSubTitles[(fromIndexPath as NSIndexPath).row]
+        
+        placeTitles.remove(at: (fromIndexPath as NSIndexPath).row)
+        placeImages.remove(at: (fromIndexPath as NSIndexPath).row)
+        placeSubTitles.remove(at: (fromIndexPath as NSIndexPath).row)
+        
+        placeTitles.insert(titleToMove, at: (to as NSIndexPath).row)
+        placeImages.insert(imageToMove, at: (to as NSIndexPath).row)
+        placeSubTitles.insert(subToMove, at: (to as NSIndexPath).row)
     }
     
 
@@ -102,7 +114,7 @@ class PlaceTableViewController: UITableViewController {
             let cell = sender as! UITableViewCell
             let indexPath = self.placeTableView.indexPath(for: cell)
             let infoView = segue.destination as! PlaceInfoViewController
-            infoView.recievePlace(placeTitles[(indexPath! as NSIndexPath).row], image: placeImages[(indexPath! as NSIndexPath).row]!)
+            infoView.recievePlace(placeTitles[(indexPath! as NSIndexPath).row], subname: placeSubTitles[(indexPath! as NSIndexPath).row], image: placeImages[(indexPath! as NSIndexPath).row]!)
         }
     }
     
