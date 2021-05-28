@@ -48,6 +48,8 @@ class PlaceTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "placeCell", for: indexPath)
 
+        cell.textLabel?.font = UIFont .boldSystemFont(ofSize: 20)
+        cell.detailTextLabel?.font = UIFont .systemFont(ofSize: 15)
         cell.textLabel?.text = placeTitles[(indexPath as NSIndexPath).row]
         cell.imageView?.image = placeImages[(indexPath as NSIndexPath).row]
         cell.detailTextLabel?.text = placeSubTitles[(indexPath as NSIndexPath).row]
