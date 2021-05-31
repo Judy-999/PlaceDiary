@@ -8,24 +8,48 @@
 import UIKit
 import MobileCoreServices
 
-class AddPlaceTableViewController: UITableViewController, UINavigationControllerDelegate, UIImagePickerControllerDelegate{
+class AddPlaceTableViewController: UITableViewController, UINavigationControllerDelegate, UIImagePickerControllerDelegate, UIPickerViewDelegate, UIPickerViewDataSource{
     
     @IBOutlet var placeImageView: UIImageView!
     @IBOutlet var tfPlaceName: UITextField!
-    @IBOutlet var tfPlaceSub: UITextField!
-    @IBOutlet var btnCategory: UIButton!
+    @IBOutlet var tfPlacePosition: UITextField!
+    @IBOutlet var tfCategory: UITextField!
     
     let imagePicker: UIImagePickerController! = UIImagePickerController()
     var selectedImage: UIImage!
+    let PICKER_VIEW_COLUMN = 1
+    var category = ["음식점", "카페", "술집", "액티비티", "야외"]
     
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        let categoryPicker = UIPickerView()
+        let pickerToolbar = UIToolbar()
+        let btnPickerDone = UIBarButtonItem()
+        let flexSpace = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
+        
+        pickerToolbar.frame = CGRect(x: 0, y: 0, width: 0, height: 35)
+      //  pickerToolbar.barTintColor = UIColor.lightGray
+        self.tfCategory.inputAccessoryView = pickerToolbar
+        
+        btnPickerDone.title = "Done"
+        btnPickerDone.target = self
+        btnPickerDone.action = #selector(pickerDone)
+        
+        pickerToolbar.setItems([flexSpace, btnPickerDone], animated: true)
+        
+        categoryPicker.delegate = self
+        self.tfCategory.inputView = categoryPicker
 
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
 
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem
+    }
+    
+    @objc func pickerDone(){
+        self.view.endEditing(true)
     }
 
     // MARK: - Table view data source
@@ -40,18 +64,35 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
         return 9
     }
 
-    @IBAction func btnAddPlace(_ sender: UIButton){
+    @IBAction func btnAddDone(_ sender: UIButton){
         placeTitles.append(tfPlaceName.text!)
         placeImages.append(selectedImage)
-        placeSubTitles.append(tfPlaceSub.text!)
+        placeSubTitles.append(tfPlacePosition.text!)
         
         tfPlaceName.placeholder = "이름을 입력하세요."
-        tfPlaceSub.placeholder = "위치를 입력하세요."
+        tfPlacePosition.placeholder = "위치를 입력하세요."
             
         _ = navigationController?.popViewController(animated: true)
     }
 
-    @IBAction func btnPhoto(_ sender: UIButton){
+    func numberOfComponents(in pickerView: UIPickerView) -> Int {
+        return PICKER_VIEW_COLUMN
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+        return category.count
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+        return category[row]
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+        tfCategory.text = category[row]
+    }
+    
+    
+    @IBAction func btnAddPhoto(_ sender: UIButton){
         if(UIImagePickerController.isSourceTypeAvailable(.photoLibrary)){
             
             imagePicker.delegate = self
@@ -65,6 +106,7 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
         }
     }
         
+    
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         selectedImage = info[UIImagePickerController.InfoKey.originalImage] as? UIImage //사진을 가져와 라이브러리에 저장
 

@@ -3,10 +3,12 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 51;
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0B0E44EDBACD18DF8B1F7ABE /* Pods_WeThereProject.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AFAC6B7ACF40C6C09FA85A3A /* Pods_WeThereProject.framework */; };
+		20105EFB2664DA35007AA233 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 20105EFA2664DA35007AA233 /* GoogleService-Info.plist */; };
 		2061AD4D265FDD360007D2C8 /* CategoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2061AD4C265FDD360007D2C8 /* CategoryViewController.swift */; };
 		207E4F862660985D00AC0A6E /* AddPlaceTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 207E4F852660985D00AC0A6E /* AddPlaceTableViewController.swift */; };
 		20841264265F28A4006FE0EF /* example.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = 20841263265F28A4006FE0EF /* example.jpeg */; };
@@ -24,6 +26,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		20105EFA2664DA35007AA233 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		2061AD4C265FDD360007D2C8 /* CategoryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryViewController.swift; sourceTree = "<group>"; };
 		207E4F852660985D00AC0A6E /* AddPlaceTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddPlaceTableViewController.swift; sourceTree = "<group>"; };
 		20841263265F28A4006FE0EF /* example.jpeg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = example.jpeg; sourceTree = "<group>"; };
@@ -40,6 +43,9 @@
 		20E3E2E6265E374D004BDFF6 /* PlaceTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceTableViewController.swift; sourceTree = "<group>"; };
 		20E3E2E8265E3E62004BDFF6 /* SettingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingViewController.swift; sourceTree = "<group>"; };
 		20E3E2EA265E3F0A004BDFF6 /* SearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
+		564B9711581E7EB1F841B0E7 /* Pods-WeThereProject.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WeThereProject.release.xcconfig"; path = "Target Support Files/Pods-WeThereProject/Pods-WeThereProject.release.xcconfig"; sourceTree = "<group>"; };
+		693FBFB748967DEC769D88F9 /* Pods-WeThereProject.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WeThereProject.debug.xcconfig"; path = "Target Support Files/Pods-WeThereProject/Pods-WeThereProject.debug.xcconfig"; sourceTree = "<group>"; };
+		AFAC6B7ACF40C6C09FA85A3A /* Pods_WeThereProject.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_WeThereProject.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -47,6 +53,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0B0E44EDBACD18DF8B1F7ABE /* Pods_WeThereProject.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -58,6 +65,8 @@
 			children = (
 				20E3E2CF265E2639004BDFF6 /* WeThereProject */,
 				20E3E2CE265E2639004BDFF6 /* Products */,
+				8D76104825E9ECF8DBD716BA /* Pods */,
+				592FA594008DC6837D5E2836 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -79,6 +88,7 @@
 				20E3E2D9265E263A004BDFF6 /* Assets.xcassets */,
 				20E3E2DB265E263A004BDFF6 /* LaunchScreen.storyboard */,
 				20E3E2DE265E263A004BDFF6 /* Info.plist */,
+				20105EFA2664DA35007AA233 /* GoogleService-Info.plist */,
 				20E3E2E4265E355D004BDFF6 /* MapViewController.swift */,
 				20E3E2E6265E374D004BDFF6 /* PlaceTableViewController.swift */,
 				20E3E2E8265E3E62004BDFF6 /* SettingViewController.swift */,
@@ -91,6 +101,23 @@
 			path = WeThereProject;
 			sourceTree = "<group>";
 		};
+		592FA594008DC6837D5E2836 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				AFAC6B7ACF40C6C09FA85A3A /* Pods_WeThereProject.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		8D76104825E9ECF8DBD716BA /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				693FBFB748967DEC769D88F9 /* Pods-WeThereProject.debug.xcconfig */,
+				564B9711581E7EB1F841B0E7 /* Pods-WeThereProject.release.xcconfig */,
+			);
+			path = Pods;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -98,9 +125,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 20E3E2E1265E263A004BDFF6 /* Build configuration list for PBXNativeTarget "WeThereProject" */;
 			buildPhases = (
+				25F205F64F4175146A31BE64 /* [CP] Check Pods Manifest.lock */,
 				20E3E2C9265E2639004BDFF6 /* Sources */,
 				20E3E2CA265E2639004BDFF6 /* Frameworks */,
 				20E3E2CB265E2639004BDFF6 /* Resources */,
+				4B744B39787E68140398E8B7 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -150,12 +179,55 @@
 			files = (
 				20E3E2DD265E263A004BDFF6 /* LaunchScreen.storyboard in Resources */,
 				20E3E2DA265E263A004BDFF6 /* Assets.xcassets in Resources */,
+				20105EFB2664DA35007AA233 /* GoogleService-Info.plist in Resources */,
 				20E3E2D8265E2639004BDFF6 /* Main.storyboard in Resources */,
 				20841264265F28A4006FE0EF /* example.jpeg in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		25F205F64F4175146A31BE64 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-WeThereProject-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		4B744B39787E68140398E8B7 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-WeThereProject/Pods-WeThereProject-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-WeThereProject/Pods-WeThereProject-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-WeThereProject/Pods-WeThereProject-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		20E3E2C9265E2639004BDFF6 /* Sources */ = {
@@ -248,7 +320,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.5;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -303,7 +375,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.5;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
@@ -315,12 +387,14 @@
 		};
 		20E3E2E2265E263A004BDFF6 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 693FBFB748967DEC769D88F9 /* Pods-WeThereProject.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 28V3YA4B43;
 				INFOPLIST_FILE = WeThereProject/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -334,12 +408,14 @@
 		};
 		20E3E2E3265E263A004BDFF6 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 564B9711581E7EB1F841B0E7 /* Pods-WeThereProject.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 28V3YA4B43;
 				INFOPLIST_FILE = WeThereProject/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

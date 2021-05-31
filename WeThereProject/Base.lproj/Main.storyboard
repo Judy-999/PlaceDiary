@@ -150,7 +150,7 @@
                                                         <imageReference key="image" image="photo" catalog="system" symbolScale="large"/>
                                                     </state>
                                                     <connections>
-                                                        <action selector="btnPhoto:" destination="Lcc-Ir-Tux" eventType="touchUpInside" id="DdI-81-AR0"/>
+                                                        <action selector="btnAddPhoto:" destination="Lcc-Ir-Tux" eventType="touchUpInside" id="DdI-81-AR0"/>
                                                     </connections>
                                                 </button>
                                             </subviews>
@@ -216,9 +216,10 @@
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <datePicker contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" datePickerMode="dateAndTime" minuteInterval="1" translatesAutoresizingMaskIntoConstraints="NO" id="Wa5-Fi-Nt9">
-                                                    <rect key="frame" x="67" y="0.0" width="323" height="44"/>
+                                                <datePicker contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="fill" contentVerticalAlignment="center" datePickerMode="date" style="wheels" translatesAutoresizingMaskIntoConstraints="NO" id="Wa5-Fi-Nt9">
+                                                    <rect key="frame" x="80" y="0.0" width="310" height="44"/>
                                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                                                    <locale key="locale" localeIdentifier="ko_KR"/>
                                                 </datePicker>
                                             </subviews>
                                         </tableViewCellContentView>
@@ -237,7 +238,7 @@
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="분류를 선택하세요." textAlignment="right" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="NZB-nx-NwL">
+                                                <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="분류를 선택하세요. " textAlignment="right" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="NZB-nx-NwL">
                                                     <rect key="frame" x="82" y="5" width="288" height="34"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="16"/>
@@ -337,19 +338,20 @@
                     <navigationItem key="navigationItem" title="Add New Place" id="0H6-rU-Y2N">
                         <barButtonItem key="rightBarButtonItem" title="Done" id="nVQ-HH-anL">
                             <connections>
-                                <action selector="btnAddPlace:" destination="Lcc-Ir-Tux" id="Zwj-LG-Muz"/>
+                                <action selector="btnAddDone:" destination="Lcc-Ir-Tux" id="Zwj-LG-Muz"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
                     <connections>
                         <outlet property="placeImageView" destination="vVH-t3-yer" id="IqP-4v-Edf"/>
+                        <outlet property="tfCategory" destination="NZB-nx-NwL" id="oJ0-HH-LEc"/>
                         <outlet property="tfPlaceName" destination="8vk-uv-TXM" id="CZL-dp-ju2"/>
-                        <outlet property="tfPlaceSub" destination="o8K-tY-55Z" id="gxM-LC-JCZ"/>
+                        <outlet property="tfPlacePosition" destination="o8K-tY-55Z" id="gxM-LC-JCZ"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Yta-u5-Lu3" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-358.46153846153845" y="1853.3175355450237"/>
+            <point key="canvasLocation" x="-192" y="1841"/>
         </scene>
         <!--Title-->
         <scene sceneID="72S-o5-tEH">
