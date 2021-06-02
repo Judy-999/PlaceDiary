@@ -6,14 +6,39 @@
 //
 
 import UIKit
+import FirebaseFirestore
 
-var placeTitles = ["새로운 플레이스"]
+var placeTitles = [String?]()
 var placeImages = [UIImage?]()
 var placeSubTitles = ["서브 타이틀"]
 
+var place: Dictionary = [String: Any]()
+
+
+
 class PlaceTableViewController: UITableViewController {
 
+    let db: Firestore = Firestore.firestore()
+
+    var places = [PlaceData]() {
+        didSet {
+            DispatchQueue.main.async {
+                self.tableView.reloadData()
+            }
+        }
+    }
+    
+    private var service: PlaceService?
+       private var allPlaces = [PlaceData]() {
+        didSet {
+            DispatchQueue.main.async {
+                self.places = self.allPlaces
+            }
+        }
+    }
+    
     @IBOutlet var placeTableView: UITableView!
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -23,9 +48,74 @@ class PlaceTableViewController: UITableViewController {
 
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         self.navigationItem.leftBarButtonItem = self.editButtonItem    //목록 수정버튼 사용
+        
+       // dataTypes()
+       // getData()
+        
+        placeTitles.append(place["name"] as? String)
         placeImages.append(UIImage(named: "example.jpeg"))  //예제 플레이스
+        placeImages.append(UIImage(named: "example.jpeg"))
+        
+        loadPlaceData()
     }
 
+    func loadPlaceData() {
+            service = PlaceService()
+            service?.get(collectionID: "users") { places in
+                self.allPlaces = places
+            }
+        }
+    
+    private func dataTypes() {  //dictionary로 필드 한꺼번에 저장
+        // [START data_types]
+        let docData: [String: Any] = [
+            "name": "콤마",
+            "position": 3.14159265,
+            "date": Timestamp(date: Date()),
+            "visit": true,
+            "tag": ["첫방문", "초코빵 맛집", "자몽주스노맛"]
+        ]
+        db.collection("users").document("test").setData(docData) { err in
+            if let err = err {
+                print("Error writing document: \(err)")
+            } else {
+                print("Document successfully written!")
+            }
+        }
+        // [END data_types]
+    }
+
+    private func getData(){
+        let docRef = db.collection("users").document("test")
+
+        docRef.getDocument { (document, error) in
+            if let document = document, document.exists {
+                let dataDescription = document.data().map(String.init(describing:)) ?? "nil"
+                print("Document data: \(dataDescription)")
+                
+                
+              //  self.data = PlaceDate(dictionary: document.data()!) // 필요한 데이터를 저장
+                
+                place = document.data()! as [String : Any]
+                
+                let dictionary = document.data()! as [String : Any]
+               
+                if dictionary["name"] != nil{
+                    print(dictionary["name"] as! String)
+                    placeTitles.append( dictionary["name"] as? String)
+                }
+                
+            } else {
+                print("Document does not exist")
+            }
+        }
+    }
+       
+    
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+    }
+    
     override func viewWillAppear(_ animated: Bool) {
         tableView.reloadData()  //목록 재로딩
     }
@@ -41,18 +131,22 @@ class PlaceTableViewController: UITableViewController {
     //섹션당 열 개수(item 개수)
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        return placeTitles.count
+       // return placeTitles.count
+        return places.count
     }
 
     // 셀 설정
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "placeCell", for: indexPath)
-
+        
         cell.textLabel?.font = UIFont .boldSystemFont(ofSize: 20)
         cell.detailTextLabel?.font = UIFont .systemFont(ofSize: 15)
-        cell.textLabel?.text = placeTitles[(indexPath as NSIndexPath).row]
+  //      cell.textLabel?.text = placeTitles[(indexPath as NSIndexPath).row]
         cell.imageView?.image = placeImages[(indexPath as NSIndexPath).row]
-        cell.detailTextLabel?.text = placeSubTitles[(indexPath as NSIndexPath).row]
+  //      cell.detailTextLabel?.text = placeSubTitles[(indexPath as NSIndexPath).row]
+        cell.textLabel?.text = places[indexPath.row].name
+    //    cell.textLabel?.font = .systemFont(ofSize: 20, weight: .medium)
+        cell.detailTextLabel?.text = places[indexPath.row].position
 
         return cell
     }
@@ -116,7 +210,7 @@ class PlaceTableViewController: UITableViewController {
             let cell = sender as! UITableViewCell
             let indexPath = self.placeTableView.indexPath(for: cell)
             let infoView = segue.destination as! PlaceInfoViewController
-            infoView.recievePlace(placeTitles[(indexPath! as NSIndexPath).row], subname: placeSubTitles[(indexPath! as NSIndexPath).row], image: placeImages[(indexPath! as NSIndexPath).row]!)
+            infoView.recievePlace(placeTitles[(indexPath! as NSIndexPath).row]!, subname: placeSubTitles[(indexPath! as NSIndexPath).row], image: placeImages[(indexPath! as NSIndexPath).row]!)
         }
     }
     
