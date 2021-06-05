@@ -4,12 +4,14 @@
 //
 //  Created by 김주영 on 2021/06/02.
 //
-
 import Foundation
+
 
 struct PlaceData {
     let name: String?
     let position: String?
+
+    
   //  var date: Date?
   //  var visit: Bool?
   //  var tag = [String]()

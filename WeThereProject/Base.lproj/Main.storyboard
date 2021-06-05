@@ -2,6 +2,7 @@
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="18122" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="0gG-cA-C93">
     <device id="retina6_0" orientation="portrait" appearance="light"/>
     <dependencies>
+        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="18093"/>
         <capability name="Image references" minToolsVersion="12.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
@@ -343,7 +344,9 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
+                        <outlet property="pkDate" destination="Wa5-Fi-Nt9" id="rOD-pr-OW6"/>
                         <outlet property="placeImageView" destination="vVH-t3-yer" id="IqP-4v-Edf"/>
+                        <outlet property="swVisit" destination="sq8-kr-Qkn" id="Qgh-eA-2gA"/>
                         <outlet property="tfCategory" destination="NZB-nx-NwL" id="oJ0-HH-LEc"/>
                         <outlet property="tfPlaceName" destination="8vk-uv-TXM" id="CZL-dp-ju2"/>
                         <outlet property="tfPlacePosition" destination="o8K-tY-55Z" id="gxM-LC-JCZ"/>
@@ -588,12 +591,19 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="zoB-wl-jHp">
+                                <rect key="frame" x="90" y="405" width="235" height="232"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </imageView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="alq-zK-YbJ"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                     </view>
                     <tabBarItem key="tabBarItem" systemItem="contacts" id="bEO-7P-5cK"/>
                     <navigationItem key="navigationItem" title="My Page" id="J3k-B8-f8r"/>
+                    <connections>
+                        <outlet property="testImg" destination="zoB-wl-jHp" id="hi0-So-uzf"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="PdE-1O-Jmc" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>

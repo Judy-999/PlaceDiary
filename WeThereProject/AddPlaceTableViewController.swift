@@ -7,6 +7,8 @@
 
 import UIKit
 import MobileCoreServices
+import FirebaseFirestore
+import FirebaseStorage
 
 class AddPlaceTableViewController: UITableViewController, UINavigationControllerDelegate, UIImagePickerControllerDelegate, UIPickerViewDelegate, UIPickerViewDataSource{
     
@@ -14,7 +16,11 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
     @IBOutlet var tfPlaceName: UITextField!
     @IBOutlet var tfPlacePosition: UITextField!
     @IBOutlet var tfCategory: UITextField!
+    @IBOutlet var swVisit: UISwitch!
+    @IBOutlet var pkDate: UIDatePicker!
     
+    let db: Firestore = Firestore.firestore()
+    let storageRef = Storage.storage().reference()
     let imagePicker: UIImagePickerController! = UIImagePickerController()
     var selectedImage: UIImage!
     let PICKER_VIEW_COLUMN = 1
@@ -65,14 +71,35 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
     }
 
     @IBAction func btnAddDone(_ sender: UIButton){
-        placeTitles.append(tfPlaceName.text!)
-        placeImages.append(selectedImage)
-        placeSubTitles.append(tfPlacePosition.text!)
+     //   placeTitles.append(tfPlaceName.text!)
+        placeImages.updateValue(selectedImage, forKey: tfPlaceName.text!)
+     //   placeSubTitles.append(tfPlacePosition.text!)
         
         tfPlaceName.placeholder = "이름을 입력하세요."
         tfPlacePosition.placeholder = "위치를 입력하세요."
-            
+        
+        setData()
+    
         _ = navigationController?.popViewController(animated: true)
+    }
+    
+    func setData(){
+        let docData: [String: Any] = [
+            "name": tfPlaceName.text!,
+            "position": tfPlacePosition.text!,
+            "date": pkDate.date,  //Timestamp(date: Date()),
+            "visit": swVisit.isOn,
+            "tag": ["태그1", "태그2", "태그3"],
+            "category": tfCategory.text!
+        ]
+
+        db.collection("users").document(tfPlaceName.text!).setData(docData) { err in
+            if let err = err {
+                print("Error writing document: \(err)")
+            } else {
+                print("Document successfully written!")
+            }
+        }
     }
 
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
@@ -119,6 +146,21 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
         self.dismiss(animated: true, completion: nil)   //이미지 피커를 제거하고 초기 뷰를 보여줌
     }
         
+    func uploadImage(_ path: String, image: UIImage){
+        var data = Data()
+        data = image.jpegData(compressionQuality: 0.8)!
+        let filePath = path
+        let metaData = StorageMetadata()
+        metaData.contentType = "image/jpeg"
+        storageRef.child(filePath).putData(data, metadata: metaData){
+            (metaData, error) in if let error = error{
+                print(error.localizedDescription)
+                return
+            }else{
+                print("Image successfully upload!")
+            }
+        }
+    }
     
     //경고 표시
     func myAlert(_ title: String, message: String){

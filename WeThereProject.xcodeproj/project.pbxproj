@@ -12,11 +12,14 @@
 		2020E4E32667BE600091D569 /* Place.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2020E4E22667BE600091D569 /* Place.swift */; };
 		2020E4E52667BF570091D569 /* PlaceFirestore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2020E4E42667BF570091D569 /* PlaceFirestore.swift */; };
 		2020E4E72667C2FC0091D569 /* PlaceService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2020E4E62667C2FC0091D569 /* PlaceService.swift */; };
-		2061AD4D265FDD360007D2C8 /* CategoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2061AD4C265FDD360007D2C8 /* CategoryViewController.swift */; };
+		2067AA1A266B801A00F7B891 /* ImageStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2067AA19266B801A00F7B891 /* ImageStorage.swift */; };
+		2067AA1D266B82F100F7B891 /* PlaceImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2067AA1C266B82F100F7B891 /* PlaceImage.swift */; };
+		2067AA1F266B834800F7B891 /* ImageService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2067AA1E266B834800F7B891 /* ImageService.swift */; };
 		207E4F862660985D00AC0A6E /* AddPlaceTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 207E4F852660985D00AC0A6E /* AddPlaceTableViewController.swift */; };
 		20841264265F28A4006FE0EF /* example.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = 20841263265F28A4006FE0EF /* example.jpeg */; };
-		20841266265F30A6006FE0EF /* AddPlaceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20841265265F30A6006FE0EF /* AddPlaceViewController.swift */; };
 		20AD2558265F65BD001ABC15 /* PlaceInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20AD2557265F65BD001ABC15 /* PlaceInfoViewController.swift */; };
+		20D109DD2668DA2800906115 /* bread.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = 20D109DC2668DA2800906115 /* bread.jpeg */; };
+		20D109E02668DA4D00906115 /* cafe.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = 20D109DF2668DA4D00906115 /* cafe.jpeg */; };
 		20E3E2D1265E2639004BDFF6 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20E3E2D0265E2639004BDFF6 /* AppDelegate.swift */; };
 		20E3E2D3265E2639004BDFF6 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20E3E2D2265E2639004BDFF6 /* SceneDelegate.swift */; };
 		20E3E2D8265E2639004BDFF6 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 20E3E2D6265E2639004BDFF6 /* Main.storyboard */; };
@@ -33,11 +36,14 @@
 		2020E4E22667BE600091D569 /* Place.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Place.swift; sourceTree = "<group>"; };
 		2020E4E42667BF570091D569 /* PlaceFirestore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceFirestore.swift; sourceTree = "<group>"; };
 		2020E4E62667C2FC0091D569 /* PlaceService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceService.swift; sourceTree = "<group>"; };
-		2061AD4C265FDD360007D2C8 /* CategoryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryViewController.swift; sourceTree = "<group>"; };
+		2067AA19266B801A00F7B891 /* ImageStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageStorage.swift; sourceTree = "<group>"; };
+		2067AA1C266B82F100F7B891 /* PlaceImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceImage.swift; sourceTree = "<group>"; };
+		2067AA1E266B834800F7B891 /* ImageService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageService.swift; sourceTree = "<group>"; };
 		207E4F852660985D00AC0A6E /* AddPlaceTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddPlaceTableViewController.swift; sourceTree = "<group>"; };
 		20841263265F28A4006FE0EF /* example.jpeg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = example.jpeg; sourceTree = "<group>"; };
-		20841265265F30A6006FE0EF /* AddPlaceViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddPlaceViewController.swift; sourceTree = "<group>"; };
 		20AD2557265F65BD001ABC15 /* PlaceInfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceInfoViewController.swift; sourceTree = "<group>"; };
+		20D109DC2668DA2800906115 /* bread.jpeg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = bread.jpeg; sourceTree = "<group>"; };
+		20D109DF2668DA4D00906115 /* cafe.jpeg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = cafe.jpeg; sourceTree = "<group>"; };
 		20E3E2CD265E2639004BDFF6 /* WeThereProject.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WeThereProject.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		20E3E2D0265E2639004BDFF6 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		20E3E2D2265E2639004BDFF6 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -76,6 +82,26 @@
 			path = Place;
 			sourceTree = "<group>";
 		};
+		2067AA1B266B82C200F7B891 /* Resource */ = {
+			isa = PBXGroup;
+			children = (
+				20D109DC2668DA2800906115 /* bread.jpeg */,
+				20D109DF2668DA4D00906115 /* cafe.jpeg */,
+				20841263265F28A4006FE0EF /* example.jpeg */,
+			);
+			path = Resource;
+			sourceTree = "<group>";
+		};
+		20D109DE2668DA3400906115 /* Images */ = {
+			isa = PBXGroup;
+			children = (
+				2067AA1C266B82F100F7B891 /* PlaceImage.swift */,
+				2067AA19266B801A00F7B891 /* ImageStorage.swift */,
+				2067AA1E266B834800F7B891 /* ImageService.swift */,
+			);
+			path = Images;
+			sourceTree = "<group>";
+		};
 		20E3E2C4265E2639004BDFF6 = {
 			isa = PBXGroup;
 			children = (
@@ -97,12 +123,13 @@
 		20E3E2CF265E2639004BDFF6 /* WeThereProject */ = {
 			isa = PBXGroup;
 			children = (
-				20841263265F28A4006FE0EF /* example.jpeg */,
+				2067AA1B266B82C200F7B891 /* Resource */,
+				20D109DE2668DA3400906115 /* Images */,
 				2020E4E12667BE230091D569 /* Place */,
 				20E3E2D0265E2639004BDFF6 /* AppDelegate.swift */,
 				20E3E2D2265E2639004BDFF6 /* SceneDelegate.swift */,
-				20E3E2D6265E2639004BDFF6 /* Main.storyboard */,
 				20E3E2D9265E263A004BDFF6 /* Assets.xcassets */,
+				20E3E2D6265E2639004BDFF6 /* Main.storyboard */,
 				20E3E2DB265E263A004BDFF6 /* LaunchScreen.storyboard */,
 				20E3E2DE265E263A004BDFF6 /* Info.plist */,
 				20105EFA2664DA35007AA233 /* GoogleService-Info.plist */,
@@ -110,10 +137,8 @@
 				20E3E2E6265E374D004BDFF6 /* PlaceTableViewController.swift */,
 				20E3E2E8265E3E62004BDFF6 /* SettingViewController.swift */,
 				20E3E2EA265E3F0A004BDFF6 /* SearchViewController.swift */,
-				20841265265F30A6006FE0EF /* AddPlaceViewController.swift */,
 				20AD2557265F65BD001ABC15 /* PlaceInfoViewController.swift */,
 				207E4F852660985D00AC0A6E /* AddPlaceTableViewController.swift */,
-				2061AD4C265FDD360007D2C8 /* CategoryViewController.swift */,
 			);
 			path = WeThereProject;
 			sourceTree = "<group>";
@@ -194,8 +219,10 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				20D109DD2668DA2800906115 /* bread.jpeg in Resources */,
 				20E3E2DD265E263A004BDFF6 /* LaunchScreen.storyboard in Resources */,
 				20E3E2DA265E263A004BDFF6 /* Assets.xcassets in Resources */,
+				20D109E02668DA4D00906115 /* cafe.jpeg in Resources */,
 				20105EFB2664DA35007AA233 /* GoogleService-Info.plist in Resources */,
 				20E3E2D8265E2639004BDFF6 /* Main.storyboard in Resources */,
 				20841264265F28A4006FE0EF /* example.jpeg in Resources */,
@@ -252,18 +279,19 @@
 			buildActionMask = 2147483647;
 			files = (
 				20AD2558265F65BD001ABC15 /* PlaceInfoViewController.swift in Sources */,
+				2067AA1A266B801A00F7B891 /* ImageStorage.swift in Sources */,
 				2020E4E52667BF570091D569 /* PlaceFirestore.swift in Sources */,
 				20E3E2EB265E3F0A004BDFF6 /* SearchViewController.swift in Sources */,
 				20E3E2E9265E3E62004BDFF6 /* SettingViewController.swift in Sources */,
+				2067AA1D266B82F100F7B891 /* PlaceImage.swift in Sources */,
 				2020E4E72667C2FC0091D569 /* PlaceService.swift in Sources */,
-				20841266265F30A6006FE0EF /* AddPlaceViewController.swift in Sources */,
 				20E3E2D1265E2639004BDFF6 /* AppDelegate.swift in Sources */,
 				20E3E2E7265E374D004BDFF6 /* PlaceTableViewController.swift in Sources */,
 				20E3E2D3265E2639004BDFF6 /* SceneDelegate.swift in Sources */,
-				2061AD4D265FDD360007D2C8 /* CategoryViewController.swift in Sources */,
 				20E3E2E5265E355D004BDFF6 /* MapViewController.swift in Sources */,
 				2020E4E32667BE600091D569 /* Place.swift in Sources */,
 				207E4F862660985D00AC0A6E /* AddPlaceTableViewController.swift in Sources */,
+				2067AA1F266B834800F7B891 /* ImageService.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -27,6 +27,12 @@ class PlaceInfoViewController: UIViewController {
         placeImg.image = receiveImage
     }
     
+    func getInfo(_ data: PlaceData, image: UIImage){
+        receiceName = data.name!
+        receiveSub = data.position!
+        receiveImage = image
+    }
+    
     func recievePlace(_ name: String, subname: String, image: UIImage){
         receiceName = name
         receiveSub = subname
