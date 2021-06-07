@@ -12,7 +12,9 @@ import FirebaseStorage
 var placeImages = [String : UIImage]()
 let storage = Storage.storage()
 
+
 class PlaceTableViewController: UITableViewController {
+    var newImage = true
     
     var places = [PlaceData]() {
         didSet {
@@ -92,17 +94,22 @@ class PlaceTableViewController: UITableViewController {
     }
     
     func getImage(imageName: String, completion: @escaping (UIImage?) -> ()) {
-        let islandRef = storage.reference().child(imageName)
-        islandRef.getData(maxSize: 1 * 1024 * 1024) { data, error in
+     //   let islandRef = storage.reference().child(imageName)
+     //   islandRef.getData(maxSize: 1 * 1024 * 1024) { data, error in
+        
+            let fileUrl = "gs://wethere-2935d.appspot.com/" + imageName
+            storage.reference(forURL: fileUrl).downloadURL { url, error in
+                let data = NSData(contentsOf: url!)
+                let downloadImg = UIImage(data: data! as Data)
             if error == nil {
-                completion(UIImage(data: data!))
-                print("image download!!!")
+                completion(downloadImg)
+                print("image download!!!" + imageName)
             } else {
                 completion(nil)
             }
-        }.resume()
+        }//.resume()
     }
-    
+   
     
     override func viewWillAppear(_ animated: Bool) {
         tableView.reloadData()  //목록 재로딩
@@ -134,30 +141,36 @@ class PlaceTableViewController: UITableViewController {
         
         cell.textLabel?.font = UIFont .boldSystemFont(ofSize: 20)
         cell.detailTextLabel?.font = UIFont .systemFont(ofSize: 15)
-  //      cell.textLabel?.text = placeTitles[(indexPath as NSIndexPath).row]
+    //    cell.textLabel?.text = placeTitles[(indexPath as NSIndexPath).row]
     //    cell.imageView?.image = places[indexPath.row].image
-     //   cell.imageView?.image = placeImages[(indexPath as NSIndexPath).row]
+    //    cell.imageView?.image = placeImages[(indexPath as NSIndexPath).row]
         
         
         cell.tag += 1
-            let tag = cell.tag
+        let tag = cell.tag
         
-        self.getImage(imageName: places[indexPath.row].name!) { photo in
+        if self.newImage {
+            self.getImage(imageName: places[indexPath.row].name!) { photo in
                 if photo != nil {
                     if cell.tag == tag {
                         DispatchQueue.main.async {
+                            placeImages.updateValue(photo!, forKey: self.places[indexPath.row].name!)
                             cell.imageView?.image = photo
                         }
-                        placeImages.updateValue(photo!, forKey: self.places[indexPath.row].name!)
+                            print(cell.tag)
+                        }
                     }
+                self.newImage = false
                 }
-            }
-       
-     //   cell.imageView?.image = images[indexPath.row].iamge
+        }else{
+            cell.imageView?.image = placeImages[places[indexPath.row].name!]
+        }
+        
+    //   cell.imageView?.image = images[indexPath.row].iamge
         cell.textLabel?.text = places[indexPath.row].name
     //    cell.textLabel?.font = .systemFont(ofSize: 20, weight: .medium)
         cell.detailTextLabel?.text = places[indexPath.row].position
-
+        
         return cell
     }
     
@@ -177,7 +190,6 @@ class PlaceTableViewController: UITableViewController {
         if editingStyle == .delete {    //셀 삭제
             // Delete the row from the data source
             
-            
             let removePlace = places[(indexPath as NSIndexPath).row].name! as String
             
             
@@ -188,6 +200,15 @@ class PlaceTableViewController: UITableViewController {
                     print("Document successfully removed!")
                 }
             }
+            
+            storage.reference().child(removePlace).delete { error in
+                if let error = error {
+                    print("Error removing image: \(error)")
+                } else {
+                    print("Image successfully removed!")
+                }
+              }
+            
             
             placeImages.removeValue(forKey: places[(indexPath as NSIndexPath).row].name!)
             places.remove(at: (indexPath as NSIndexPath).row)
@@ -237,7 +258,7 @@ class PlaceTableViewController: UITableViewController {
         if segue.identifier == "sgPlaceInfo"{
             let cell = sender as! UITableViewCell
             let indexPath = self.placeTableView.indexPath(for: cell)
-            let infoView = segue.destination as! PlaceInfoViewController
+            let infoView = segue.destination as! PlaceInfoTableViewController
             infoView.getInfo(places[(indexPath! as NSIndexPath).row], image: placeImages[places[(indexPath! as NSIndexPath).row].name!]!)
           //  recievePlace(places[(indexPath! as NSIndexPath).row].name!, subname: places[(indexPath! as NSIndexPath).row].position!, image: placeImages[(indexPath! as NSIndexPath).row]!)
         }

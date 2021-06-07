@@ -13,9 +13,11 @@ class PlaceInfoViewController: UIViewController {
     var receiveImage: UIImage?
     var receiveSub = ""
     
-    @IBOutlet var txtPlacename: UILabel!
-    @IBOutlet var txtPlaceSub: UILabel!
+    @IBOutlet var txtPlacename: UITextField!
+    @IBOutlet var txtPlaceSub: UITextField!
     @IBOutlet var placeImg: UIImageView!
+    @IBOutlet var txtCategory: UITextField!
+    @IBOutlet var swVisit: UISwitch!
     
     override func viewDidLoad() {
         super.viewDidLoad()

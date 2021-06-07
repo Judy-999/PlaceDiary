@@ -18,6 +18,12 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
     @IBOutlet var tfCategory: UITextField!
     @IBOutlet var swVisit: UISwitch!
     @IBOutlet var pkDate: UIDatePicker!
+    @IBOutlet var lblRate: UILabel!
+    @IBOutlet var btnRate1: UIButton!
+    @IBOutlet var btnRate2: UIButton!
+    @IBOutlet var btnRate3: UIButton!
+    @IBOutlet var btnRate4: UIButton!
+    @IBOutlet var btnRate5: UIButton!
     
     let db: Firestore = Firestore.firestore()
     let storageRef = Storage.storage().reference()
@@ -25,6 +31,8 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
     var selectedImage: UIImage!
     let PICKER_VIEW_COLUMN = 1
     var category = ["음식점", "카페", "술집", "액티비티", "야외"]
+    var rateButtons = [UIButton]()
+    let rate = AddRate()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -47,11 +55,23 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
         categoryPicker.delegate = self
         self.tfCategory.inputView = categoryPicker
 
+        rateButtons.append(btnRate1)
+        rateButtons.append(btnRate2)
+        rateButtons.append(btnRate3)
+        rateButtons.append(btnRate4)
+        rateButtons.append(btnRate5)
+        
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
 
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        let PlaceTableViewController = segue.destination as! PlaceTableViewController
+        
+        PlaceTableViewController.newImage = true
     }
     
     @objc func pickerDone(){
@@ -79,7 +99,7 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
         tfPlacePosition.placeholder = "위치를 입력하세요."
         
         setData()
-    
+        uploadImage(tfPlaceName.text!, image: selectedImage)
         _ = navigationController?.popViewController(animated: true)
     }
     
@@ -90,6 +110,7 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
             "date": pkDate.date,  //Timestamp(date: Date()),
             "visit": swVisit.isOn,
             "tag": ["태그1", "태그2", "태그3"],
+            "rate": lblRate.text!,
             "category": tfCategory.text!
         ]
 
@@ -101,6 +122,7 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
             }
         }
     }
+    
 
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
         return PICKER_VIEW_COLUMN
@@ -133,6 +155,9 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
         }
     }
         
+    @IBAction func clickStar(_ sender: UIButton){
+        lblRate.text = String(describing: rate.checkAttr(buttons: rateButtons, button: sender))
+    }
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         selectedImage = info[UIImagePickerController.InfoKey.originalImage] as? UIImage //사진을 가져와 라이브러리에 저장
