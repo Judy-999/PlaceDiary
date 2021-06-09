@@ -8,13 +8,14 @@ import Foundation
 
 
 struct PlaceData {
-    let name: String?
-    let position: String?
-    let date: Date?
-    let visit: Bool?
-    let tag = [String]()
-    let category : String?
-    let rate: String?
+    var name: String?
+    var position: String?
+    var date: Date?
+    var visit: Bool?
+    var tag = [String]()
+    var category : String?
+    var rate: String?
+    var coment: String?
     
   /*  init?(dictionary: [String:Any]){
         self.name = dictionary["name"] as? String

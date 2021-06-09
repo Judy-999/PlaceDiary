@@ -8,7 +8,8 @@
 
 import UIKit
 
-class PlaceInfoTableViewController: UITableViewController {
+
+class PlaceInfoTableViewController: UITableViewController, EditDelegate {
 
     var receiveImage: UIImage?
     var reName = ""
@@ -17,7 +18,12 @@ class PlaceInfoTableViewController: UITableViewController {
     var reCategory = ""
     var reVisit = false
     var reRate = ""
+    var reComent = ""
     var rateBtn = [UIButton]()
+    let fillRate = AddRate()
+    var rateF : Float?
+    var delegate : EditDelegate?
+    var editData : PlaceData?
     
     @IBOutlet var placeImg: UIImageView!
     @IBOutlet var txtPlacename: UITextField!
@@ -27,14 +33,15 @@ class PlaceInfoTableViewController: UITableViewController {
     @IBOutlet var swVisit: UISwitch!
     @IBOutlet var txtRate: UITextField!
     @IBOutlet var lblRate: UILabel!
+    @IBOutlet var txvComent: UITextView!
     @IBOutlet var btnRate1: UIButton!
     @IBOutlet var btnRate2: UIButton!
     @IBOutlet var btnRate3: UIButton!
     @IBOutlet var btnRate4: UIButton!
     @IBOutlet var btnRate5: UIButton!
     
-    let fillRate = AddRate()
-
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -42,40 +49,77 @@ class PlaceInfoTableViewController: UITableViewController {
         // self.clearsSelectionOnViewWillAppear = false
 
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-        // self.navigationItem.rightBarButtonItem = self.editButtonItem
-        
-        var rateF = NSString(string: reRate).floatValue
+        //self.navigationItem.rightBarButtonItem = self.editButtonItem
+     
         rateBtn.append(btnRate1)
         rateBtn.append(btnRate2)
         rateBtn.append(btnRate3)
         rateBtn.append(btnRate4)
         rateBtn.append(btnRate5)
         
-        txtPlacename.text = reName
-        txtPosition.text = rePositon
-        placeImg.image = receiveImage
-        txtDate.text = reDate
-        txtCategory.text = reCategory
-        swVisit.isOn = reVisit
-        txtRate.text = reRate + " 점"
-        
-        fillRate.fill(buttons: rateBtn, rate: rateF)
+        setData()
+    }
+    
+ 
+    func endEdit(){
+        txtPlacename.isEnabled = false
+        txtPosition.isEnabled = false
+        txtDate.isEnabled = false
+        txtCategory.isEnabled = false
+        swVisit.isEnabled = false
+        txvComent.isEditable = false
+        btnRate1.isEnabled = false
+        btnRate2.isEnabled = false
+        btnRate3.isEnabled = false
+        btnRate4.isEnabled = false
+        btnRate5.isEnabled = false
     }
     
     func getInfo(_ data: PlaceData, image: UIImage){
+        editData = data
+        
         reName = data.name!
         rePositon = data.position!
         receiveImage = image
         reCategory = data.category!
         reVisit = data.visit!
         reRate = data.rate!
+        reComent = data.coment!
         
         let formatter = DateFormatter()
         formatter.dateFormat = "yyyy-MM-dd"
         reDate = formatter.string(from: data.date!)
     }
     
+    func setData(){
+        txtPlacename.text = reName
+        txtPosition.text = rePositon
+        placeImg.image = receiveImage
+        txtDate.text = reDate
+        txtCategory.text = reCategory
+        swVisit.isOn = reVisit
+        txvComent.text = reComent
+        txtRate.text = reRate + " 점"
+        
+        fillRate.fill(buttons: rateBtn, rate: NSString(string: reRate).floatValue)
+    }
 
+    func didEditPlace(_ controller: AddPlaceTableViewController, data: PlaceData, image: UIImage) {
+         getInfo(data, image: image)
+         setData()
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if(segue.identifier == "editPlace"){
+            let addPlaceViewController = segue.destination as! AddPlaceTableViewController
+            addPlaceViewController.setInfo(data: editData!, image: receiveImage!)
+            addPlaceViewController.delegate = self
+        }
+    }
+    
+    @IBAction func clickRate(_ sender: UIButton){
+        txtRate.text = String(describing: fillRate.checkAttr(buttons: rateBtn, button: sender))
+    }
     // MARK: - Table view data source
 
     override func numberOfSections(in tableView: UITableView) -> Int {

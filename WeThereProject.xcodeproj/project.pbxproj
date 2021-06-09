@@ -18,7 +18,6 @@
 		207E4F862660985D00AC0A6E /* AddPlaceTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 207E4F852660985D00AC0A6E /* AddPlaceTableViewController.swift */; };
 		20841264265F28A4006FE0EF /* example.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = 20841263265F28A4006FE0EF /* example.jpeg */; };
 		208D9FE9266DFD4A00FC2067 /* AddRate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 208D9FE8266DFD4A00FC2067 /* AddRate.swift */; };
-		20AD2558265F65BD001ABC15 /* PlaceInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20AD2557265F65BD001ABC15 /* PlaceInfoViewController.swift */; };
 		20D109DD2668DA2800906115 /* bread.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = 20D109DC2668DA2800906115 /* bread.jpeg */; };
 		20D109E02668DA4D00906115 /* cafe.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = 20D109DF2668DA4D00906115 /* cafe.jpeg */; };
 		20E3E2D1265E2639004BDFF6 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20E3E2D0265E2639004BDFF6 /* AppDelegate.swift */; };
@@ -44,7 +43,6 @@
 		207E4F852660985D00AC0A6E /* AddPlaceTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddPlaceTableViewController.swift; sourceTree = "<group>"; };
 		20841263265F28A4006FE0EF /* example.jpeg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = example.jpeg; sourceTree = "<group>"; };
 		208D9FE8266DFD4A00FC2067 /* AddRate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddRate.swift; sourceTree = "<group>"; };
-		20AD2557265F65BD001ABC15 /* PlaceInfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceInfoViewController.swift; sourceTree = "<group>"; };
 		20D109DC2668DA2800906115 /* bread.jpeg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = bread.jpeg; sourceTree = "<group>"; };
 		20D109DF2668DA4D00906115 /* cafe.jpeg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = cafe.jpeg; sourceTree = "<group>"; };
 		20E3E2CD265E2639004BDFF6 /* WeThereProject.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WeThereProject.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -134,6 +132,7 @@
 				20E3E2D2265E2639004BDFF6 /* SceneDelegate.swift */,
 				20E3E2D9265E263A004BDFF6 /* Assets.xcassets */,
 				20E3E2D6265E2639004BDFF6 /* Main.storyboard */,
+				208D9FE8266DFD4A00FC2067 /* AddRate.swift */,
 				20E3E2DB265E263A004BDFF6 /* LaunchScreen.storyboard */,
 				20E3E2DE265E263A004BDFF6 /* Info.plist */,
 				20F88AC6266CD8820015B42E /* PlaceInfoTableViewController.swift */,
@@ -141,9 +140,7 @@
 				20E3E2E6265E374D004BDFF6 /* PlaceTableViewController.swift */,
 				20E3E2E8265E3E62004BDFF6 /* SettingViewController.swift */,
 				20E3E2EA265E3F0A004BDFF6 /* SearchViewController.swift */,
-				20AD2557265F65BD001ABC15 /* PlaceInfoViewController.swift */,
 				207E4F852660985D00AC0A6E /* AddPlaceTableViewController.swift */,
-				208D9FE8266DFD4A00FC2067 /* AddRate.swift */,
 				20105EFA2664DA35007AA233 /* GoogleService-Info.plist */,
 			);
 			path = WeThereProject;
@@ -284,7 +281,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				20AD2558265F65BD001ABC15 /* PlaceInfoViewController.swift in Sources */,
 				2067AA1A266B801A00F7B891 /* ImageStorage.swift in Sources */,
 				2020E4E52667BF570091D569 /* PlaceFirestore.swift in Sources */,
 				20E3E2EB265E3F0A004BDFF6 /* SearchViewController.swift in Sources */,

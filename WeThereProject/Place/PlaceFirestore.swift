@@ -21,7 +21,7 @@ extension PlaceData {
                                     date: date.dateValue(),
                                     visit: document["visit"] as? Bool,
                                     category: document["category"] as? String ?? "",
-                                    rate: document["rate"] as? String ?? ""))
+                                    rate: document["rate"] as? String ?? "", coment: document["coment"] as? String ?? ""))
         }
         
         

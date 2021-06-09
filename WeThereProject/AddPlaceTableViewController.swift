@@ -10,6 +10,11 @@ import MobileCoreServices
 import FirebaseFirestore
 import FirebaseStorage
 
+protocol EditDelegate {
+    func didEditPlace(_ controller: AddPlaceTableViewController, data: PlaceData, image: UIImage)
+}
+
+
 class AddPlaceTableViewController: UITableViewController, UINavigationControllerDelegate, UIImagePickerControllerDelegate, UIPickerViewDelegate, UIPickerViewDataSource{
     
     @IBOutlet var placeImageView: UIImageView!
@@ -18,12 +23,14 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
     @IBOutlet var tfCategory: UITextField!
     @IBOutlet var swVisit: UISwitch!
     @IBOutlet var pkDate: UIDatePicker!
+    @IBOutlet var txvComent: UITextView!
     @IBOutlet var lblRate: UILabel!
     @IBOutlet var btnRate1: UIButton!
     @IBOutlet var btnRate2: UIButton!
     @IBOutlet var btnRate3: UIButton!
     @IBOutlet var btnRate4: UIButton!
     @IBOutlet var btnRate5: UIButton!
+    
     
     let db: Firestore = Firestore.firestore()
     let storageRef = Storage.storage().reference()
@@ -33,10 +40,22 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
     var category = ["음식점", "카페", "술집", "액티비티", "야외"]
     var rateButtons = [UIButton]()
     let rate = AddRate()
+    var fromInfo = false
+    var receiveImage : UIImage?
+    var reName = ""
+    var rePositon = ""
+    var reDate : Date?
+    var reCategory = ""
+    var reVisit = false
+    var reRate = ""
+    var reComent = ""
+    var editData : PlaceData?
+    var delegate : EditDelegate?
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        
         let categoryPicker = UIPickerView()
         let pickerToolbar = UIToolbar()
         let btnPickerDone = UIBarButtonItem()
@@ -54,12 +73,18 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
         
         categoryPicker.delegate = self
         self.tfCategory.inputView = categoryPicker
+ 
+        
 
         rateButtons.append(btnRate1)
         rateButtons.append(btnRate2)
         rateButtons.append(btnRate3)
         rateButtons.append(btnRate4)
         rateButtons.append(btnRate5)
+        
+        if fromInfo {
+            set()
+        }
         
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
@@ -68,11 +93,40 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
         // self.navigationItem.rightBarButtonItem = self.editButtonItem
     }
     
+    func setInfo(data: PlaceData, image: UIImage){
+        receiveImage = image
+        selectedImage = image
+        reName = data.name!
+        rePositon = data.position!
+        reDate = data.date!
+        reCategory = data.category!
+        reVisit = data.visit!
+        reRate = data.rate!
+        reComent = data.coment!
+        fromInfo = true
+        
+        editData = data
+    }
+    
+    func set(){
+        placeImageView.image = receiveImage
+        
+        tfPlaceName.text = reName as String
+        tfPlacePosition.text = rePositon
+        tfCategory.text = reCategory
+        swVisit.isOn = reVisit
+        pkDate.date = reDate!
+        txvComent.text = reComent
+        lblRate.text = reRate
+        
+        rate.fill(buttons: rateButtons, rate: NSString(string: reRate).floatValue)
+    }
+    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         let PlaceTableViewController = segue.destination as! PlaceTableViewController
-        
         PlaceTableViewController.newImage = true
     }
+    
     
     @objc func pickerDone(){
         self.view.endEditing(true)
@@ -91,19 +145,38 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
     }
 
     @IBAction func btnAddDone(_ sender: UIButton){
-     //   placeTitles.append(tfPlaceName.text!)
         placeImages.updateValue(selectedImage, forKey: tfPlaceName.text!)
-     //   placeSubTitles.append(tfPlacePosition.text!)
         
         tfPlaceName.placeholder = "이름을 입력하세요."
         tfPlacePosition.placeholder = "위치를 입력하세요."
         
-        setData()
+        uploadData()
         uploadImage(tfPlaceName.text!, image: selectedImage)
+        
+        if delegate != nil{
+            editData?.name = tfPlaceName.text
+            editData?.position = tfPlacePosition.text
+            editData?.category = tfCategory.text
+            editData?.visit = swVisit.isOn
+            editData?.date = pkDate.date
+            editData?.coment = txvComent.text
+            editData?.rate = lblRate.text
+
+            delegate?.didEditPlace(self, data: editData!, image: selectedImage)
+        }
         _ = navigationController?.popViewController(animated: true)
     }
     
-    func setData(){
+    func uploadData(){
+        if reName != tfPlaceName.text! {
+            db.collection("users").document(reName).delete() { err in
+                if let err = err {
+                    print("Error removing document: \(err)")
+                } else {
+                    print("Document successfully removed!")
+                }
+            }
+        }
         let docData: [String: Any] = [
             "name": tfPlaceName.text!,
             "position": tfPlacePosition.text!,
@@ -111,6 +184,7 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
             "visit": swVisit.isOn,
             "tag": ["태그1", "태그2", "태그3"],
             "rate": lblRate.text!,
+            "coment": txvComent.text!,
             "category": tfCategory.text!
         ]
 
