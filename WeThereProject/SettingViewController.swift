@@ -18,10 +18,28 @@ class SettingViewController: UIViewController {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
-        downloadImage()
+      //  downloadImage()
        // down()
+        
+       // uploadImage("꼼마", image: UIImage(named: "cafe.jpeg")!)
+       // uploadImage("블랑제메종", image: UIImage(named: "bread.jpeg")!)
     }
     
+    func uploadImage(_ path: String, image: UIImage){
+        var data = Data()
+        data = image.jpegData(compressionQuality: 0.8)!
+        let filePath = path
+        let metaData = StorageMetadata()
+        metaData.contentType = "image/jpeg"
+        Storage.storage().reference().child(filePath).putData(data, metadata: metaData){
+            (metaData, error) in if let error = error{
+                print(error.localizedDescription)
+                return
+            }else{
+                print("Image successfully upload!")
+            }
+        }
+    }
     func downloadImage(){
         let fileUrl = "gs://wethere-2935d.appspot.com"
         storage.reference(forURL: fileUrl).downloadURL { url, error in
@@ -36,6 +54,7 @@ class SettingViewController: UIViewController {
         // Download in memory with a maximum allowed size of 1MB (1 * 1024 * 1024 bytes)
         islandRef.getData(maxSize: 1 * 1024 * 1024) { data, error in
           if let error = error {
+            print(error)
             // Uh-oh, an error occurred!
           } else {
             // Data for "images/island.jpg" is returned

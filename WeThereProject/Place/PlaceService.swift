@@ -12,14 +12,13 @@ class PlaceService {
     let database = Firestore.firestore()
 
     func get(collectionID: String, handler: @escaping ([PlaceData]) -> Void) {
-        database.collection("users")
-            .addSnapshotListener { querySnapshot, err in
-                if let error = err {
-                    print(error)
-                    handler([])
-                } else {
-                    handler(PlaceData.build(from: querySnapshot?.documents ?? []))
-                }
+        database.collection(collectionID).addSnapshotListener { querySnapshot, err in
+            if let error = err {
+                print(error)
+                handler([])
+            } else {
+                handler(PlaceData.build(from: querySnapshot?.documents ?? []))
             }
+        }
     }
 }

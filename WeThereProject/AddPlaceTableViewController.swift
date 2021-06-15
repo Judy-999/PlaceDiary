@@ -15,7 +15,7 @@ protocol EditDelegate {
 }
 
 
-class AddPlaceTableViewController: UITableViewController, UINavigationControllerDelegate, UIImagePickerControllerDelegate, UIPickerViewDelegate, UIPickerViewDataSource{
+class AddPlaceTableViewController: UITableViewController, UINavigationControllerDelegate, UIImagePickerControllerDelegate, UIPickerViewDelegate, UIPickerViewDataSource, UITextViewDelegate{
     
     @IBOutlet var placeImageView: UIImageView!
     @IBOutlet var tfPlaceName: UITextField!
@@ -24,6 +24,7 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
     @IBOutlet var swVisit: UISwitch!
     @IBOutlet var pkDate: UIDatePicker!
     @IBOutlet var txvComent: UITextView!
+    @IBOutlet var lblVisit: UILabel!
     @IBOutlet var lblRate: UILabel!
     @IBOutlet var btnRate1: UIButton!
     @IBOutlet var btnRate2: UIButton!
@@ -37,20 +38,23 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
     let imagePicker: UIImagePickerController! = UIImagePickerController()
     var selectedImage: UIImage!
     let PICKER_VIEW_COLUMN = 1
-    var category = ["음식점", "카페", "술집", "액티비티", "야외"]
+    
     var rateButtons = [UIButton]()
     let rate = AddRate()
     var fromInfo = false
     var receiveImage : UIImage?
     var reName = ""
     var rePositon = ""
-    var reDate : Date?
+    var reDate: Date?
     var reCategory = ""
     var reVisit = false
     var reRate = ""
     var reComent = ""
-    var editData : PlaceData?
-    var delegate : EditDelegate?
+    var editData: PlaceData?
+    var delegate: EditDelegate?
+//    let categoryData = CategoryData()
+    var category = [String]() // = ["음식점", "카페", "술집", "액티비티", "야외"]
+    let database = Firestore.firestore()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -60,6 +64,8 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
         let pickerToolbar = UIToolbar()
         let btnPickerDone = UIBarButtonItem()
         let flexSpace = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
+        
+        loadCategory()
         
         pickerToolbar.frame = CGRect(x: 0, y: 0, width: 0, height: 35)
       //  pickerToolbar.barTintColor = UIColor.lightGray
@@ -74,16 +80,21 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
         categoryPicker.delegate = self
         self.tfCategory.inputView = categoryPicker
  
+        swVisit.isOn = false
         
-
         rateButtons.append(btnRate1)
         rateButtons.append(btnRate2)
         rateButtons.append(btnRate3)
         rateButtons.append(btnRate4)
         rateButtons.append(btnRate5)
         
+        txvComent.delegate = self
+        txvComent.text = "코멘트를 입력하세요."
+        txvComent.textColor = UIColor.lightGray
+        
         if fromInfo {
             set()
+            txvComent.textColor = UIColor.black
         }
         
         // Uncomment the following line to preserve selection between presentations
@@ -91,6 +102,17 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
 
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem
+    }
+    
+    func loadCategory(){
+        let docRef = database.collection("category").document("category")
+        docRef.getDocument { (document, error) in
+            if let document = document, document.exists {
+                self.category = (document.get("items") as? [String])!
+            } else {
+                print("Document does not exist")
+            }
+        }
     }
     
     func setInfo(data: PlaceData, image: UIImage){
@@ -119,6 +141,19 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
         txvComent.text = reComent
         lblRate.text = reRate
         
+        if reVisit == true{
+            for btn in rateButtons{
+                btn.isEnabled = true
+            }
+            lblVisit.text = "가봤어요!"
+        }else{
+            for btn in rateButtons{
+                btn.isEnabled = false
+                btn.setImage(UIImage(systemName: "star"), for: .normal)
+            }
+            lblRate.text = "0"
+            lblVisit.text = "가보고 싶어요!"
+        }
         rate.fill(buttons: rateButtons, rate: NSString(string: reRate).floatValue)
     }
     
@@ -151,7 +186,12 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
         tfPlacePosition.placeholder = "위치를 입력하세요."
         
         uploadData()
-        uploadImage(tfPlaceName.text!, image: selectedImage)
+        
+        if receiveImage == nil {
+            uploadImage(tfPlaceName.text!, image: selectedImage)
+        }else if receiveImage != selectedImage{
+            uploadImage(tfPlaceName.text!, image: selectedImage)
+        }
         
         if delegate != nil{
             editData?.name = tfPlaceName.text
@@ -168,7 +208,7 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
     }
     
     func uploadData(){
-        if reName != tfPlaceName.text! {
+        if reName != "" && reName != tfPlaceName.text! {
             db.collection("users").document(reName).delete() { err in
                 if let err = err {
                     print("Error removing document: \(err)")
@@ -197,7 +237,20 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
         }
     }
     
-
+    func textViewDidBeginEditing(_ textView: UITextView) {
+        if textView.textColor == UIColor.lightGray{
+            textView.text = nil
+            textView.textColor = UIColor.black
+        }
+    }
+    /*
+    func textViewDidEndEditing(_ textView: UITextView) {
+        if textView.text.isEmpty {
+            textView.text = "코멘트를 입력하세요."
+            textView.textColor = UIColor.lightGray
+        }
+    }
+*/
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
         return PICKER_VIEW_COLUMN
     }
@@ -214,6 +267,25 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
         tfCategory.text = category[row]
     }
     
+    @IBAction func switchOn(_ sender: UISwitch){
+        if sender.isOn == true{
+            for btn in rateButtons{
+                btn.isEnabled = true
+            }
+            lblVisit.text = "가봤어요!"
+        }else{
+            for btn in rateButtons{
+                btn.isEnabled = false
+                btn.setImage(UIImage(systemName: "star"), for: .normal)
+            }
+            lblRate.text = "0"
+            lblVisit.text = "가보고 싶어요!"
+        }
+    }
+    
+    @IBAction func clickStar(_ sender: UIButton){
+        lblRate.text = String(describing: rate.checkAttr(buttons: rateButtons, button: sender))
+    }
     
     @IBAction func btnAddPhoto(_ sender: UIButton){
         if(UIImagePickerController.isSourceTypeAvailable(.photoLibrary)){
@@ -228,10 +300,7 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
             myAlert("Photo album inaccessable", message: "Application cannot access the photo album.")
         }
     }
-        
-    @IBAction func clickStar(_ sender: UIButton){
-        lblRate.text = String(describing: rate.checkAttr(buttons: rateButtons, button: sender))
-    }
+    
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         selectedImage = info[UIImagePickerController.InfoKey.originalImage] as? UIImage //사진을 가져와 라이브러리에 저장
@@ -269,6 +338,7 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
         present(alert, animated: true, completion: nil)
     }
     
+
     /*
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath)

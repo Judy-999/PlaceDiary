@@ -6,7 +6,6 @@
 //
 import Foundation
 
-
 struct PlaceData {
     var name: String?
     var position: String?

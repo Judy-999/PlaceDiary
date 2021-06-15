@@ -36,15 +36,13 @@ class AddRate{
         if buttonState[index] == false{
             buttons[index].setImage(UIImage(systemName: "star.leadinghalf.fill"), for: .normal)
             buttonState[index] = true
-            fillStar(buttons: buttons, index: index)
-            clearStar(buttons: buttons, index: index)
         }
         else{
             buttons[index].setImage(UIImage(systemName: "star.fill"), for: .normal)
             buttonState[index] = false
-            fillStar(buttons: buttons, index: index)
-            clearStar(buttons: buttons, index: index)
         }
+        fillStar(buttons: buttons, index: index)
+        clearStar(buttons: buttons, index: index)
     }
     
     func fill(buttons: [UIButton], rate: Float){
@@ -54,6 +52,11 @@ class AddRate{
         if (rate - Float(rateInt)) != 0 {
             buttons[rateInt].setImage(UIImage(systemName: "star.leadinghalf.fill"), for: .normal)
         }
+        
+        if rate == 0{
+            clearStar(buttons: buttons, index: -1)
+        }
+        
     }
     
     private func fillStar(buttons: [UIButton], index: Int){

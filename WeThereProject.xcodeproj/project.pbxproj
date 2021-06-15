@@ -12,9 +12,8 @@
 		2020E4E32667BE600091D569 /* Place.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2020E4E22667BE600091D569 /* Place.swift */; };
 		2020E4E52667BF570091D569 /* PlaceFirestore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2020E4E42667BF570091D569 /* PlaceFirestore.swift */; };
 		2020E4E72667C2FC0091D569 /* PlaceService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2020E4E62667C2FC0091D569 /* PlaceService.swift */; };
-		2067AA1A266B801A00F7B891 /* ImageStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2067AA19266B801A00F7B891 /* ImageStorage.swift */; };
-		2067AA1D266B82F100F7B891 /* PlaceImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2067AA1C266B82F100F7B891 /* PlaceImage.swift */; };
-		2067AA1F266B834800F7B891 /* ImageService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2067AA1E266B834800F7B891 /* ImageService.swift */; };
+		202E47AB2678ED3D00E43792 /* PlaceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 202E47AA2678ED3D00E43792 /* PlaceViewController.swift */; };
+		2044A8352671E989002ABBD8 /* TagTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2044A8342671E989002ABBD8 /* TagTextView.swift */; };
 		207E4F862660985D00AC0A6E /* AddPlaceTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 207E4F852660985D00AC0A6E /* AddPlaceTableViewController.swift */; };
 		20841264265F28A4006FE0EF /* example.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = 20841263265F28A4006FE0EF /* example.jpeg */; };
 		208D9FE9266DFD4A00FC2067 /* AddRate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 208D9FE8266DFD4A00FC2067 /* AddRate.swift */; };
@@ -37,9 +36,8 @@
 		2020E4E22667BE600091D569 /* Place.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Place.swift; sourceTree = "<group>"; };
 		2020E4E42667BF570091D569 /* PlaceFirestore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceFirestore.swift; sourceTree = "<group>"; };
 		2020E4E62667C2FC0091D569 /* PlaceService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceService.swift; sourceTree = "<group>"; };
-		2067AA19266B801A00F7B891 /* ImageStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageStorage.swift; sourceTree = "<group>"; };
-		2067AA1C266B82F100F7B891 /* PlaceImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceImage.swift; sourceTree = "<group>"; };
-		2067AA1E266B834800F7B891 /* ImageService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageService.swift; sourceTree = "<group>"; };
+		202E47AA2678ED3D00E43792 /* PlaceViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceViewController.swift; sourceTree = "<group>"; };
+		2044A8342671E989002ABBD8 /* TagTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagTextView.swift; sourceTree = "<group>"; };
 		207E4F852660985D00AC0A6E /* AddPlaceTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddPlaceTableViewController.swift; sourceTree = "<group>"; };
 		20841263265F28A4006FE0EF /* example.jpeg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = example.jpeg; sourceTree = "<group>"; };
 		208D9FE8266DFD4A00FC2067 /* AddRate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddRate.swift; sourceTree = "<group>"; };
@@ -94,16 +92,6 @@
 			path = Resource;
 			sourceTree = "<group>";
 		};
-		20D109DE2668DA3400906115 /* Images */ = {
-			isa = PBXGroup;
-			children = (
-				2067AA1C266B82F100F7B891 /* PlaceImage.swift */,
-				2067AA19266B801A00F7B891 /* ImageStorage.swift */,
-				2067AA1E266B834800F7B891 /* ImageService.swift */,
-			);
-			path = Images;
-			sourceTree = "<group>";
-		};
 		20E3E2C4265E2639004BDFF6 = {
 			isa = PBXGroup;
 			children = (
@@ -126,10 +114,10 @@
 			isa = PBXGroup;
 			children = (
 				2067AA1B266B82C200F7B891 /* Resource */,
-				20D109DE2668DA3400906115 /* Images */,
 				2020E4E12667BE230091D569 /* Place */,
 				20E3E2D0265E2639004BDFF6 /* AppDelegate.swift */,
 				20E3E2D2265E2639004BDFF6 /* SceneDelegate.swift */,
+				2044A8342671E989002ABBD8 /* TagTextView.swift */,
 				20E3E2D9265E263A004BDFF6 /* Assets.xcassets */,
 				20E3E2D6265E2639004BDFF6 /* Main.storyboard */,
 				208D9FE8266DFD4A00FC2067 /* AddRate.swift */,
@@ -138,6 +126,7 @@
 				20F88AC6266CD8820015B42E /* PlaceInfoTableViewController.swift */,
 				20E3E2E4265E355D004BDFF6 /* MapViewController.swift */,
 				20E3E2E6265E374D004BDFF6 /* PlaceTableViewController.swift */,
+				202E47AA2678ED3D00E43792 /* PlaceViewController.swift */,
 				20E3E2E8265E3E62004BDFF6 /* SettingViewController.swift */,
 				20E3E2EA265E3F0A004BDFF6 /* SearchViewController.swift */,
 				207E4F852660985D00AC0A6E /* AddPlaceTableViewController.swift */,
@@ -175,6 +164,7 @@
 				20E3E2CA265E2639004BDFF6 /* Frameworks */,
 				20E3E2CB265E2639004BDFF6 /* Resources */,
 				4B744B39787E68140398E8B7 /* [CP] Embed Pods Frameworks */,
+				2BF337A84C9AEBF8AF061690 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -257,6 +247,23 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
+		2BF337A84C9AEBF8AF061690 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-WeThereProject/Pods-WeThereProject-resources-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-WeThereProject/Pods-WeThereProject-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-WeThereProject/Pods-WeThereProject-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 		4B744B39787E68140398E8B7 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -281,21 +288,20 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2067AA1A266B801A00F7B891 /* ImageStorage.swift in Sources */,
 				2020E4E52667BF570091D569 /* PlaceFirestore.swift in Sources */,
 				20E3E2EB265E3F0A004BDFF6 /* SearchViewController.swift in Sources */,
 				20E3E2E9265E3E62004BDFF6 /* SettingViewController.swift in Sources */,
-				2067AA1D266B82F100F7B891 /* PlaceImage.swift in Sources */,
 				2020E4E72667C2FC0091D569 /* PlaceService.swift in Sources */,
 				20F88AC7266CD8820015B42E /* PlaceInfoTableViewController.swift in Sources */,
 				20E3E2D1265E2639004BDFF6 /* AppDelegate.swift in Sources */,
+				2044A8352671E989002ABBD8 /* TagTextView.swift in Sources */,
 				20E3E2E7265E374D004BDFF6 /* PlaceTableViewController.swift in Sources */,
 				20E3E2D3265E2639004BDFF6 /* SceneDelegate.swift in Sources */,
 				20E3E2E5265E355D004BDFF6 /* MapViewController.swift in Sources */,
+				202E47AB2678ED3D00E43792 /* PlaceViewController.swift in Sources */,
 				2020E4E32667BE600091D569 /* Place.swift in Sources */,
 				208D9FE9266DFD4A00FC2067 /* AddRate.swift in Sources */,
 				207E4F862660985D00AC0A6E /* AddPlaceTableViewController.swift in Sources */,
-				2067AA1F266B834800F7B891 /* ImageService.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -445,8 +451,9 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 28V3YA4B43;
+				ENABLE_BITCODE = YES;
 				INFOPLIST_FILE = WeThereProject/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.1;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -466,12 +473,14 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 28V3YA4B43;
+				ENABLE_BITCODE = YES;
 				INFOPLIST_FILE = WeThereProject/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.1;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				ONLY_ACTIVE_ARCH = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = project.WeThereProject;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;

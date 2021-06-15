@@ -15,7 +15,7 @@ let storage = Storage.storage()
 
 class PlaceTableViewController: UITableViewController {
     var newImage = true
-    
+
     var places = [PlaceData]() {
         didSet {
             DispatchQueue.main.async {
@@ -67,9 +67,7 @@ class PlaceTableViewController: UITableViewController {
         tableView.refreshControl = UIRefreshControl()    //새로고침
         tableView.refreshControl?.addTarget(self, action: #selector(pullToRefresh(_:)), for: .valueChanged)
         
-        
         loadPlaceData()
-    //    loadImage()
     }
 
 
@@ -80,14 +78,6 @@ class PlaceTableViewController: UITableViewController {
         }
     }
     
-    /*
-    func loadImage(){
-        iservice = ImageService()
-        iservice?.getImage(imageName: places){ images in
-            self.allImages = images
-        }
-    }*/
-    
     @objc func pullToRefresh(_ refresh: UIRefreshControl){
         tableView.reloadData()
         refresh.endRefreshing()
@@ -96,13 +86,15 @@ class PlaceTableViewController: UITableViewController {
     func getImage(imageName: String, completion: @escaping (UIImage?) -> ()) {
      //   let islandRef = storage.reference().child(imageName)
      //   islandRef.getData(maxSize: 1 * 1024 * 1024) { data, error in
-        
             let fileUrl = "gs://wethere-2935d.appspot.com/" + imageName
             storage.reference(forURL: fileUrl).downloadURL { url, error in
                 let data = NSData(contentsOf: url!)
                 let downloadImg = UIImage(data: data! as Data)
             if error == nil {
                 completion(downloadImg)
+                DispatchQueue.main.async {
+                    self.tableView.reloadData()
+                }
                 print("image download!!!" + imageName)
             } else {
                 completion(nil)
@@ -147,6 +139,7 @@ class PlaceTableViewController: UITableViewController {
     //    cell.imageView?.image = placeImages[(indexPath as NSIndexPath).row]
         
         
+        
         cell.tag += 1
         let tag = cell.tag
         
@@ -157,8 +150,9 @@ class PlaceTableViewController: UITableViewController {
                         DispatchQueue.main.async {
                             placeImages.updateValue(photo!, forKey: self.places[indexPath.row].name!)
                             cell.imageView?.image = photo
+                            
                         }
-                            print(cell.tag)
+                    //        print(cell.tag)
                         }
                     }
                 self.newImage = false
@@ -167,10 +161,10 @@ class PlaceTableViewController: UITableViewController {
             cell.imageView?.image = placeImages[places[indexPath.row].name!]
         }
         
-    //   cell.imageView?.image = images[indexPath.row].iamge
         cell.textLabel?.text = places[indexPath.row].name
     //    cell.textLabel?.font = .systemFont(ofSize: 20, weight: .medium)
         cell.detailTextLabel?.text = places[indexPath.row].position
+        
         
         return cell
     }

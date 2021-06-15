@@ -13,7 +13,6 @@ extension PlaceData {
         var places = [PlaceData]()
     
         for document in documents {
-
             let date = document["date"] as! Timestamp
             
             places.append(PlaceData(name: document["name"] as? String ?? "",
@@ -23,8 +22,6 @@ extension PlaceData {
                                     category: document["category"] as? String ?? "",
                                     rate: document["rate"] as? String ?? "", coment: document["coment"] as? String ?? ""))
         }
-        
-        
         return places
     }
 }
