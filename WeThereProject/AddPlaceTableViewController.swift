@@ -9,6 +9,7 @@ import UIKit
 import MobileCoreServices
 import FirebaseFirestore
 import FirebaseStorage
+import GooglePlaces
 
 protocol EditDelegate {
     func didEditPlace(_ controller: AddPlaceTableViewController, data: PlaceData, image: UIImage)
@@ -19,7 +20,7 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
     
     @IBOutlet var placeImageView: UIImageView!
     @IBOutlet var tfPlaceName: UITextField!
-    @IBOutlet var tfPlacePosition: UITextField!
+    @IBOutlet var tvPlacePosition: UITextView!
     @IBOutlet var tfCategory: UITextField!
     @IBOutlet var swVisit: UISwitch!
     @IBOutlet var pkDate: UIDatePicker!
@@ -38,10 +39,12 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
     let imagePicker: UIImagePickerController! = UIImagePickerController()
     var selectedImage: UIImage!
     let PICKER_VIEW_COLUMN = 1
-    
+    let searchController = GMSAutocompleteViewController()
+  //  let database = Firestore.firestore()
+    var category = [String]()
     var rateButtons = [UIButton]()
     let rate = AddRate()
-    var fromInfo = false
+    var dataFromInfo = false
     var receiveImage : UIImage?
     var reName = ""
     var rePositon = ""
@@ -52,14 +55,11 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
     var reComent = ""
     var editData: PlaceData?
     var delegate: EditDelegate?
-//    let categoryData = CategoryData()
-    var category = [String]() // = ["음식점", "카페", "술집", "액티비티", "야외"]
-    let database = Firestore.firestore()
+    var geoPoint: GeoPoint?
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        
+    
         let categoryPicker = UIPickerView()
         let pickerToolbar = UIToolbar()
         let btnPickerDone = UIBarButtonItem()
@@ -79,22 +79,26 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
         
         categoryPicker.delegate = self
         self.tfCategory.inputView = categoryPicker
- 
-        swVisit.isOn = false
-        
+                
         rateButtons.append(btnRate1)
         rateButtons.append(btnRate2)
         rateButtons.append(btnRate3)
         rateButtons.append(btnRate4)
         rateButtons.append(btnRate5)
         
+        swVisit.isOn = false
+        
         txvComent.delegate = self
+        tvPlacePosition.delegate = self
         txvComent.text = "코멘트를 입력하세요."
+        tvPlacePosition.text = "위치를 입력하세요."
+        tvPlacePosition.textColor = UIColor.lightGray
         txvComent.textColor = UIColor.lightGray
         
-        if fromInfo {
-            set()
+        if dataFromInfo {
+            setPlaceInfo()
             txvComent.textColor = UIColor.black
+            tvPlacePosition.textColor = UIColor.black
         }
         
         // Uncomment the following line to preserve selection between presentations
@@ -105,7 +109,7 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
     }
     
     func loadCategory(){
-        let docRef = database.collection("category").document("category")
+        let docRef = db.collection("category").document("category")
         docRef.getDocument { (document, error) in
             if let document = document, document.exists {
                 self.category = (document.get("items") as? [String])!
@@ -115,7 +119,7 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
         }
     }
     
-    func setInfo(data: PlaceData, image: UIImage){
+    func setPlaceDataFromInfo(data: PlaceData, image: UIImage){
         receiveImage = image
         selectedImage = image
         reName = data.name!
@@ -125,16 +129,16 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
         reVisit = data.visit!
         reRate = data.rate!
         reComent = data.coment!
-        fromInfo = true
+        dataFromInfo = true
         
         editData = data
     }
     
-    func set(){
+    func setPlaceInfo(){
         placeImageView.image = receiveImage
         
         tfPlaceName.text = reName as String
-        tfPlacePosition.text = rePositon
+        tvPlacePosition.text = rePositon
         tfCategory.text = reCategory
         swVisit.isOn = reVisit
         pkDate.date = reDate!
@@ -151,7 +155,7 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
                 btn.isEnabled = false
                 btn.setImage(UIImage(systemName: "star"), for: .normal)
             }
-            lblRate.text = "0"
+            lblRate.text = "0.0"
             lblVisit.text = "가보고 싶어요!"
         }
         rate.fill(buttons: rateButtons, rate: NSString(string: reRate).floatValue)
@@ -183,7 +187,6 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
         placeImages.updateValue(selectedImage, forKey: tfPlaceName.text!)
         
         tfPlaceName.placeholder = "이름을 입력하세요."
-        tfPlacePosition.placeholder = "위치를 입력하세요."
         
         uploadData()
         
@@ -195,7 +198,7 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
         
         if delegate != nil{
             editData?.name = tfPlaceName.text
-            editData?.position = tfPlacePosition.text
+            editData?.position = tvPlacePosition.text
             editData?.category = tfCategory.text
             editData?.visit = swVisit.isOn
             editData?.date = pkDate.date
@@ -219,13 +222,14 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
         }
         let docData: [String: Any] = [
             "name": tfPlaceName.text!,
-            "position": tfPlacePosition.text!,
+            "position": tvPlacePosition.text!,
             "date": pkDate.date,  //Timestamp(date: Date()),
             "visit": swVisit.isOn,
             "tag": ["태그1", "태그2", "태그3"],
             "rate": lblRate.text!,
             "coment": txvComent.text!,
-            "category": tfCategory.text!
+            "category": tfCategory.text!,
+            "geopoint": geoPoint!
         ]
 
         db.collection("users").document(tfPlaceName.text!).setData(docData) { err in
@@ -278,8 +282,9 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
                 btn.isEnabled = false
                 btn.setImage(UIImage(systemName: "star"), for: .normal)
             }
-            lblRate.text = "0"
+            lblRate.text = "0.0"
             lblVisit.text = "가보고 싶어요!"
+            
         }
     }
     
@@ -301,6 +306,11 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
         }
     }
     
+    @IBAction func searchPosition(_ sender: UIButton){
+        //구글 자동완성 뷰컨트롤러 생성
+        searchController.delegate = self
+        present(searchController, animated: true, completion: nil)
+    }
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         selectedImage = info[UIImagePickerController.InfoKey.originalImage] as? UIImage //사진을 가져와 라이브러리에 저장
@@ -339,6 +349,8 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
     }
     
 
+
+    
     /*
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath)
@@ -395,3 +407,27 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
     */
 
 }
+
+
+extension AddPlaceTableViewController: GMSAutocompleteViewControllerDelegate { //해당 뷰컨트롤러를 익스텐션으로 딜리게이트를 달아준다.
+    func viewController(_ viewController: GMSAutocompleteViewController, didAutocompleteWith place: GMSPlace) {
+         print("Place name: \(String(describing: place.name))") //셀탭한 글씨출력
+        print("Place address: \(String(describing: place.formattedAddress))")
+        print("Place latitude: \(String(describing: place.coordinate.latitude))")
+        print("Place longitude: \(String(describing: place.coordinate.longitude))")
+        self.tvPlacePosition.text = place.formattedAddress
+        self.geoPoint = GeoPoint(latitude: place.coordinate.latitude, longitude: place.coordinate.longitude)
+        dismiss(animated: true, completion: nil) //화면꺼지게
+        
+    } //원하는 셀 탭했을 때 꺼지게
+    
+    func viewController(_ viewController: GMSAutocompleteViewController, didFailAutocompleteWithError error: Error) {
+        print(error.localizedDescription)//에러났을 때 출력
+    } //실패했을 때
+    
+    func wasCancelled(_ viewController: GMSAutocompleteViewController) {
+        dismiss(animated: true, completion: nil) //화면 꺼지게
+    } //캔슬버튼 눌렀을 때 화면 꺼지게
+    
+}
+

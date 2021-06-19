@@ -18,6 +18,7 @@ class PlaceService {
                 handler([])
             } else {
                 handler(PlaceData.build(from: querySnapshot?.documents ?? []))
+                print("읽어요~~~~~~~~")
             }
         }
     }

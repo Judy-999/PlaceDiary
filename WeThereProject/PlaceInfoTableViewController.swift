@@ -112,7 +112,7 @@ class PlaceInfoTableViewController: UITableViewController, EditDelegate {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if(segue.identifier == "editPlace"){
             let addPlaceViewController = segue.destination as! AddPlaceTableViewController
-            addPlaceViewController.setInfo(data: editData!, image: receiveImage!)
+            addPlaceViewController.setPlaceDataFromInfo(data: editData!, image: receiveImage!)
             addPlaceViewController.delegate = self
         }
     }

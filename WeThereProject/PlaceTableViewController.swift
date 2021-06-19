@@ -10,12 +10,13 @@ import FirebaseFirestore
 import FirebaseStorage
 
 var placeImages = [String : UIImage]()
-let storage = Storage.storage()
-
 
 class PlaceTableViewController: UITableViewController {
     var newImage = true
-
+    var gotodata = true
+    let storage = Storage.storage()
+    let db: Firestore = Firestore.firestore()
+    
     var places = [PlaceData]() {
         didSet {
             DispatchQueue.main.async {
@@ -32,26 +33,7 @@ class PlaceTableViewController: UITableViewController {
             }
         }
     }
-    /*
-    var images = [PlaceImage](){
-        didSet{
-            DispatchQueue.main.async {
-                self.tableView.reloadData()
-            }
-        }
-    }
     
-    private var iservice: ImageService?
-        private var allImages = [PlaceImage](){
-            didSet{
-            DispatchQueue.main.async {
-                self.images = self.allImages
-            }
-        }
-    }*/
-    
-    let db: Firestore = Firestore.firestore()
-
     @IBOutlet var placeTableView: UITableView!
     
     
@@ -67,6 +49,7 @@ class PlaceTableViewController: UITableViewController {
         tableView.refreshControl = UIRefreshControl()    //새로고침
         tableView.refreshControl?.addTarget(self, action: #selector(pullToRefresh(_:)), for: .valueChanged)
         
+       
         loadPlaceData()
     }
 
@@ -77,6 +60,14 @@ class PlaceTableViewController: UITableViewController {
             self.allPlaces = places
         }
     }
+    
+    
+    func godata(){
+        let vc = self.tabBarController!.viewControllers![1] as! MapViewController
+        vc.places = places
+        print(vc.places[0].name! + "에헤에헹헤에ㅔ헹")
+    }
+    
     
     @objc func pullToRefresh(_ refresh: UIRefreshControl){
         tableView.reloadData()
@@ -106,6 +97,15 @@ class PlaceTableViewController: UITableViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         tableView.reloadData()  //목록 재로딩
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+  /*      let tabbar = tabBarController as! TabBarBaseController
+        tabbar.placeList = places
+        print("dddd" + places[0].name!)
+        print(tabbar.placeList[0].name! + "오아ㅘ외외외욍~~~~~~~")
+        */
+       
     }
     
     override func didReceiveMemoryWarning() {
@@ -139,6 +139,10 @@ class PlaceTableViewController: UITableViewController {
     //    cell.imageView?.image = placeImages[(indexPath as NSIndexPath).row]
         
         
+        if gotodata{
+            godata()
+            gotodata = false
+        }
         
         cell.tag += 1
         let tag = cell.tag
@@ -157,6 +161,7 @@ class PlaceTableViewController: UITableViewController {
                     }
                 self.newImage = false
                 }
+            
         }else{
             cell.imageView?.image = placeImages[places[indexPath.row].name!]
         }
@@ -255,7 +260,6 @@ class PlaceTableViewController: UITableViewController {
             let indexPath = self.placeTableView.indexPath(for: cell)
             let infoView = segue.destination as! PlaceInfoTableViewController
             infoView.getInfo(places[(indexPath! as NSIndexPath).row], image: placeImages[places[(indexPath! as NSIndexPath).row].name!]!)
-          //  recievePlace(places[(indexPath! as NSIndexPath).row].name!, subname: places[(indexPath! as NSIndexPath).row].position!, image: placeImages[(indexPath! as NSIndexPath).row]!)
         }
     }
     

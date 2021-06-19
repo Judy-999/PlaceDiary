@@ -5,6 +5,7 @@
 //  Created by 김주영 on 2021/06/02.
 //
 import Foundation
+import Firebase
 
 struct PlaceData {
     var name: String?
@@ -15,6 +16,7 @@ struct PlaceData {
     var category : String?
     var rate: String?
     var coment: String?
+    var geopoint: GeoPoint?
     
   /*  init?(dictionary: [String:Any]){
         self.name = dictionary["name"] as? String
