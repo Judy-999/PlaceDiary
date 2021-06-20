@@ -13,7 +13,6 @@ var placeImages = [String : UIImage]()
 
 class PlaceTableViewController: UITableViewController {
     var newImage = true
-    var gotodata = true
     let storage = Storage.storage()
     let db: Firestore = Firestore.firestore()
     
@@ -64,7 +63,7 @@ class PlaceTableViewController: UITableViewController {
     
     func godata(){
         let vc = self.tabBarController!.viewControllers![1] as! MapViewController
-        vc.places = places
+        vc.getPlace(places)
         print(vc.places[0].name! + "에헤에헹헤에ㅔ헹")
     }
     
@@ -92,20 +91,13 @@ class PlaceTableViewController: UITableViewController {
             }
         }//.resume()
     }
-   
-    
     
     override func viewWillAppear(_ animated: Bool) {
         tableView.reloadData()  //목록 재로딩
     }
     
     override func viewDidDisappear(_ animated: Bool) {
-  /*      let tabbar = tabBarController as! TabBarBaseController
-        tabbar.placeList = places
-        print("dddd" + places[0].name!)
-        print(tabbar.placeList[0].name! + "오아ㅘ외외외욍~~~~~~~")
-        */
-       
+       godata()
     }
     
     override func didReceiveMemoryWarning() {
@@ -137,13 +129,7 @@ class PlaceTableViewController: UITableViewController {
     //    cell.textLabel?.text = placeTitles[(indexPath as NSIndexPath).row]
     //    cell.imageView?.image = places[indexPath.row].image
     //    cell.imageView?.image = placeImages[(indexPath as NSIndexPath).row]
-        
-        
-        if gotodata{
-            godata()
-            gotodata = false
-        }
-        
+    
         cell.tag += 1
         let tag = cell.tag
         
@@ -173,6 +159,7 @@ class PlaceTableViewController: UITableViewController {
         
         return cell
     }
+    
     
 
 

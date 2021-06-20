@@ -416,6 +416,7 @@ extension AddPlaceTableViewController: GMSAutocompleteViewControllerDelegate { /
         print("Place latitude: \(String(describing: place.coordinate.latitude))")
         print("Place longitude: \(String(describing: place.coordinate.longitude))")
         self.tvPlacePosition.text = place.formattedAddress
+        self.tvPlacePosition.textColor = UIColor.black
         self.geoPoint = GeoPoint(latitude: place.coordinate.latitude, longitude: place.coordinate.longitude)
         dismiss(animated: true, completion: nil) //화면꺼지게
         

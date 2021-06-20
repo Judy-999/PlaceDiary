@@ -14,6 +14,8 @@
 		2020E4E72667C2FC0091D569 /* PlaceService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2020E4E62667C2FC0091D569 /* PlaceService.swift */; };
 		202E47AB2678ED3D00E43792 /* PlaceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 202E47AA2678ED3D00E43792 /* PlaceViewController.swift */; };
 		2044A8352671E989002ABBD8 /* TagTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2044A8342671E989002ABBD8 /* TagTextView.swift */; };
+		204CEEB7267F0A3F000D395F /* CategoryEditController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 204CEEB6267F0A3F000D395F /* CategoryEditController.swift */; };
+		204CEEB9267F0BD1000D395F /* SettingTableController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 204CEEB8267F0BD1000D395F /* SettingTableController.swift */; };
 		207E4F862660985D00AC0A6E /* AddPlaceTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 207E4F852660985D00AC0A6E /* AddPlaceTableViewController.swift */; };
 		20841264265F28A4006FE0EF /* example.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = 20841263265F28A4006FE0EF /* example.jpeg */; };
 		208D9FE9266DFD4A00FC2067 /* AddRate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 208D9FE8266DFD4A00FC2067 /* AddRate.swift */; };
@@ -26,10 +28,8 @@
 		20E3E2DD265E263A004BDFF6 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 20E3E2DB265E263A004BDFF6 /* LaunchScreen.storyboard */; };
 		20E3E2E5265E355D004BDFF6 /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20E3E2E4265E355D004BDFF6 /* MapViewController.swift */; };
 		20E3E2E7265E374D004BDFF6 /* PlaceTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20E3E2E6265E374D004BDFF6 /* PlaceTableViewController.swift */; };
-		20E3E2E9265E3E62004BDFF6 /* SettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20E3E2E8265E3E62004BDFF6 /* SettingViewController.swift */; };
 		20E3E2EB265E3F0A004BDFF6 /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20E3E2EA265E3F0A004BDFF6 /* SearchViewController.swift */; };
 		20F88AC7266CD8820015B42E /* PlaceInfoTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20F88AC6266CD8820015B42E /* PlaceInfoTableViewController.swift */; };
-		20FFDC28267DD0B700A231E2 /* TabBarBaseController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20FFDC27267DD0B700A231E2 /* TabBarBaseController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -39,6 +39,8 @@
 		2020E4E62667C2FC0091D569 /* PlaceService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceService.swift; sourceTree = "<group>"; };
 		202E47AA2678ED3D00E43792 /* PlaceViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceViewController.swift; sourceTree = "<group>"; };
 		2044A8342671E989002ABBD8 /* TagTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagTextView.swift; sourceTree = "<group>"; };
+		204CEEB6267F0A3F000D395F /* CategoryEditController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryEditController.swift; sourceTree = "<group>"; };
+		204CEEB8267F0BD1000D395F /* SettingTableController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingTableController.swift; sourceTree = "<group>"; };
 		207E4F852660985D00AC0A6E /* AddPlaceTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddPlaceTableViewController.swift; sourceTree = "<group>"; };
 		20841263265F28A4006FE0EF /* example.jpeg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = example.jpeg; sourceTree = "<group>"; };
 		208D9FE8266DFD4A00FC2067 /* AddRate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddRate.swift; sourceTree = "<group>"; };
@@ -53,10 +55,8 @@
 		20E3E2DE265E263A004BDFF6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		20E3E2E4265E355D004BDFF6 /* MapViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewController.swift; sourceTree = "<group>"; };
 		20E3E2E6265E374D004BDFF6 /* PlaceTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceTableViewController.swift; sourceTree = "<group>"; };
-		20E3E2E8265E3E62004BDFF6 /* SettingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingViewController.swift; sourceTree = "<group>"; };
 		20E3E2EA265E3F0A004BDFF6 /* SearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
 		20F88AC6266CD8820015B42E /* PlaceInfoTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceInfoTableViewController.swift; sourceTree = "<group>"; };
-		20FFDC27267DD0B700A231E2 /* TabBarBaseController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarBaseController.swift; sourceTree = "<group>"; };
 		564B9711581E7EB1F841B0E7 /* Pods-WeThereProject.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WeThereProject.release.xcconfig"; path = "Target Support Files/Pods-WeThereProject/Pods-WeThereProject.release.xcconfig"; sourceTree = "<group>"; };
 		693FBFB748967DEC769D88F9 /* Pods-WeThereProject.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WeThereProject.debug.xcconfig"; path = "Target Support Files/Pods-WeThereProject/Pods-WeThereProject.debug.xcconfig"; sourceTree = "<group>"; };
 		AFAC6B7ACF40C6C09FA85A3A /* Pods_WeThereProject.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_WeThereProject.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -123,27 +123,19 @@
 				20E3E2D9265E263A004BDFF6 /* Assets.xcassets */,
 				20E3E2D6265E2639004BDFF6 /* Main.storyboard */,
 				20E3E2DB265E263A004BDFF6 /* LaunchScreen.storyboard */,
+				204CEEB6267F0A3F000D395F /* CategoryEditController.swift */,
 				20E3E2DE265E263A004BDFF6 /* Info.plist */,
 				20F88AC6266CD8820015B42E /* PlaceInfoTableViewController.swift */,
-				20FFDC29267DD0D100A231E2 /* Model */,
+				208D9FE8266DFD4A00FC2067 /* AddRate.swift */,
+				204CEEB8267F0BD1000D395F /* SettingTableController.swift */,
 				20E3E2E4265E355D004BDFF6 /* MapViewController.swift */,
 				20E3E2E6265E374D004BDFF6 /* PlaceTableViewController.swift */,
 				202E47AA2678ED3D00E43792 /* PlaceViewController.swift */,
-				20E3E2E8265E3E62004BDFF6 /* SettingViewController.swift */,
 				20E3E2EA265E3F0A004BDFF6 /* SearchViewController.swift */,
 				207E4F852660985D00AC0A6E /* AddPlaceTableViewController.swift */,
 				20105EFA2664DA35007AA233 /* GoogleService-Info.plist */,
 			);
 			path = WeThereProject;
-			sourceTree = "<group>";
-		};
-		20FFDC29267DD0D100A231E2 /* Model */ = {
-			isa = PBXGroup;
-			children = (
-				20FFDC27267DD0B700A231E2 /* TabBarBaseController.swift */,
-				208D9FE8266DFD4A00FC2067 /* AddRate.swift */,
-			);
-			path = Model;
 			sourceTree = "<group>";
 		};
 		592FA594008DC6837D5E2836 /* Frameworks */ = {
@@ -299,17 +291,17 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				20FFDC28267DD0B700A231E2 /* TabBarBaseController.swift in Sources */,
 				2020E4E52667BF570091D569 /* PlaceFirestore.swift in Sources */,
 				20E3E2EB265E3F0A004BDFF6 /* SearchViewController.swift in Sources */,
-				20E3E2E9265E3E62004BDFF6 /* SettingViewController.swift in Sources */,
 				2020E4E72667C2FC0091D569 /* PlaceService.swift in Sources */,
 				20F88AC7266CD8820015B42E /* PlaceInfoTableViewController.swift in Sources */,
 				20E3E2D1265E2639004BDFF6 /* AppDelegate.swift in Sources */,
+				204CEEB7267F0A3F000D395F /* CategoryEditController.swift in Sources */,
 				2044A8352671E989002ABBD8 /* TagTextView.swift in Sources */,
 				20E3E2E7265E374D004BDFF6 /* PlaceTableViewController.swift in Sources */,
 				20E3E2D3265E2639004BDFF6 /* SceneDelegate.swift in Sources */,
 				20E3E2E5265E355D004BDFF6 /* MapViewController.swift in Sources */,
+				204CEEB9267F0BD1000D395F /* SettingTableController.swift in Sources */,
 				202E47AB2678ED3D00E43792 /* PlaceViewController.swift in Sources */,
 				2020E4E32667BE600091D569 /* Place.swift in Sources */,
 				208D9FE9266DFD4A00FC2067 /* AddRate.swift in Sources */,
