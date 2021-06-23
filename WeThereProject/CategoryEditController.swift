@@ -35,7 +35,6 @@ class CategoryEditController: UITableViewController {
         docRef.getDocument { (document, error) in
             if let document = document, document.exists {
                 self.category = (document.get("items") as? [String])!
-              //  self.tableView.reloadData()
                 print("reload goTdhdh")
             } else {
                 print("Document does not exist")
@@ -68,13 +67,13 @@ class CategoryEditController: UITableViewController {
         let addAlert = UIAlertController(title: "카테고리 추가", message: "새로운 카테고리를 입력하세요.", preferredStyle: .alert)
         addAlert.addTextField()
         let alertOk = UIAlertAction(title: "추가", style: .default) { (alertOk) in
-            self.uploadCategory((addAlert.textFields?[0].text)!, add: true)
-            self.loadCategory()
-            self.tableView.reloadData()
+            if addAlert.textFields?[0].text != nil{
+                self.uploadCategory((addAlert.textFields?[0].text)!, add: true)
+                self.loadCategory()
+                self.tableView.reloadData()
+            }
         }
-        let alertCancle = UIAlertAction(title: "취소", style: .default) { (alertCancel) in
-        
-        }
+        let alertCancle = UIAlertAction(title: "취소", style: .default) { (alertCancel) in}
         addAlert.addAction(alertCancle)
         addAlert.addAction(alertOk)
         self.present(addAlert, animated: true, completion: nil)

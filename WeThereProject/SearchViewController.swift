@@ -10,13 +10,36 @@ import GooglePlaces
 
 class SearchViewController: UIViewController {
 
+    @IBOutlet weak var tableView: UITableView!
+
+    
+    var placeName = ["가나다", "꼼마", "사랑", "블랑제메종", "망원공원"]
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-          let controller = GMSAutocompleteViewController() //구글 자동완성 뷰컨트롤러 생성
-          controller.delegate = self //딜리게이트
-          present(controller, animated: true, completion: nil) //보여주기
-          }
+        
+        self.setSearchController()
+        self.tableView.delegate = self
+        self.tableView.dataSource = self
+    }
           
+    func setData(_ data: [PlaceData]){
+        for place in data{
+            placeName.append(place.name!)
+        }
+    }
+    
+    func setSearchController(){
+        let searchController = UISearchController(searchResultsController: nil)
+        searchController.searchBar.placeholder = "키워드 검색 ex. 이름, 내용..."
+        searchController.hidesNavigationBarDuringPresentation = false
+        
+        self.navigationItem.searchController = searchController
+        self.navigationItem.title = "검색"
+        self.navigationItem.hidesSearchBarWhenScrolling = false
+    }
+
+    
     /*
     // MARK: - Navigation
 
@@ -29,21 +52,18 @@ class SearchViewController: UIViewController {
 
 }
 
-extension SearchViewController: GMSAutocompleteViewControllerDelegate { //해당 뷰컨트롤러를 익스텐션으로 딜리게이트를 달아준다.
-    func viewController(_ viewController: GMSAutocompleteViewController, didAutocompleteWith place: GMSPlace) {
-         print("Place name: \(String(describing: place.name))") //셀탭한 글씨출력
-        print("Place address: \(String(describing: place.formattedAddress))")
-        print("Place latitude: \(String(describing: place.coordinate.latitude))")
-        print("Place longitude: \(String(describing: place.coordinate.longitude))")
-        dismiss(animated: true, completion: nil) //화면꺼지게
-    } //원하는 셀 탭했을 때 꺼지게
+
+extension SearchViewController: UITableViewDelegate, UITableViewDataSource{
     
-    func viewController(_ viewController: GMSAutocompleteViewController, didFailAutocompleteWithError error: Error) {
-        print(error.localizedDescription)//에러났을 때 출력
-    } //실패했을 때
     
-    func wasCancelled(_ viewController: GMSAutocompleteViewController) {
-        dismiss(animated: true, completion: nil) //화면 꺼지게
-    } //캔슬버튼 눌렀을 때 화면 꺼지게
+    public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return self.placeName.count
+    }
     
+    public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = UITableViewCell()
+        cell.textLabel?.text = placeName[(indexPath as NSIndexPath).row]
+        return cell
+    }
 }
+

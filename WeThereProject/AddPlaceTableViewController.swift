@@ -54,7 +54,7 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
     var reRate = ""
     var reComent = ""
     var editData: PlaceData?
-    var delegate: EditDelegate?
+    var editDelegate: EditDelegate?
     var geoPoint: GeoPoint?
     
     override func viewDidLoad() {
@@ -161,10 +161,10 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
         rate.fill(buttons: rateButtons, rate: NSString(string: reRate).floatValue)
     }
     
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+  /*  override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         let PlaceTableViewController = segue.destination as! PlaceTableViewController
         PlaceTableViewController.newImage = true
-    }
+    }*/
     
     
     @objc func pickerDone(){
@@ -196,7 +196,9 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
             uploadImage(tfPlaceName.text!, image: selectedImage)
         }
         
-        if delegate != nil{
+        
+        
+        if editDelegate != nil{
             editData?.name = tfPlaceName.text
             editData?.position = tvPlacePosition.text
             editData?.category = tfCategory.text
@@ -205,7 +207,7 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
             editData?.coment = txvComent.text
             editData?.rate = lblRate.text
 
-            delegate?.didEditPlace(self, data: editData!, image: selectedImage)
+            editDelegate?.didEditPlace(self, data: editData!, image: selectedImage)
         }
         _ = navigationController?.popViewController(animated: true)
     }

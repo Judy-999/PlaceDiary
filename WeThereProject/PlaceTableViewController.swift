@@ -63,8 +63,13 @@ class PlaceTableViewController: UITableViewController {
     
     func godata(){
         let vc = self.tabBarController!.viewControllers![1] as! MapViewController
+        let nav = self.tabBarController?.viewControllers![3] as! UINavigationController
+        let sc = nav.topViewController as! SearchTableViewController
+      //  let sc = self.tabBarController!.viewControllers![3] as! SearchTableViewController
+        
         vc.getPlace(places)
-        print(vc.places[0].name! + "에헤에헹헤에ㅔ헹")
+        sc.setData(places)
+        print(sc.places[0].name! + "데데ㅔ떼데데데ㅔㄷ")
     }
     
     
@@ -74,12 +79,10 @@ class PlaceTableViewController: UITableViewController {
     }
     
     func getImage(imageName: String, completion: @escaping (UIImage?) -> ()) {
-     //   let islandRef = storage.reference().child(imageName)
-     //   islandRef.getData(maxSize: 1 * 1024 * 1024) { data, error in
-            let fileUrl = "gs://wethere-2935d.appspot.com/" + imageName
-            storage.reference(forURL: fileUrl).downloadURL { url, error in
-                let data = NSData(contentsOf: url!)
-                let downloadImg = UIImage(data: data! as Data)
+        let fileUrl = "gs://wethere-2935d.appspot.com/" + imageName
+        storage.reference(forURL: fileUrl).downloadURL { url, error in
+            let data = NSData(contentsOf: url!)
+            let downloadImg = UIImage(data: data! as Data)
             if error == nil {
                 completion(downloadImg)
                 DispatchQueue.main.async {
@@ -94,7 +97,10 @@ class PlaceTableViewController: UITableViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         tableView.reloadData()  //목록 재로딩
+        print(String(newImage) + "새로운 이미지요")
     }
+    
+   
     
     override func viewDidDisappear(_ animated: Bool) {
        godata()

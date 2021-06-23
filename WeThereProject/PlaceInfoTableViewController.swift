@@ -113,7 +113,7 @@ class PlaceInfoTableViewController: UITableViewController, EditDelegate {
         if(segue.identifier == "editPlace"){
             let addPlaceViewController = segue.destination as! AddPlaceTableViewController
             addPlaceViewController.setPlaceDataFromInfo(data: editData!, image: receiveImage!)
-            addPlaceViewController.delegate = self
+            addPlaceViewController.editDelegate = self
         }
     }
     
