@@ -196,7 +196,7 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
             uploadImage(tfPlaceName.text!, image: selectedImage)
         }
         
-        
+        isUpdate = true
         
         if editDelegate != nil{
             editData?.name = tfPlaceName.text

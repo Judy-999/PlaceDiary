@@ -22,7 +22,6 @@ class PlaceInfoTableViewController: UITableViewController, EditDelegate {
     var rateBtn = [UIButton]()
     let fillRate = AddRate()
     var rateF : Float?
-    var delegate : EditDelegate?
     var editData : PlaceData?
     
     @IBOutlet var placeImg: UIImageView!
@@ -31,7 +30,6 @@ class PlaceInfoTableViewController: UITableViewController, EditDelegate {
     @IBOutlet var txtDate: UITextField!
     @IBOutlet var txtCategory: UITextField!
     @IBOutlet var swVisit: UISwitch!
-    @IBOutlet var txtRate: UITextField!
     @IBOutlet var lblRate: UILabel!
     @IBOutlet var txvComent: UITextView!
     @IBOutlet var btnRate1: UIButton!
@@ -99,7 +97,7 @@ class PlaceInfoTableViewController: UITableViewController, EditDelegate {
         txtCategory.text = reCategory
         swVisit.isOn = reVisit
         txvComent.text = reComent
-        txtRate.text = reRate + " 점"
+        lblRate.text = reRate + " 점"
         
         fillRate.fill(buttons: rateBtn, rate: NSString(string: reRate).floatValue)
     }
@@ -118,7 +116,7 @@ class PlaceInfoTableViewController: UITableViewController, EditDelegate {
     }
     
     @IBAction func clickRate(_ sender: UIButton){
-        txtRate.text = String(describing: fillRate.checkAttr(buttons: rateBtn, button: sender))
+        lblRate.text = String(describing: fillRate.checkAttr(buttons: rateBtn, button: sender))
     }
     // MARK: - Table view data source
 

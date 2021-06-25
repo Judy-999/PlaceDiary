@@ -11,24 +11,19 @@ import Firebase
 import GoogleMaps
 import GooglePlaces
 
-class MapViewController: UIViewController, CLLocationManagerDelegate {
+class MapViewController: UIViewController, CLLocationManagerDelegate, GMSMapViewDelegate {
+   
     var locationManager: CLLocationManager!
-
     var mapView: GMSMapView?
     var points = [GeoPoint]()
-    
     var places = [PlaceData]()
+    var placeTitle = ""
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        // 구글 지도 표시하기
-        // Do any additional setup after loading the view.
-        // Create a GMSCameraPosition that tells the map to display the
-        // coordinate 37.566508,126.977945 at zoom level 16.
-        
-        // 위, 경도 가져오기
        
+        
         locationManager = CLLocationManager()
         locationManager.delegate = self
         
@@ -45,6 +40,8 @@ class MapViewController: UIViewController, CLLocationManagerDelegate {
         let camera = GMSCameraPosition.camera(withLatitude: latitude, longitude: longitude, zoom: 12.0)
         mapView = GMSMapView.map(withFrame: self.view.frame, camera: camera)
     
+        mapView?.delegate = self
+        
         
   //      let camera = GMSCameraPosition.camera(withLatitude: 37.566508, longitude: 126.977945, zoom: 12.0)
   //      mapView = GMSMapView.map(withFrame: self.view.frame, camera: camera)
@@ -80,15 +77,63 @@ class MapViewController: UIViewController, CLLocationManagerDelegate {
         mark()
     }
     
-    /*
+    
+    func mapView(_ mapView: GMSMapView, didTapInfoWindowOf marker: GMSMarker) {
+        placeTitle = marker.title!
+        self.performSegue(withIdentifier: "sgMapInfo", sender: self)
+       /*
+        let storyboard : UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
+        let vc = storyboard.instantiateViewController(withIdentifier: "PlaceInfoView")
+        vc.modalPresentationStyle = .popover
+ //       vc.preferredContentSize = CGSize(width: 200, height: 100)
+     
+
+ 
+        
+      //  let popover: UIPopoverPresentationController = vc.popoverPresentationController!
+       // popover.barButtonItem = sender
+        
+        present(vc, animated: true, completion: nil)
+    */
+        print("마커눌림")
+    }
+    
+   /*
+    func mapView(_ mapView: GMSMapView, didTap marker: GMSMarker) -> Bool {
+            print("markerTapped")
+        let storyboard : UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
+        let vc = storyboard.instantiateViewController(withIdentifier: "MapInfoController")
+        vc.modalPresentationStyle = .popover
+      //  let popover: UIPopoverPresentationController = vc.popoverPresentationController!
+       // popover.barButtonItem = sender
+        present(vc, animated: true, completion: nil)
+            return true
+        }
+ */
+    
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         // Get the new view controller using segue.destination.
         // Pass the selected object to the new view controller.
+        if segue.identifier == "sgMapInfo"{
+          //  let storyboard : UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
+          //  let vc = storyboard.instantiateViewController(withIdentifier: "PlaceInfoView")
+          //  vc.modalPresentationStyle = .popover
+
+            let infoView = segue.destination as! PlaceInfoTableViewController
+            let i = places.first(where: {$0.name == placeTitle})
+            
+            infoView.getInfo(i!, image: placeImages[(i?.name!)!]!)
+          
+       //     present(vc, animated: true, completion: nil)
+            print((i?.name!)! as String)
+            print("세그요")
+        }
+        
     }
-    */
+  
 
 }
 

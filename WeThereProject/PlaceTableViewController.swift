@@ -10,6 +10,7 @@ import FirebaseFirestore
 import FirebaseStorage
 
 var placeImages = [String : UIImage]()
+var isUpdate = true
 
 class PlaceTableViewController: UITableViewController {
     var newImage = true
@@ -62,14 +63,16 @@ class PlaceTableViewController: UITableViewController {
     
     
     func godata(){
-        let vc = self.tabBarController!.viewControllers![1] as! MapViewController
-        let nav = self.tabBarController?.viewControllers![3] as! UINavigationController
-        let sc = nav.topViewController as! SearchTableViewController
-      //  let sc = self.tabBarController!.viewControllers![3] as! SearchTableViewController
-        
-        vc.getPlace(places)
-        sc.setData(places)
-        print(sc.places[0].name! + "데데ㅔ떼데데데ㅔㄷ")
+        if isUpdate{
+            let vc = self.tabBarController!.viewControllers![1] as! MapViewController
+            let nav = self.tabBarController?.viewControllers![3] as! UINavigationController
+            let sc = nav.topViewController as! SearchTableViewController
+          //  let sc = self.tabBarController!.viewControllers![3] as! SearchTableViewController
+            
+            vc.getPlace(places)
+            sc.setData(places)
+            isUpdate = false
+        }
     }
     
     
@@ -77,6 +80,7 @@ class PlaceTableViewController: UITableViewController {
         tableView.reloadData()
         refresh.endRefreshing()
     }
+    
     
     func getImage(imageName: String, completion: @escaping (UIImage?) -> ()) {
         let fileUrl = "gs://wethere-2935d.appspot.com/" + imageName
@@ -95,9 +99,10 @@ class PlaceTableViewController: UITableViewController {
         }//.resume()
     }
     
+    
+    
     override func viewWillAppear(_ animated: Bool) {
         tableView.reloadData()  //목록 재로딩
-        print(String(newImage) + "새로운 이미지요")
     }
     
    
@@ -146,14 +151,12 @@ class PlaceTableViewController: UITableViewController {
                         DispatchQueue.main.async {
                             placeImages.updateValue(photo!, forKey: self.places[indexPath.row].name!)
                             cell.imageView?.image = photo
-                            
                         }
                     //        print(cell.tag)
-                        }
                     }
-                self.newImage = false
                 }
-            
+                self.newImage = false
+            }
         }else{
             cell.imageView?.image = placeImages[places[indexPath.row].name!]
         }
