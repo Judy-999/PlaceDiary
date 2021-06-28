@@ -6,17 +6,36 @@
 //
 import Foundation
 import Firebase
+import UIKit
 
 struct PlaceData {
-    var name: String?
-    var position: String?
-    var date: Date?
-    var visit: Bool?
+    var name: String
+    var location: String
+    var date: Date
+    var visit: Bool
     var tag = [String]()
-    var category : String?
-    var rate: String?
-    var coment: String?
-    var geopoint: GeoPoint?
+    var category : String
+    var rate: String
+    var coment: String
+    var geopoint: GeoPoint
+    
+    /*
+    var image: UIImage?{
+        let fileUrl = "gs://wethere-2935d.appspot.com/" + name
+        var img: UIImage?
+        Storage.storage().reference(forURL: fileUrl).downloadURL { url, error in
+            let data = NSData(contentsOf: url!)
+            let downloadImg = UIImage(data: data! as Data)
+            if error == nil {
+                img = downloadImg!
+                print("image download 소큐소큐소큐" + name)
+            } else {
+                print("error")
+            }
+        }
+        return img
+    }
+    */
     
   /*  init?(dictionary: [String:Any]){
         self.name = dictionary["name"] as? String

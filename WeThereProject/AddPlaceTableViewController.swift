@@ -122,13 +122,13 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
     func setPlaceDataFromInfo(data: PlaceData, image: UIImage){
         receiveImage = image
         selectedImage = image
-        reName = data.name!
-        rePositon = data.position!
-        reDate = data.date!
-        reCategory = data.category!
-        reVisit = data.visit!
-        reRate = data.rate!
-        reComent = data.coment!
+        reName = data.name
+        rePositon = data.location
+        reDate = data.date
+        reCategory = data.category
+        reVisit = data.visit
+        reRate = data.rate
+        reComent = data.coment
         dataFromInfo = true
         
         editData = data
@@ -184,32 +184,42 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
     }
 
     @IBAction func btnAddDone(_ sender: UIButton){
-        placeImages.updateValue(selectedImage, forKey: tfPlaceName.text!)
-        
-        tfPlaceName.placeholder = "이름을 입력하세요."
-        
-        uploadData()
-        
-        if receiveImage == nil {
-            uploadImage(tfPlaceName.text!, image: selectedImage)
-        }else if receiveImage != selectedImage{
-            uploadImage(tfPlaceName.text!, image: selectedImage)
-        }
-        
-        isUpdate = true
-        
-        if editDelegate != nil{
-            editData?.name = tfPlaceName.text
-            editData?.position = tvPlacePosition.text
-            editData?.category = tfCategory.text
-            editData?.visit = swVisit.isOn
-            editData?.date = pkDate.date
-            editData?.coment = txvComent.text
-            editData?.rate = lblRate.text
+        if tfPlaceName.text == ""{
+            myAlert("필수 입력 미기재", message: "장소의 이름을 입력해주세요.")
+        }else if tvPlacePosition.text == "위치를 입력하세요."{
+            myAlert("필수 입력 미기재", message: "장소의 위치를 입력해주세요.")
+        }else if tfCategory.text == "" {
+            myAlert("필수 입력 미기재", message: "장소의 카테고리를 선택해주세요.")
+        }else{
+            placeImages.updateValue(selectedImage, forKey: tfPlaceName.text!)
+            tfPlaceName.placeholder = "이름을 입력하세요."
+            uploadData()
+            
+            if receiveImage == nil {
+                uploadImage(tfPlaceName.text!, image: selectedImage)
+            }else if receiveImage != selectedImage{
+                uploadImage(tfPlaceName.text!, image: selectedImage)
+            }
+            
+            isUpdate = true
+            
+            if txvComent.text == "코멘트를 입력하세요."{
+                txvComent.text = ""
+            }
+            
+            if editDelegate != nil{
+                editData?.name = tfPlaceName.text!
+                editData?.location = tvPlacePosition.text
+                editData?.category = tfCategory.text!
+                editData?.visit = swVisit.isOn
+                editData?.date = pkDate.date
+                editData?.coment = txvComent.text
+                editData?.rate = lblRate.text!
 
-            editDelegate?.didEditPlace(self, data: editData!, image: selectedImage)
+                editDelegate?.didEditPlace(self, data: editData!, image: selectedImage)
+            }
+            _ = navigationController?.popViewController(animated: true)
         }
-        _ = navigationController?.popViewController(animated: true)
     }
     
     func uploadData(){
@@ -419,6 +429,7 @@ extension AddPlaceTableViewController: GMSAutocompleteViewControllerDelegate { /
         print("Place longitude: \(String(describing: place.coordinate.longitude))")
         self.tvPlacePosition.text = place.formattedAddress
         self.tvPlacePosition.textColor = UIColor.black
+        self.tvPlacePosition.isEditable = true
         self.geoPoint = GeoPoint(latitude: place.coordinate.latitude, longitude: place.coordinate.longitude)
         dismiss(animated: true, completion: nil) //화면꺼지게
         

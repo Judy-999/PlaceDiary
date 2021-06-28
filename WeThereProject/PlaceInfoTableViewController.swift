@@ -56,8 +56,12 @@ class PlaceInfoTableViewController: UITableViewController, EditDelegate {
         rateBtn.append(btnRate5)
         
         setData()
+        
+        let tap = UITapGestureRecognizer(target: self, action: #selector(imageTapped))
+        placeImg.isUserInteractionEnabled = true
+        placeImg.addGestureRecognizer(tap)
+        
     }
-    
  
     func endEdit(){
         txtPlacename.isEnabled = false
@@ -76,17 +80,17 @@ class PlaceInfoTableViewController: UITableViewController, EditDelegate {
     func getInfo(_ data: PlaceData, image: UIImage){
         editData = data
         
-        reName = data.name!
-        rePositon = data.position!
+        reName = data.name
+        rePositon = data.location
         receiveImage = image
-        reCategory = data.category!
-        reVisit = data.visit!
-        reRate = data.rate!
-        reComent = data.coment!
+        reCategory = data.category
+        reVisit = data.visit
+        reRate = data.rate
+        reComent = data.coment
         
         let formatter = DateFormatter()
         formatter.dateFormat = "yyyy-MM-dd"
-        reDate = formatter.string(from: data.date!)
+        reDate = formatter.string(from: data.date)
     }
     
     func setData(){
@@ -107,17 +111,16 @@ class PlaceInfoTableViewController: UITableViewController, EditDelegate {
          setData()
     }
     
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if(segue.identifier == "editPlace"){
-            let addPlaceViewController = segue.destination as! AddPlaceTableViewController
-            addPlaceViewController.setPlaceDataFromInfo(data: editData!, image: receiveImage!)
-            addPlaceViewController.editDelegate = self
-        }
-    }
-    
     @IBAction func clickRate(_ sender: UIButton){
         lblRate.text = String(describing: fillRate.checkAttr(buttons: rateBtn, button: sender))
     }
+    
+    
+    @objc func imageTapped(_ sender: UITapGestureRecognizer) {
+        self.performSegue(withIdentifier: "sgShowImage", sender: self)
+    }
+    
+
     // MARK: - Table view data source
 
     override func numberOfSections(in tableView: UITableView) -> Int {
@@ -175,14 +178,19 @@ class PlaceInfoTableViewController: UITableViewController, EditDelegate {
     }
     */
 
-    /*
+    
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
+        if segue.identifier == "editPlace"{
+            let addPlaceViewController = segue.destination as! AddPlaceTableViewController
+            addPlaceViewController.setPlaceDataFromInfo(data: editData!, image: receiveImage!)
+            addPlaceViewController.editDelegate = self
+        }
+        if segue.identifier == "sgShowImage"{
+            let imageView = segue.destination as! ImageViewController
+            imageView.fullImage = placeImg.image
+        }
     }
-    */
-
 }

@@ -21,9 +21,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, GMSMapView
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-       
-        
+ 
         locationManager = CLLocationManager()
         locationManager.delegate = self
         
@@ -39,7 +37,9 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, GMSMapView
         let longitude = (coor?.longitude ?? 126.977945) as Double
         let camera = GMSCameraPosition.camera(withLatitude: latitude, longitude: longitude, zoom: 12.0)
         mapView = GMSMapView.map(withFrame: self.view.frame, camera: camera)
-    
+        mapView?.settings.myLocationButton = true
+        mapView?.isMyLocationEnabled = true
+        
         mapView?.delegate = self
         
         
@@ -57,7 +57,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, GMSMapView
 
     func mark(){
         for place in places{
-            self.makeMark(place.geopoint!, placeTitle: place.name!, placeAddress: place.position!)
+            self.makeMark(place.geopoint, placeTitle: place.name, placeAddress: place.location)
         }
     }
     
@@ -81,21 +81,6 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, GMSMapView
     func mapView(_ mapView: GMSMapView, didTapInfoWindowOf marker: GMSMarker) {
         placeTitle = marker.title!
         self.performSegue(withIdentifier: "sgMapInfo", sender: self)
-       /*
-        let storyboard : UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
-        let vc = storyboard.instantiateViewController(withIdentifier: "PlaceInfoView")
-        vc.modalPresentationStyle = .popover
- //       vc.preferredContentSize = CGSize(width: 200, height: 100)
-     
-
- 
-        
-      //  let popover: UIPopoverPresentationController = vc.popoverPresentationController!
-       // popover.barButtonItem = sender
-        
-        present(vc, animated: true, completion: nil)
-    */
-        print("마커눌림")
     }
     
    /*
@@ -118,22 +103,10 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, GMSMapView
         // Get the new view controller using segue.destination.
         // Pass the selected object to the new view controller.
         if segue.identifier == "sgMapInfo"{
-          //  let storyboard : UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
-          //  let vc = storyboard.instantiateViewController(withIdentifier: "PlaceInfoView")
-          //  vc.modalPresentationStyle = .popover
-
             let infoView = segue.destination as! PlaceInfoTableViewController
             let i = places.first(where: {$0.name == placeTitle})
-            
-            infoView.getInfo(i!, image: placeImages[(i?.name!)!]!)
-          
-       //     present(vc, animated: true, completion: nil)
-            print((i?.name!)! as String)
-            print("세그요")
+            infoView.getInfo(i!, image: placeImages[(i?.name)!]!)
         }
-        
     }
-  
-
 }
 

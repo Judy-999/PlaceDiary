@@ -44,7 +44,7 @@ class PlaceTableViewController: UITableViewController {
         // self.clearsSelectionOnViewWillAppear = false
 
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-        self.navigationItem.leftBarButtonItem = self.editButtonItem    //목록 수정버튼 사용
+      //  self.navigationItem.leftBarButtonItem = self.editButtonItem    //목록 수정버튼 사용
         
         tableView.refreshControl = UIRefreshControl()    //새로고침
         tableView.refreshControl?.addTarget(self, action: #selector(pullToRefresh(_:)), for: .valueChanged)
@@ -64,8 +64,8 @@ class PlaceTableViewController: UITableViewController {
     
     func godata(){
         if isUpdate{
-            let vc = self.tabBarController!.viewControllers![1] as! MapViewController
-            let nav = self.tabBarController?.viewControllers![3] as! UINavigationController
+            let vc = self.tabBarController?.viewControllers![3] as! MapViewController
+            let nav = self.tabBarController?.viewControllers![1] as! UINavigationController
             let sc = nav.topViewController as! SearchTableViewController
           //  let sc = self.tabBarController!.viewControllers![3] as! SearchTableViewController
             
@@ -96,7 +96,7 @@ class PlaceTableViewController: UITableViewController {
             } else {
                 completion(nil)
             }
-        }//.resume()
+        }
     }
     
     
@@ -132,25 +132,26 @@ class PlaceTableViewController: UITableViewController {
 
     // 셀 설정
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "placeCell", for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: "placeCell", for: indexPath) as! PlaceCell
         
         
-        cell.textLabel?.font = UIFont .boldSystemFont(ofSize: 20)
-        cell.detailTextLabel?.font = UIFont .systemFont(ofSize: 15)
-    //    cell.textLabel?.text = placeTitles[(indexPath as NSIndexPath).row]
-    //    cell.imageView?.image = places[indexPath.row].image
-    //    cell.imageView?.image = placeImages[(indexPath as NSIndexPath).row]
+ //       cell.textLabel?.font = UIFont .boldSystemFont(ofSize: 20)
+ //       cell.detailTextLabel?.font = UIFont .systemFont(ofSize: 15)
     
+       
+        /*
         cell.tag += 1
         let tag = cell.tag
         
+        
         if self.newImage {
-            self.getImage(imageName: places[indexPath.row].name!) { photo in
+            self.getImage(imageName: places[indexPath.row].name) { photo in
                 if photo != nil {
                     if cell.tag == tag {
                         DispatchQueue.main.async {
-                            placeImages.updateValue(photo!, forKey: self.places[indexPath.row].name!)
-                            cell.imageView?.image = photo
+                            placeImages.updateValue(photo!, forKey: self.places[indexPath.row].name)
+                            cell.imgPlace.image = photo
+                            // cell.imageView?.image = photo
                         }
                     //        print(cell.tag)
                     }
@@ -158,13 +159,26 @@ class PlaceTableViewController: UITableViewController {
                 self.newImage = false
             }
         }else{
-            cell.imageView?.image = placeImages[places[indexPath.row].name!]
+            cell.imgPlace.image = placeImages[places[indexPath.row].name]
+        }*/
+        if placeImages[places[indexPath.row].name] == nil{
+            cell.setImage(self.places[indexPath.row].name)
+        }else{
+            cell.imgPlace.image = placeImages[places[indexPath.row].name]
         }
         
+        cell.lblPlaceName.text = places[indexPath.row].name
+        cell.lblPlaceLocation.text = places[indexPath.row].location
+        if places[indexPath.row].rate != "0.0"{
+            cell.lblPlaceInfo.text = places[indexPath.row].rate + "점"
+        }else{
+            cell.lblPlaceInfo.text = "가보고 싶어요!"
+        }
+        /*
         cell.textLabel?.text = places[indexPath.row].name
     //    cell.textLabel?.font = .systemFont(ofSize: 20, weight: .medium)
-        cell.detailTextLabel?.text = places[indexPath.row].position
-        
+        cell.detailTextLabel?.text = places[indexPath.row].location
+        */
         
         return cell
     }
@@ -186,7 +200,7 @@ class PlaceTableViewController: UITableViewController {
         if editingStyle == .delete {    //셀 삭제
             // Delete the row from the data source
             
-            let removePlace = places[(indexPath as NSIndexPath).row].name! as String
+            let removePlace = places[(indexPath as NSIndexPath).row].name as String
             
             
             db.collection("users").document(removePlace).delete() { err in
@@ -206,7 +220,7 @@ class PlaceTableViewController: UITableViewController {
               }
             
             
-            placeImages.removeValue(forKey: places[(indexPath as NSIndexPath).row].name!)
+            placeImages.removeValue(forKey: places[(indexPath as NSIndexPath).row].name)
             places.remove(at: (indexPath as NSIndexPath).row)
             
             tableView.deleteRows(at: [indexPath], with: .fade)
@@ -255,7 +269,7 @@ class PlaceTableViewController: UITableViewController {
             let cell = sender as! UITableViewCell
             let indexPath = self.placeTableView.indexPath(for: cell)
             let infoView = segue.destination as! PlaceInfoTableViewController
-            infoView.getInfo(places[(indexPath! as NSIndexPath).row], image: placeImages[places[(indexPath! as NSIndexPath).row].name!]!)
+            infoView.getInfo(places[(indexPath! as NSIndexPath).row], image: placeImages[places[(indexPath! as NSIndexPath).row].name]!)
         }
     }
     

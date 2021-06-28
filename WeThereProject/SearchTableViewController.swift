@@ -83,7 +83,7 @@ class SearchTableViewController: UITableViewController {
         places = data
         placeName.removeAll()
         for place in data{
-            placeName.append(place.name!)
+            placeName.append(place.name)
         }
     }
     
@@ -151,7 +151,7 @@ class SearchTableViewController: UITableViewController {
             
             infoView.getInfo(i, image: placeImages[i.name!]!)
             */
-            infoView.getInfo(places[(indexPath! as NSIndexPath).row], image: placeImages[places[(indexPath! as NSIndexPath).row].name!]!)
+            infoView.getInfo(places[(indexPath! as NSIndexPath).row], image: placeImages[places[(indexPath! as NSIndexPath).row].name]!)
         }
     }
     
