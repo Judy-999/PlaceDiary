@@ -13,7 +13,8 @@ struct PlaceData {
     var location: String
     var date: Date
     var visit: Bool
-    var tag = [String]()
+    var image: Bool
+    var count: String
     var category : String
     var rate: String
     var coment: String

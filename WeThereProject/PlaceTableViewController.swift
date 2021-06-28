@@ -162,7 +162,7 @@ class PlaceTableViewController: UITableViewController {
             cell.imgPlace.image = placeImages[places[indexPath.row].name]
         }*/
         if placeImages[places[indexPath.row].name] == nil{
-            cell.setImage(self.places[indexPath.row].name)
+            cell.setImage(self.places[indexPath.row])
         }else{
             cell.imgPlace.image = placeImages[places[indexPath.row].name]
         }
@@ -269,7 +269,12 @@ class PlaceTableViewController: UITableViewController {
             let cell = sender as! UITableViewCell
             let indexPath = self.placeTableView.indexPath(for: cell)
             let infoView = segue.destination as! PlaceInfoTableViewController
-            infoView.getInfo(places[(indexPath! as NSIndexPath).row], image: placeImages[places[(indexPath! as NSIndexPath).row].name]!)
+            
+            if places[(indexPath! as NSIndexPath).row].image{
+                infoView.getInfo(places[(indexPath! as NSIndexPath).row], image: placeImages[places[(indexPath! as NSIndexPath).row].name]!)
+            }else{
+                infoView.getInfo(places[(indexPath! as NSIndexPath).row], image: UIImage(named: "example.jpeg")!)
+            }
         }
     }
     

@@ -22,16 +22,21 @@ class PlaceCell: UITableViewCell {
 
 
     
-    func setImage(_ imageName: String){
-        let fileUrl = "gs://wethere-2935d.appspot.com/" + imageName
-        Storage.storage().reference(forURL: fileUrl).downloadURL { url, error in
-            let data = NSData(contentsOf: url!)
-            let downloadImg = UIImage(data: data! as Data)
-            if error == nil {
-                self.imgPlace.image = downloadImg
-                placeImages.updateValue(downloadImg!, forKey: imageName)
-                print("image download!!!셀셀셀" + imageName)
+    func setImage(_ data: PlaceData){
+        let imageName = data.name
+        if data.image == true {
+            let fileUrl = "gs://wethere-2935d.appspot.com/" + imageName
+            Storage.storage().reference(forURL: fileUrl).downloadURL { url, error in
+                let data = NSData(contentsOf: url!)
+                let downloadImg = UIImage(data: data! as Data)
+                if error == nil {
+                    self.imgPlace.image = downloadImg
+                    placeImages.updateValue(downloadImg!, forKey: imageName)
+                    print("image download!!!셀셀셀" + imageName)
+                }
             }
+        }else{
+                self.imgPlace.image = UIImage(named: "example.jpeg")
         }
     }
         

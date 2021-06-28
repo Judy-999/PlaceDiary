@@ -32,7 +32,8 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
     @IBOutlet var btnRate3: UIButton!
     @IBOutlet var btnRate4: UIButton!
     @IBOutlet var btnRate5: UIButton!
-    
+    @IBOutlet weak var stepper: UIStepper!
+    @IBOutlet weak var lbltTryCount: UILabel!
     
     let db: Firestore = Firestore.firestore()
     let storageRef = Storage.storage().reference()
@@ -44,7 +45,9 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
     var category = [String]()
     var rateButtons = [UIButton]()
     let rate = AddRate()
+    var isImage = true
     var dataFromInfo = false
+    var count = "0"
     var receiveImage : UIImage?
     var reName = ""
     var rePositon = ""
@@ -129,6 +132,8 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
         reVisit = data.visit
         reRate = data.rate
         reComent = data.coment
+        geoPoint = data.geopoint
+        count = data.count
         dataFromInfo = true
         
         editData = data
@@ -144,6 +149,8 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
         pkDate.date = reDate!
         txvComent.text = reComent
         lblRate.text = reRate
+        lbltTryCount.text = Int(count)!.description + "회"
+        stepper.value = NSString(string: count).doubleValue
         
         if reVisit == true{
             for btn in rateButtons{
@@ -190,15 +197,23 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
             myAlert("필수 입력 미기재", message: "장소의 위치를 입력해주세요.")
         }else if tfCategory.text == "" {
             myAlert("필수 입력 미기재", message: "장소의 카테고리를 선택해주세요.")
+        }else if geoPoint == nil {
+            myAlert("장소 위치 선택 오류", message: "장소의 이름 또는 주소를 검색하여 선택해주세요.")
         }else{
-            placeImages.updateValue(selectedImage, forKey: tfPlaceName.text!)
-            tfPlaceName.placeholder = "이름을 입력하세요."
-            uploadData()
+            //    tfPlaceName.placeholder = "이름을 입력하세요."
             
             if receiveImage == nil {
-                uploadImage(tfPlaceName.text!, image: selectedImage)
+                if selectedImage == nil{
+                    isImage = false
+                }else{
+                    uploadImage(tfPlaceName.text!, image: selectedImage)
+                    placeImages.updateValue(selectedImage, forKey: tfPlaceName.text!)
+                    isImage = true
+                }
             }else if receiveImage != selectedImage{
                 uploadImage(tfPlaceName.text!, image: selectedImage)
+                placeImages.updateValue(selectedImage, forKey: tfPlaceName.text!)
+                isImage = true
             }
             
             isUpdate = true
@@ -206,6 +221,8 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
             if txvComent.text == "코멘트를 입력하세요."{
                 txvComent.text = ""
             }
+            
+            uploadData()
             
             if editDelegate != nil{
                 editData?.name = tfPlaceName.text!
@@ -215,7 +232,9 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
                 editData?.date = pkDate.date
                 editData?.coment = txvComent.text
                 editData?.rate = lblRate.text!
-
+                editData?.geopoint = geoPoint!
+                editData?.count = count
+            
                 editDelegate?.didEditPlace(self, data: editData!, image: selectedImage)
             }
             _ = navigationController?.popViewController(animated: true)
@@ -237,11 +256,12 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
             "position": tvPlacePosition.text!,
             "date": pkDate.date,  //Timestamp(date: Date()),
             "visit": swVisit.isOn,
-            "tag": ["태그1", "태그2", "태그3"],
+            "count": count,
             "rate": lblRate.text!,
             "coment": txvComent.text!,
             "category": tfCategory.text!,
-            "geopoint": geoPoint!
+            "geopoint": geoPoint!,
+            "image": isImage
         ]
 
         db.collection("users").document(tfPlaceName.text!).setData(docData) { err in
@@ -316,6 +336,11 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
         }else{
             myAlert("Photo album inaccessable", message: "Application cannot access the photo album.")
         }
+    }
+    
+    @IBAction func updownStepper(_ sender: UIStepper) {
+        lbltTryCount.text = Int(sender.value).description + "회"
+        count = Int(sender.value).description
     }
     
     @IBAction func searchPosition(_ sender: UIButton){

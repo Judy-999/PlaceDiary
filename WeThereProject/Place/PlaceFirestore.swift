@@ -19,6 +19,8 @@ extension PlaceData {
                                     location: document["position"] as? String ?? "",
                                     date: date.dateValue(),
                                     visit: (document["visit"] as? Bool)!,
+                                    image: (document["image"] as? Bool)!,
+                                    count: document["count"] as? String ?? "",
                                     category: document["category"] as? String ?? "",
                                     rate: document["rate"] as? String ?? "",
                                     coment: document["coment"] as? String ?? "",

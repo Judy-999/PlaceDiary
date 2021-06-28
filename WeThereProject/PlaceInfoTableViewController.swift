@@ -23,6 +23,7 @@ class PlaceInfoTableViewController: UITableViewController, EditDelegate {
     let fillRate = AddRate()
     var rateF : Float?
     var editData : PlaceData?
+    var count: String?
     
     @IBOutlet var placeImg: UIImageView!
     @IBOutlet var txtPlacename: UITextField!
@@ -37,6 +38,7 @@ class PlaceInfoTableViewController: UITableViewController, EditDelegate {
     @IBOutlet var btnRate3: UIButton!
     @IBOutlet var btnRate4: UIButton!
     @IBOutlet var btnRate5: UIButton!
+    @IBOutlet weak var lblCount: UILabel!
     
     
     
@@ -87,6 +89,7 @@ class PlaceInfoTableViewController: UITableViewController, EditDelegate {
         reVisit = data.visit
         reRate = data.rate
         reComent = data.coment
+        count = data.count
         
         let formatter = DateFormatter()
         formatter.dateFormat = "yyyy-MM-dd"
@@ -102,6 +105,7 @@ class PlaceInfoTableViewController: UITableViewController, EditDelegate {
         swVisit.isOn = reVisit
         txvComent.text = reComent
         lblRate.text = reRate + " 점"
+        lblCount.text = count! + "회"
         
         fillRate.fill(buttons: rateBtn, rate: NSString(string: reRate).floatValue)
     }
