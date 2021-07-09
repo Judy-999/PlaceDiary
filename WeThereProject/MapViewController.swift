@@ -67,7 +67,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, GMSMapView
         marker.title = placeTitle
         marker.snippet = placeAddress
         marker.icon = GMSMarker.markerImage(with: .blue)
-        //marker.icon = UIImage(named: "사진")
+      //  marker.icon = UIImage(named: "example.jpeg")
         marker.map = mapView
     }
     

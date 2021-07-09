@@ -8,14 +8,16 @@
 import UIKit
 import FirebaseFirestore
 import FirebaseStorage
+import NVActivityIndicatorView
 
 var placeImages = [String : UIImage]()
-var isUpdate = true
 
 class PlaceTableViewController: UITableViewController {
-    var newImage = true
+  //  var newImage = true
     let storage = Storage.storage()
     let db: Firestore = Firestore.firestore()
+    private let loadingView = UIView();
+    var newUapdate = true
     
     var places = [PlaceData]() {
         didSet {
@@ -40,20 +42,41 @@ class PlaceTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
-
-        // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-      //  self.navigationItem.leftBarButtonItem = self.editButtonItem    //목록 수정버튼 사용
+        let width = UIScreen.main.bounds.width
+        let height = UIScreen.main.bounds.height
+        self.navigationItem.leftBarButtonItem = self.editButtonItem    //목록 수정버튼 사용
+        loadingView.frame = CGRect(x: 0, y: 0, width: width, height: height)
+        loadingView.backgroundColor = UIColor.white
+        self.view.addSubview(loadingView)
+        let indicator = NVActivityIndicatorView(frame: CGRect(x: width/2 - 25, y: height/2 - 100, width: 50, height: 50),
+                                                type: .ballRotateChase,
+                                                color: .red,
+                                                padding: 0)
+        loadingView.addSubview(indicator)
+        indicator.startAnimating()
         
         tableView.refreshControl = UIRefreshControl()    //새로고침
         tableView.refreshControl?.addTarget(self, action: #selector(pullToRefresh(_:)), for: .valueChanged)
+
+        tableView.tableFooterView = UIView(frame: CGRect.zero)
         
-       
         loadPlaceData()
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(stopLoading), name: NSNotification.Name(rawValue: "endLoading"), object: nil)
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(newUpdate), name: NSNotification.Name(rawValue: "newPlaceUpdate"), object: nil)
+
     }
 
-
+    @objc func stopLoading(){
+        loadingView.removeFromSuperview()
+        print("스탐햇오")
+    }
+    
+    @objc func newUpdate(){
+        newUapdate = true
+    }
+    
     func loadPlaceData() {
         service = PlaceService()
         service?.get(collectionID: "users") { places in
@@ -62,17 +85,18 @@ class PlaceTableViewController: UITableViewController {
     }
     
     
-    func godata(){
-        if isUpdate{
-            let vc = self.tabBarController?.viewControllers![3] as! MapViewController
-            let nav = self.tabBarController?.viewControllers![1] as! UINavigationController
-            let sc = nav.topViewController as! SearchTableViewController
-          //  let sc = self.tabBarController!.viewControllers![3] as! SearchTableViewController
-            
-            vc.getPlace(places)
-            sc.setData(places)
-            isUpdate = false
-        }
+   func godata(){
+    print("데이터 보내열!!!")
+        let vc = self.tabBarController?.viewControllers![3] as! MapViewController
+        let nav = self.tabBarController?.viewControllers![1] as! UINavigationController
+        let sc = nav.topViewController as! SearchTableViewController
+        let cnav = self.tabBarController?.viewControllers![2] as! UINavigationController
+        let cc = cnav.topViewController as! CalendarController
+        //  let sc = self.tabBarController!.viewControllers![3] as! SearchTableViewController
+        
+        cc.getDate(places)
+        vc.getPlace(places)
+        sc.setData(places)
     }
     
     
@@ -108,7 +132,10 @@ class PlaceTableViewController: UITableViewController {
    
     
     override func viewDidDisappear(_ animated: Bool) {
-       godata()
+        if newUapdate{
+            godata()
+            newUapdate = false
+        }
     }
     
     override func didReceiveMemoryWarning() {
@@ -162,13 +189,15 @@ class PlaceTableViewController: UITableViewController {
             cell.imgPlace.image = placeImages[places[indexPath.row].name]
         }*/
         if placeImages[places[indexPath.row].name] == nil{
-            cell.setImage(self.places[indexPath.row])
+            cell.setImage(places[indexPath.row], lastImage: places[places.count-1].name)
         }else{
             cell.imgPlace.image = placeImages[places[indexPath.row].name]
         }
+
         
         cell.lblPlaceName.text = places[indexPath.row].name
         cell.lblPlaceLocation.text = places[indexPath.row].location
+        
         if places[indexPath.row].rate != "0.0"{
             cell.lblPlaceInfo.text = places[indexPath.row].rate + "점"
         }else{
@@ -222,6 +251,7 @@ class PlaceTableViewController: UITableViewController {
             
             placeImages.removeValue(forKey: places[(indexPath as NSIndexPath).row].name)
             places.remove(at: (indexPath as NSIndexPath).row)
+            newUapdate = true
             
             tableView.deleteRows(at: [indexPath], with: .fade)
         } else if editingStyle == .insert {
@@ -275,6 +305,10 @@ class PlaceTableViewController: UITableViewController {
             }else{
                 infoView.getInfo(places[(indexPath! as NSIndexPath).row], image: UIImage(named: "example.jpeg")!)
             }
+        }
+        if segue.identifier == "sgAddPlace"{
+            let addView = segue.destination as! AddPlaceTableViewController
+            addView.nowPlaceData = places
         }
     }
     

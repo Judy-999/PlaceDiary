@@ -8,6 +8,8 @@
 import UIKit
 import FirebaseStorage
 
+
+
 class PlaceCell: UITableViewCell {
 
     @IBOutlet weak var imgPlace: UIImageView!
@@ -15,24 +17,28 @@ class PlaceCell: UITableViewCell {
     @IBOutlet weak var lblPlaceLocation: UILabel!
     @IBOutlet weak var lblPlaceInfo: UILabel!
     
+
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
     }
 
 
-    
-    func setImage(_ data: PlaceData){
+    func setImage(_ data: PlaceData, lastImage: String){
         let imageName = data.name
         if data.image == true {
             let fileUrl = "gs://wethere-2935d.appspot.com/" + imageName
-            Storage.storage().reference(forURL: fileUrl).downloadURL { url, error in
+            Storage.storage().reference(forURL: fileUrl).downloadURL { [self] url, error in
                 let data = NSData(contentsOf: url!)
                 let downloadImg = UIImage(data: data! as Data)
                 if error == nil {
                     self.imgPlace.image = downloadImg
                     placeImages.updateValue(downloadImg!, forKey: imageName)
                     print("image download!!!셀셀셀" + imageName)
+                    if imageName == lastImage{
+                        print("알림 보냄!")
+                        NotificationCenter.default.post(name: NSNotification.Name(rawValue: "endLoading"), object: nil)
+                    }
                 }
             }
         }else{

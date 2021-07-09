@@ -23,7 +23,7 @@ class PlaceInfoTableViewController: UITableViewController, EditDelegate {
     let fillRate = AddRate()
     var rateF : Float?
     var editData : PlaceData?
-    var count: String?
+    var count = "0"
     
     @IBOutlet var placeImg: UIImageView!
     @IBOutlet var txtPlacename: UITextField!
@@ -105,7 +105,7 @@ class PlaceInfoTableViewController: UITableViewController, EditDelegate {
         swVisit.isOn = reVisit
         txvComent.text = reComent
         lblRate.text = reRate + " 점"
-        lblCount.text = count! + "회"
+        lblCount.text = count + "회"
         
         fillRate.fill(buttons: rateBtn, rate: NSString(string: reRate).floatValue)
     }

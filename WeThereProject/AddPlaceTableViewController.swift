@@ -59,16 +59,36 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
     var editData: PlaceData?
     var editDelegate: EditDelegate?
     var geoPoint: GeoPoint?
+    var nowPlaceData = [PlaceData]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
     
+        loadCategory()
+        setTextView()
+        setPickerView()
+       
+        rateButtons.append(btnRate1)
+        rateButtons.append(btnRate2)
+        rateButtons.append(btnRate3)
+        rateButtons.append(btnRate4)
+        rateButtons.append(btnRate5)
+        
+        swVisit.isOn = false
+    
+        if dataFromInfo {
+            setPlaceInfo()
+            txvComent.textColor = UIColor.black
+            tvPlacePosition.textColor = UIColor.black
+        }
+        
+    }
+    
+    func setPickerView(){
         let categoryPicker = UIPickerView()
         let pickerToolbar = UIToolbar()
         let btnPickerDone = UIBarButtonItem()
         let flexSpace = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
-        
-        loadCategory()
         
         pickerToolbar.frame = CGRect(x: 0, y: 0, width: 0, height: 35)
       //  pickerToolbar.barTintColor = UIColor.lightGray
@@ -82,33 +102,15 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
         
         categoryPicker.delegate = self
         self.tfCategory.inputView = categoryPicker
-                
-        rateButtons.append(btnRate1)
-        rateButtons.append(btnRate2)
-        rateButtons.append(btnRate3)
-        rateButtons.append(btnRate4)
-        rateButtons.append(btnRate5)
-        
-        swVisit.isOn = false
-        
+    }
+    
+    func setTextView(){
         txvComent.delegate = self
         tvPlacePosition.delegate = self
         txvComent.text = "코멘트를 입력하세요."
         tvPlacePosition.text = "위치를 입력하세요."
         tvPlacePosition.textColor = UIColor.lightGray
         txvComent.textColor = UIColor.lightGray
-        
-        if dataFromInfo {
-            setPlaceInfo()
-            txvComent.textColor = UIColor.black
-            tvPlacePosition.textColor = UIColor.black
-        }
-        
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
-
-        // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-        // self.navigationItem.rightBarButtonItem = self.editButtonItem
     }
     
     func loadCategory(){
@@ -168,12 +170,6 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
         rate.fill(buttons: rateButtons, rate: NSString(string: reRate).floatValue)
     }
     
-  /*  override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        let PlaceTableViewController = segue.destination as! PlaceTableViewController
-        PlaceTableViewController.newImage = true
-    }*/
-    
-    
     @objc func pickerDone(){
         self.view.endEditing(true)
     }
@@ -191,7 +187,10 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
     }
 
     @IBAction func btnAddDone(_ sender: UIButton){
-        if tfPlaceName.text == ""{
+        let i = nowPlaceData.first(where: {$0.name == tfPlaceName.text})
+        if i != nil{
+            myAlert("장소 이름 중복", message: "같은 이름의 장소가 존재합니다.")
+        }else if tfPlaceName.text == ""{
             myAlert("필수 입력 미기재", message: "장소의 이름을 입력해주세요.")
         }else if tvPlacePosition.text == "위치를 입력하세요."{
             myAlert("필수 입력 미기재", message: "장소의 위치를 입력해주세요.")
@@ -215,8 +214,7 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
                 placeImages.updateValue(selectedImage, forKey: tfPlaceName.text!)
                 isImage = true
             }
-            
-            isUpdate = true
+                       
             
             if txvComent.text == "코멘트를 입력하세요."{
                 txvComent.text = ""
@@ -237,6 +235,8 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
             
                 editDelegate?.didEditPlace(self, data: editData!, image: selectedImage)
             }
+            NotificationCenter.default.post(name: NSNotification.Name(rawValue: "newPlaceUpdate"), object: nil)
+           
             _ = navigationController?.popViewController(animated: true)
         }
     }
@@ -448,10 +448,7 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
 
 extension AddPlaceTableViewController: GMSAutocompleteViewControllerDelegate { //해당 뷰컨트롤러를 익스텐션으로 딜리게이트를 달아준다.
     func viewController(_ viewController: GMSAutocompleteViewController, didAutocompleteWith place: GMSPlace) {
-         print("Place name: \(String(describing: place.name))") //셀탭한 글씨출력
-        print("Place address: \(String(describing: place.formattedAddress))")
-        print("Place latitude: \(String(describing: place.coordinate.latitude))")
-        print("Place longitude: \(String(describing: place.coordinate.longitude))")
+    //     print("Place name: \(String(describing: place.name))") //셀탭한 글씨출력
         self.tvPlacePosition.text = place.formattedAddress
         self.tvPlacePosition.textColor = UIColor.black
         self.tvPlacePosition.isEditable = true

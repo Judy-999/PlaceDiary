@@ -12,6 +12,8 @@ class SearchTableViewController: UITableViewController {
     @IBOutlet var searchTableView: UITableView!
     
     var places = [PlaceData]()
+    var filterArray = [PlaceData]()
+    var txtSearch : String?
     var placeName = [String](){
         didSet {
             DispatchQueue.main.async {
@@ -20,8 +22,7 @@ class SearchTableViewController: UITableViewController {
         }
     }
     
-    //["가나다", "꼼마", "사랑", "블랑제메종", "망원공원"]
-    var filterArray : [String] = []
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -68,12 +69,25 @@ class SearchTableViewController: UITableViewController {
 
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "searchCell", for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: "searchCell", for: indexPath) as! SearchResultCell
 
         if self.isSearching{
-            cell.textLabel?.text = filterArray[(indexPath as NSIndexPath).row]
+            let name = NSMutableAttributedString(string: filterArray[(indexPath as NSIndexPath).row].name)
+            name.addAttribute(NSAttributedString.Key.foregroundColor,
+                              value: UIColor.blue, range: (filterArray[(indexPath as NSIndexPath).row].name as NSString).range(of: self.txtSearch!))
+            let address = NSMutableAttributedString(string: filterArray[(indexPath as NSIndexPath).row].location)
+            address.addAttribute(NSAttributedString.Key.foregroundColor,
+                              value: UIColor.blue, range: (filterArray[(indexPath as NSIndexPath).row].location as NSString).range(of: self.txtSearch!))
+            
+        //    cell.lblName.text = filterArray[(indexPath as NSIndexPath).row].name
+            cell.lblName.attributedText = name
+            cell.lblLocation.attributedText = address
+         //   cell.lblLocation.text = filterArray[(indexPath as NSIndexPath).row].location
+            //cell.textLabel?.text = filterArray[(indexPath as NSIndexPath).row]
         }else{
-            cell.textLabel?.text = placeName[(indexPath as NSIndexPath).row]
+            cell.lblName.text = places[(indexPath as NSIndexPath).row].name
+            cell.lblLocation.text = places[(indexPath as NSIndexPath).row].location
+           // cell.textLabel?.text = placeName[(indexPath as NSIndexPath).row]
         }
         return cell
     }
@@ -140,18 +154,18 @@ class SearchTableViewController: UITableViewController {
             let indexPath = self.searchTableView.indexPath(for: cell)
             let infoView = segue.destination as! PlaceInfoTableViewController
             
-            /*
+            
             var i: PlaceData!
             
             if isSearching{
-                i = places.first(where: {$0.name == filterArray[(indexPath! as NSIndexPath).row]})
+                i = places.first(where: {$0.name == filterArray[(indexPath! as NSIndexPath).row].name})
             }else{
-                i = places.first(where: {$0.name == placeName[(indexPath! as NSIndexPath).row]})
+                i = places.first(where: {$0.name == places[(indexPath! as NSIndexPath).row].name})
             }
             
-            infoView.getInfo(i, image: placeImages[i.name!]!)
-            */
-            infoView.getInfo(places[(indexPath! as NSIndexPath).row], image: placeImages[places[(indexPath! as NSIndexPath).row].name]!)
+            infoView.getInfo(i, image: placeImages[i.name]!)
+            
+            //infoView.getInfo(places[(indexPath! as NSIndexPath).row], image: placeImages[places[(indexPath! as NSIndexPath).row].name]!)
         }
     }
     
@@ -161,7 +175,16 @@ class SearchTableViewController: UITableViewController {
 extension SearchTableViewController: UISearchResultsUpdating {
     func updateSearchResults(for searchController: UISearchController) {
         guard let searchText = searchController.searchBar.text?.lowercased() else { return }
-        self.filterArray = self.placeName.filter {$0.localizedCaseInsensitiveContains(searchText)}
+      //  self.filterArray = self.placeName.filter {$0.localizedCaseInsensitiveContains(searchText)}
+        self.txtSearch = searchText
+        self.filterArray =  self.places.filter {$0.name.localizedCaseInsensitiveContains(searchText) || $0.location.localizedCaseInsensitiveContains(searchText) || $0.coment.localizedCaseInsensitiveContains(searchText)}
+        
+     //   self.filterArray.removeAll()
+        
+      //  for i in self.resultArray{
+      //      self.filterArray.append(i.name)
+       // }
+        
         self.tableView.reloadData()
     }
 }

@@ -9,8 +9,6 @@
 /* Begin PBXBuildFile section */
 		0B0E44EDBACD18DF8B1F7ABE /* Pods_WeThereProject.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AFAC6B7ACF40C6C09FA85A3A /* Pods_WeThereProject.framework */; };
 		20105EFB2664DA35007AA233 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 20105EFA2664DA35007AA233 /* GoogleService-Info.plist */; };
-		2012DB5D2688C28E004EC42C /* CollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2012DB5C2688C28E004EC42C /* CollectionViewController.swift */; };
-		2012DB5F2688C811004EC42C /* CollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2012DB5E2688C811004EC42C /* CollectionViewCell.swift */; };
 		20166C2F26830F55002AF187 /* SearchTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20166C2E26830F55002AF187 /* SearchTableViewController.swift */; };
 		2020E4E32667BE600091D569 /* Place.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2020E4E22667BE600091D569 /* Place.swift */; };
 		2020E4E52667BF570091D569 /* PlaceFirestore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2020E4E42667BF570091D569 /* PlaceFirestore.swift */; };
@@ -19,6 +17,7 @@
 		2044A8352671E989002ABBD8 /* TagTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2044A8342671E989002ABBD8 /* TagTextView.swift */; };
 		204CEEB7267F0A3F000D395F /* CategoryEditController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 204CEEB6267F0A3F000D395F /* CategoryEditController.swift */; };
 		204CEEB9267F0BD1000D395F /* SettingTableController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 204CEEB8267F0BD1000D395F /* SettingTableController.swift */; };
+		20544EFB268AFBD700D780E4 /* CalendarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20544EFA268AFBD700D780E4 /* CalendarController.swift */; };
 		207E4F862660985D00AC0A6E /* AddPlaceTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 207E4F852660985D00AC0A6E /* AddPlaceTableViewController.swift */; };
 		20841264265F28A4006FE0EF /* example.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = 20841263265F28A4006FE0EF /* example.jpeg */; };
 		208D9FE9266DFD4A00FC2067 /* AddRate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 208D9FE8266DFD4A00FC2067 /* AddRate.swift */; };
@@ -34,12 +33,11 @@
 		20E3E2E5265E355D004BDFF6 /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20E3E2E4265E355D004BDFF6 /* MapViewController.swift */; };
 		20E3E2E7265E374D004BDFF6 /* PlaceTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20E3E2E6265E374D004BDFF6 /* PlaceTableViewController.swift */; };
 		20F88AC7266CD8820015B42E /* PlaceInfoTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20F88AC6266CD8820015B42E /* PlaceInfoTableViewController.swift */; };
+		20FE6BCE26982C0F0007DC5C /* SearchResultCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20FE6BCD26982C0F0007DC5C /* SearchResultCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		20105EFA2664DA35007AA233 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
-		2012DB5C2688C28E004EC42C /* CollectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionViewController.swift; sourceTree = "<group>"; };
-		2012DB5E2688C811004EC42C /* CollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionViewCell.swift; sourceTree = "<group>"; };
 		20166C2E26830F55002AF187 /* SearchTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchTableViewController.swift; sourceTree = "<group>"; };
 		2020E4E22667BE600091D569 /* Place.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Place.swift; sourceTree = "<group>"; };
 		2020E4E42667BF570091D569 /* PlaceFirestore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceFirestore.swift; sourceTree = "<group>"; };
@@ -48,6 +46,7 @@
 		2044A8342671E989002ABBD8 /* TagTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagTextView.swift; sourceTree = "<group>"; };
 		204CEEB6267F0A3F000D395F /* CategoryEditController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryEditController.swift; sourceTree = "<group>"; };
 		204CEEB8267F0BD1000D395F /* SettingTableController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingTableController.swift; sourceTree = "<group>"; };
+		20544EFA268AFBD700D780E4 /* CalendarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarController.swift; sourceTree = "<group>"; };
 		207E4F852660985D00AC0A6E /* AddPlaceTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddPlaceTableViewController.swift; sourceTree = "<group>"; };
 		20841263265F28A4006FE0EF /* example.jpeg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = example.jpeg; sourceTree = "<group>"; };
 		208D9FE8266DFD4A00FC2067 /* AddRate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddRate.swift; sourceTree = "<group>"; };
@@ -65,6 +64,7 @@
 		20E3E2E4265E355D004BDFF6 /* MapViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewController.swift; sourceTree = "<group>"; };
 		20E3E2E6265E374D004BDFF6 /* PlaceTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceTableViewController.swift; sourceTree = "<group>"; };
 		20F88AC6266CD8820015B42E /* PlaceInfoTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceInfoTableViewController.swift; sourceTree = "<group>"; };
+		20FE6BCD26982C0F0007DC5C /* SearchResultCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultCell.swift; sourceTree = "<group>"; };
 		564B9711581E7EB1F841B0E7 /* Pods-WeThereProject.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WeThereProject.release.xcconfig"; path = "Target Support Files/Pods-WeThereProject/Pods-WeThereProject.release.xcconfig"; sourceTree = "<group>"; };
 		693FBFB748967DEC769D88F9 /* Pods-WeThereProject.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WeThereProject.debug.xcconfig"; path = "Target Support Files/Pods-WeThereProject/Pods-WeThereProject.debug.xcconfig"; sourceTree = "<group>"; };
 		AFAC6B7ACF40C6C09FA85A3A /* Pods_WeThereProject.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_WeThereProject.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -132,9 +132,9 @@
 				20E3E2D6265E2639004BDFF6 /* Main.storyboard */,
 				20B113802689958600A6A0FD /* GroupInfo.swift */,
 				20E3E2DB265E263A004BDFF6 /* LaunchScreen.storyboard */,
-				2012DB5E2688C811004EC42C /* CollectionViewCell.swift */,
-				2012DB5C2688C28E004EC42C /* CollectionViewController.swift */,
+				20544EFA268AFBD700D780E4 /* CalendarController.swift */,
 				20B113822689BBC200A6A0FD /* PlaceCell.swift */,
+				20FE6BCD26982C0F0007DC5C /* SearchResultCell.swift */,
 				204CEEB6267F0A3F000D395F /* CategoryEditController.swift */,
 				202C3E0A2686F97D00E3881D /* ImageViewController.swift */,
 				20E3E2DE265E263A004BDFF6 /* Info.plist */,
@@ -305,21 +305,21 @@
 			files = (
 				2020E4E52667BF570091D569 /* PlaceFirestore.swift in Sources */,
 				2020E4E72667C2FC0091D569 /* PlaceService.swift in Sources */,
-				2012DB5F2688C811004EC42C /* CollectionViewCell.swift in Sources */,
 				20F88AC7266CD8820015B42E /* PlaceInfoTableViewController.swift in Sources */,
 				20B113832689BBC200A6A0FD /* PlaceCell.swift in Sources */,
 				20E3E2D1265E2639004BDFF6 /* AppDelegate.swift in Sources */,
-				2012DB5D2688C28E004EC42C /* CollectionViewController.swift in Sources */,
 				204CEEB7267F0A3F000D395F /* CategoryEditController.swift in Sources */,
 				2044A8352671E989002ABBD8 /* TagTextView.swift in Sources */,
 				20166C2F26830F55002AF187 /* SearchTableViewController.swift in Sources */,
 				202C3E0B2686F97D00E3881D /* ImageViewController.swift in Sources */,
 				20E3E2E7265E374D004BDFF6 /* PlaceTableViewController.swift in Sources */,
+				20FE6BCE26982C0F0007DC5C /* SearchResultCell.swift in Sources */,
 				20E3E2D3265E2639004BDFF6 /* SceneDelegate.swift in Sources */,
 				20E3E2E5265E355D004BDFF6 /* MapViewController.swift in Sources */,
 				204CEEB9267F0BD1000D395F /* SettingTableController.swift in Sources */,
 				2020E4E32667BE600091D569 /* Place.swift in Sources */,
 				208D9FE9266DFD4A00FC2067 /* AddRate.swift in Sources */,
+				20544EFB268AFBD700D780E4 /* CalendarController.swift in Sources */,
 				207E4F862660985D00AC0A6E /* AddPlaceTableViewController.swift in Sources */,
 				20B113812689958700A6A0FD /* GroupInfo.swift in Sources */,
 			);
