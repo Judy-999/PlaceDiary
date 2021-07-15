@@ -73,8 +73,6 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
         rateButtons.append(btnRate3)
         rateButtons.append(btnRate4)
         rateButtons.append(btnRate5)
-        
-        swVisit.isOn = false
     
         if dataFromInfo {
             setPlaceInfo()
@@ -82,6 +80,7 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
             tvPlacePosition.textColor = UIColor.black
         }
         
+        stepper.tintColor = #colorLiteral(red: 0, green: 0.8924261928, blue: 0.8863361478, alpha: 1)
     }
     
     func setPickerView(){
@@ -94,7 +93,7 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
       //  pickerToolbar.barTintColor = UIColor.lightGray
         self.tfCategory.inputAccessoryView = pickerToolbar
         
-        btnPickerDone.title = "Done"
+        btnPickerDone.title = "선택"
         btnPickerDone.target = self
         btnPickerDone.action = #selector(pickerDone)
         
@@ -108,7 +107,7 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
         txvComent.delegate = self
         tvPlacePosition.delegate = self
         txvComent.text = "코멘트를 입력하세요."
-        tvPlacePosition.text = "위치를 입력하세요."
+        tvPlacePosition.text = "위치를 검색하세요."
         tvPlacePosition.textColor = UIColor.lightGray
         txvComent.textColor = UIColor.lightGray
     }
@@ -449,7 +448,8 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
 extension AddPlaceTableViewController: GMSAutocompleteViewControllerDelegate { //해당 뷰컨트롤러를 익스텐션으로 딜리게이트를 달아준다.
     func viewController(_ viewController: GMSAutocompleteViewController, didAutocompleteWith place: GMSPlace) {
     //     print("Place name: \(String(describing: place.name))") //셀탭한 글씨출력
-        self.tvPlacePosition.text = place.formattedAddress
+        let address = place.formattedAddress?.replacingOccurrences(of: "대한민국 ", with: "")
+        self.tvPlacePosition.text = address
         self.tvPlacePosition.textColor = UIColor.black
         self.tvPlacePosition.isEditable = true
         self.geoPoint = GeoPoint(latitude: place.coordinate.latitude, longitude: place.coordinate.longitude)

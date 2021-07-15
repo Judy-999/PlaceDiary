@@ -23,6 +23,7 @@
 		208D9FE9266DFD4A00FC2067 /* AddRate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 208D9FE8266DFD4A00FC2067 /* AddRate.swift */; };
 		20B113812689958700A6A0FD /* GroupInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20B113802689958600A6A0FD /* GroupInfo.swift */; };
 		20B113832689BBC200A6A0FD /* PlaceCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20B113822689BBC200A6A0FD /* PlaceCell.swift */; };
+		20CB7C9C269F28130057EAF0 /* MainPlaceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20CB7C9B269F28130057EAF0 /* MainPlaceViewController.swift */; };
 		20D109DD2668DA2800906115 /* bread.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = 20D109DC2668DA2800906115 /* bread.jpeg */; };
 		20D109E02668DA4D00906115 /* cafe.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = 20D109DF2668DA4D00906115 /* cafe.jpeg */; };
 		20E3E2D1265E2639004BDFF6 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20E3E2D0265E2639004BDFF6 /* AppDelegate.swift */; };
@@ -52,6 +53,7 @@
 		208D9FE8266DFD4A00FC2067 /* AddRate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddRate.swift; sourceTree = "<group>"; };
 		20B113802689958600A6A0FD /* GroupInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupInfo.swift; sourceTree = "<group>"; };
 		20B113822689BBC200A6A0FD /* PlaceCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceCell.swift; sourceTree = "<group>"; };
+		20CB7C9B269F28130057EAF0 /* MainPlaceViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainPlaceViewController.swift; sourceTree = "<group>"; };
 		20D109DC2668DA2800906115 /* bread.jpeg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = bread.jpeg; sourceTree = "<group>"; };
 		20D109DF2668DA4D00906115 /* cafe.jpeg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = cafe.jpeg; sourceTree = "<group>"; };
 		20E3E2CD265E2639004BDFF6 /* WeThereProject.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WeThereProject.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -131,6 +133,7 @@
 				20E3E2D9265E263A004BDFF6 /* Assets.xcassets */,
 				20E3E2D6265E2639004BDFF6 /* Main.storyboard */,
 				20B113802689958600A6A0FD /* GroupInfo.swift */,
+				20CB7C9B269F28130057EAF0 /* MainPlaceViewController.swift */,
 				20E3E2DB265E263A004BDFF6 /* LaunchScreen.storyboard */,
 				20544EFA268AFBD700D780E4 /* CalendarController.swift */,
 				20B113822689BBC200A6A0FD /* PlaceCell.swift */,
@@ -312,6 +315,7 @@
 				2044A8352671E989002ABBD8 /* TagTextView.swift in Sources */,
 				20166C2F26830F55002AF187 /* SearchTableViewController.swift in Sources */,
 				202C3E0B2686F97D00E3881D /* ImageViewController.swift in Sources */,
+				20CB7C9C269F28130057EAF0 /* MainPlaceViewController.swift in Sources */,
 				20E3E2E7265E374D004BDFF6 /* PlaceTableViewController.swift in Sources */,
 				20FE6BCE26982C0F0007DC5C /* SearchResultCell.swift in Sources */,
 				20E3E2D3265E2639004BDFF6 /* SceneDelegate.swift in Sources */,

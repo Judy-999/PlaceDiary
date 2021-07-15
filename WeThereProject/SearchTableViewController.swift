@@ -74,10 +74,10 @@ class SearchTableViewController: UITableViewController {
         if self.isSearching{
             let name = NSMutableAttributedString(string: filterArray[(indexPath as NSIndexPath).row].name)
             name.addAttribute(NSAttributedString.Key.foregroundColor,
-                              value: UIColor.blue, range: (filterArray[(indexPath as NSIndexPath).row].name as NSString).range(of: self.txtSearch!))
+                              value: #colorLiteral(red: 0, green: 0.8924261928, blue: 0.8863361478, alpha: 1), range: (filterArray[(indexPath as NSIndexPath).row].name as NSString).range(of: self.txtSearch!))
             let address = NSMutableAttributedString(string: filterArray[(indexPath as NSIndexPath).row].location)
             address.addAttribute(NSAttributedString.Key.foregroundColor,
-                              value: UIColor.blue, range: (filterArray[(indexPath as NSIndexPath).row].location as NSString).range(of: self.txtSearch!))
+                              value: #colorLiteral(red: 0, green: 0.8924261928, blue: 0.8863361478, alpha: 1), range: (filterArray[(indexPath as NSIndexPath).row].location as NSString).range(of: self.txtSearch!))
             
         //    cell.lblName.text = filterArray[(indexPath as NSIndexPath).row].name
             cell.lblName.attributedText = name
@@ -153,7 +153,6 @@ class SearchTableViewController: UITableViewController {
             let cell = sender as! UITableViewCell
             let indexPath = self.searchTableView.indexPath(for: cell)
             let infoView = segue.destination as! PlaceInfoTableViewController
-            
             
             var i: PlaceData!
             

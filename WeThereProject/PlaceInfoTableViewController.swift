@@ -7,10 +7,12 @@
 
 
 import UIKit
-
+import Firebase
 
 class PlaceInfoTableViewController: UITableViewController, EditDelegate {
 
+    let storage = Storage.storage()
+    let db: Firestore = Firestore.firestore()
     var receiveImage: UIImage?
     var reName = ""
     var rePositon = ""
@@ -26,11 +28,11 @@ class PlaceInfoTableViewController: UITableViewController, EditDelegate {
     var count = "0"
     
     @IBOutlet var placeImg: UIImageView!
-    @IBOutlet var txtPlacename: UITextField!
-    @IBOutlet var txtPosition: UITextField!
-    @IBOutlet var txtDate: UITextField!
-    @IBOutlet var txtCategory: UITextField!
-    @IBOutlet var swVisit: UISwitch!
+    @IBOutlet var lblPlacename: UILabel!
+    @IBOutlet var lblPosition: UILabel!
+    @IBOutlet var lblDate: UILabel!
+    @IBOutlet var lblCategory: UILabel!
+
     @IBOutlet var lblRate: UILabel!
     @IBOutlet var txvComent: UITextView!
     @IBOutlet var btnRate1: UIButton!
@@ -66,11 +68,10 @@ class PlaceInfoTableViewController: UITableViewController, EditDelegate {
     }
  
     func endEdit(){
-        txtPlacename.isEnabled = false
-        txtPosition.isEnabled = false
-        txtDate.isEnabled = false
-        txtCategory.isEnabled = false
-        swVisit.isEnabled = false
+        lblPlacename.isEnabled = false
+        lblPosition.isEnabled = false
+        lblDate.isEnabled = false
+        lblCategory.isEnabled = false
         txvComent.isEditable = false
         btnRate1.isEnabled = false
         btnRate2.isEnabled = false
@@ -97,12 +98,11 @@ class PlaceInfoTableViewController: UITableViewController, EditDelegate {
     }
     
     func setData(){
-        txtPlacename.text = reName
-        txtPosition.text = rePositon
+        lblPlacename.text = reName
+        lblPosition.text = rePositon
         placeImg.image = receiveImage
-        txtDate.text = reDate
-        txtCategory.text = reCategory
-        swVisit.isOn = reVisit
+        lblDate.text = reDate
+        lblCategory.text = reCategory
         txvComent.text = reComent
         lblRate.text = reRate + " 점"
         lblCount.text = count + "회"
@@ -119,6 +119,31 @@ class PlaceInfoTableViewController: UITableViewController, EditDelegate {
         lblRate.text = String(describing: fillRate.checkAttr(buttons: rateBtn, button: sender))
     }
     
+    @IBAction func editBtn(_ sender: UIButton){
+        let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+
+        alert.addAction(UIAlertAction(title: "장소 편집", style: .default) { _ in
+            self.performSegue(withIdentifier: "editPlace", sender: self)
+        })
+
+        alert.addAction(UIAlertAction(title: "장소 삭제", style: .default) { _ in
+            let alert = UIAlertController(title: "장소 삭제 확인", message: "장소를 삭제하시겠습니까?", preferredStyle: .alert)
+            let action = UIAlertAction(title: "확인", style: .default){ [self] _ in
+                NotificationCenter.default.post(name: NSNotification.Name(rawValue: "newPlaceUpdate"), object: editData?.name)
+                _ = navigationController?.popViewController(animated: true)
+            }
+            let actionCancle = UIAlertAction(title: "취소", style: .default, handler: nil)
+            alert.addAction(action)
+            alert.addAction(actionCancle)
+            self.present(alert, animated: true, completion: nil)
+        })
+        
+        alert.addAction(UIAlertAction(title: "취소", style: .default) { _ in
+            
+        })
+
+        present(alert, animated: true)
+    }
     
     @objc func imageTapped(_ sender: UITapGestureRecognizer) {
         self.performSegue(withIdentifier: "sgShowImage", sender: self)
@@ -134,7 +159,7 @@ class PlaceInfoTableViewController: UITableViewController, EditDelegate {
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        return 9
+        return 4
     }
 
     /*

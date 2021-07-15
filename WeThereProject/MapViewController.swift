@@ -66,7 +66,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, GMSMapView
         marker.position = CLLocationCoordinate2D(latitude: point.latitude, longitude: point.longitude)
         marker.title = placeTitle
         marker.snippet = placeAddress
-        marker.icon = GMSMarker.markerImage(with: .blue)
+        marker.icon = GMSMarker.markerImage(with: #colorLiteral(red: 0.4620226622, green: 0.8382837176, blue: 1, alpha: 1))
       //  marker.icon = UIImage(named: "example.jpeg")
         marker.map = mapView
     }

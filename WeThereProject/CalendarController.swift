@@ -60,14 +60,15 @@ class CalendarController: UIViewController, FSCalendarDelegate, FSCalendarDataSo
         calendar.appearance.weekdayTextColor = UIColor.black
         calendar.appearance.headerTitleColor = UIColor.black
       //  calendar.appearance.eventColor = UIColor.greenColor
-        calendar.appearance.selectionColor = UIColor.red
-        calendar.appearance.todayColor = UIColor.blue
-        calendar.appearance.todaySelectionColor = UIColor.black
+        calendar.appearance.selectionColor = #colorLiteral(red: 0, green: 0.8924261928, blue: 0.8863361478, alpha: 1)
+        calendar.appearance.todayColor = #colorLiteral(red: 0.4745098054, green: 0.8392156959, blue: 0.9764705896, alpha: 1)
+        calendar.appearance.todaySelectionColor = #colorLiteral(red: 0, green: 0.8924261928, blue: 0.8863361478, alpha: 1)
         calendar.appearance.titleWeekendColor = UIColor.blue
         calendar.appearance.headerMinimumDissolvedAlpha = 0.0
-        calendar.appearance.eventDefaultColor = UIColor.red
-        calendar.appearance.eventSelectionColor = UIColor.green
+        calendar.appearance.eventDefaultColor = #colorLiteral(red: 0, green: 0.8924261928, blue: 0.8863361478, alpha: 1)
+        calendar.appearance.eventSelectionColor = #colorLiteral(red: 0.4745098054, green: 0.8392156959, blue: 0.9764705896, alpha: 1)
         calendar.scrollDirection = .vertical
+        
         
         calendar.locale = Locale(identifier: "ko_KR")
     }

@@ -24,7 +24,7 @@ class PlaceCell: UITableViewCell {
     }
 
 
-    func setImage(_ data: PlaceData, lastImage: String){
+    func setImage(_ data: PlaceData){
         let imageName = data.name
         if data.image == true {
             let fileUrl = "gs://wethere-2935d.appspot.com/" + imageName
@@ -35,10 +35,7 @@ class PlaceCell: UITableViewCell {
                     self.imgPlace.image = downloadImg
                     placeImages.updateValue(downloadImg!, forKey: imageName)
                     print("image download!!!셀셀셀" + imageName)
-                    if imageName == lastImage{
-                        print("알림 보냄!")
-                        NotificationCenter.default.post(name: NSNotification.Name(rawValue: "endLoading"), object: nil)
-                    }
+                    NotificationCenter.default.post(name: NSNotification.Name(rawValue: "endLoading"), object: nil)
                 }
             }
         }else{
