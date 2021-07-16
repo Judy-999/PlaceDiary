@@ -162,7 +162,7 @@ class SearchTableViewController: UITableViewController {
                 i = places.first(where: {$0.name == places[(indexPath! as NSIndexPath).row].name})
             }
             
-            infoView.getInfo(i, image: placeImages[i.name]!)
+            infoView.getPlaceInfo(i, image: placeImages[i.name]!)
             
             //infoView.getInfo(places[(indexPath! as NSIndexPath).row], image: placeImages[places[(indexPath! as NSIndexPath).row].name]!)
         }

@@ -11,7 +11,9 @@ import FirebaseFirestore
 class CategoryEditController: UITableViewController {
 
     let db: Firestore = Firestore.firestore()
-    var category = [String](){
+    var editType = ""
+    var typeString = ""
+    var editItems = [String](){
         didSet {
             DispatchQueue.main.async {
                 self.tableView.reloadData()
@@ -27,14 +29,14 @@ class CategoryEditController: UITableViewController {
 
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem
-        loadCategory()
+        loadCategory(editType)
     }
     
-    func loadCategory(){
+    func loadCategory(_ type: String){
         let docRef = db.collection("category").document("category")
         docRef.getDocument { (document, error) in
             if let document = document, document.exists {
-                self.category = (document.get("items") as? [String])!
+                self.editItems = (document.get(type) as? [String])!
                 print("reload goTdhdh")
             } else {
                 print("Document does not exist")
@@ -49,25 +51,25 @@ class CategoryEditController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return category.count
+        return editItems.count
     }
 
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "categoryCell", for: indexPath)
 
-        cell.textLabel?.text = self.category[(indexPath as NSIndexPath).row]
+        cell.textLabel?.text = self.editItems[(indexPath as NSIndexPath).row]
 
         return cell
     }
     
     @IBAction func addCategory(_ sender: UIButton){
-        let addAlert = UIAlertController(title: "카테고리 추가", message: "새로운 카테고리를 입력하세요.", preferredStyle: .alert)
+        let addAlert = UIAlertController(title: typeString + " 추가", message: "새로운 " + typeString + "(을)를 입력하세요.", preferredStyle: .alert)
         addAlert.addTextField()
         let alertOk = UIAlertAction(title: "추가", style: .default) { (alertOk) in
             if addAlert.textFields?[0].text != nil{
-                self.uploadCategory((addAlert.textFields?[0].text)!, add: true)
-                self.loadCategory()
+                self.uploadCategory(self.editType, item: (addAlert.textFields?[0].text)!, add: true)
+                self.loadCategory(self.editType)
                 self.tableView.reloadData()
             }
         }
@@ -77,17 +79,17 @@ class CategoryEditController: UITableViewController {
         self.present(addAlert, animated: true, completion: nil)
     }
     
-    func uploadCategory(_ item: String, add: Bool){
+    func uploadCategory(_ type: String, item: String, add: Bool){
         
         let categoryRef = db.collection("category").document("category")
         
         if add{
             categoryRef.updateData([
-                    "items": FieldValue.arrayUnion([item])
+                type : FieldValue.arrayUnion([item])
                 ])
         }else{
             categoryRef.updateData([
-                "items": FieldValue.arrayRemove([item])
+                type : FieldValue.arrayRemove([item])
             ])
         }
     }
@@ -105,11 +107,11 @@ class CategoryEditController: UITableViewController {
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
             // Delete the row from the data source
-            let removeItem = category[(indexPath as NSIndexPath).row] as String
-            uploadCategory(removeItem, add: false)
+            let removeItem = editItems[(indexPath as NSIndexPath).row] as String
+            uploadCategory(editType, item: removeItem, add: false)
             
-            if let index = category.firstIndex(of: removeItem) {
-                category.remove(at: index)
+            if let index = editItems.firstIndex(of: removeItem) {
+                editItems.remove(at: index)
             }
             
             tableView.deleteRows(at: [indexPath], with: .fade)

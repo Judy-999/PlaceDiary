@@ -22,7 +22,8 @@ class MainPlaceViewController: UIViewController,UITableViewDelegate, UITableView
     var sectionNum = 1
     var sgNum = 0
     var sectionName = [""]
-    var category = [String]()
+    var categoryItem = [String]()
+    var groupItem = [String]()
     
     var places = [PlaceData]() {
         didSet {
@@ -95,8 +96,10 @@ class MainPlaceViewController: UIViewController,UITableViewDelegate, UITableView
                 index = places.firstIndex(where: {$0.name == deleteName})
                 sectionIndex = 0
             case 1:
-                index = places.firstIndex(where: {$0.name == deleteName})
-                sectionIndex = 0
+                let removePlace = places.first(where: {$0.name == deleteName})
+                sectionIndex = sectionName.firstIndex(of: removePlace!.group)
+                let cellData = places.filter({$0.group == removePlace!.group})
+                index = cellData.firstIndex(where: {$0.name == deleteName})
             case 2:
                 let removePlace = places.first(where: {$0.name == deleteName})
                 sectionIndex = sectionName.firstIndex(of: removePlace!.category)
@@ -121,7 +124,8 @@ class MainPlaceViewController: UIViewController,UITableViewDelegate, UITableView
         let docRef = db.collection("category").document("category")
         docRef.getDocument { (document, error) in
             if let document = document, document.exists {
-                self.category = (document.get("items") as? [String])!
+                self.categoryItem = (document.get("items") as? [String])!
+                self.groupItem = (document.get("group") as? [String])!
             } else {
                 print("Document does not exist")
             }
@@ -173,6 +177,9 @@ class MainPlaceViewController: UIViewController,UITableViewDelegate, UITableView
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if sgNum == 0{
             return places.count
+        }else if sgNum == 1{
+            let filteredArray = places.filter({$0.group == sectionName[section]})
+            return filteredArray.count
         }else{
             let filteredArray = places.filter({$0.category == sectionName[section]})
             return filteredArray.count
@@ -184,6 +191,11 @@ class MainPlaceViewController: UIViewController,UITableViewDelegate, UITableView
         return sectionName[section]
     }
     
+    func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
+        (view as! UITableViewHeaderFooterView).contentView.backgroundColor = #colorLiteral(red: 0.4745098054, green: 0.8392156959, blue: 0.9764705896, alpha: 1)
+        (view as! UITableViewHeaderFooterView).textLabel?.textColor = UIColor.white
+    }
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "placeCell", for: indexPath) as! PlaceCell
         
@@ -193,7 +205,7 @@ class MainPlaceViewController: UIViewController,UITableViewDelegate, UITableView
         case 0:
             cellData = places
         case 1:
-            cellData = places
+            cellData =  places.filter({$0.group == sectionName[indexPath.section]})
         case 2:
             cellData = places.filter({$0.category == sectionName[indexPath.section]})
         default:
@@ -228,7 +240,7 @@ class MainPlaceViewController: UIViewController,UITableViewDelegate, UITableView
             case 0:
                 cellData = places
             case 1:
-                cellData = places
+                cellData =  places.filter({$0.group == sectionName[indexPath.section]})
             case 2:
                 cellData = places.filter({$0.category == sectionName[indexPath.section]})
             default:
@@ -301,13 +313,18 @@ class MainPlaceViewController: UIViewController,UITableViewDelegate, UITableView
             sectionName = [""]
             placeTableView.reloadData()
         }else if sender.selectedSegmentIndex == 1{
-            sectionNum = 1
+            sectionNum = groupItem.count
             sgNum = 1
+            sectionName.removeAll()
+            for group in groupItem{
+                sectionName.append(group)
+            }
+            placeTableView.reloadData()
         }else if sender.selectedSegmentIndex == 2{
-            sectionNum = category.count
+            sectionNum = categoryItem.count
             sgNum = 2
             sectionName.removeAll()
-            for name in category{
+            for name in categoryItem{
                 sectionName.append(name)
             }
             placeTableView.reloadData()
@@ -361,7 +378,7 @@ class MainPlaceViewController: UIViewController,UITableViewDelegate, UITableView
             case 0:
                 cellData = places
             case 1:
-                cellData = places
+                cellData = places.filter({$0.group == sectionName[indexPath!.section]})
             case 2:
                 cellData = places.filter({$0.category == sectionName[indexPath!.section]})
             default:
@@ -369,9 +386,9 @@ class MainPlaceViewController: UIViewController,UITableViewDelegate, UITableView
             }
             
             if cellData[(indexPath! as NSIndexPath).row].image{
-                infoView.getInfo(cellData[(indexPath! as NSIndexPath).row], image: placeImages[cellData[(indexPath! as NSIndexPath).row].name]!)
+                infoView.getPlaceInfo(cellData[(indexPath! as NSIndexPath).row], image: placeImages[cellData[(indexPath! as NSIndexPath).row].name]!)
             }else{
-                infoView.getInfo(cellData[(indexPath! as NSIndexPath).row], image: UIImage(named: "example.jpeg")!)
+                infoView.getPlaceInfo(cellData[(indexPath! as NSIndexPath).row], image: UIImage(named: "example.jpeg")!)
             }
         }
         if segue.identifier == "sgAddPlace"{

@@ -24,7 +24,8 @@ extension PlaceData {
                                     category: document["category"] as? String ?? "",
                                     rate: document["rate"] as? String ?? "",
                                     coment: document["coment"] as? String ?? "",
-                                    geopoint: (document["geopoint"] as? GeoPoint)!))
+                                    geopoint: (document["geopoint"] as? GeoPoint)!,
+                                    group: document["group"] as? String ?? ""))
         }
         return places
     }

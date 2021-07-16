@@ -30,7 +30,7 @@ class SettingTableController: UITableViewController {
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        return 3
+        return 4
     }
 
     /*
@@ -80,11 +80,17 @@ class SettingTableController: UITableViewController {
 
     
     // MARK: - Navigation
-/*
+
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
+        let settingType = segue.destination as! CategoryEditController
+        if segue.identifier == "sgCategory"{
+            settingType.editType = "items"
+            settingType.typeString = "분류"
+        }
+        if segue.identifier == "sgGroup"{
+            settingType.editType = "group"
+            settingType.typeString = "그룹"
+        }
     }
-    */
 }

@@ -34,6 +34,7 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
     @IBOutlet var btnRate5: UIButton!
     @IBOutlet weak var stepper: UIStepper!
     @IBOutlet weak var lbltTryCount: UILabel!
+    @IBOutlet weak var tfGroup: UITextField!
     
     let db: Firestore = Firestore.firestore()
     let storageRef = Storage.storage().reference()
@@ -41,8 +42,8 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
     var selectedImage: UIImage!
     let PICKER_VIEW_COLUMN = 1
     let searchController = GMSAutocompleteViewController()
-  //  let database = Firestore.firestore()
-    var category = [String]()
+    var categoryItem = [String]()
+    var groupItem = [String]()
     var rateButtons = [UIButton]()
     let rate = AddRate()
     var isImage = true
@@ -56,6 +57,7 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
     var reVisit = false
     var reRate = ""
     var reComent = ""
+    var reGroup = ""
     var editData: PlaceData?
     var editDelegate: EditDelegate?
     var geoPoint: GeoPoint?
@@ -64,10 +66,11 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
     override func viewDidLoad() {
         super.viewDidLoad()
     
-        loadCategory()
+        downloadPickerItem()
         setTextView()
         setPickerView()
-       
+        setGroupPicker()
+        
         rateButtons.append(btnRate1)
         rateButtons.append(btnRate2)
         rateButtons.append(btnRate3)
@@ -79,8 +82,6 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
             txvComent.textColor = UIColor.black
             tvPlacePosition.textColor = UIColor.black
         }
-        
-        stepper.tintColor = #colorLiteral(red: 0, green: 0.8924261928, blue: 0.8863361478, alpha: 1)
     }
     
     func setPickerView(){
@@ -88,9 +89,9 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
         let pickerToolbar = UIToolbar()
         let btnPickerDone = UIBarButtonItem()
         let flexSpace = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
-        
+
         pickerToolbar.frame = CGRect(x: 0, y: 0, width: 0, height: 35)
-      //  pickerToolbar.barTintColor = UIColor.lightGray
+        pickerToolbar.barTintColor = UIColor.white
         self.tfCategory.inputAccessoryView = pickerToolbar
         
         btnPickerDone.title = "선택"
@@ -99,8 +100,31 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
         
         pickerToolbar.setItems([flexSpace, btnPickerDone], animated: true)
         
+        categoryPicker.tag = 0
         categoryPicker.delegate = self
         self.tfCategory.inputView = categoryPicker
+    }
+    
+    func setGroupPicker(){
+        let groupPicker = UIPickerView()
+        let groupToolbar = UIToolbar()
+        let btnPickerDone = UIBarButtonItem()
+        let flexSpace = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
+        
+        groupToolbar.frame = CGRect(x: 0, y: 0, width: 0, height: 35)
+        groupToolbar.barTintColor = UIColor.white
+        self.tfGroup.inputAccessoryView = groupToolbar
+        
+        btnPickerDone.title = "선택"
+        btnPickerDone.target = self
+        btnPickerDone.action = #selector(pickerDone)
+        
+        
+        groupToolbar.setItems([flexSpace, btnPickerDone], animated: true)
+        
+        groupPicker.tag = 1
+        groupPicker.delegate = self
+        self.tfGroup.inputView = groupPicker
     }
     
     func setTextView(){
@@ -112,11 +136,12 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
         txvComent.textColor = UIColor.lightGray
     }
     
-    func loadCategory(){
+    func downloadPickerItem(){
         let docRef = db.collection("category").document("category")
         docRef.getDocument { (document, error) in
             if let document = document, document.exists {
-                self.category = (document.get("items") as? [String])!
+                self.categoryItem = (document.get("items") as? [String])!
+                self.groupItem = (document.get("group") as? [String])!
             } else {
                 print("Document does not exist")
             }
@@ -136,7 +161,7 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
         geoPoint = data.geopoint
         count = data.count
         dataFromInfo = true
-        
+        reGroup = data.group
         editData = data
     }
     
@@ -152,6 +177,7 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
         lblRate.text = reRate
         lbltTryCount.text = Int(count)!.description + "회"
         stepper.value = NSString(string: count).doubleValue
+        tfGroup.text = reGroup
         
         if reVisit == true{
             for btn in rateButtons{
@@ -182,7 +208,7 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        return 9
+        return 10
     }
 
     @IBAction func btnAddDone(_ sender: UIButton){
@@ -219,6 +245,10 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
                 txvComent.text = ""
             }
             
+            if tfGroup.text == ""{
+                tfGroup.text = "기본"
+            }
+            
             uploadData()
             
             if editDelegate != nil{
@@ -231,7 +261,7 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
                 editData?.rate = lblRate.text!
                 editData?.geopoint = geoPoint!
                 editData?.count = count
-            
+                editData?.group = tfGroup.text!
                 editDelegate?.didEditPlace(self, data: editData!, image: selectedImage)
             }
             NotificationCenter.default.post(name: NSNotification.Name(rawValue: "newPlaceUpdate"), object: nil)
@@ -260,7 +290,8 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
             "coment": txvComent.text!,
             "category": tfCategory.text!,
             "geopoint": geoPoint!,
-            "image": isImage
+            "image": isImage,
+            "group": tfGroup.text!
         ]
 
         db.collection("users").document(tfPlaceName.text!).setData(docData) { err in
@@ -291,15 +322,27 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
     }
     
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        return category.count
+        if pickerView.tag == 0{
+            return categoryItem.count
+        }else{
+            return groupItem.count
+        }
     }
     
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-        return category[row]
+        if pickerView.tag == 0{
+            return categoryItem[row]
+        }else{
+            return groupItem[row]
+        }
     }
     
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-        tfCategory.text = category[row]
+        if pickerView.tag == 0{
+            tfCategory.text = categoryItem[row]
+        }else{
+            return tfGroup.text = groupItem[row]
+        }
     }
     
     @IBAction func switchOn(_ sender: UISwitch){

@@ -19,6 +19,7 @@ struct PlaceData {
     var rate: String
     var coment: String
     var geopoint: GeoPoint
+    var group: String
     
     /*
     var image: UIImage?{

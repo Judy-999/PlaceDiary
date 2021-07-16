@@ -149,7 +149,7 @@ extension CalendarController: UITableViewDelegate, UITableViewDataSource{
             let indexPath = self.tableView.indexPath(for: cell)
             let infoView = segue.destination as! PlaceInfoTableViewController
             let i = places.first(where: {$0.name == selectedName[(indexPath! as NSIndexPath).row]})
-            infoView.getInfo(i!, image: placeImages[(i?.name)!]!)
+            infoView.getPlaceInfo(i!, image: placeImages[(i?.name)!]!)
         }
     }
 }

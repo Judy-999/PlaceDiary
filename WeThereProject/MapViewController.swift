@@ -105,7 +105,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, GMSMapView
         if segue.identifier == "sgMapInfo"{
             let infoView = segue.destination as! PlaceInfoTableViewController
             let i = places.first(where: {$0.name == placeTitle})
-            infoView.getInfo(i!, image: placeImages[(i?.name)!]!)
+            infoView.getPlaceInfo(i!, image: placeImages[(i?.name)!]!)
         }
     }
 }

@@ -336,9 +336,9 @@ class PlaceTableViewController: UITableViewController {
             let infoView = segue.destination as! PlaceInfoTableViewController
             
             if places[(indexPath! as NSIndexPath).row].image{
-                infoView.getInfo(places[(indexPath! as NSIndexPath).row], image: placeImages[places[(indexPath! as NSIndexPath).row].name]!)
+                infoView.getPlaceInfo(places[(indexPath! as NSIndexPath).row], image: placeImages[places[(indexPath! as NSIndexPath).row].name]!)
             }else{
-                infoView.getInfo(places[(indexPath! as NSIndexPath).row], image: UIImage(named: "example.jpeg")!)
+                infoView.getPlaceInfo(places[(indexPath! as NSIndexPath).row], image: UIImage(named: "example.jpeg")!)
             }
         }
         if segue.identifier == "sgAddPlace"{

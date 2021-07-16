@@ -26,13 +26,14 @@ class PlaceInfoTableViewController: UITableViewController, EditDelegate {
     var rateF : Float?
     var editData : PlaceData?
     var count = "0"
+    var reGroup = ""
     
     @IBOutlet var placeImg: UIImageView!
     @IBOutlet var lblPlacename: UILabel!
     @IBOutlet var lblPosition: UILabel!
     @IBOutlet var lblDate: UILabel!
     @IBOutlet var lblCategory: UILabel!
-
+    @IBOutlet weak var lblGroup: UILabel!
     @IBOutlet var lblRate: UILabel!
     @IBOutlet var txvComent: UITextView!
     @IBOutlet var btnRate1: UIButton!
@@ -59,28 +60,15 @@ class PlaceInfoTableViewController: UITableViewController, EditDelegate {
         rateBtn.append(btnRate4)
         rateBtn.append(btnRate5)
         
-        setData()
+        setPlaceInfo()
         
         let tap = UITapGestureRecognizer(target: self, action: #selector(imageTapped))
         placeImg.isUserInteractionEnabled = true
         placeImg.addGestureRecognizer(tap)
         
     }
- 
-    func endEdit(){
-        lblPlacename.isEnabled = false
-        lblPosition.isEnabled = false
-        lblDate.isEnabled = false
-        lblCategory.isEnabled = false
-        txvComent.isEditable = false
-        btnRate1.isEnabled = false
-        btnRate2.isEnabled = false
-        btnRate3.isEnabled = false
-        btnRate4.isEnabled = false
-        btnRate5.isEnabled = false
-    }
     
-    func getInfo(_ data: PlaceData, image: UIImage){
+    func getPlaceInfo(_ data: PlaceData, image: UIImage){
         editData = data
         
         reName = data.name
@@ -91,13 +79,14 @@ class PlaceInfoTableViewController: UITableViewController, EditDelegate {
         reRate = data.rate
         reComent = data.coment
         count = data.count
+        reGroup = data.group
         
         let formatter = DateFormatter()
         formatter.dateFormat = "yyyy-MM-dd"
         reDate = formatter.string(from: data.date)
     }
     
-    func setData(){
+    func setPlaceInfo(){
         lblPlacename.text = reName
         lblPosition.text = rePositon
         placeImg.image = receiveImage
@@ -106,13 +95,13 @@ class PlaceInfoTableViewController: UITableViewController, EditDelegate {
         txvComent.text = reComent
         lblRate.text = reRate + " 점"
         lblCount.text = count + "회"
-        
+        lblGroup.text = reGroup
         fillRate.fill(buttons: rateBtn, rate: NSString(string: reRate).floatValue)
     }
 
     func didEditPlace(_ controller: AddPlaceTableViewController, data: PlaceData, image: UIImage) {
-         getInfo(data, image: image)
-         setData()
+         getPlaceInfo(data, image: image)
+         setPlaceInfo()
     }
     
     @IBAction func clickRate(_ sender: UIButton){
@@ -137,7 +126,6 @@ class PlaceInfoTableViewController: UITableViewController, EditDelegate {
             alert.addAction(actionCancle)
             self.present(alert, animated: true, completion: nil)
         })
-        
         alert.addAction(UIAlertAction(title: "취소", style: .default) { _ in
             
         })
