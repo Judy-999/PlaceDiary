@@ -93,7 +93,7 @@ class PlaceInfoTableViewController: UITableViewController, EditDelegate {
         lblDate.text = reDate
         lblCategory.text = reCategory
         txvComent.text = reComent
-        lblRate.text = reRate + " 점"
+        lblRate.text = "  " + reRate + " 점"
         lblCount.text = count + "회"
         lblGroup.text = reGroup
         fillRate.fill(buttons: rateBtn, rate: NSString(string: reRate).floatValue)

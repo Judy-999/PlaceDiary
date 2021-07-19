@@ -68,7 +68,7 @@ class MainPlaceViewController: UIViewController,UITableViewDelegate, UITableView
         placeTableView.tableFooterView = UIView(frame: CGRect.zero)
         
         loadPlaceData()
-        loadCategory()
+        downloadList()
 
         NotificationCenter.default.addObserver(self, selector: #selector(stopLoading), name: NSNotification.Name(rawValue: "endLoading"), object: nil)
         
@@ -120,7 +120,7 @@ class MainPlaceViewController: UIViewController,UITableViewDelegate, UITableView
         }
     }
 
-    func loadCategory(){
+    func downloadList(){
         let docRef = db.collection("category").document("category")
         docRef.getDocument { (document, error) in
             if let document = document, document.exists {
@@ -152,6 +152,7 @@ class MainPlaceViewController: UIViewController,UITableViewDelegate, UITableView
     }
     
     override func viewWillAppear(_ animated: Bool) {
+        downloadList()
         placeTableView.reloadData()  //목록 재로딩
     }
     
