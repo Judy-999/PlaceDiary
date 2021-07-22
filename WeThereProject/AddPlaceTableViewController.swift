@@ -394,7 +394,13 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         selectedImage = info[UIImagePickerController.InfoKey.originalImage] as? UIImage //사진을 가져와 라이브러리에 저장
 
-        placeImageView.image = selectedImage
+    //    placeImageView.image = selectedImage
+        
+        placeImageView.image = selectedImage.resize(newWidth: 300)
+   
+     //    selectedImage = selectedImage?.downSample2(size: selectedImage.size)
+        selectedImage = selectedImage.resize(newWidth: 300)
+        
         self.dismiss(animated: true, completion: nil)   //현재 뷰 컨트롤러 제거
     }
         
@@ -510,3 +516,31 @@ extension AddPlaceTableViewController: GMSAutocompleteViewControllerDelegate { /
     
 }
 
+extension UIImage {
+    func resize(newWidth: CGFloat) -> UIImage {
+        let scale = newWidth / self.size.width
+        let newHeight = self.size.height * scale
+        let size = CGSize(width: newWidth, height: newHeight)
+        let render = UIGraphicsImageRenderer(size: size)
+        let renderImage = render.image {
+            context in self.draw(in: CGRect(origin: .zero, size: size)) }
+        print("화면 배율: \(UIScreen.main.scale)")// 배수
+        print("origin: \(self), resize: \(renderImage)")
+     //   printDataSize(renderImage)
+        
+        return renderImage
+    }
+    
+    func downSample2(size: CGSize, scale: CGFloat = UIScreen.main.scale) -> UIImage {
+        let imageSourceOption = [kCGImageSourceShouldCache: false] as CFDictionary
+        let data = self.pngData()! as CFData
+        let imageSource = CGImageSourceCreateWithData(data, imageSourceOption)!
+        let maxPixel = max(size.width, size.height) * scale
+        let downSampleOptions = [ kCGImageSourceCreateThumbnailFromImageAlways: true, kCGImageSourceShouldCacheImmediately: true,
+                                  kCGImageSourceCreateThumbnailWithTransform: true, kCGImageSourceThumbnailMaxPixelSize: maxPixel ] as CFDictionary
+        let downSampledImage = CGImageSourceCreateThumbnailAtIndex(imageSource, 0, downSampleOptions)!
+        let newImage = UIImage(cgImage: downSampledImage)
+        print("origin: \(self), resize: \(newImage)")
+        return newImage
+    }
+}
