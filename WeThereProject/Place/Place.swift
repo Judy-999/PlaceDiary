@@ -20,6 +20,7 @@ struct PlaceData {
     var coment: String
     var geopoint: GeoPoint
     var group: String
+    var orgImg: UIImage?
     
     /*
     var image: UIImage?{

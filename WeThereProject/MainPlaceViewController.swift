@@ -12,7 +12,7 @@ import NVActivityIndicatorView
 
 var placeImages = [String : UIImage]()
 
-class MainPlaceViewController: UIViewController,UITableViewDelegate, UITableViewDataSource {
+class MainPlaceViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, ImageDelegate {
    
     let storage = Storage.storage()
     let db: Firestore = Firestore.firestore()
@@ -76,14 +76,57 @@ class MainPlaceViewController: UIViewController,UITableViewDelegate, UITableView
     }
     
     @objc func stopLoading(){
+   /*     if loadingCount == 0{
+            DispatchQueue.main.async {
+                self.getOrgImg()
+            }
+        }*/
         loadingCount = loadingCount + 1
         print("로딩 카운트 : " + String(loadingCount) + " 전체 카운트 : " + String(places.count))
         if loadingCount == places.count{
             loadingView.removeFromSuperview()
             print("스탐햇오")
             NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: "endLoading"), object: nil)
+            
         }
     }
+    
+    func didOrgImageDone(_ controller: PlaceInfoTableViewController, name: String, image: UIImage) {
+        let index = places.firstIndex(where: {$0.name == name})!
+        places[index].orgImg = image
+        print("여기 실행 된비끼")
+    }
+    
+    func getOrgImg(){
+        for place in places{
+            if place.image == true{
+                let imgName = place.name + "_original"
+                let fileUrl = "gs://wethere-2935d.appspot.com/" + imgName
+                Storage.storage().reference(forURL: fileUrl).downloadURL { url, error in
+                    let data = NSData(contentsOf: url!)
+                    let downloadImg = UIImage(data: data! as Data)
+                    if error == nil {
+                        placeImages.updateValue(downloadImg!, forKey: place.name)
+                        print("image download!!!" + imgName)
+                    }
+                }
+            }
+        }
+    }
+/*
+    func getOrgImg(name : String){
+        let imgName = name + "_original"
+        let fileUrl = "gs://wethere-2935d.appspot.com/" + imgName
+        Storage.storage().reference(forURL: fileUrl).downloadURL { url, error in
+            let data = NSData(contentsOf: url!)
+            let downloadImg = UIImage(data: data! as Data)
+            if error == nil {
+                placeImages.updateValue(downloadImg!, forKey: name)
+                print("image download!!!" + imgName)
+            }
+        }
+    }
+*/
     
     @objc func newUpdate(_ notification: Notification){
         newUapdate = true
@@ -113,6 +156,7 @@ class MainPlaceViewController: UIViewController,UITableViewDelegate, UITableView
         }
     }
     
+    
     func loadPlaceData() {
         service = PlaceService()
         service?.get(collectionID: "users") { places in
@@ -120,6 +164,7 @@ class MainPlaceViewController: UIViewController,UITableViewDelegate, UITableView
         }
     }
 
+    
     func downloadList(){
         let docRef = db.collection("category").document("category")
         docRef.getDocument { (document, error) in
@@ -212,7 +257,7 @@ class MainPlaceViewController: UIViewController,UITableViewDelegate, UITableView
         default:
             cellData = places
         }
-            
+        
         if placeImages[cellData[indexPath.row].name] == nil{
             cell.setImage(cellData[indexPath.row])
         }else{
@@ -386,11 +431,14 @@ class MainPlaceViewController: UIViewController,UITableViewDelegate, UITableView
                 cellData = places
             }
             
+            infoView.getPlaceInfo(cellData[(indexPath! as NSIndexPath).row], image: placeImages[cellData[(indexPath! as NSIndexPath).row].name]!)
+            /*
             if cellData[(indexPath! as NSIndexPath).row].image{
                 infoView.getPlaceInfo(cellData[(indexPath! as NSIndexPath).row], image: placeImages[cellData[(indexPath! as NSIndexPath).row].name]!)
             }else{
                 infoView.getPlaceInfo(cellData[(indexPath! as NSIndexPath).row], image: UIImage(named: "example.jpeg")!)
             }
+ */
         }
         if segue.identifier == "sgAddPlace"{
             let addView = segue.destination as! AddPlaceTableViewController

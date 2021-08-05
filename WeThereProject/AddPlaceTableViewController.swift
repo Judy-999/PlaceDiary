@@ -15,7 +15,6 @@ protocol EditDelegate {
     func didEditPlace(_ controller: AddPlaceTableViewController, data: PlaceData, image: UIImage)
 }
 
-
 class AddPlaceTableViewController: UITableViewController, UINavigationControllerDelegate, UIImagePickerControllerDelegate, UIPickerViewDelegate, UIPickerViewDataSource, UITextViewDelegate{
     
     @IBOutlet var placeImageView: UIImageView!
@@ -394,12 +393,11 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         selectedImage = info[UIImagePickerController.InfoKey.originalImage] as? UIImage //사진을 가져와 라이브러리에 저장
 
-    //    placeImageView.image = selectedImage
+        placeImageView.image = selectedImage
         
-        placeImageView.image = selectedImage.resize(newWidth: 300)
+      //  placeImageView.image = selectedImage.resize(newWidth: 10)
    
-     //    selectedImage = selectedImage?.downSample2(size: selectedImage.size)
-        selectedImage = selectedImage.resize(newWidth: 300)
+     //   selectedImage = selectedImage.resize(newWidth: 50)
         
         self.dismiss(animated: true, completion: nil)   //현재 뷰 컨트롤러 제거
     }
@@ -410,11 +408,22 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
     }
         
     func uploadImage(_ path: String, image: UIImage){
+        let original = image.resize(newWidth: 300)
         var data = Data()
-        data = image.jpegData(compressionQuality: 0.8)!
+        data = original.jpegData(compressionQuality: 0.8)!
         let filePath = path
         let metaData = StorageMetadata()
         metaData.contentType = "image/jpeg"
+        storageRef.child(filePath + "_original").putData(data, metadata: metaData){
+            (metaData, error) in if let error = error{
+                print(error.localizedDescription)
+                return
+            }else{
+                print("Image successfully upload!")
+            }
+        }
+        let smallImg = image.resize(newWidth: 50)
+        data = smallImg.jpegData(compressionQuality: 0.8)!
         storageRef.child(filePath).putData(data, metadata: metaData){
             (metaData, error) in if let error = error{
                 print(error.localizedDescription)

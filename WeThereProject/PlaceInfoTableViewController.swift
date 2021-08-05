@@ -9,6 +9,10 @@
 import UIKit
 import Firebase
 
+protocol ImageDelegate {
+    func didOrgImageDone(_ controller: PlaceInfoTableViewController, name: String, image: UIImage)
+}
+
 class PlaceInfoTableViewController: UITableViewController, EditDelegate {
 
     let storage = Storage.storage()
@@ -27,6 +31,7 @@ class PlaceInfoTableViewController: UITableViewController, EditDelegate {
     var editData : PlaceData?
     var count = "0"
     var reGroup = ""
+    var imgDelegate : ImageDelegate?
     
     @IBOutlet var placeImg: UIImageView!
     @IBOutlet var lblPlacename: UILabel!
@@ -66,6 +71,19 @@ class PlaceInfoTableViewController: UITableViewController, EditDelegate {
         placeImg.isUserInteractionEnabled = true
         placeImg.addGestureRecognizer(tap)
         
+        NotificationCenter.default.addObserver(self, selector: #selector(loadOrgImage), name: NSNotification.Name(rawValue: "loadImage"), object: nil)
+        
+    }
+    
+    @objc func loadOrgImage(_ notification: Notification){
+       // placeImg.image = placeImages[notification.object as! String]
+        placeImg.image = editData?.orgImg
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: "loadImage"), object: nil)
+        if imgDelegate != nil{
+            imgDelegate?.didOrgImageDone(self, name: reName, image: (editData?.orgImg)!)
+            print("요기는 하니?")
+        }
+        print("이미지 바꿨어요!")
     }
     
     func getPlaceInfo(_ data: PlaceData, image: UIImage){
@@ -84,21 +102,42 @@ class PlaceInfoTableViewController: UITableViewController, EditDelegate {
         let formatter = DateFormatter()
         formatter.dateFormat = "yyyy-MM-dd"
         reDate = formatter.string(from: data.date)
+        
+        
+        if data.orgImg == nil{
+            getOrgImg(name : data.name)
+        }
     }
     
     func setPlaceInfo(){
         lblPlacename.text = reName
         lblPosition.text = rePositon
-        placeImg.image = receiveImage
         lblDate.text = reDate
         lblCategory.text = reCategory
         txvComent.text = reComent
         lblRate.text = "  " + reRate + " 점"
         lblCount.text = count + "회"
         lblGroup.text = reGroup
+        placeImg.image = receiveImage
         fillRate.fill(buttons: rateBtn, rate: NSString(string: reRate).floatValue)
+        
     }
 
+    func getOrgImg(name : String){
+        let imgName = name + "_original"
+        let fileUrl = "gs://wethere-2935d.appspot.com/" + imgName
+        Storage.storage().reference(forURL: fileUrl).downloadURL { url, error in
+            let data = NSData(contentsOf: url!)
+            let downloadImg = UIImage(data: data! as Data)
+            if error == nil {
+              //  placeImages.updateValue(downloadImg!, forKey: name)
+                self.editData?.orgImg = downloadImg!
+                print("image download!!!" + imgName)
+                NotificationCenter.default.post(name: NSNotification.Name(rawValue: "loadImage"), object: name)
+            }
+        }
+    }
+    
     func didEditPlace(_ controller: AddPlaceTableViewController, data: PlaceData, image: UIImage) {
          getPlaceInfo(data, image: image)
          setPlaceInfo()
@@ -207,7 +246,10 @@ class PlaceInfoTableViewController: UITableViewController, EditDelegate {
         }
         if segue.identifier == "sgShowImage"{
             let imageView = segue.destination as! ImageViewController
-            imageView.fullImage = placeImg.image
+            //imageView.fullImage = placeImg.image
+            imageView.fullImage = editData?.orgImg
         }
+        
     }
 }
+

@@ -120,23 +120,20 @@ class PlaceTableViewController: UITableViewController {
     }
     
     
-    func getImage(imageName: String, completion: @escaping (UIImage?) -> ()) {
-        let fileUrl = "gs://wethere-2935d.appspot.com/" + imageName
+    func getImage(imageName: String) {
+        let fileUrl = "gs://wethere-2935d.appspot.com/" + imageName + "_original"
         storage.reference(forURL: fileUrl).downloadURL { url, error in
             let data = NSData(contentsOf: url!)
             let downloadImg = UIImage(data: data! as Data)
             if error == nil {
-                completion(downloadImg)
-                DispatchQueue.main.async {
-                    self.tableView.reloadData()
-                }
+              //  downloadImg
+                placeImages.updateValue(downloadImg!, forKey: imageName)
                 print("image download!!!" + imageName)
             } else {
-                completion(nil)
+            
             }
         }
     }
-    
     
     
     override func viewWillAppear(_ animated: Bool) {
@@ -258,8 +255,15 @@ class PlaceTableViewController: UITableViewController {
                     print("Image successfully removed!")
                 }
               }
-            
-            
+            /*
+            storage.reference().child(removePlace + "_original").delete { error in
+                if let error = error {
+                    print("Error removing image: \(error)")
+                } else {
+                    print("Image successfully removed!")
+                }
+              }
+            */
             placeImages.removeValue(forKey: places[(indexPath as NSIndexPath).row].name)
             places.remove(at: (indexPath as NSIndexPath).row)
             newUapdate = true

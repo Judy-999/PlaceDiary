@@ -39,10 +39,24 @@ class PlaceCell: UITableViewCell {
                 }
             }
         }else{
+            /*
                 self.imgPlace.image = UIImage(named: "example.jpeg")
+                NotificationCenter.default.post(name: NSNotification.Name(rawValue: "endLoading"), object: nil)
+ */
+            let fileUrl = "gs://wethere-2935d.appspot.com/" + "defaultImage_original"
+            Storage.storage().reference(forURL: fileUrl).downloadURL { [self] url, error in
+                let data = NSData(contentsOf: url!)
+                let downloadImg = UIImage(data: data! as Data)
+                if error == nil {
+                    self.imgPlace.image = downloadImg
+                    placeImages.updateValue(downloadImg!, forKey: imageName)
+                    print("image download!!!셀셀셀" + imageName)
+                    NotificationCenter.default.post(name: NSNotification.Name(rawValue: "endLoading"), object: nil)
+                }
+            }
         }
     }
-        
+    
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
 
