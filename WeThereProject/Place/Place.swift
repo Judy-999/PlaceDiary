@@ -21,6 +21,7 @@ struct PlaceData {
     var geopoint: GeoPoint
     var group: String
     var orgImg: UIImage?
+    var thumbnail: Bool?
     
     /*
     var image: UIImage?{

@@ -230,12 +230,14 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
                     isImage = false
                 }else{
                     uploadImage(tfPlaceName.text!, image: selectedImage)
-                    placeImages.updateValue(selectedImage, forKey: tfPlaceName.text!)
+                    editData?.orgImg = selectedImage
+                  //  placeImages.updateValue(selectedImage, forKey: tfPlaceName.text!)
                     isImage = true
                 }
             }else if receiveImage != selectedImage{
                 uploadImage(tfPlaceName.text!, image: selectedImage)
-                placeImages.updateValue(selectedImage, forKey: tfPlaceName.text!)
+               // placeImages.updateValue(selectedImage, forKey: tfPlaceName.text!)
+                editData?.orgImg = selectedImage
                 isImage = true
             }
                        

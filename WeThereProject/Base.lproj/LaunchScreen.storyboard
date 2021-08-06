@@ -16,7 +16,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="wethere.jpg" translatesAutoresizingMaskIntoConstraints="NO" id="JLN-IA-IaV">
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="wethere.jpeg" translatesAutoresizingMaskIntoConstraints="NO" id="JLN-IA-IaV">
                                 <rect key="frame" x="122" y="362.5" width="170" height="171"/>
                             </imageView>
                         </subviews>
@@ -34,7 +34,7 @@
         </scene>
     </scenes>
     <resources>
-        <image name="wethere.jpg" width="170" height="171"/>
+        <image name="wethere.jpeg" width="170" height="171"/>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>

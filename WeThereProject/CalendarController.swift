@@ -13,20 +13,18 @@ struct PlaceDate{
     var name: [String]
 }
 
-class CalendarController: UIViewController, FSCalendarDelegate, FSCalendarDataSource {
+class CalendarController: UIViewController, ImageDelegate, FSCalendarDelegate, FSCalendarDataSource {
 
     @IBOutlet weak var calendar: FSCalendar!
     @IBOutlet weak var tableView: UITableView!
     
+    var newUpdate = false
     var placeDay = [Date]()
     var places = [PlaceData]()
     var selectedDate = ""
     var nameDate = [Date : String]()
     var selectedName = [String]()
-    
     var dates = [PlaceDate]()
-    
-   
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -55,6 +53,31 @@ class CalendarController: UIViewController, FSCalendarDelegate, FSCalendarDataSo
         }
     }
 
+    override func viewDidDisappear(_ animated: Bool) {
+        if newUpdate == true{
+            orgImageUpdate()
+            newUpdate = false
+        }
+    }
+    
+    func didOrgImageDone(_ controller: PlaceInfoTableViewController, newData: PlaceData) {
+        let index = places.firstIndex(where: {$0.name == newData.name})!
+        places[index] = newData
+        newUpdate = true
+    }
+    
+    func orgImageUpdate(){
+         let vc = self.tabBarController?.viewControllers![3] as! MapViewController
+         let nav = self.tabBarController?.viewControllers![0] as! UINavigationController
+         let sc = nav.topViewController as! MainPlaceViewController
+         let cnav = self.tabBarController?.viewControllers![1] as! UINavigationController
+         let cc = cnav.topViewController as! SearchTableViewController
+                  
+         cc.setData(places)
+         vc.getPlace(places)
+         sc.changeOrgImg(places)
+     }
+    
     func setCalendar(){
         calendar.appearance.headerDateFormat = "YYYY년 M월"
         calendar.appearance.weekdayTextColor = UIColor.black
@@ -148,8 +171,10 @@ extension CalendarController: UITableViewDelegate, UITableViewDataSource{
             let cell = sender as! UITableViewCell
             let indexPath = self.tableView.indexPath(for: cell)
             let infoView = segue.destination as! PlaceInfoTableViewController
+            infoView.imgDelegate = self
             let i = places.first(where: {$0.name == selectedName[(indexPath! as NSIndexPath).row]})
-            infoView.getPlaceInfo(i!, image: placeImages[(i?.name)!]!)
+            //infoView.getPlaceInfo(i!, image: placeImages[(i?.name)!]!)
+            infoView.getPlaceInfo(i!, image: i!.orgImg!)
         }
     }
 }

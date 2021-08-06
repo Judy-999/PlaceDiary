@@ -10,7 +10,7 @@ import UIKit
 import Firebase
 
 protocol ImageDelegate {
-    func didOrgImageDone(_ controller: PlaceInfoTableViewController, name: String, image: UIImage)
+    func didOrgImageDone(_ controller: PlaceInfoTableViewController, newData: PlaceData)
 }
 
 class PlaceInfoTableViewController: UITableViewController, EditDelegate {
@@ -71,20 +71,24 @@ class PlaceInfoTableViewController: UITableViewController, EditDelegate {
         placeImg.isUserInteractionEnabled = true
         placeImg.addGestureRecognizer(tap)
         
-        NotificationCenter.default.addObserver(self, selector: #selector(loadOrgImage), name: NSNotification.Name(rawValue: "loadImage"), object: nil)
+       
         
     }
     
     @objc func loadOrgImage(_ notification: Notification){
        // placeImg.image = placeImages[notification.object as! String]
         placeImg.image = editData?.orgImg
+        editData?.thumbnail = false
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: "loadImage"), object: nil)
         if imgDelegate != nil{
-            imgDelegate?.didOrgImageDone(self, name: reName, image: (editData?.orgImg)!)
+            imgDelegate?.didOrgImageDone(self, newData: editData!)
             print("요기는 하니?")
+        }else{
+            print("델리게이트 없대요")
         }
         print("이미지 바꿨어요!")
     }
+    
     
     func getPlaceInfo(_ data: PlaceData, image: UIImage){
         editData = data
@@ -104,8 +108,11 @@ class PlaceInfoTableViewController: UITableViewController, EditDelegate {
         reDate = formatter.string(from: data.date)
         
         
-        if data.orgImg == nil{
-            getOrgImg(name : data.name)
+        if data.image == true{
+            if data.thumbnail == true{
+                NotificationCenter.default.addObserver(self, selector: #selector(loadOrgImage), name: NSNotification.Name(rawValue: "loadImage"), object: nil)
+                getOrgImg(name : data.name)
+            }
         }
     }
     
@@ -130,13 +137,13 @@ class PlaceInfoTableViewController: UITableViewController, EditDelegate {
             let data = NSData(contentsOf: url!)
             let downloadImg = UIImage(data: data! as Data)
             if error == nil {
-              //  placeImages.updateValue(downloadImg!, forKey: name)
                 self.editData?.orgImg = downloadImg!
                 print("image download!!!" + imgName)
                 NotificationCenter.default.post(name: NSNotification.Name(rawValue: "loadImage"), object: name)
             }
         }
     }
+
     
     func didEditPlace(_ controller: AddPlaceTableViewController, data: PlaceData, image: UIImage) {
          getPlaceInfo(data, image: image)

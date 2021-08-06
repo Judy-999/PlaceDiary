@@ -11,14 +11,15 @@ import Firebase
 import GoogleMaps
 import GooglePlaces
 
-class MapViewController: UIViewController, CLLocationManagerDelegate, GMSMapViewDelegate {
+class MapViewController: UIViewController, ImageDelegate, CLLocationManagerDelegate, GMSMapViewDelegate {
    
     var locationManager: CLLocationManager!
     var mapView: GMSMapView?
     var points = [GeoPoint]()
     var places = [PlaceData]()
     var placeTitle = ""
-
+    var newUpdate = false
+    
     override func viewDidLoad() {
         super.viewDidLoad()
  
@@ -55,6 +56,32 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, GMSMapView
         mark()
     }
 
+    override func viewDidDisappear(_ animated: Bool) {
+        if newUpdate == true{
+            orgImageUpdate()
+            newUpdate = false
+        }
+    }
+    
+    func didOrgImageDone(_ controller: PlaceInfoTableViewController, newData: PlaceData) {
+        let index = places.firstIndex(where: {$0.name == newData.name})!
+        places[index] = newData
+        newUpdate = true
+    }
+    
+    func orgImageUpdate(){
+         let nav = self.tabBarController?.viewControllers![0] as! UINavigationController
+         let sc = nav.topViewController as! MainPlaceViewController
+         let cnav = self.tabBarController?.viewControllers![2] as! UINavigationController
+         let cc = cnav.topViewController as! CalendarController
+         let snav = self.tabBarController?.viewControllers![1] as! UINavigationController
+         let svc = snav.topViewController as! SearchTableViewController
+        
+         cc.getDate(places)
+         svc.setData(places)
+         sc.changeOrgImg(places)
+     }
+    
     func mark(){
         for place in places{
             self.makeMark(place.geopoint, placeTitle: place.name, placeAddress: place.location)
@@ -105,7 +132,8 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, GMSMapView
         if segue.identifier == "sgMapInfo"{
             let infoView = segue.destination as! PlaceInfoTableViewController
             let i = places.first(where: {$0.name == placeTitle})
-            infoView.getPlaceInfo(i!, image: placeImages[(i?.name)!]!)
+            infoView.imgDelegate = self
+            infoView.getPlaceInfo(i!, image: i!.orgImg!)
         }
     }
 }

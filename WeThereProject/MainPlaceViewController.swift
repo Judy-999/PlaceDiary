@@ -10,7 +10,7 @@ import FirebaseFirestore
 import FirebaseStorage
 import NVActivityIndicatorView
 
-var placeImages = [String : UIImage]()
+// var placeImages = [String : UIImage]()
 
 class MainPlaceViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, ImageDelegate {
    
@@ -56,7 +56,7 @@ class MainPlaceViewController: UIViewController, UITableViewDelegate, UITableVie
         loadingView.backgroundColor = UIColor.white
         self.view.addSubview(loadingView)
         let indicator = NVActivityIndicatorView(frame: CGRect(x: width/2 - 25, y: height/2 - 100, width: 50, height: 50),
-                                                type: .ballRotateChase,
+                                                type: .ballPulseSync,
                                                 color: #colorLiteral(red: 0, green: 0.8924261928, blue: 0.8863361478, alpha: 1),
                                                 padding: 0)
         loadingView.addSubview(indicator)
@@ -75,59 +75,19 @@ class MainPlaceViewController: UIViewController, UITableViewDelegate, UITableVie
         NotificationCenter.default.addObserver(self, selector: #selector(newUpdate), name: NSNotification.Name(rawValue: "newPlaceUpdate"), object: nil)
     }
     
-    @objc func stopLoading(){
-   /*     if loadingCount == 0{
-            DispatchQueue.main.async {
-                self.getOrgImg()
-            }
-        }*/
+    @objc func stopLoading(_ notification: Notification){
+        let newPlace = notification.object as! PlaceData
+        let index = places.firstIndex(where: {$0.name == newPlace.name})!
+        places[index] = newPlace
         loadingCount = loadingCount + 1
         print("로딩 카운트 : " + String(loadingCount) + " 전체 카운트 : " + String(places.count))
         if loadingCount == places.count{
             loadingView.removeFromSuperview()
             print("스탐햇오")
             NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: "endLoading"), object: nil)
-            
         }
     }
-    
-    func didOrgImageDone(_ controller: PlaceInfoTableViewController, name: String, image: UIImage) {
-        let index = places.firstIndex(where: {$0.name == name})!
-        places[index].orgImg = image
-        print("여기 실행 된비끼")
-    }
-    
-    func getOrgImg(){
-        for place in places{
-            if place.image == true{
-                let imgName = place.name + "_original"
-                let fileUrl = "gs://wethere-2935d.appspot.com/" + imgName
-                Storage.storage().reference(forURL: fileUrl).downloadURL { url, error in
-                    let data = NSData(contentsOf: url!)
-                    let downloadImg = UIImage(data: data! as Data)
-                    if error == nil {
-                        placeImages.updateValue(downloadImg!, forKey: place.name)
-                        print("image download!!!" + imgName)
-                    }
-                }
-            }
-        }
-    }
-/*
-    func getOrgImg(name : String){
-        let imgName = name + "_original"
-        let fileUrl = "gs://wethere-2935d.appspot.com/" + imgName
-        Storage.storage().reference(forURL: fileUrl).downloadURL { url, error in
-            let data = NSData(contentsOf: url!)
-            let downloadImg = UIImage(data: data! as Data)
-            if error == nil {
-                placeImages.updateValue(downloadImg!, forKey: name)
-                print("image download!!!" + imgName)
-            }
-        }
-    }
-*/
-    
+
     @objc func newUpdate(_ notification: Notification){
         newUapdate = true
         if notification.object != nil{
@@ -156,15 +116,24 @@ class MainPlaceViewController: UIViewController, UITableViewDelegate, UITableVie
         }
     }
     
-    
+    func didOrgImageDone(_ controller: PlaceInfoTableViewController, newData: PlaceData) {
+        let index = places.firstIndex(where: {$0.name == newData.name})!
+        places[index] = newData
+        newUapdate = true
+        print("여기 실행 된비끼")
+    }
+
     func loadPlaceData() {
         service = PlaceService()
         service?.get(collectionID: "users") { places in
             self.allPlaces = places
         }
     }
-
     
+    func changeOrgImg(_ placeList: [PlaceData]){
+        places = placeList
+    }
+
     func downloadList(){
         let docRef = db.collection("category").document("category")
         docRef.getDocument { (document, error) in
@@ -258,10 +227,10 @@ class MainPlaceViewController: UIViewController, UITableViewDelegate, UITableVie
             cellData = places
         }
         
-        if placeImages[cellData[indexPath.row].name] == nil{
-            cell.setImage(cellData[indexPath.row])
+        if cellData[indexPath.row].thumbnail != nil{
+            cell.imgPlace.image = cellData[indexPath.row].orgImg
         }else{
-            cell.imgPlace.image = placeImages[cellData[indexPath.row].name]
+            cell.setImage(cellData[indexPath.row])
         }
         
         cell.lblPlaceName.text = cellData[indexPath.row].name
@@ -312,9 +281,8 @@ class MainPlaceViewController: UIViewController, UITableViewDelegate, UITableVie
                 }
               }
             
-            
-            placeImages.removeValue(forKey: cellData[(indexPath as NSIndexPath).row].name)
-        //    places.remove(at: (indexPath as NSIndexPath).row)
+      //      placeImages.removeValue(forKey: cellData[(indexPath as NSIndexPath).row].name)
+      
            let removeDataIndex = places.firstIndex(where: {$0.name == cellData[(indexPath as NSIndexPath).row].name})!
             places.remove(at: removeDataIndex)
             
@@ -431,7 +399,10 @@ class MainPlaceViewController: UIViewController, UITableViewDelegate, UITableVie
                 cellData = places
             }
             
-            infoView.getPlaceInfo(cellData[(indexPath! as NSIndexPath).row], image: placeImages[cellData[(indexPath! as NSIndexPath).row].name]!)
+            infoView.imgDelegate = self
+    
+            infoView.getPlaceInfo(cellData[(indexPath! as NSIndexPath).row], image: cellData[(indexPath! as NSIndexPath).row].orgImg!)
+        
             /*
             if cellData[(indexPath! as NSIndexPath).row].image{
                 infoView.getPlaceInfo(cellData[(indexPath! as NSIndexPath).row], image: placeImages[cellData[(indexPath! as NSIndexPath).row].name]!)
@@ -439,6 +410,7 @@ class MainPlaceViewController: UIViewController, UITableViewDelegate, UITableVie
                 infoView.getPlaceInfo(cellData[(indexPath! as NSIndexPath).row], image: UIImage(named: "example.jpeg")!)
             }
  */
+            
         }
         if segue.identifier == "sgAddPlace"{
             let addView = segue.destination as! AddPlaceTableViewController

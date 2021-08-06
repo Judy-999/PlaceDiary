@@ -26,6 +26,7 @@ class PlaceCell: UITableViewCell {
 
     func setImage(_ data: PlaceData){
         let imageName = data.name
+        var newData = data
         if data.image == true {
             let fileUrl = "gs://wethere-2935d.appspot.com/" + imageName
             Storage.storage().reference(forURL: fileUrl).downloadURL { [self] url, error in
@@ -33,9 +34,11 @@ class PlaceCell: UITableViewCell {
                 let downloadImg = UIImage(data: data! as Data)
                 if error == nil {
                     self.imgPlace.image = downloadImg
-                    placeImages.updateValue(downloadImg!, forKey: imageName)
+                    //placeImages.updateValue(downloadImg!, forKey: imageName)
                     print("image download!!!셀셀셀" + imageName)
-                    NotificationCenter.default.post(name: NSNotification.Name(rawValue: "endLoading"), object: nil)
+                    newData.thumbnail = true
+                    newData.orgImg = downloadImg
+                    NotificationCenter.default.post(name: NSNotification.Name(rawValue: "endLoading"), object: newData)
                 }
             }
         }else{
@@ -49,9 +52,9 @@ class PlaceCell: UITableViewCell {
                 let downloadImg = UIImage(data: data! as Data)
                 if error == nil {
                     self.imgPlace.image = downloadImg
-                    placeImages.updateValue(downloadImg!, forKey: imageName)
-                    print("image download!!!셀셀셀" + imageName)
-                    NotificationCenter.default.post(name: NSNotification.Name(rawValue: "endLoading"), object: nil)
+                    newData.thumbnail = true
+                    newData.orgImg = downloadImg
+                    NotificationCenter.default.post(name: NSNotification.Name(rawValue: "endLoading"), object: newData)
                 }
             }
         }

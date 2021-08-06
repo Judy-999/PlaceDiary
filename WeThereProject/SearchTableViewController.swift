@@ -7,10 +7,11 @@
 
 import UIKit
 
-class SearchTableViewController: UITableViewController {
+class SearchTableViewController: UITableViewController, ImageDelegate{
 
     @IBOutlet var searchTableView: UITableView!
     
+    var newUpdate = false
     var places = [PlaceData]()
     var filterArray = [PlaceData]()
     var txtSearch : String?
@@ -54,6 +55,30 @@ class SearchTableViewController: UITableViewController {
         tableView.reloadData()
     }
     
+    override func viewDidDisappear(_ animated: Bool) {
+        if newUpdate == true{
+            orgImageUpdate()
+            newUpdate = false
+        }
+    }
+    
+    func didOrgImageDone(_ controller: PlaceInfoTableViewController, newData: PlaceData) {
+        let index = places.firstIndex(where: {$0.name == newData.name})!
+        places[index] = newData
+        newUpdate = true
+    }
+    
+    func orgImageUpdate(){
+         let vc = self.tabBarController?.viewControllers![3] as! MapViewController
+         let nav = self.tabBarController?.viewControllers![0] as! UINavigationController
+         let sc = nav.topViewController as! MainPlaceViewController
+         let cnav = self.tabBarController?.viewControllers![2] as! UINavigationController
+         let cc = cnav.topViewController as! CalendarController
+                  
+         cc.getDate(places)
+         vc.getPlace(places)
+         sc.changeOrgImg(places)
+     }
     
     // MARK: - Table view data source
 
@@ -154,6 +179,8 @@ class SearchTableViewController: UITableViewController {
             let indexPath = self.searchTableView.indexPath(for: cell)
             let infoView = segue.destination as! PlaceInfoTableViewController
             
+            infoView.imgDelegate = self
+            
             var i: PlaceData!
             
             if isSearching{
@@ -162,8 +189,8 @@ class SearchTableViewController: UITableViewController {
                 i = places.first(where: {$0.name == places[(indexPath! as NSIndexPath).row].name})
             }
             
-            infoView.getPlaceInfo(i, image: placeImages[i.name]!)
-            
+          //  infoView.getPlaceInfo(i, image: placeImages[i.name]!)
+            infoView.getPlaceInfo(i, image: i!.orgImg!)
             //infoView.getInfo(places[(indexPath! as NSIndexPath).row], image: placeImages[places[(indexPath! as NSIndexPath).row].name]!)
         }
     }
