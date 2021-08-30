@@ -7,7 +7,7 @@
 
 import UIKit
 
-class SearchTableViewController: UITableViewController, ImageDelegate{
+class SearchTableViewController: UITableViewController {
 
     @IBOutlet var searchTableView: UITableView!
     
@@ -60,12 +60,6 @@ class SearchTableViewController: UITableViewController, ImageDelegate{
             orgImageUpdate()
             newUpdate = false
         }
-    }
-    
-    func didOrgImageDone(_ controller: PlaceInfoTableViewController, newData: PlaceData) {
-        let index = places.firstIndex(where: {$0.name == newData.name})!
-        places[index] = newData
-        newUpdate = true
     }
     
     func orgImageUpdate(){
@@ -179,7 +173,6 @@ class SearchTableViewController: UITableViewController, ImageDelegate{
             let indexPath = self.searchTableView.indexPath(for: cell)
             let infoView = segue.destination as! PlaceInfoTableViewController
             
-            infoView.imgDelegate = self
             
             var i: PlaceData!
             

@@ -11,7 +11,7 @@ import Firebase
 import GoogleMaps
 import GooglePlaces
 
-class MapViewController: UIViewController, ImageDelegate, CLLocationManagerDelegate, GMSMapViewDelegate {
+class MapViewController: UIViewController, CLLocationManagerDelegate, GMSMapViewDelegate {
    
     var locationManager: CLLocationManager!
     var mapView: GMSMapView?
@@ -62,12 +62,7 @@ class MapViewController: UIViewController, ImageDelegate, CLLocationManagerDeleg
             newUpdate = false
         }
     }
-    
-    func didOrgImageDone(_ controller: PlaceInfoTableViewController, newData: PlaceData) {
-        let index = places.firstIndex(where: {$0.name == newData.name})!
-        places[index] = newData
-        newUpdate = true
-    }
+
     
     func orgImageUpdate(){
          let nav = self.tabBarController?.viewControllers![0] as! UINavigationController
@@ -132,7 +127,7 @@ class MapViewController: UIViewController, ImageDelegate, CLLocationManagerDeleg
         if segue.identifier == "sgMapInfo"{
             let infoView = segue.destination as! PlaceInfoTableViewController
             let i = places.first(where: {$0.name == placeTitle})
-            infoView.imgDelegate = self
+
             infoView.getPlaceInfo(i!, image: i!.orgImg!)
         }
     }

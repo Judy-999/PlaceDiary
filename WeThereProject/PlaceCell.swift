@@ -28,33 +28,28 @@ class PlaceCell: UITableViewCell {
         let imageName = data.name
         var newData = data
         if data.image == true {
-            let fileUrl = "gs://wethere-2935d.appspot.com/" + imageName
+            let fileUrl = "gs://wethere-2935d.appspot.com/" + imageName + "_original"
             Storage.storage().reference(forURL: fileUrl).downloadURL { [self] url, error in
                 let data = NSData(contentsOf: url!)
                 let downloadImg = UIImage(data: data! as Data)
                 if error == nil {
-                    self.imgPlace.image = downloadImg
-                    //placeImages.updateValue(downloadImg!, forKey: imageName)
+                    DispatchQueue.main.async {
+                        self.imgPlace.image = downloadImg
+                    }
                     print("image download!!!셀셀셀" + imageName)
-                    newData.thumbnail = true
                     newData.orgImg = downloadImg
-                    NotificationCenter.default.post(name: NSNotification.Name(rawValue: "endLoading"), object: newData)
+                    NotificationCenter.default.post(name: NSNotification.Name(rawValue: "updateImg"), object: newData)
                 }
             }
         }else{
-            /*
-                self.imgPlace.image = UIImage(named: "example.jpeg")
-                NotificationCenter.default.post(name: NSNotification.Name(rawValue: "endLoading"), object: nil)
- */
             let fileUrl = "gs://wethere-2935d.appspot.com/" + "defaultImage_original"
             Storage.storage().reference(forURL: fileUrl).downloadURL { [self] url, error in
                 let data = NSData(contentsOf: url!)
                 let downloadImg = UIImage(data: data! as Data)
                 if error == nil {
                     self.imgPlace.image = downloadImg
-                    newData.thumbnail = true
                     newData.orgImg = downloadImg
-                    NotificationCenter.default.post(name: NSNotification.Name(rawValue: "endLoading"), object: newData)
+                    NotificationCenter.default.post(name: NSNotification.Name(rawValue: "updateImg"), object: newData)
                 }
             }
         }

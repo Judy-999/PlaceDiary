@@ -13,7 +13,7 @@ struct PlaceDate{
     var name: [String]
 }
 
-class CalendarController: UIViewController, ImageDelegate, FSCalendarDelegate, FSCalendarDataSource {
+class CalendarController: UIViewController, FSCalendarDelegate, FSCalendarDataSource {
 
     @IBOutlet weak var calendar: FSCalendar!
     @IBOutlet weak var tableView: UITableView!
@@ -60,12 +60,7 @@ class CalendarController: UIViewController, ImageDelegate, FSCalendarDelegate, F
         }
     }
     
-    func didOrgImageDone(_ controller: PlaceInfoTableViewController, newData: PlaceData) {
-        let index = places.firstIndex(where: {$0.name == newData.name})!
-        places[index] = newData
-        newUpdate = true
-    }
-    
+
     func orgImageUpdate(){
          let vc = self.tabBarController?.viewControllers![3] as! MapViewController
          let nav = self.tabBarController?.viewControllers![0] as! UINavigationController
@@ -171,7 +166,7 @@ extension CalendarController: UITableViewDelegate, UITableViewDataSource{
             let cell = sender as! UITableViewCell
             let indexPath = self.tableView.indexPath(for: cell)
             let infoView = segue.destination as! PlaceInfoTableViewController
-            infoView.imgDelegate = self
+            
             let i = places.first(where: {$0.name == selectedName[(indexPath! as NSIndexPath).row]})
             //infoView.getPlaceInfo(i!, image: placeImages[(i?.name)!]!)
             infoView.getPlaceInfo(i!, image: i!.orgImg!)

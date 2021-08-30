@@ -9,10 +9,6 @@
 import UIKit
 import Firebase
 
-protocol ImageDelegate {
-    func didOrgImageDone(_ controller: PlaceInfoTableViewController, newData: PlaceData)
-}
-
 class PlaceInfoTableViewController: UITableViewController, EditDelegate {
 
     let storage = Storage.storage()
@@ -31,7 +27,6 @@ class PlaceInfoTableViewController: UITableViewController, EditDelegate {
     var editData : PlaceData?
     var count = "0"
     var reGroup = ""
-    var imgDelegate : ImageDelegate?
     
     @IBOutlet var placeImg: UIImageView!
     @IBOutlet var lblPlacename: UILabel!
@@ -75,21 +70,6 @@ class PlaceInfoTableViewController: UITableViewController, EditDelegate {
         
     }
     
-    @objc func loadOrgImage(_ notification: Notification){
-       // placeImg.image = placeImages[notification.object as! String]
-        placeImg.image = editData?.orgImg
-        editData?.thumbnail = false
-        NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: "loadImage"), object: nil)
-        if imgDelegate != nil{
-            imgDelegate?.didOrgImageDone(self, newData: editData!)
-            print("요기는 하니?")
-        }else{
-            print("델리게이트 없대요")
-        }
-        print("이미지 바꿨어요!")
-    }
-    
-    
     func getPlaceInfo(_ data: PlaceData, image: UIImage){
         editData = data
         
@@ -108,12 +88,12 @@ class PlaceInfoTableViewController: UITableViewController, EditDelegate {
         reDate = formatter.string(from: data.date)
         
         
-        if data.image == true{
+       /* if data.image == true{
             if data.thumbnail == true{
                 NotificationCenter.default.addObserver(self, selector: #selector(loadOrgImage), name: NSNotification.Name(rawValue: "loadImage"), object: nil)
                 getOrgImg(name : data.name)
             }
-        }
+        }*/
     }
     
     func setPlaceInfo(){
@@ -129,21 +109,6 @@ class PlaceInfoTableViewController: UITableViewController, EditDelegate {
         fillRate.fill(buttons: rateBtn, rate: NSString(string: reRate).floatValue)
         
     }
-
-    func getOrgImg(name : String){
-        let imgName = name + "_original"
-        let fileUrl = "gs://wethere-2935d.appspot.com/" + imgName
-        Storage.storage().reference(forURL: fileUrl).downloadURL { url, error in
-            let data = NSData(contentsOf: url!)
-            let downloadImg = UIImage(data: data! as Data)
-            if error == nil {
-                self.editData?.orgImg = downloadImg!
-                print("image download!!!" + imgName)
-                NotificationCenter.default.post(name: NSNotification.Name(rawValue: "loadImage"), object: name)
-            }
-        }
-    }
-
     
     func didEditPlace(_ controller: AddPlaceTableViewController, data: PlaceData, image: UIImage) {
          getPlaceInfo(data, image: image)

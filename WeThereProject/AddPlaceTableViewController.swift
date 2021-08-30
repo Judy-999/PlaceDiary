@@ -265,9 +265,12 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
                 editData?.group = tfGroup.text!
                 editDelegate?.didEditPlace(self, data: editData!, image: selectedImage)
             }
+            
+            _ = navigationController?.popViewController(animated: true)
+         
             NotificationCenter.default.post(name: NSNotification.Name(rawValue: "newPlaceUpdate"), object: nil)
            
-            _ = navigationController?.popViewController(animated: true)
+            
         }
     }
     
@@ -417,16 +420,6 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
         let metaData = StorageMetadata()
         metaData.contentType = "image/jpeg"
         storageRef.child(filePath + "_original").putData(data, metadata: metaData){
-            (metaData, error) in if let error = error{
-                print(error.localizedDescription)
-                return
-            }else{
-                print("Image successfully upload!")
-            }
-        }
-        let smallImg = image.resize(newWidth: 50)
-        data = smallImg.jpegData(compressionQuality: 0.8)!
-        storageRef.child(filePath).putData(data, metadata: metaData){
             (metaData, error) in if let error = error{
                 print(error.localizedDescription)
                 return

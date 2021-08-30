@@ -15,11 +15,11 @@
 		2020E4E52667BF570091D569 /* PlaceFirestore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2020E4E42667BF570091D569 /* PlaceFirestore.swift */; };
 		2020E4E72667C2FC0091D569 /* PlaceService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2020E4E62667C2FC0091D569 /* PlaceService.swift */; };
 		202C3E0B2686F97D00E3881D /* ImageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 202C3E0A2686F97D00E3881D /* ImageViewController.swift */; };
-		2044A8352671E989002ABBD8 /* TagTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2044A8342671E989002ABBD8 /* TagTextView.swift */; };
 		204CEEB7267F0A3F000D395F /* CategoryEditController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 204CEEB6267F0A3F000D395F /* CategoryEditController.swift */; };
 		204CEEB9267F0BD1000D395F /* SettingTableController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 204CEEB8267F0BD1000D395F /* SettingTableController.swift */; };
 		20544EFB268AFBD700D780E4 /* CalendarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20544EFA268AFBD700D780E4 /* CalendarController.swift */; };
 		207E4F862660985D00AC0A6E /* AddPlaceTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 207E4F852660985D00AC0A6E /* AddPlaceTableViewController.swift */; };
+		208382A526DB8C5000CC5FEE /* TagTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2044A8342671E989002ABBD8 /* TagTextView.swift */; };
 		20841264265F28A4006FE0EF /* example.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = 20841263265F28A4006FE0EF /* example.jpeg */; };
 		208D9FE9266DFD4A00FC2067 /* AddRate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 208D9FE8266DFD4A00FC2067 /* AddRate.swift */; };
 		20B113812689958700A6A0FD /* GroupInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20B113802689958600A6A0FD /* GroupInfo.swift */; };
@@ -305,7 +305,6 @@
 				20B113832689BBC200A6A0FD /* PlaceCell.swift in Sources */,
 				20E3E2D1265E2639004BDFF6 /* AppDelegate.swift in Sources */,
 				204CEEB7267F0A3F000D395F /* CategoryEditController.swift in Sources */,
-				2044A8352671E989002ABBD8 /* TagTextView.swift in Sources */,
 				20166C2F26830F55002AF187 /* SearchTableViewController.swift in Sources */,
 				202C3E0B2686F97D00E3881D /* ImageViewController.swift in Sources */,
 				20CB7C9C269F28130057EAF0 /* MainPlaceViewController.swift in Sources */,
@@ -316,6 +315,7 @@
 				2020E4E32667BE600091D569 /* Place.swift in Sources */,
 				208D9FE9266DFD4A00FC2067 /* AddRate.swift in Sources */,
 				20544EFB268AFBD700D780E4 /* CalendarController.swift in Sources */,
+				208382A526DB8C5000CC5FEE /* TagTextView.swift in Sources */,
 				207E4F862660985D00AC0A6E /* AddPlaceTableViewController.swift in Sources */,
 				20B113812689958700A6A0FD /* GroupInfo.swift in Sources */,
 			);
