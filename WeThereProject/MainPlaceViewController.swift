@@ -210,18 +210,10 @@ class MainPlaceViewController: UIViewController, UITableViewDelegate, UITableVie
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "placeCell", for: indexPath) as! PlaceCell
+ 
+        /*let cell = tableView.dequeueReusableCell(withIdentifier: "placeCell", for: indexPath) as! PlaceCell
         
         let cellData = getPlaceList(sectionNum: sgNum, index: indexPath)
-        
-      /*  if cellData[indexPath.row].orgImg != nil{
-            cell.imgPlace.image = cellData[indexPath.row].orgImg
-        }else{
-            DispatchQueue.main.async {
-                cell.setImage(cellData[indexPath.row])
-            }
-            print(cellData[indexPath.row].name + " 여기 들어와여")
-        }*/
         
         if placeImages[cellData[indexPath.row].name] == nil{
             cell.setImage(cellData[indexPath.row])
@@ -239,8 +231,62 @@ class MainPlaceViewController: UIViewController, UITableViewDelegate, UITableVie
         }
         
         return cell
+ */
+        
+        let cell = tableView.dequeueReusableCell(withIdentifier: "testTableCell", for: indexPath)
+        
+        
+        cell.textLabel?.font = UIFont .boldSystemFont(ofSize: 20)
+        cell.detailTextLabel?.font = UIFont .systemFont(ofSize: 15)
+        
+        
+        cell.textLabel?.text = places[indexPath.row].name
+    //    cell.textLabel?.font = .systemFont(ofSize: 20, weight: .medium)
+        cell.detailTextLabel?.text = places[indexPath.row].location
+        
+        cell.imageView?.image = UIImage(named: "wethere.jpeg")
+        
+        cell.tag += 1
+        let tag = cell.tag
+
+       getImage(place: places[indexPath.row]) { photo in
+            if photo != nil {
+                if cell.tag == tag {
+                    DispatchQueue.main.async {
+                        cell.imageView?.image = photo
+                    }
+                }
+            }
+        }
+        
+        return cell
     }
 
+    func getImage(place: PlaceData, completion: @escaping (UIImage?) -> ()) {
+       // var url = "gs://wethere-2935d.appspot.com/"
+        var fileName = place.name
+        if place.image == false{
+            fileName = "defaultImage_original"
+            //url = url + place.name
+        }
+        /*else{
+           // url = url + "defaultImage_original"
+        }*/
+        let islandRef = storage.reference().child(fileName)
+        islandRef.getData(maxSize: 1 * 1024 * 1024) { data, error in
+                
+     //  storage.reference(forURL: url).downloadURL { url, error in
+     //       let data = NSData(contentsOf: url!)
+            let downloadImg = UIImage(data: data! as Data)
+            if error == nil {
+                completion(downloadImg)
+                print("image download!!!" + place.name)
+            } else {
+                    completion(nil)
+            }
+        }
+    }
+    
     // Override to support editing the table view.
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {    //셀 삭제
