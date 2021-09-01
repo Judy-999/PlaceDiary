@@ -211,15 +211,35 @@ class MainPlaceViewController: UIViewController, UITableViewDelegate, UITableVie
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
  
-        /*let cell = tableView.dequeueReusableCell(withIdentifier: "placeCell", for: indexPath) as! PlaceCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: "placeCell", for: indexPath) as! PlaceCell
         
         let cellData = getPlaceList(sectionNum: sgNum, index: indexPath)
-        
+        /*
         if placeImages[cellData[indexPath.row].name] == nil{
             cell.setImage(cellData[indexPath.row])
         }else{
             cell.imgPlace.image = placeImages[cellData[indexPath.row].name]
         }
+        */
+        
+        if placeImages[cellData[indexPath.row].name] != nil{
+            cell.imgPlace.image = placeImages[cellData[indexPath.row].name]
+        }else{
+            cell.imgPlace.image = UIImage(named: "wethere.jpeg")
+    
+            if places[indexPath.row].image{
+                getImage(place: places[indexPath.row]) { photo in
+                    if photo != nil {
+                        DispatchQueue.main.async { [self] in
+                            cell.imgPlace.image = photo
+                            places[indexPath.row].orgImg = photo
+                            placeImages.updateValue(photo!, forKey: self.places[indexPath.row].name)
+                         }
+                     }
+                }
+            }
+        }
+        
         
         cell.lblPlaceName.text = cellData[indexPath.row].name
         cell.lblPlaceLocation.text = cellData[indexPath.row].location
@@ -231,7 +251,10 @@ class MainPlaceViewController: UIViewController, UITableViewDelegate, UITableVie
         }
         
         return cell
- */
+    }
+        
+        
+        /*
         
         let cell = tableView.dequeueReusableCell(withIdentifier: "testTableCell", for: indexPath)
         
@@ -261,31 +284,22 @@ class MainPlaceViewController: UIViewController, UITableViewDelegate, UITableVie
         
         return cell
     }
-
+*/
     func getImage(place: PlaceData, completion: @escaping (UIImage?) -> ()) {
-       // var url = "gs://wethere-2935d.appspot.com/"
-        var fileName = place.name
-        if place.image == false{
-            fileName = "defaultImage_original"
-            //url = url + place.name
-        }
-        /*else{
-           // url = url + "defaultImage_original"
-        }*/
+        let fileName = place.name + "_original"
+        print("왜 자꾸 들어와" +  fileName)
         let islandRef = storage.reference().child(fileName)
         islandRef.getData(maxSize: 1 * 1024 * 1024) { data, error in
-                
-     //  storage.reference(forURL: url).downloadURL { url, error in
-     //       let data = NSData(contentsOf: url!)
             let downloadImg = UIImage(data: data! as Data)
             if error == nil {
                 completion(downloadImg)
-                print("image download!!!" + place.name)
+                print("image download!!!" + fileName)
             } else {
                     completion(nil)
             }
         }
     }
+ 
     
     // Override to support editing the table view.
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
