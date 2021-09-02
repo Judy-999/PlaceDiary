@@ -24,43 +24,49 @@ class PlaceCell: UITableViewCell {
         // Initialization code
     }
 
-    /*
-
-    func setImage(_ data: PlaceData){
-        let imageName = data.name
-        var newData = data
-        if data.image == true {
-            let islandRef = storage.reference().child(imageName + "_original")
+    func getImage(place: PlaceData, completion: @escaping (UIImage?) -> ()) {
+        let fileName = place.name + "_original"
+        if place.image == true {
+            let islandRef = storage.reference().child(fileName)
             islandRef.getData(maxSize: 1 * 1024 * 1024) { data, error in
-         //   let fileUrl = "gs://wethere-2935d.appspot.com/" + imageName + "_original"
-         //   Storage.storage().reference(forURL: fileUrl).downloadURL { [self] url, error in
-         //       let data = NSData(contentsOf: url!)
+                let downloadImg = UIImage(data: data! as Data)
+                if error == nil {
+                    completion(downloadImg)
+                    print("image download!!!" + fileName)
+                } else {
+                        completion(nil)
+                }
+            }
+        }else{
+            let basicImg = UIImage(named: "wethere.jpeg")
+            completion(basicImg)
+        }
+    }
+    
+    func setImage(_ data: PlaceData) -> UIImage {
+        let imageName = data.name + "_original"
+        var returnImg : UIImage?
+        if data.image == true {
+            let islandRef = storage.reference().child(imageName)
+            islandRef.getData(maxSize: 1 * 1024 * 1024) { data, error in
                 let downloadImg = UIImage(data: data! as Data)
                 if error == nil {
                     DispatchQueue.main.async {
                         self.imgPlace.image = downloadImg
+                        returnImg = downloadImg
                     }
-                    print("image download!!!셀셀셀" + imageName + "_original")
-                    newData.orgImg = downloadImg
-                    NotificationCenter.default.post(name: NSNotification.Name(rawValue: "updateImg"), object: newData)
+                    print("image download!!!셀셀셀" + imageName)
+                    
+              //      NotificationCenter.default.post(name: NSNotification.Name(rawValue: "updateImg"), object: newData)
                 }
             }
+            return returnImg!
         }else{
-            let islandRef = storage.reference().child("defaultImage_original")
-            islandRef.getData(maxSize: 1 * 1024 * 1024) { data, error in
-       //     let fileUrl = "gs://wethere-2935d.appspot.com/" + "defaultImage_original"
-       //     Storage.storage().reference(forURL: fileUrl).downloadURL { [self] url, error in
-       //         let data = NSData(contentsOf: url!)
-                let downloadImg = UIImage(data: data! as Data)
-                if error == nil {
-                    self.imgPlace.image = downloadImg
-                    newData.orgImg = downloadImg
-                    NotificationCenter.default.post(name: NSNotification.Name(rawValue: "updateImg"), object: newData)
-                }
-            }
+            returnImg = UIImage(named: "wethere.jpeg")
+            return returnImg!
         }
     }
- */
+ 
     
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)

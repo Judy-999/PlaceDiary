@@ -266,9 +266,9 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
                 editDelegate?.didEditPlace(self, data: editData!, image: selectedImage)
             }
             
-            _ = navigationController?.popViewController(animated: true)
+        //    _ = navigationController?.popViewController(animated: true)
          
-            NotificationCenter.default.post(name: NSNotification.Name(rawValue: "newPlaceUpdate"), object: nil)
+             NotificationCenter.default.post(name: NSNotification.Name(rawValue: "newPlaceUpdate"), object: nil)
            
             
         }
@@ -303,6 +303,24 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
                 print("Error writing document: \(err)")
             } else {
                 print("Document successfully written!")
+            }
+        }
+    }
+    
+    func uploadImage(_ path: String, image: UIImage){
+        let original = image.resize(newWidth: 300)
+        var data = Data()
+        data = original.jpegData(compressionQuality: 0.8)!
+        let filePath = path
+        let metaData = StorageMetadata()
+        metaData.contentType = "image/jpeg"
+        storageRef.child(filePath + "_original").putData(data, metadata: metaData){
+            (metaData, error) in if let error = error{
+                print(error.localizedDescription)
+                return
+            }else{
+                print("Image successfully upload!")
+                _ = self.navigationController?.popViewController(animated: true)
             }
         }
     }
@@ -349,6 +367,33 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
         }
     }
     
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        selectedImage = info[UIImagePickerController.InfoKey.originalImage] as? UIImage //사진을 가져와 라이브러리에 저장
+
+        placeImageView.image = selectedImage
+        
+      //  placeImageView.image = selectedImage.resize(newWidth: 10)
+   
+     //   selectedImage = selectedImage.resize(newWidth: 50)
+        
+        self.dismiss(animated: true, completion: nil)   //현재 뷰 컨트롤러 제거
+    }
+        
+    //사용자가 사진이나 비디오를 찍지 않고 취소했을 때
+    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+        self.dismiss(animated: true, completion: nil)   //이미지 피커를 제거하고 초기 뷰를 보여줌
+    }
+        
+    
+    //경고 표시
+    func myAlert(_ title: String, message: String){
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        let action = UIAlertAction(title: "Ok", style: .default, handler: nil)
+        alert.addAction(action)
+        present(alert, animated: true, completion: nil)
+    }
+    
+
     @IBAction func switchOn(_ sender: UISwitch){
         if sender.isOn == true{
             for btn in rateButtons{
@@ -394,50 +439,6 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
         searchController.delegate = self
         present(searchController, animated: true, completion: nil)
     }
-    
-    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
-        selectedImage = info[UIImagePickerController.InfoKey.originalImage] as? UIImage //사진을 가져와 라이브러리에 저장
-
-        placeImageView.image = selectedImage
-        
-      //  placeImageView.image = selectedImage.resize(newWidth: 10)
-   
-     //   selectedImage = selectedImage.resize(newWidth: 50)
-        
-        self.dismiss(animated: true, completion: nil)   //현재 뷰 컨트롤러 제거
-    }
-        
-    //사용자가 사진이나 비디오를 찍지 않고 취소했을 때
-    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
-        self.dismiss(animated: true, completion: nil)   //이미지 피커를 제거하고 초기 뷰를 보여줌
-    }
-        
-    func uploadImage(_ path: String, image: UIImage){
-        let original = image.resize(newWidth: 300)
-        var data = Data()
-        data = original.jpegData(compressionQuality: 0.8)!
-        let filePath = path
-        let metaData = StorageMetadata()
-        metaData.contentType = "image/jpeg"
-        storageRef.child(filePath + "_original").putData(data, metadata: metaData){
-            (metaData, error) in if let error = error{
-                print(error.localizedDescription)
-                return
-            }else{
-                print("Image successfully upload!")
-            }
-        }
-    }
-    
-    //경고 표시
-    func myAlert(_ title: String, message: String){
-        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
-        let action = UIAlertAction(title: "Ok", style: .default, handler: nil)
-        alert.addAction(action)
-        present(alert, animated: true, completion: nil)
-    }
-    
-
 
     
     /*

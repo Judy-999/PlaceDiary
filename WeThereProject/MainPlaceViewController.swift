@@ -60,27 +60,10 @@ class MainPlaceViewController: UIViewController, UITableViewDelegate, UITableVie
         loadPlaceData()
         downloadList()
         
-        NotificationCenter.default.addObserver(self, selector: #selector(updateImg), name: NSNotification.Name(rawValue: "updateImg"), object: nil)
-        
-        NotificationCenter.default.addObserver(self, selector: #selector(newUpdate), name: NSNotification.Name(rawValue: "newPlaceUpdate"), object: nil)
+  //      NotificationCenter.default.addObserver(self, selector: #selector(newUpdate), name: NSNotification.Name(rawValue: "newPlaceUpdate"), object: nil)
         
     }
 
-    @objc func updateImg(_ notification: Notification){
-        let newPlace = notification.object as! PlaceData
-        let index = places.firstIndex(where: {$0.name == newPlace.name})!
-        places[index] = newPlace
-        placeImages.updateValue(newPlace.orgImg!, forKey: newPlace.name)
-     /*   loadingCount = loadingCount + 1
-        print("로딩 카운트 : " + String(loadingCount) + " 전체 카운트 : " + String(places.count))
-        if loadingCount == places.count{
-            loadingView.removeFromSuperview()
-            print("스탐햇오")
-            NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: "endLoading"), object: nil)
-        }
- */
-    }
-    
     @objc func newUpdate(_ notification: Notification){
         newUapdate = true
         if notification.object != nil{
@@ -214,21 +197,26 @@ class MainPlaceViewController: UIViewController, UITableViewDelegate, UITableVie
         let cell = tableView.dequeueReusableCell(withIdentifier: "placeCell", for: indexPath) as! PlaceCell
         
         let cellData = getPlaceList(sectionNum: sgNum, index: indexPath)
-        /*
-        if placeImages[cellData[indexPath.row].name] == nil{
-            cell.setImage(cellData[indexPath.row])
-        }else{
-            cell.imgPlace.image = placeImages[cellData[indexPath.row].name]
-        }
-        */
         
         if placeImages[cellData[indexPath.row].name] != nil{
             cell.imgPlace.image = placeImages[cellData[indexPath.row].name]
         }else{
             cell.imgPlace.image = UIImage(named: "wethere.jpeg")
-    
-            if places[indexPath.row].image{
-                getImage(place: places[indexPath.row]) { photo in
+
+         //   let cellImg = cell.setImage(places[indexPath.row])
+         //   placeImages.updateValue(cellImg, forKey: self.places[indexPath.row].name)
+              
+            
+            cell.getImage(place: places[indexPath.row]){ photo in
+                if photo != nil {
+                    DispatchQueue.main.async { [self] in
+                        cell.imgPlace.image = photo
+                        placeImages.updateValue(photo!, forKey: self.places[indexPath.row].name)
+                     }
+                }
+            }
+                    
+            /*getImage(place: places[indexPath.row]) { photo in
                     if photo != nil {
                         DispatchQueue.main.async { [self] in
                             cell.imgPlace.image = photo
@@ -236,10 +224,8 @@ class MainPlaceViewController: UIViewController, UITableViewDelegate, UITableVie
                             placeImages.updateValue(photo!, forKey: self.places[indexPath.row].name)
                          }
                      }
-                }
-            }
+                }*/
         }
-        
         
         cell.lblPlaceName.text = cellData[indexPath.row].name
         cell.lblPlaceLocation.text = cellData[indexPath.row].location
@@ -253,41 +239,8 @@ class MainPlaceViewController: UIViewController, UITableViewDelegate, UITableVie
         return cell
     }
         
-        
-        /*
-        
-        let cell = tableView.dequeueReusableCell(withIdentifier: "testTableCell", for: indexPath)
-        
-        
-        cell.textLabel?.font = UIFont .boldSystemFont(ofSize: 20)
-        cell.detailTextLabel?.font = UIFont .systemFont(ofSize: 15)
-        
-        
-        cell.textLabel?.text = places[indexPath.row].name
-    //    cell.textLabel?.font = .systemFont(ofSize: 20, weight: .medium)
-        cell.detailTextLabel?.text = places[indexPath.row].location
-        
-        cell.imageView?.image = UIImage(named: "wethere.jpeg")
-        
-        cell.tag += 1
-        let tag = cell.tag
-
-       getImage(place: places[indexPath.row]) { photo in
-            if photo != nil {
-                if cell.tag == tag {
-                    DispatchQueue.main.async {
-                        cell.imageView?.image = photo
-                    }
-                }
-            }
-        }
-        
-        return cell
-    }
-*/
     func getImage(place: PlaceData, completion: @escaping (UIImage?) -> ()) {
         let fileName = place.name + "_original"
-        print("왜 자꾸 들어와" +  fileName)
         let islandRef = storage.reference().child(fileName)
         islandRef.getData(maxSize: 1 * 1024 * 1024) { data, error in
             let downloadImg = UIImage(data: data! as Data)
@@ -343,6 +296,7 @@ class MainPlaceViewController: UIViewController, UITableViewDelegate, UITableVie
             
             tableView.deleteRows(at: [indexPath], with: .fade)
             placeTableView.reloadData()
+            
         } else if editingStyle == .insert {
             // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
         }
@@ -453,7 +407,7 @@ class MainPlaceViewController: UIViewController, UITableViewDelegate, UITableVie
             }
             
     
-          //  infoView.getPlaceInfo(cellData[(indexPath! as NSIndexPath).row], image: cellData[(indexPath! as NSIndexPath).row].orgImg!)
+       //     infoView.getPlaceInfo(cellData[(indexPath! as NSIndexPath).row], image: cellData[(indexPath! as NSIndexPath).row].orgImg!)
             
             infoView.getPlaceInfo(cellData[(indexPath! as NSIndexPath).row], image: placeImages[cellData[(indexPath! as NSIndexPath).row].name]!)
         
