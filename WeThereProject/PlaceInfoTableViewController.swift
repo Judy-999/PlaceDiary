@@ -129,7 +129,7 @@ class PlaceInfoTableViewController: UITableViewController, EditDelegate {
         alert.addAction(UIAlertAction(title: "장소 삭제", style: .default) { _ in
             let alert = UIAlertController(title: "장소 삭제 확인", message: "장소를 삭제하시겠습니까?", preferredStyle: .alert)
             let action = UIAlertAction(title: "확인", style: .default){ [self] _ in
-                NotificationCenter.default.post(name: NSNotification.Name(rawValue: "newPlaceUpdate"), object: editData?.name)
+                NotificationCenter.default.post(name: NSNotification.Name(rawValue: "newPlaceUpdate"), object: editData)
                 _ = navigationController?.popViewController(animated: true)
             }
             let actionCancle = UIAlertAction(title: "취소", style: .default, handler: nil)
@@ -218,8 +218,7 @@ class PlaceInfoTableViewController: UITableViewController, EditDelegate {
         }
         if segue.identifier == "sgShowImage"{
             let imageView = segue.destination as! ImageViewController
-            //imageView.fullImage = placeImg.image
-            imageView.fullImage = editData?.orgImg
+            imageView.fullImage = placeImg.image
         }
         
     }

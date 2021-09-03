@@ -21,6 +21,7 @@ class CalendarController: UIViewController, FSCalendarDelegate, FSCalendarDataSo
     var newUpdate = false
     var placeDay = [Date]()
     var places = [PlaceData]()
+    var placeImages = [String : UIImage]()
     var selectedDate = ""
     var nameDate = [Date : String]()
     var selectedName = [String]()
@@ -34,7 +35,7 @@ class CalendarController: UIViewController, FSCalendarDelegate, FSCalendarDataSo
         calendar.reloadData()
     }
 
-    func getDate(_ data: [PlaceData]){
+    func getDate(_ data: [PlaceData], images: [String : UIImage]){
         dates.removeAll()
         places = data
         for i in places{
@@ -51,27 +52,9 @@ class CalendarController: UIViewController, FSCalendarDelegate, FSCalendarDataSo
                 dates.append(sameDay!)
             }
         }
+        placeImages = images
     }
 
-    override func viewDidDisappear(_ animated: Bool) {
-        if newUpdate == true{
-            orgImageUpdate()
-            newUpdate = false
-        }
-    }
-    
-
-    func orgImageUpdate(){
-         let vc = self.tabBarController?.viewControllers![3] as! MapViewController
-         let nav = self.tabBarController?.viewControllers![0] as! UINavigationController
-         let sc = nav.topViewController as! MainPlaceViewController
-         let cnav = self.tabBarController?.viewControllers![1] as! UINavigationController
-         let cc = cnav.topViewController as! SearchTableViewController
-                  
-         cc.setData(places)
-         vc.getPlace(places)
-         sc.changeOrgImg(places)
-     }
     
     func setCalendar(){
         calendar.appearance.headerDateFormat = "YYYY년 M월"
@@ -168,8 +151,7 @@ extension CalendarController: UITableViewDelegate, UITableViewDataSource{
             let infoView = segue.destination as! PlaceInfoTableViewController
             
             let i = places.first(where: {$0.name == selectedName[(indexPath! as NSIndexPath).row]})
-            //infoView.getPlaceInfo(i!, image: placeImages[(i?.name)!]!)
-            infoView.getPlaceInfo(i!, image: i!.orgImg!)
+            infoView.getPlaceInfo(i!, image: placeImages[(i?.name)!]!)
         }
     }
 }

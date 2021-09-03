@@ -225,23 +225,6 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
         }else{
             //    tfPlaceName.placeholder = "이름을 입력하세요."
             
-            if receiveImage == nil {
-                if selectedImage == nil{
-                    isImage = false
-                }else{
-                    uploadImage(tfPlaceName.text!, image: selectedImage)
-                    editData?.orgImg = selectedImage
-                  //  placeImages.updateValue(selectedImage, forKey: tfPlaceName.text!)
-                    isImage = true
-                }
-            }else if receiveImage != selectedImage{
-                uploadImage(tfPlaceName.text!, image: selectedImage)
-               // placeImages.updateValue(selectedImage, forKey: tfPlaceName.text!)
-                editData?.orgImg = selectedImage
-                isImage = true
-            }
-                       
-            
             if txvComent.text == "코멘트를 입력하세요."{
                 txvComent.text = ""
             }
@@ -265,12 +248,34 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
                 editData?.group = tfGroup.text!
                 editDelegate?.didEditPlace(self, data: editData!, image: selectedImage)
             }
-            
-        //    _ = navigationController?.popViewController(animated: true)
          
              NotificationCenter.default.post(name: NSNotification.Name(rawValue: "newPlaceUpdate"), object: nil)
            
-            
+            if receiveImage == nil {
+                if selectedImage == nil{
+                    isImage = false
+                    uploadData()
+                    NotificationCenter.default.post(name: NSNotification.Name(rawValue: "newPlaceUpdate"), object: nil)
+                    _ = navigationController?.popViewController(animated: true)
+                }else{
+                    uploadImage(tfPlaceName.text!, image: selectedImage.resize(newWidth: 300))
+                    editData?.newImg = selectedImage
+                    NotificationCenter.default.post(name: NSNotification.Name(rawValue: "newPlaceUpdate"), object: editData)
+                  //  placeImages.updateValue(selectedImage, forKey: tfPlaceName.text!)
+                    isImage = true
+                }
+            }else if receiveImage != selectedImage{
+                uploadImage(tfPlaceName.text!, image: selectedImage.resize(newWidth: 300))
+               // placeImages.updateValue(selectedImage, forKey: tfPlaceName.text!)
+                editData?.newImg = selectedImage
+                NotificationCenter.default.post(name: NSNotification.Name(rawValue: "newPlaceUpdate"), object: editData)
+                isImage = true
+            }else{
+                NotificationCenter.default.post(name: NSNotification.Name(rawValue: "newPlaceUpdate"), object: nil)
+                _ = navigationController?.popViewController(animated: true)
+            }
+             
+          //  _ = navigationController?.popViewController(animated: true)
         }
     }
     
@@ -308,7 +313,7 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
     }
     
     func uploadImage(_ path: String, image: UIImage){
-        let original = image.resize(newWidth: 300)
+        let original = image
         var data = Data()
         data = original.jpegData(compressionQuality: 0.8)!
         let filePath = path
@@ -319,8 +324,8 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
                 print(error.localizedDescription)
                 return
             }else{
-                print("Image successfully upload!")
                 _ = self.navigationController?.popViewController(animated: true)
+                print("Image successfully upload!")
             }
         }
     }
@@ -529,8 +534,8 @@ extension UIImage {
         let render = UIGraphicsImageRenderer(size: size)
         let renderImage = render.image {
             context in self.draw(in: CGRect(origin: .zero, size: size)) }
-        print("화면 배율: \(UIScreen.main.scale)")// 배수
-        print("origin: \(self), resize: \(renderImage)")
+    //    print("화면 배율: \(UIScreen.main.scale)")// 배수
+    //    print("origin: \(self), resize: \(renderImage)")
      //   printDataSize(renderImage)
         
         return renderImage

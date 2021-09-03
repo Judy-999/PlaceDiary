@@ -60,35 +60,40 @@ class MainPlaceViewController: UIViewController, UITableViewDelegate, UITableVie
         loadPlaceData()
         downloadList()
         
-  //      NotificationCenter.default.addObserver(self, selector: #selector(newUpdate), name: NSNotification.Name(rawValue: "newPlaceUpdate"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(newUpdate), name: NSNotification.Name(rawValue: "newPlaceUpdate"), object: nil)
         
     }
 
     @objc func newUpdate(_ notification: Notification){
         newUapdate = true
         if notification.object != nil{
-            let deleteName = notification.object as! String
-            var index: Int!
-            var sectionIndex: Int!
-            switch sgNum {
-            case 0:
-                index = places.firstIndex(where: {$0.name == deleteName})
-                sectionIndex = 0
-            case 1:
-                let removePlace = places.first(where: {$0.name == deleteName})
-                sectionIndex = sectionName.firstIndex(of: removePlace!.group)
-                let cellData = places.filter({$0.group == removePlace!.group})
-                index = cellData.firstIndex(where: {$0.name == deleteName})
-            case 2:
-                let removePlace = places.first(where: {$0.name == deleteName})
-                sectionIndex = sectionName.firstIndex(of: removePlace!.category)
-                let cellData = places.filter({$0.category == removePlace!.category})
-                index = cellData.firstIndex(where: {$0.name == deleteName})
-            default:
-                index = places.firstIndex(where: {$0.name == deleteName})
-                sectionIndex = 0
+            let data = notification.object as! PlaceData
+            if data.newImg != nil{
+                placeImages.updateValue(data.newImg!, forKey: data.name)
+            }else{
+                let deleteName = data.name
+                var index: Int!
+                var sectionIndex: Int!
+                switch sgNum {
+                case 0:
+                    index = places.firstIndex(where: {$0.name == deleteName})
+                    sectionIndex = 0
+                case 1:
+                    let removePlace = places.first(where: {$0.name == deleteName})
+                    sectionIndex = sectionName.firstIndex(of: removePlace!.group)
+                    let cellData = places.filter({$0.group == removePlace!.group})
+                    index = cellData.firstIndex(where: {$0.name == deleteName})
+                case 2:
+                    let removePlace = places.first(where: {$0.name == deleteName})
+                    sectionIndex = sectionName.firstIndex(of: removePlace!.category)
+                    let cellData = places.filter({$0.category == removePlace!.category})
+                    index = cellData.firstIndex(where: {$0.name == deleteName})
+                default:
+                    index = places.firstIndex(where: {$0.name == deleteName})
+                    sectionIndex = 0
+                }
+                tableView(placeTableView, commit: .delete, forRowAt: [sectionIndex, index])
             }
-            tableView(placeTableView, commit: .delete, forRowAt: [sectionIndex, index])
         }
     }
     
@@ -123,9 +128,9 @@ class MainPlaceViewController: UIViewController, UITableViewDelegate, UITableVie
         let cc = cnav.topViewController as! CalendarController
         //  let sc = self.tabBarController!.viewControllers![3] as! SearchTableViewController
         
-        cc.getDate(places)
-        vc.getPlace(places)
-        sc.setData(places)
+        cc.getDate(places, images: placeImages)
+        vc.getPlace(places, images: placeImages)
+        sc.setData(places, images: placeImages)
     }
     
     func getPlaceList(sectionNum: Int, index: IndexPath) -> [PlaceData]{
@@ -202,10 +207,6 @@ class MainPlaceViewController: UIViewController, UITableViewDelegate, UITableVie
             cell.imgPlace.image = placeImages[cellData[indexPath.row].name]
         }else{
             cell.imgPlace.image = UIImage(named: "wethere.jpeg")
-
-         //   let cellImg = cell.setImage(places[indexPath.row])
-         //   placeImages.updateValue(cellImg, forKey: self.places[indexPath.row].name)
-              
             
             cell.getImage(place: places[indexPath.row]){ photo in
                 if photo != nil {
