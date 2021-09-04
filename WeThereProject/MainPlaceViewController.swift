@@ -12,7 +12,7 @@ import NVActivityIndicatorView
 
 import FirebaseStorage
 
-// var placeImages = [String : UIImage]()
+let Uid = UIDevice.current.identifierForVendor!.uuidString
 
 class MainPlaceViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
    
@@ -51,6 +51,9 @@ class MainPlaceViewController: UIViewController, UITableViewDelegate, UITableVie
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        print("이건 프로그래밍 방식이래요. 뭐가 다른건지 : " + UIDevice.current.identifierForVendor!.uuidString)
+       
 
         placeTableView.refreshControl = UIRefreshControl()    //새로고침
         placeTableView.refreshControl?.addTarget(self, action: #selector(pullToRefresh(_:)), for: .valueChanged)
@@ -99,23 +102,31 @@ class MainPlaceViewController: UIViewController, UITableViewDelegate, UITableVie
     
     func loadPlaceData() {
         service = PlaceService()
-        service?.get(collectionID: "users") { places in
+        service?.get(collectionID: Uid) { places in
             self.allPlaces = places
         }
     }
-    
-    func changeOrgImg(_ placeList: [PlaceData]){
-        places = placeList
-    }
 
     func downloadList(){
-        let docRef = db.collection("category").document("category")
+        let docRef = db.collection("category").document(Uid)
         docRef.getDocument { (document, error) in
             if let document = document, document.exists {
                 self.categoryItem = (document.get("items") as? [String])!
                 self.groupItem = (document.get("group") as? [String])!
             } else {
                 print("Document does not exist")
+                let basicCategory: [String: [String]] = [
+                    "items": ["카페", "음식점", "디저트", "베이커리", "액티비티", "야외"],
+                    "group": ["기본", "친구", "가족", "혼자"]
+                ]
+                self.db.collection("category").document(Uid).setData(basicCategory) { err in
+                    if let err = err {
+                        print("Error writing document: \(err)")
+                    } else {
+                        print("Document successfully written!")
+                        self.downloadList()
+                    }
+                }
             }
         }
     }

@@ -33,11 +33,10 @@ class CategoryEditController: UITableViewController {
     }
     
     func loadCategory(_ type: String){
-        let docRef = db.collection("category").document("category")
+        let docRef = db.collection("category").document(Uid)
         docRef.getDocument { (document, error) in
             if let document = document, document.exists {
                 self.editItems = (document.get(type) as? [String])!
-                print("reload goTdhdh")
             } else {
                 print("Document does not exist")
             }
@@ -81,7 +80,7 @@ class CategoryEditController: UITableViewController {
     
     func uploadCategory(_ type: String, item: String, add: Bool){
         
-        let categoryRef = db.collection("category").document("category")
+        let categoryRef = db.collection("category").document(Uid)
         
         if add{
             categoryRef.updateData([

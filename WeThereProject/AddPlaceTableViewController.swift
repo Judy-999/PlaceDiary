@@ -136,7 +136,7 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
     }
     
     func downloadPickerItem(){
-        let docRef = db.collection("category").document("category")
+        let docRef = db.collection("category").document(Uid)
         docRef.getDocument { (document, error) in
             if let document = document, document.exists {
                 self.categoryItem = (document.get("items") as? [String])!
@@ -220,6 +220,8 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
             myAlert("필수 입력 미기재", message: "장소의 위치를 입력해주세요.")
         }else if tfCategory.text == "" {
             myAlert("필수 입력 미기재", message: "장소의 카테고리를 선택해주세요.")
+        }else if tfCategory.text == "" {
+            myAlert("필수 입력 미기재", message: "장소의 그룹을 선택해주세요.")
         }else if geoPoint == nil {
             myAlert("장소 위치 선택 오류", message: "장소의 이름 또는 주소를 검색하여 선택해주세요.")
         }else{
@@ -281,7 +283,7 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
     
     func uploadData(){
         if reName != "" && reName != tfPlaceName.text! {
-            db.collection("users").document(reName).delete() { err in
+            db.collection(Uid).document(reName).delete() { err in
                 if let err = err {
                     print("Error removing document: \(err)")
                 } else {
@@ -303,7 +305,7 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
             "group": tfGroup.text!
         ]
 
-        db.collection("users").document(tfPlaceName.text!).setData(docData) { err in
+        db.collection(Uid).document(tfPlaceName.text!).setData(docData) { err in
             if let err = err {
                 print("Error writing document: \(err)")
             } else {
