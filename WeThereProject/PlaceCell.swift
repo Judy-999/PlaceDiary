@@ -25,9 +25,9 @@ class PlaceCell: UITableViewCell {
     }
 
     func getImage(place: PlaceData, completion: @escaping (UIImage?) -> ()) {
-        let fileName = place.name + "_original"
+        let fileName = place.name
         if place.image == true {
-            let islandRef = storage.reference().child(fileName)
+            let islandRef = storage.reference().child(Uid + "/" + fileName)
             islandRef.getData(maxSize: 1 * 1024 * 1024) { data, error in
                 let downloadImg = UIImage(data: data! as Data)
                 if error == nil {
@@ -44,10 +44,10 @@ class PlaceCell: UITableViewCell {
     }
     
     func setImage(_ data: PlaceData) -> UIImage {
-        let imageName = data.name + "_original"
+        let imageName = data.name
         var returnImg : UIImage?
         if data.image == true {
-            let islandRef = storage.reference().child(imageName)
+            let islandRef = storage.reference().child(Uid + "/" + imageName)
             islandRef.getData(maxSize: 1 * 1024 * 1024) { data, error in
                 let downloadImg = UIImage(data: data! as Data)
                 if error == nil {

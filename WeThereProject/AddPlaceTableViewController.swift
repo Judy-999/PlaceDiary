@@ -321,7 +321,7 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
         let filePath = path
         let metaData = StorageMetadata()
         metaData.contentType = "image/jpeg"
-        storageRef.child(filePath + "_original").putData(data, metadata: metaData){
+        storageRef.child(Uid + "/" + filePath).putData(data, metadata: metaData){
             (metaData, error) in if let error = error{
                 print(error.localizedDescription)
                 return

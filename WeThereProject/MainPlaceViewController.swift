@@ -227,16 +227,6 @@ class MainPlaceViewController: UIViewController, UITableViewDelegate, UITableVie
                      }
                 }
             }
-                    
-            /*getImage(place: places[indexPath.row]) { photo in
-                    if photo != nil {
-                        DispatchQueue.main.async { [self] in
-                            cell.imgPlace.image = photo
-                            places[indexPath.row].orgImg = photo
-                            placeImages.updateValue(photo!, forKey: self.places[indexPath.row].name)
-                         }
-                     }
-                }*/
         }
         
         cell.lblPlaceName.text = cellData[indexPath.row].name
@@ -252,7 +242,7 @@ class MainPlaceViewController: UIViewController, UITableViewDelegate, UITableVie
     }
         
     func getImage(place: PlaceData, completion: @escaping (UIImage?) -> ()) {
-        let fileName = place.name + "_original"
+        let fileName = place.name
         let islandRef = storage.reference().child(fileName)
         islandRef.getData(maxSize: 1 * 1024 * 1024) { data, error in
             let downloadImg = UIImage(data: data! as Data)
@@ -275,7 +265,7 @@ class MainPlaceViewController: UIViewController, UITableViewDelegate, UITableVie
             let removePlace = cellData[(indexPath as NSIndexPath).row].name as String
             
             
-            db.collection("users").document(removePlace).delete() { err in
+            db.collection(Uid).document(removePlace).delete() { err in
                 if let err = err {
                     print("Error removing document: \(err)")
                 } else {
@@ -283,23 +273,14 @@ class MainPlaceViewController: UIViewController, UITableViewDelegate, UITableVie
                 }
             }
             
-            storage.reference().child(removePlace).delete { error in
+            storage.reference().child(Uid + "/" + removePlace).delete { error in
                 if let error = error {
                     print("Error removing image: \(error)")
                 } else {
                     print("Image successfully removed!")
                 }
               }
-            
-            storage.reference().child(removePlace + "_original").delete { error in
-                if let error = error {
-                    print("Error removing image: \(error)")
-                } else {
-                    print("Image successfully removed!")
-                }
-              }
-            
-      //      placeImages.removeValue(forKey: cellData[(indexPath as NSIndexPath).row].name)
+     
       
            let removeDataIndex = places.firstIndex(where: {$0.name == cellData[(indexPath as NSIndexPath).row].name})!
             places.remove(at: removeDataIndex)
