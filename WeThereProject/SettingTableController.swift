@@ -10,10 +10,25 @@ import UIKit
 
 class SettingTableController: UITableViewController {
 
+   
+
+    @IBOutlet weak var star1: UIButton!
+    @IBOutlet weak var star2: UIButton!
+    @IBOutlet weak var star3: UIButton!
+    @IBOutlet weak var star4: UIButton!
+    @IBOutlet weak var star5: UIButton!
+    
+    let rate = AddRate()
+    var rateButtons = [UIButton]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        rateButtons.append(star1)
+        rateButtons.append(star2)
+        rateButtons.append(star3)
+        rateButtons.append(star4)
+        rateButtons.append(star5)
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
 
@@ -32,7 +47,8 @@ class SettingTableController: UITableViewController {
         // #warning Incomplete implementation, return the number of rows
         return 4
     }
-
+    
+    
     /*
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath)

@@ -76,4 +76,21 @@ class AddRate{
             i = i - 1
         }
     }
+    
+    
+    public func sliderStar(buttons: [UIButton], rate: Float){
+        let rateDown = rate.rounded(.down)
+        let half = rate - rateDown
+        let rateInt = Int(rateDown)
+        
+        fillStar(buttons: buttons, index: rateInt)
+        clearStar(buttons: buttons, index: rateInt)
+        
+        if half >= 0.5{
+            buttons[rateInt].setImage(UIImage(systemName: "star.leadinghalf.fill"), for: .normal)
+        }else{
+            if rateInt != 5{
+                buttons[rateInt].setImage(UIImage(systemName: "star"), for: .normal)}
+        }
+    }
 }

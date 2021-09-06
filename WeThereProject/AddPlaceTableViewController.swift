@@ -34,6 +34,7 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
     @IBOutlet weak var stepper: UIStepper!
     @IBOutlet weak var lbltTryCount: UILabel!
     @IBOutlet weak var tfGroup: UITextField!
+    @IBOutlet weak var starSlider: StarRatingUISlider!
     
     let db: Firestore = Firestore.firestore()
     let storageRef = Storage.storage().reference()
@@ -418,8 +419,27 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
         }
     }
     
-    @IBAction func clickStar(_ sender: UIButton){
+ /*   @IBAction func clickStar(_ sender: UIButton){
         lblRate.text = String(describing: rate.checkAttr(buttons: rateButtons, button: sender))
+    }
+    
+ */
+    
+    @IBAction func sliderChanged(_ sender: Any) {
+        let starVal = starSlider.value
+        rate.sliderStar(buttons: rateButtons, rate: starVal)
+        
+        
+        let rateDown = starVal.rounded(.down)
+        let half = starVal - rateDown
+        let rateInt = Int(rateDown)
+        
+        
+        if half >= 0.5{
+            lblRate.text = String(rateInt) + ".5"
+        }else{
+            lblRate.text = String(rateInt) + ".0"
+        }
     }
     
     @IBAction func btnAddPhoto(_ sender: UIButton){
@@ -554,5 +574,20 @@ extension UIImage {
         let newImage = UIImage(cgImage: downSampledImage)
         print("origin: \(self), resize: \(newImage)")
         return newImage
+    }
+}
+
+
+class StarRatingUISlider: UISlider {
+
+    override func beginTracking(_ touch: UITouch, with event: UIEvent?) -> Bool {
+        let width = self.frame.size.width
+        let tapPoint = touch.location(in: self)
+        let fPercent = tapPoint.x/width
+        let nNewValue = self.maximumValue * Float(fPercent)
+        if nNewValue != self.value {
+            self.value = nNewValue
+        }
+        return true
     }
 }

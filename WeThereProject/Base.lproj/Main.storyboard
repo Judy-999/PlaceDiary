@@ -722,7 +722,7 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <stackView opaque="NO" contentMode="scaleToFill" distribution="equalSpacing" translatesAutoresizingMaskIntoConstraints="NO" id="tSY-gB-pDP">
-                                                    <rect key="frame" x="16" y="9.3333333333333357" width="314" height="25"/>
+                                                    <rect key="frame" x="16" y="9.3333333333333357" width="343" height="25"/>
                                                     <subviews>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="별점" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TVR-lp-y37">
                                                             <rect key="frame" x="0.0" y="0.0" width="29.666666666666668" height="25"/>
@@ -730,10 +730,10 @@
                                                             <nil key="textColor"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
-                                                        <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="6Jt-eG-zdp">
-                                                            <rect key="frame" x="189" y="0.0" width="125" height="25"/>
+                                                        <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="6Jt-eG-zdp">
+                                                            <rect key="frame" x="168" y="0.0" width="175" height="25"/>
                                                             <subviews>
-                                                                <button opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="FLk-Zw-a42">
+                                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="FLk-Zw-a42">
                                                                     <rect key="frame" x="0.0" y="0.0" width="25" height="25"/>
                                                                     <constraints>
                                                                         <constraint firstAttribute="width" constant="25" id="3WK-re-MlW"/>
@@ -744,11 +744,8 @@
                                                                         <imageReference key="image" image="star" catalog="system" symbolScale="large"/>
                                                                         <preferredSymbolConfiguration key="preferredSymbolConfiguration" scale="large"/>
                                                                     </state>
-                                                                    <connections>
-                                                                        <action selector="clickStar:" destination="Lcc-Ir-Tux" eventType="touchUpInside" id="Jux-2M-wo4"/>
-                                                                    </connections>
                                                                 </button>
-                                                                <button opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="TaO-mO-7nL">
+                                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="TaO-mO-7nL">
                                                                     <rect key="frame" x="25" y="0.0" width="25" height="25"/>
                                                                     <constraints>
                                                                         <constraint firstAttribute="height" constant="25" id="1ba-TX-y85"/>
@@ -759,11 +756,8 @@
                                                                         <imageReference key="image" image="star" catalog="system" symbolScale="large"/>
                                                                         <preferredSymbolConfiguration key="preferredSymbolConfiguration" scale="large"/>
                                                                     </state>
-                                                                    <connections>
-                                                                        <action selector="clickStar:" destination="Lcc-Ir-Tux" eventType="touchUpInside" id="s9g-w0-Gnr"/>
-                                                                    </connections>
                                                                 </button>
-                                                                <button opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="i2c-K6-WR9">
+                                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="i2c-K6-WR9">
                                                                     <rect key="frame" x="50" y="0.0" width="25" height="25"/>
                                                                     <constraints>
                                                                         <constraint firstAttribute="width" constant="25" id="kjR-tU-LZE"/>
@@ -774,11 +768,8 @@
                                                                         <imageReference key="image" image="star" catalog="system" symbolScale="large"/>
                                                                         <preferredSymbolConfiguration key="preferredSymbolConfiguration" scale="large"/>
                                                                     </state>
-                                                                    <connections>
-                                                                        <action selector="clickStar:" destination="Lcc-Ir-Tux" eventType="touchUpInside" id="kGh-Xd-cvO"/>
-                                                                    </connections>
                                                                 </button>
-                                                                <button opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hWH-sY-Adf">
+                                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hWH-sY-Adf">
                                                                     <rect key="frame" x="75" y="0.0" width="25" height="25"/>
                                                                     <constraints>
                                                                         <constraint firstAttribute="width" constant="25" id="2eF-Q0-Nus"/>
@@ -789,11 +780,8 @@
                                                                         <imageReference key="image" image="star" catalog="system" symbolScale="large"/>
                                                                         <preferredSymbolConfiguration key="preferredSymbolConfiguration" scale="large"/>
                                                                     </state>
-                                                                    <connections>
-                                                                        <action selector="clickStar:" destination="Lcc-Ir-Tux" eventType="touchUpInside" id="q0G-ou-16E"/>
-                                                                    </connections>
                                                                 </button>
-                                                                <button opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8bZ-nQ-ZfL">
+                                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8bZ-nQ-ZfL">
                                                                     <rect key="frame" x="100" y="0.0" width="25" height="25"/>
                                                                     <constraints>
                                                                         <constraint firstAttribute="width" constant="25" id="9q8-An-Xsm"/>
@@ -805,27 +793,38 @@
                                                                         <imageReference key="image" image="star" catalog="system" symbolScale="large"/>
                                                                         <preferredSymbolConfiguration key="preferredSymbolConfiguration" scale="large"/>
                                                                     </state>
-                                                                    <connections>
-                                                                        <action selector="clickStar:" destination="Lcc-Ir-Tux" eventType="touchUpInside" id="7OE-Rc-KJF"/>
-                                                                    </connections>
                                                                 </button>
+                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0.0" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vBV-pP-78a">
+                                                                    <rect key="frame" x="125" y="0.0" width="25" height="25"/>
+                                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                                    <nil key="textColor"/>
+                                                                    <nil key="highlightedColor"/>
+                                                                </label>
+                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="점" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9YU-QA-ffV">
+                                                                    <rect key="frame" x="150" y="0.0" width="25" height="25"/>
+                                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                                    <nil key="textColor"/>
+                                                                    <nil key="highlightedColor"/>
+                                                                </label>
                                                             </subviews>
                                                         </stackView>
                                                     </subviews>
                                                 </stackView>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0.0" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vBV-pP-78a">
-                                                    <rect key="frame" x="335" y="11.666666666666666" width="24" height="20.333333333333336"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                    <nil key="textColor"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
+                                                <slider opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="0.0" maxValue="5" translatesAutoresizingMaskIntoConstraints="NO" id="5ox-EM-RVE" customClass="StarRatingUISlider" customModule="WeThereProject" customModuleProvider="target">
+                                                    <rect key="frame" x="185" y="9" width="122" height="26"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <color key="minimumTrackTintColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                    <color key="maximumTrackTintColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                    <color key="thumbTintColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                    <connections>
+                                                        <action selector="sliderChanged:" destination="Lcc-Ir-Tux" eventType="valueChanged" id="nb9-39-LkO"/>
+                                                    </connections>
+                                                </slider>
                                             </subviews>
                                             <constraints>
-                                                <constraint firstItem="vBV-pP-78a" firstAttribute="leading" secondItem="tSY-gB-pDP" secondAttribute="trailing" constant="5" id="DLu-OM-Ikx"/>
                                                 <constraint firstItem="tSY-gB-pDP" firstAttribute="leading" secondItem="tjE-6q-ejV" secondAttribute="leading" constant="16" id="MDu-5e-9kh"/>
-                                                <constraint firstItem="vBV-pP-78a" firstAttribute="centerY" secondItem="tjE-6q-ejV" secondAttribute="centerY" id="S6v-hD-Pvf"/>
                                                 <constraint firstItem="tSY-gB-pDP" firstAttribute="centerY" secondItem="tjE-6q-ejV" secondAttribute="centerY" id="ZJw-vI-Fec"/>
-                                                <constraint firstAttribute="trailing" secondItem="vBV-pP-78a" secondAttribute="trailing" constant="16" id="nfn-GI-AVa"/>
+                                                <constraint firstAttribute="trailing" secondItem="tSY-gB-pDP" secondAttribute="trailing" constant="16" id="ZtJ-sw-xhf"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                     </tableViewCell>
@@ -930,6 +929,7 @@
                         <outlet property="lbltTryCount" destination="uQq-UP-1Qn" id="MIg-od-FtC"/>
                         <outlet property="pkDate" destination="Wa5-Fi-Nt9" id="rOD-pr-OW6"/>
                         <outlet property="placeImageView" destination="vVH-t3-yer" id="IqP-4v-Edf"/>
+                        <outlet property="starSlider" destination="5ox-EM-RVE" id="a40-6H-Nek"/>
                         <outlet property="stepper" destination="BOO-ui-rwE" id="Xab-b0-XOf"/>
                         <outlet property="swVisit" destination="sq8-kr-Qkn" id="Qgh-eA-2gA"/>
                         <outlet property="tfCategory" destination="NZB-nx-NwL" id="oJ0-HH-LEc"/>
