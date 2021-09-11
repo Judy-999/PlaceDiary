@@ -408,6 +408,8 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
                 btn.isEnabled = true
             }
             lblVisit.text = "가봤어요!"
+            starSlider.isEnabled = true
+            stepper.isEnabled = true
         }else{
             for btn in rateButtons{
                 btn.isEnabled = false
@@ -415,7 +417,10 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
             }
             lblRate.text = "0.0"
             lblVisit.text = "가보고 싶어요!"
-            
+            starSlider.isEnabled = false
+            stepper.value = 0
+            lbltTryCount.text = "0회"
+            stepper.isEnabled = false
         }
     }
     

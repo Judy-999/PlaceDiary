@@ -132,16 +132,20 @@ class MainPlaceViewController: UIViewController, UITableViewDelegate, UITableVie
     }
         
    func godata(){
-        let vc = self.tabBarController?.viewControllers![3] as! MapViewController
-        let nav = self.tabBarController?.viewControllers![1] as! UINavigationController
-        let sc = nav.topViewController as! SearchTableViewController
-        let cnav = self.tabBarController?.viewControllers![2] as! UINavigationController
-        let cc = cnav.topViewController as! CalendarController
-        //  let sc = self.tabBarController!.viewControllers![3] as! SearchTableViewController
+        let mapController = self.tabBarController?.viewControllers![3] as! MapViewController
+        let searchNav = self.tabBarController?.viewControllers![1] as! UINavigationController
+        let searchController = searchNav.topViewController as! SearchTableViewController
+        let calendarNav = self.tabBarController?.viewControllers![2] as! UINavigationController
+        let calendarController = calendarNav.topViewController as! CalendarController
+        let settingNav = self.tabBarController?.viewControllers![4] as! UINavigationController
+        let settingController = settingNav.topViewController as! SettingTableController
         
-        cc.getDate(places, images: placeImages)
-        vc.getPlace(places, images: placeImages)
-        sc.setData(places, images: placeImages)
+        
+        
+        searchController.setData(places, images: placeImages)
+        mapController.getPlace(places, images: placeImages)
+        calendarController.getDate(places, images: placeImages)
+        settingController.getPlaces(places)
     }
     
     func getPlaceList(sectionNum: Int, index: IndexPath) -> [PlaceData]{

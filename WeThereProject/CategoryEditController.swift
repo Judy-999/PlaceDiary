@@ -13,6 +13,7 @@ class CategoryEditController: UITableViewController {
     let db: Firestore = Firestore.firestore()
     var editType = ""
     var typeString = ""
+    var places = [PlaceData]()
     var editItems = [String](){
         didSet {
             DispatchQueue.main.async {
@@ -107,19 +108,54 @@ class CategoryEditController: UITableViewController {
         if editingStyle == .delete {
             // Delete the row from the data source
             let removeItem = editItems[(indexPath as NSIndexPath).row] as String
-            uploadCategory(editType, item: removeItem, add: false)
-            
-            if let index = editItems.firstIndex(of: removeItem) {
-                editItems.remove(at: index)
+            if checkItem(item: removeItem, type: editType){
+                let canDeleteAlert = UIAlertController(title: "삭제 확인", message: removeItem + "을(를) 삭제하시겠습니까?", preferredStyle: .alert)
+                let alertOk = UIAlertAction(title: "확인", style: .default) { (alertOk) in
+                    self.uploadCategory(self.editType, item: removeItem, add: false)
+                    if let index = self.editItems.firstIndex(of: removeItem) {
+                        self.editItems.remove(at: index)
+                    }
+                    tableView.deleteRows(at: [indexPath], with: .fade)
+                }
+                let alertNo = UIAlertAction(title: "취소", style: .default) { (alertNo) in
+                }
+               
+                canDeleteAlert.addAction(alertOk)
+                canDeleteAlert.addAction(alertNo)
+                
+                self.present(canDeleteAlert, animated: true, completion: nil)
+                
+            }else{
+                let cantDeleteAlert = UIAlertController(title: "삭제 불가", message: "사용 중인 값은 삭제할 수 없습니다.", preferredStyle: .alert)
+                let alertOk = UIAlertAction(title: "확인", style: .default) { (alertOk) in
+                }
+                cantDeleteAlert.addAction(alertOk)
+                self.present(cantDeleteAlert, animated: true, completion: nil)
             }
-            
-            tableView.deleteRows(at: [indexPath], with: .fade)
+    
         } else if editingStyle == .insert {
             // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
         }    
     }
     
 
+    func checkItem(item: String, type: String) -> Bool{
+        if type == "items"{
+            for place in places{
+                if place.category == item{
+                    return false
+                }
+            }
+        }else{
+            for place in places{
+                if place.group == item{
+                    return false
+                }
+            }
+        }
+        return true
+    }
+    
     /*
     // Override to support rearranging the table view.
     override func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath) {

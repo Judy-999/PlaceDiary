@@ -18,6 +18,7 @@ class AddRate{
         }
     }
     
+    
     func checkAttr(buttons: [UIButton], button: UIButton) -> Float{
         var i = 0
         while button != buttons[i] {
