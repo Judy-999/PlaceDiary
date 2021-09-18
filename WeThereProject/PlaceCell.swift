@@ -23,7 +23,16 @@ class PlaceCell: UITableViewCell {
         super.awakeFromNib()
         // Initialization code
     }
-
+    
+    
+    let personImage: UIImageView = {
+        let personImage = UIImageView()
+        personImage.translatesAutoresizingMaskIntoConstraints = false
+        return personImage
+    }()
+    
+    
+    
     func getImage(place: PlaceData, completion: @escaping (UIImage?) -> ()) {
         let fileName = place.name
         if place.image == true {

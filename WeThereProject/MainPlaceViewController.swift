@@ -18,6 +18,7 @@ class MainPlaceViewController: UIViewController, UITableViewDelegate, UITableVie
    
     let storage = Storage.storage()
     let db: Firestore = Firestore.firestore()
+    let storageRef = Storage.storage().reference()
     private let loadingView = UIView();
     var newUapdate = true
     var loadingCount = 0
@@ -28,7 +29,8 @@ class MainPlaceViewController: UIViewController, UITableViewDelegate, UITableVie
     var groupItem = [String]()
     var placeImages = [String : UIImage]()
     
-    let storageRef = Storage.storage().reference()
+    
+    lazy var cache: NSCache<AnyObject, UIImage> = NSCache()
     
     var places = [PlaceData]() {
         didSet {
@@ -55,13 +57,14 @@ class MainPlaceViewController: UIViewController, UITableViewDelegate, UITableVie
         print("이건 프로그래밍 방식이래요. 뭐가 다른건지 : " + UIDevice.current.identifierForVendor!.uuidString)
        
 
+        loadPlaceData()
+        downloadList()
+        
         placeTableView.refreshControl = UIRefreshControl()    //새로고침
         placeTableView.refreshControl?.addTarget(self, action: #selector(pullToRefresh(_:)), for: .valueChanged)
 
         placeTableView.tableFooterView = UIView(frame: CGRect.zero)
         
-        loadPlaceData()
-        downloadList()
         
         NotificationCenter.default.addObserver(self, selector: #selector(newUpdate), name: NSNotification.Name(rawValue: "newPlaceUpdate"), object: nil)
         
@@ -216,7 +219,46 @@ class MainPlaceViewController: UIViewController, UITableViewDelegate, UITableVie
         
         let cellData = getPlaceList(sectionNum: sgNum, index: indexPath)
         
-        if placeImages[cellData[indexPath.row].name] != nil{
+        
+        cell.lblPlaceName.text = cellData[indexPath.row].name
+        cell.lblPlaceLocation.text = cellData[indexPath.row].location
+        
+        if places[indexPath.row].rate != "0.0"{
+            cell.lblPlaceInfo.text = cellData[indexPath.row].rate + "점"
+        }else{
+            cell.lblPlaceInfo.text = "가보고 싶어요!"
+        }
+        
+        cell.imgPlace.image = UIImage(named: "wethere.jpeg")
+    
+        
+        if placeImages[cellData[indexPath.row].name] != nil {
+        /// 해당 row에 해당되는 부분이 캐시에 존재하는 경우
+           // cell.imgPlace.image = cache.object(forKey: (indexPath as NSIndexPath).row as AnyObject)
+            cell.imgPlace.image = placeImages[cellData[indexPath.row].name]
+        } else { /// 해당 row에 해당되는 부분이 캐시에 존재하지 않는 경우
+            getImage(place: places[indexPath.row]){ photo in
+            if photo != nil {
+                /// 이미지가 성공적으로 다운 > imageView에 넣기 위해 main thread로 전환 (주의: background가 아닌 main thread)
+                DispatchQueue.main.async { [self] in
+                    /// 해당 셀이 보여지게 될때 imageView에 할당하고 cache에 저장
+                    /// 이미지를 업데이트하기전에 화면에 셀이 표시되는지 확인 (확인하지 않을경우, 스크롤하는 동안 이미지가 각 셀에서 불필요하게 재사용)
+                   // cell.imgPlace.image = photo
+                   
+                
+                    if let updateCell = tableView.cellForRow(at: indexPath) as? PlaceCell{
+                        updateCell.imgPlace.image = photo
+                       // self.cache.setObject(photo!, forKey: (indexPath as NSIndexPath).row as AnyObject)
+                        placeImages.updateValue(photo!, forKey: self.places[indexPath.row].name)
+                        }
+                    }
+                }
+            }
+        }
+        
+        return cell
+        
+    /*    if placeImages[cellData[indexPath.row].name] != nil{
             cell.imgPlace.image = placeImages[cellData[indexPath.row].name]
         }else{
             cell.imgPlace.image = UIImage(named: "wethere.jpeg")
@@ -244,26 +286,34 @@ class MainPlaceViewController: UIViewController, UITableViewDelegate, UITableVie
         print("cellForRowAt : \(indexPath.row)")
         
         return cell
+ 
+ */
     }
-        
+    
+    
+    
     func getImage(place: PlaceData, completion: @escaping (UIImage?) -> ()) {
         let fileName = place.name
-        let islandRef = storage.reference().child(fileName)
-        islandRef.getData(maxSize: 1 * 1024 * 1024) { data, error in
-            let downloadImg = UIImage(data: data! as Data)
-            if error == nil {
-                completion(downloadImg)
-                print("image download!!!" + fileName)
-            } else {
-                    completion(nil)
+        if place.image == true {
+            let islandRef = storage.reference().child(Uid + "/" + fileName)
+            islandRef.getData(maxSize: 1 * 1024 * 1024) { data, error in
+                let downloadImg = UIImage(data: data! as Data)
+                if error == nil {
+                    completion(downloadImg)
+                    print("image download!!!" + fileName)
+                } else {
+                        completion(nil)
+                }
             }
+        }else{
+            let basicImg = UIImage(named: "wethere.jpeg")
+            completion(basicImg)
         }
     }
+    
+
  
-   /* func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        //흠흠 placeholder 넣는 곳?
-    }
- */
+
     
     // Override to support editing the table view.
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
