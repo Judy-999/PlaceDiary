@@ -89,15 +89,22 @@ class SettingTableController: UITableViewController {
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        let setting = segue.destination as! CategoryEditController
         if segue.identifier == "sgCategory"{
+            let setting = segue.destination as! CategoryEditController
             setting.editType = "items"
             setting.typeString = "분류"
+            setting.places = places
         }
         if segue.identifier == "sgGroup"{
+            let setting = segue.destination as! CategoryEditController
             setting.editType = "group"
             setting.typeString = "그룹"
+            setting.places = places
         }
-        setting.places = places
+        
+        if segue.identifier == "sgStatistics"{
+            let statistics = segue.destination as! StatisticsTableViewController
+            statistics.places = places
+        }
     }
 }

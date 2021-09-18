@@ -140,8 +140,6 @@ class MainPlaceViewController: UIViewController, UITableViewDelegate, UITableVie
         let settingNav = self.tabBarController?.viewControllers![4] as! UINavigationController
         let settingController = settingNav.topViewController as! SettingTableController
         
-        
-        
         searchController.setData(places, images: placeImages)
         mapController.getPlace(places, images: placeImages)
         calendarController.getDate(places, images: placeImages)
@@ -233,6 +231,7 @@ class MainPlaceViewController: UIViewController, UITableViewDelegate, UITableVie
             }
         }
         
+            
         cell.lblPlaceName.text = cellData[indexPath.row].name
         cell.lblPlaceLocation.text = cellData[indexPath.row].location
         
@@ -241,6 +240,8 @@ class MainPlaceViewController: UIViewController, UITableViewDelegate, UITableVie
         }else{
             cell.lblPlaceInfo.text = "가보고 싶어요!"
         }
+        
+        print("cellForRowAt : \(indexPath.row)")
         
         return cell
     }
@@ -259,6 +260,10 @@ class MainPlaceViewController: UIViewController, UITableViewDelegate, UITableVie
         }
     }
  
+   /* func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        //흠흠 placeholder 넣는 곳?
+    }
+ */
     
     // Override to support editing the table view.
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {

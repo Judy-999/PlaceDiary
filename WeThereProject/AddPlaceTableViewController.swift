@@ -237,7 +237,7 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
             }
             
             uploadData()
-            
+ 
             if editDelegate != nil{
                 editData?.name = tfPlaceName.text!
                 editData?.location = tvPlacePosition.text
@@ -268,12 +268,31 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
                     isImage = true
                 }
             }else if receiveImage != selectedImage{
+                if reName != tfPlaceName.text!{
+                    storageRef.child(Uid + "/" + reName).delete { error in
+                        if let error = error {
+                            print("Error removing image: \(error)")
+                        } else {
+                            print("Image successfully removed!")
+                        }
+                      }
+                }
                 uploadImage(tfPlaceName.text!, image: selectedImage.resize(newWidth: 300))
                // placeImages.updateValue(selectedImage, forKey: tfPlaceName.text!)
                 editData?.newImg = selectedImage
                 NotificationCenter.default.post(name: NSNotification.Name(rawValue: "newPlaceUpdate"), object: editData)
                 isImage = true
             }else{
+                if reName != tfPlaceName.text!{
+                    storageRef.child(Uid + "/" + reName).delete { error in
+                        if let error = error {
+                            print("Error removing image: \(error)")
+                        } else {
+                            print("Image successfully removed!")
+                        }
+                      }
+                    uploadImage(tfPlaceName.text!, image: receiveImage!.resize(newWidth: 300))
+                }
                 NotificationCenter.default.post(name: NSNotification.Name(rawValue: "newPlaceUpdate"), object: nil)
                 _ = navigationController?.popViewController(animated: true)
             }

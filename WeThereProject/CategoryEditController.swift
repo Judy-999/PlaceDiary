@@ -66,11 +66,19 @@ class CategoryEditController: UITableViewController {
     @IBAction func addCategory(_ sender: UIButton){
         let addAlert = UIAlertController(title: typeString + " 추가", message: "새로운 " + typeString + "(을)를 입력하세요.", preferredStyle: .alert)
         addAlert.addTextField()
-        let alertOk = UIAlertAction(title: "추가", style: .default) { (alertOk) in
+        let alertOk = UIAlertAction(title: "추가", style: .default) { [self] (alertOk) in
             if addAlert.textFields?[0].text != nil{
-                self.uploadCategory(self.editType, item: (addAlert.textFields?[0].text)!, add: true)
-                self.loadCategory(self.editType)
-                self.tableView.reloadData()
+                if self.checkExisted(item: (addAlert.textFields?[0].text)!){
+                    self.uploadCategory(self.editType, item: (addAlert.textFields?[0].text)!, add: true)
+                    self.loadCategory(self.editType)
+                    self.tableView.reloadData()
+                }else{
+                    let cantInsertAlert = UIAlertController(title: "생성 불가", message: "이미 존재하는 항목입니다.", preferredStyle: .alert)
+                    let alertOk = UIAlertAction(title: "확인", style: .default) { (alertOk) in
+                    }
+                    cantInsertAlert.addAction(alertOk)
+                    self.present(cantInsertAlert, animated: true, completion: nil)
+                }
             }
         }
         let alertCancle = UIAlertAction(title: "취소", style: .default) { (alertCancel) in}
@@ -108,7 +116,7 @@ class CategoryEditController: UITableViewController {
         if editingStyle == .delete {
             // Delete the row from the data source
             let removeItem = editItems[(indexPath as NSIndexPath).row] as String
-            if checkItem(item: removeItem, type: editType){
+            if checkUsedItem(item: removeItem){
                 let canDeleteAlert = UIAlertController(title: "삭제 확인", message: removeItem + "을(를) 삭제하시겠습니까?", preferredStyle: .alert)
                 let alertOk = UIAlertAction(title: "확인", style: .default) { (alertOk) in
                     self.uploadCategory(self.editType, item: removeItem, add: false)
@@ -126,7 +134,7 @@ class CategoryEditController: UITableViewController {
                 self.present(canDeleteAlert, animated: true, completion: nil)
                 
             }else{
-                let cantDeleteAlert = UIAlertController(title: "삭제 불가", message: "사용 중인 값은 삭제할 수 없습니다.", preferredStyle: .alert)
+                let cantDeleteAlert = UIAlertController(title: "삭제 불가", message: "사용 중인 항목은 삭제할 수 없습니다.", preferredStyle: .alert)
                 let alertOk = UIAlertAction(title: "확인", style: .default) { (alertOk) in
                 }
                 cantDeleteAlert.addAction(alertOk)
@@ -139,8 +147,8 @@ class CategoryEditController: UITableViewController {
     }
     
 
-    func checkItem(item: String, type: String) -> Bool{
-        if type == "items"{
+    func checkUsedItem(item: String) -> Bool{
+        if editType == "items"{
             for place in places{
                 if place.category == item{
                     return false
@@ -151,6 +159,15 @@ class CategoryEditController: UITableViewController {
                 if place.group == item{
                     return false
                 }
+            }
+        }
+        return true
+    }
+    
+    func checkExisted(item: String) -> Bool{
+        for name in editItems{
+            if name == item{
+                return false
             }
         }
         return true

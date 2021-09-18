@@ -25,6 +25,7 @@
 		20B113812689958700A6A0FD /* GroupInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20B113802689958600A6A0FD /* GroupInfo.swift */; };
 		20B113832689BBC200A6A0FD /* PlaceCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20B113822689BBC200A6A0FD /* PlaceCell.swift */; };
 		20CB7C9C269F28130057EAF0 /* MainPlaceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20CB7C9B269F28130057EAF0 /* MainPlaceViewController.swift */; };
+		20D7B4AF26EDEF5100DF954E /* StatisticsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20D7B4AE26EDEF5100DF954E /* StatisticsTableViewController.swift */; };
 		20E3E2D1265E2639004BDFF6 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20E3E2D0265E2639004BDFF6 /* AppDelegate.swift */; };
 		20E3E2D3265E2639004BDFF6 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20E3E2D2265E2639004BDFF6 /* SceneDelegate.swift */; };
 		20E3E2D8265E2639004BDFF6 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 20E3E2D6265E2639004BDFF6 /* Main.storyboard */; };
@@ -53,6 +54,7 @@
 		20B113802689958600A6A0FD /* GroupInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupInfo.swift; sourceTree = "<group>"; };
 		20B113822689BBC200A6A0FD /* PlaceCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceCell.swift; sourceTree = "<group>"; };
 		20CB7C9B269F28130057EAF0 /* MainPlaceViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainPlaceViewController.swift; sourceTree = "<group>"; };
+		20D7B4AE26EDEF5100DF954E /* StatisticsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatisticsTableViewController.swift; sourceTree = "<group>"; };
 		20E3E2CD265E2639004BDFF6 /* WeThereProject.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WeThereProject.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		20E3E2D0265E2639004BDFF6 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		20E3E2D2265E2639004BDFF6 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -127,6 +129,7 @@
 				2044A8342671E989002ABBD8 /* TagTextView.swift */,
 				20E3E2D9265E263A004BDFF6 /* Assets.xcassets */,
 				20E3E2D6265E2639004BDFF6 /* Main.storyboard */,
+				20D7B4AE26EDEF5100DF954E /* StatisticsTableViewController.swift */,
 				20B113802689958600A6A0FD /* GroupInfo.swift */,
 				20CB7C9B269F28130057EAF0 /* MainPlaceViewController.swift */,
 				20E3E2DB265E263A004BDFF6 /* LaunchScreen.storyboard */,
@@ -303,6 +306,7 @@
 				2020E4E72667C2FC0091D569 /* PlaceService.swift in Sources */,
 				20F88AC7266CD8820015B42E /* PlaceInfoTableViewController.swift in Sources */,
 				20B113832689BBC200A6A0FD /* PlaceCell.swift in Sources */,
+				20D7B4AF26EDEF5100DF954E /* StatisticsTableViewController.swift in Sources */,
 				20E3E2D1265E2639004BDFF6 /* AppDelegate.swift in Sources */,
 				204CEEB7267F0A3F000D395F /* CategoryEditController.swift in Sources */,
 				20166C2F26830F55002AF187 /* SearchTableViewController.swift in Sources */,
