@@ -238,18 +238,17 @@ class MainPlaceViewController: UIViewController, UITableViewDelegate, UITableVie
             cell.imgPlace.image = placeImages[cellData[indexPath.row].name]
         } else { /// 해당 row에 해당되는 부분이 캐시에 존재하지 않는 경우
             getImage(place: places[indexPath.row]){ photo in
-            if photo != nil {
-                /// 이미지가 성공적으로 다운 > imageView에 넣기 위해 main thread로 전환 (주의: background가 아닌 main thread)
-                DispatchQueue.main.async { [self] in
-                    /// 해당 셀이 보여지게 될때 imageView에 할당하고 cache에 저장
+                /// 이미지가 성공적으로 다운 > imageView에 넣기 위해 main thread로 전환 (주의: background가 아닌 main thread)                    /// 해당 셀이 보여지게 될때 imageView에 할당하고 cache에 저장
                     /// 이미지를 업데이트하기전에 화면에 셀이 표시되는지 확인 (확인하지 않을경우, 스크롤하는 동안 이미지가 각 셀에서 불필요하게 재사용)
-                   // cell.imgPlace.image = photo
-                   
-                
-                    if let updateCell = tableView.cellForRow(at: indexPath) as? PlaceCell{
-                        updateCell.imgPlace.image = photo
-                       // self.cache.setObject(photo!, forKey: (indexPath as NSIndexPath).row as AnyObject)
-                        placeImages.updateValue(photo!, forKey: self.places[indexPath.row].name)
+                if let updateCell = tableView.cellForRow(at: indexPath) as? PlaceCell{
+                        // updateCell.imgPlace.image = photo
+                    updateCell.getImage(place: self.places[indexPath.row]){ photo in
+                        if photo != nil {
+                            DispatchQueue.main.async { [self] in
+                                updateCell.imgPlace.image = photo
+                                    placeImages.updateValue(photo!, forKey: self.places[indexPath.row].name)
+                                print("---------3---------- : \(indexPath.row)")
+                            }
                         }
                     }
                 }
@@ -295,7 +294,7 @@ class MainPlaceViewController: UIViewController, UITableViewDelegate, UITableVie
     func getImage(place: PlaceData, completion: @escaping (UIImage?) -> ()) {
         let fileName = place.name
         if place.image == true {
-            let islandRef = storage.reference().child(Uid + "/" + fileName)
+        /*    let islandRef = storage.reference().child(Uid + "/" + fileName)
             islandRef.getData(maxSize: 1 * 1024 * 1024) { data, error in
                 let downloadImg = UIImage(data: data! as Data)
                 if error == nil {
@@ -305,6 +304,10 @@ class MainPlaceViewController: UIViewController, UITableViewDelegate, UITableVie
                         completion(nil)
                 }
             }
+ */
+            let basicImg = UIImage(named: "wethere.jpeg")
+            completion(basicImg)
+            
         }else{
             let basicImg = UIImage(named: "wethere.jpeg")
             completion(basicImg)
