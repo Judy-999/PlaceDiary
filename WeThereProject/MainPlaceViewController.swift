@@ -30,7 +30,7 @@ class MainPlaceViewController: UIViewController, UITableViewDelegate, UITableVie
     var placeImages = [String : UIImage]()
     
     
-    lazy var cache: NSCache<AnyObject, UIImage> = NSCache()
+    var session: URLSession = URLSession.shared
     
     var places = [PlaceData]() {
         didSet {
@@ -231,29 +231,43 @@ class MainPlaceViewController: UIViewController, UITableViewDelegate, UITableVie
         
         cell.imgPlace.image = UIImage(named: "wethere.jpeg")
     
+    
+    /*    if placeImages[cellData[indexPath.row].name] != nil {
+         cell.imgPlace.image = placeImages[cellData[indexPath.row].name]
+     } else {
+         getImage(place: places[indexPath.row]){ photo in
+         if photo != nil {
+             DispatchQueue.main.async { [self] in
+                 if let updateCell = tableView.cellForRow(at: indexPath) as? PlaceCell{
+                     updateCell.imgPlace.image = photo
+                     placeImages.updateValue(photo!, forKey: self.places[indexPath.row].name)
+                     }
+                 }
+             }
+         }
+     }
+        */
         
         if placeImages[cellData[indexPath.row].name] != nil {
-        /// 해당 row에 해당되는 부분이 캐시에 존재하는 경우
-           // cell.imgPlace.image = cache.object(forKey: (indexPath as NSIndexPath).row as AnyObject)
             cell.imgPlace.image = placeImages[cellData[indexPath.row].name]
-        } else { /// 해당 row에 해당되는 부분이 캐시에 존재하지 않는 경우
-            getImage(place: places[indexPath.row]){ photo in
-                /// 이미지가 성공적으로 다운 > imageView에 넣기 위해 main thread로 전환 (주의: background가 아닌 main thread)                    /// 해당 셀이 보여지게 될때 imageView에 할당하고 cache에 저장
-                    /// 이미지를 업데이트하기전에 화면에 셀이 표시되는지 확인 (확인하지 않을경우, 스크롤하는 동안 이미지가 각 셀에서 불필요하게 재사용)
-                if let updateCell = tableView.cellForRow(at: indexPath) as? PlaceCell{
-                        // updateCell.imgPlace.image = photo
-                    updateCell.getImage(place: self.places[indexPath.row]){ photo in
-                        if photo != nil {
-                            DispatchQueue.main.async { [self] in
-                                updateCell.imgPlace.image = photo
-                                    placeImages.updateValue(photo!, forKey: self.places[indexPath.row].name)
-                                print("---------3---------- : \(indexPath.row)")
-                            }
+        } else {
+            //print("-----------1----------- : \(indexPath.row)")
+            DispatchQueue.main.async { [self] in
+            if let updateCell = tableView.cellForRow(at: indexPath) as? PlaceCell{
+              //  print("-----------2----------- : \(indexPath.row)")
+                getImage(place: places[indexPath.row]){ photo in
+                if photo != nil {
+                        print("-----------3----------- : \(indexPath.row)")
+                        updateCell.imgPlace.image = photo
+                        placeImages.updateValue(photo!, forKey: self.places[indexPath.row].name)
+                            
                         }
                     }
                 }
             }
         }
+       
+      
         
         return cell
         
@@ -289,33 +303,28 @@ class MainPlaceViewController: UIViewController, UITableViewDelegate, UITableVie
  */
     }
     
+
     
     
     func getImage(place: PlaceData, completion: @escaping (UIImage?) -> ()) {
         let fileName = place.name
-        if place.image == true {
-        /*    let islandRef = storage.reference().child(Uid + "/" + fileName)
-            islandRef.getData(maxSize: 1 * 1024 * 1024) { data, error in
-                let downloadImg = UIImage(data: data! as Data)
-                if error == nil {
-                    completion(downloadImg)
-                    print("image download!!!" + fileName)
-                } else {
-                        completion(nil)
-                }
-            }
- */
-            let basicImg = UIImage(named: "wethere.jpeg")
-            completion(basicImg)
-            
-        }else{
-            let basicImg = UIImage(named: "wethere.jpeg")
-            completion(basicImg)
-        }
-    }
-    
-
- 
+          if place.image == true {
+              let islandRef = storage.reference().child(Uid + "/" + fileName)
+              islandRef.getData(maxSize: 1 * 1024 * 1024) { data, error in
+                  let downloadImg = UIImage(data: data! as Data)
+                  if error == nil {
+                      completion(downloadImg)
+                      print("image download!!!" + fileName)
+                  } else {
+                          completion(nil)
+                  }
+              }
+          }else{
+              let basicImg = UIImage(named: "wethere.jpeg")
+              completion(basicImg)
+          }
+      }
+      
 
     
     // Override to support editing the table view.
