@@ -9,24 +9,11 @@
 import UIKit
 import Firebase
 
-class PlaceInfoTableViewController: UITableViewController, EditDelegate {
+protocol ImageDelegate {
+    func didImageDone(_ controller: PlaceInfoTableViewController, newData: PlaceData, image: UIImage)
+}
 
-    let storage = Storage.storage()
-    let db: Firestore = Firestore.firestore()
-    var receiveImage: UIImage?
-    var reName = ""
-    var rePositon = ""
-    var reDate = ""
-    var reCategory = ""
-    var reVisit = false
-    var reRate = ""
-    var reComent = ""
-    var rateBtn = [UIButton]()
-    let fillRate = AddRate()
-    var rateF : Float?
-    var editData : PlaceData?
-    var count = "0"
-    var reGroup = ""
+class PlaceInfoTableViewController: UITableViewController, EditDelegate {
     
     @IBOutlet var placeImg: UIImageView!
     @IBOutlet var lblPlacename: UILabel!
@@ -43,7 +30,23 @@ class PlaceInfoTableViewController: UITableViewController, EditDelegate {
     @IBOutlet var btnRate5: UIButton!
     @IBOutlet weak var lblCount: UILabel!
     
-    
+    let storage = Storage.storage()
+    let db: Firestore = Firestore.firestore()
+    var receiveImage: UIImage?
+    var reName = ""
+    var rePositon = ""
+    var reDate = ""
+    var reCategory = ""
+    var reVisit = false
+    var reRate = ""
+    var reComent = ""
+    var rateBtn = [UIButton]()
+    let fillRate = AddRate()
+    var rateF : Float?
+    var editData : PlaceData?
+    var count = "0"
+    var reGroup = ""
+    var imgDelegate : ImageDelegate?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -65,10 +68,10 @@ class PlaceInfoTableViewController: UITableViewController, EditDelegate {
         let tap = UITapGestureRecognizer(target: self, action: #selector(imageTapped))
         placeImg.isUserInteractionEnabled = true
         placeImg.addGestureRecognizer(tap)
-        
-       
-        
+
     }
+    
+
     
     func getPlaceInfo(_ data: PlaceData, image: UIImage){
         editData = data
@@ -86,14 +89,24 @@ class PlaceInfoTableViewController: UITableViewController, EditDelegate {
         let formatter = DateFormatter()
         formatter.dateFormat = "yyyy-MM-dd"
         reDate = formatter.string(from: data.date)
-        
-        
-       /* if data.image == true{
-            if data.thumbnail == true{
-                NotificationCenter.default.addObserver(self, selector: #selector(loadOrgImage), name: NSNotification.Name(rawValue: "loadImage"), object: nil)
-                getOrgImg(name : data.name)
+    }
+    
+    func downloadImgInfo(_ place: PlaceData){
+        let fileName = place.name
+        let islandRef = storage.reference().child(Uid + "/" + fileName)
+        islandRef.getData(maxSize: 1 * 1024 * 1024) { data, error in
+            let downloadImg = UIImage(data: data! as Data)
+            if error == nil {
+                self.getPlaceInfo(place, image: downloadImg!)
+                self.setPlaceInfo()
+                print("image download!!!" + fileName)
+                if self.imgDelegate != nil{
+                    self.imgDelegate?.didImageDone(self, newData: place, image: downloadImg!)
+                }
+            }else {
+                print(error as Any)
             }
-        }*/
+        }
     }
     
     func setPlaceInfo(){
@@ -107,8 +120,8 @@ class PlaceInfoTableViewController: UITableViewController, EditDelegate {
         lblGroup.text = reGroup
         placeImg.image = receiveImage
         fillRate.fill(buttons: rateBtn, rate: NSString(string: reRate).floatValue)
-        
     }
+    
     
     func didEditPlace(_ controller: AddPlaceTableViewController, data: PlaceData, image: UIImage) {
          getPlaceInfo(data, image: image)

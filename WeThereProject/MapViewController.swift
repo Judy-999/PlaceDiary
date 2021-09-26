@@ -11,7 +11,7 @@ import Firebase
 import GoogleMaps
 import GooglePlaces
 
-class MapViewController: UIViewController, CLLocationManagerDelegate, GMSMapViewDelegate {
+class MapViewController: UIViewController, CLLocationManagerDelegate, GMSMapViewDelegate, ImageDelegate {
    
     var locationManager: CLLocationManager!
     var mapView: GMSMapView?
@@ -52,11 +52,36 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, GMSMapView
         // Creates a marker in the center of the map.
     }
     
+    func didImageDone(_ controller: PlaceInfoTableViewController, newData: PlaceData, image: UIImage) {
+        placeImages.updateValue(image, forKey: newData.name)
+        newUpdate = true
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        if newUpdate == true{
+            updateImg()
+            newUpdate = false
+        }
+    }
+    
     override func viewWillAppear(_ animated: Bool) {
         mapView?.clear()
         mark()
     }
 
+    func updateImg(){
+        let mainNav = self.tabBarController?.viewControllers![0] as! UINavigationController
+        let mainCont = mainNav.topViewController as! MainPlaceViewController
+        let calNav = self.tabBarController?.viewControllers![2] as! UINavigationController
+        let calCont = calNav.topViewController as! CalendarController
+        let searchNav = self.tabBarController?.viewControllers![1] as! UINavigationController
+        let searchCont = searchNav.topViewController as! SearchTableViewController
+            
+        calCont.getDate(places, images: placeImages)
+        searchCont.setData(places, images: placeImages)
+        mainCont.updateImage(placeImages)
+    }
+    
     func mark(){
         for place in places{
             self.makeMark(place.geopoint, placeTitle: place.name, placeAddress: place.location)
@@ -107,10 +132,17 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, GMSMapView
         // Pass the selected object to the new view controller.
         if segue.identifier == "sgMapInfo"{
             let infoView = segue.destination as! PlaceInfoTableViewController
-            let i = places.first(where: {$0.name == placeTitle})
-
-            infoView.getPlaceInfo(i!, image: placeImages[(i?.name)!]!)
+            let selectedPlace = places.first(where: {$0.name == placeTitle})
             
+          //  infoView.getPlaceInfo(selectedPlace!, image: placeImages[(selectedPlace?.name)!]!)
+            infoView.imgDelegate = self
+            
+            if  placeImages[(selectedPlace?.name)!] != nil{
+                infoView.getPlaceInfo(selectedPlace!, image: placeImages[(selectedPlace?.name)!]!)
+            }else{
+                infoView.getPlaceInfo(selectedPlace!, image: UIImage(named: "wethere.jpeg")!)
+                infoView.downloadImgInfo(selectedPlace!)
+            }
         }
     }
 }

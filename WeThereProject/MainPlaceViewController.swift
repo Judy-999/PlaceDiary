@@ -133,14 +133,18 @@ class MainPlaceViewController: UIViewController, UITableViewDelegate, UITableVie
             }
         }
     }
+    
+    func updateImage(_ image: [String : UIImage]){
+        placeImages = image
+    }
         
-   func godata(){
-        let mapController = self.tabBarController?.viewControllers![3] as! MapViewController
-        let searchNav = self.tabBarController?.viewControllers![1] as! UINavigationController
+   func passData(){
+        let searchNav = tabBarController?.viewControllers![1] as! UINavigationController
         let searchController = searchNav.topViewController as! SearchTableViewController
-        let calendarNav = self.tabBarController?.viewControllers![2] as! UINavigationController
+        let calendarNav = tabBarController?.viewControllers![2] as! UINavigationController
         let calendarController = calendarNav.topViewController as! CalendarController
-        let settingNav = self.tabBarController?.viewControllers![4] as! UINavigationController
+        let mapController = tabBarController?.viewControllers![3] as! MapViewController
+        let settingNav = tabBarController?.viewControllers![4] as! UINavigationController
         let settingController = settingNav.topViewController as! SettingTableController
         
         searchController.setData(places, images: placeImages)
@@ -148,6 +152,7 @@ class MainPlaceViewController: UIViewController, UITableViewDelegate, UITableVie
         calendarController.getDate(places, images: placeImages)
         settingController.getPlaces(places)
     }
+    
     
     func getPlaceList(sectionNum: Int, index: IndexPath) -> [PlaceData]{
         switch sgNum {
@@ -174,7 +179,7 @@ class MainPlaceViewController: UIViewController, UITableViewDelegate, UITableVie
     
     override func viewDidDisappear(_ animated: Bool) {
         if newUapdate{
-            godata()
+            passData()
             newUapdate = false
         }
     }
@@ -193,7 +198,17 @@ class MainPlaceViewController: UIViewController, UITableViewDelegate, UITableVie
     //섹션 당 셀 개수
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if sgNum == 0{
-            return places.count
+            if places.count == 0{
+                let emptyLabel = UILabel(frame: CGRect(x: 0, y: 0, width: self.view.bounds.size.width, height: self.view.bounds.size.height))
+                emptyLabel.text = "장소를 추가해보세요!"
+                emptyLabel.textAlignment = NSTextAlignment.center
+                tableView.backgroundView = emptyLabel
+                tableView.separatorStyle = .none
+                return 0
+            }else{
+                tableView.backgroundView = .none
+                return places.count
+            }
         }else if sgNum == 1{
             let filteredArray = places.filter({$0.group == sectionName[section]})
             return filteredArray.count
@@ -214,9 +229,7 @@ class MainPlaceViewController: UIViewController, UITableViewDelegate, UITableVie
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
- 
         let cell = tableView.dequeueReusableCell(withIdentifier: "placeCell", for: indexPath) as! PlaceCell
-        
         let cellData = getPlaceList(sectionNum: sgNum, index: indexPath)
         
         
@@ -231,33 +244,13 @@ class MainPlaceViewController: UIViewController, UITableViewDelegate, UITableVie
         
         cell.imgPlace.image = UIImage(named: "wethere.jpeg")
     
-    
-    /*    if placeImages[cellData[indexPath.row].name] != nil {
-         cell.imgPlace.image = placeImages[cellData[indexPath.row].name]
-     } else {
-         getImage(place: places[indexPath.row]){ photo in
-         if photo != nil {
-             DispatchQueue.main.async { [self] in
-                 if let updateCell = tableView.cellForRow(at: indexPath) as? PlaceCell{
-                     updateCell.imgPlace.image = photo
-                     placeImages.updateValue(photo!, forKey: self.places[indexPath.row].name)
-                     }
-                 }
-             }
-         }
-     }
-        */
-        
         if placeImages[cellData[indexPath.row].name] != nil {
             cell.imgPlace.image = placeImages[cellData[indexPath.row].name]
         } else {
-            //print("-----------1----------- : \(indexPath.row)")
             DispatchQueue.main.async { [self] in
             if let updateCell = tableView.cellForRow(at: indexPath) as? PlaceCell{
-              //  print("-----------2----------- : \(indexPath.row)")
                 getImage(place: places[indexPath.row]){ photo in
                 if photo != nil {
-                        print("-----------3----------- : \(indexPath.row)")
                         updateCell.imgPlace.image = photo
                         placeImages.updateValue(photo!, forKey: self.places[indexPath.row].name)
                             
@@ -266,41 +259,7 @@ class MainPlaceViewController: UIViewController, UITableViewDelegate, UITableVie
                 }
             }
         }
-       
-      
-        
         return cell
-        
-    /*    if placeImages[cellData[indexPath.row].name] != nil{
-            cell.imgPlace.image = placeImages[cellData[indexPath.row].name]
-        }else{
-            cell.imgPlace.image = UIImage(named: "wethere.jpeg")
-            
-            cell.getImage(place: places[indexPath.row]){ photo in
-                if photo != nil {
-                    DispatchQueue.main.async { [self] in
-                        cell.imgPlace.image = photo
-                        placeImages.updateValue(photo!, forKey: self.places[indexPath.row].name)
-                     }
-                }
-            }
-        }
-        
-            
-        cell.lblPlaceName.text = cellData[indexPath.row].name
-        cell.lblPlaceLocation.text = cellData[indexPath.row].location
-        
-        if places[indexPath.row].rate != "0.0"{
-            cell.lblPlaceInfo.text = cellData[indexPath.row].rate + "점"
-        }else{
-            cell.lblPlaceInfo.text = "가보고 싶어요!"
-        }
-        
-        print("cellForRowAt : \(indexPath.row)")
-        
-        return cell
- 
- */
     }
     
 
@@ -470,10 +429,12 @@ class MainPlaceViewController: UIViewController, UITableViewDelegate, UITableVie
                 cellData = places
             }
             
-    
-       //     infoView.getPlaceInfo(cellData[(indexPath! as NSIndexPath).row], image: cellData[(indexPath! as NSIndexPath).row].orgImg!)
-            
-            infoView.getPlaceInfo(cellData[(indexPath! as NSIndexPath).row], image: placeImages[cellData[(indexPath! as NSIndexPath).row].name]!)
+            if placeImages[cellData[(indexPath! as NSIndexPath).row].name] != nil{
+                infoView.getPlaceInfo(cellData[(indexPath! as NSIndexPath).row], image: placeImages[cellData[(indexPath! as NSIndexPath).row].name]!)
+            }else{
+                infoView.getPlaceInfo(cellData[(indexPath! as NSIndexPath).row], image: UIImage(named: "wethere.jpeg")!)
+                infoView.downloadImgInfo(cellData[(indexPath! as NSIndexPath).row])
+            }
         
         }
         if segue.identifier == "sgAddPlace"{

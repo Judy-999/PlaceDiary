@@ -13,7 +13,7 @@ struct PlaceDate{
     var name: [String]
 }
 
-class CalendarController: UIViewController, FSCalendarDelegate, FSCalendarDataSource {
+class CalendarController: UIViewController, FSCalendarDelegate, FSCalendarDataSource, ImageDelegate {
 
     @IBOutlet weak var calendar: FSCalendar!
     @IBOutlet weak var tableView: UITableView!
@@ -86,6 +86,29 @@ class CalendarController: UIViewController, FSCalendarDelegate, FSCalendarDataSo
         //placeDay.append(boo!)
     }
 
+    func didImageDone(_ controller: PlaceInfoTableViewController, newData: PlaceData, image: UIImage) {
+        placeImages.updateValue(image, forKey: newData.name)
+        newUpdate = true
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        if newUpdate == true{
+            updateImg()
+            newUpdate = false
+        }
+    }
+    
+    func updateImg(){
+        let mainNav = self.tabBarController?.viewControllers![0] as! UINavigationController
+        let mainCont = mainNav.topViewController as! MainPlaceViewController
+        let searchNav = self.tabBarController?.viewControllers![1] as! UINavigationController
+        let searchCont = searchNav.topViewController as! SearchTableViewController
+        let mapCont = self.tabBarController?.viewControllers![3] as! MapViewController
+            
+        searchCont.setData(places, images: placeImages)
+        mapCont.getPlace(places, images: placeImages)
+        mainCont.updateImage(placeImages)
+    }
     
     func calendar(_ calendar: FSCalendar, numberOfEventsFor date: Date) -> Int {
     //    if placeDay.contains(date){
@@ -103,7 +126,7 @@ class CalendarController: UIViewController, FSCalendarDelegate, FSCalendarDataSo
             selectedName = eventDay!.name
             tableView.reloadData()
         }else{
-            selectedName = [""]
+            selectedName.removeAll()
             tableView.reloadData()
         }
         /*    if placeDay.contains(date){
@@ -133,7 +156,17 @@ class CalendarController: UIViewController, FSCalendarDelegate, FSCalendarDataSo
 
 extension CalendarController: UITableViewDelegate, UITableViewDataSource{
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return selectedName.count
+        if selectedName.count == 0{
+            let emptyLabel = UILabel(frame: CGRect(x: 0, y: 0, width: self.view.bounds.size.width, height: self.view.bounds.size.height))
+            emptyLabel.text = "장소가 없습니다."
+            emptyLabel.textAlignment = NSTextAlignment.center
+            tableView.backgroundView = emptyLabel
+            tableView.separatorStyle = .none
+            return 0
+        }else{
+            tableView.backgroundView = .none
+            return selectedName.count
+        }
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -150,8 +183,16 @@ extension CalendarController: UITableViewDelegate, UITableViewDataSource{
             let indexPath = self.tableView.indexPath(for: cell)
             let infoView = segue.destination as! PlaceInfoTableViewController
             
-            let i = places.first(where: {$0.name == selectedName[(indexPath! as NSIndexPath).row]})
-            infoView.getPlaceInfo(i!, image: placeImages[(i?.name)!]!)
+            let selectedPlace = places.first(where: {$0.name == selectedName[(indexPath! as NSIndexPath).row]})
+            
+            infoView.imgDelegate = self
+            
+            if  placeImages[(selectedPlace?.name)!] != nil{
+                infoView.getPlaceInfo(selectedPlace!, image: placeImages[(selectedPlace?.name)!]!)
+            }else{
+                infoView.getPlaceInfo(selectedPlace!, image: UIImage(named: "wethere.jpeg")!)
+                infoView.downloadImgInfo(selectedPlace!)
+            }
         }
     }
 }

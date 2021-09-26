@@ -7,7 +7,7 @@
 
 import UIKit
 
-class SearchTableViewController: UITableViewController {
+class SearchTableViewController: UITableViewController, ImageDelegate {
 
     @IBOutlet var searchTableView: UITableView!
     
@@ -52,6 +52,30 @@ class SearchTableViewController: UITableViewController {
         self.navigationItem.hidesSearchBarWhenScrolling = false
     }
 
+    func didImageDone(_ controller: PlaceInfoTableViewController, newData: PlaceData, image: UIImage) {
+        placeImages.updateValue(image, forKey: newData.name)
+        newUpdate = true
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        if newUpdate == true{
+            updateImg()
+            newUpdate = false
+        }
+    }
+    
+    func updateImg(){
+        let mainNav = self.tabBarController?.viewControllers![0] as! UINavigationController
+        let mainCont = mainNav.topViewController as! MainPlaceViewController
+        let calNav = self.tabBarController?.viewControllers![2] as! UINavigationController
+        let calCont = calNav.topViewController as! CalendarController
+        let mapCont = self.tabBarController?.viewControllers![3] as! MapViewController
+            
+        calCont.getDate(places, images: placeImages)
+        mapCont.getPlace(places, images: placeImages)
+        mainCont.updateImage(placeImages)
+    }
+    
     override func viewWillAppear(_ animated: Bool) {
         tableView.reloadData()
     }
@@ -64,8 +88,35 @@ class SearchTableViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // #warning Incomplete implementation, return the number of rows
-        return isSearching ? filterArray.count : self.placeName.count
+        if isSearching{
+            if filterArray.count == 0{
+                let emptyLabel = UILabel(frame: CGRect(x: 0, y: 0, width: self.view.bounds.size.width, height: self.view.bounds.size.height))
+                emptyLabel.text = "검색된 장소가 없습니다."
+                emptyLabel.textAlignment = NSTextAlignment.center
+                tableView.backgroundView = emptyLabel
+                tableView.separatorStyle = .none
+                return 0
+            }else{
+                tableView.backgroundView = .none
+                return filterArray.count
+            }
+        }else{
+            if placeName.count == 0{
+                let emptyLabel = UILabel(frame: CGRect(x: 0, y: 0, width: self.view.bounds.size.width, height: self.view.bounds.size.height))
+                emptyLabel.text = "검색할 장소가 없습니다."
+                emptyLabel.textAlignment = NSTextAlignment.center
+                tableView.backgroundView = emptyLabel
+                tableView.separatorStyle = .none
+                return 0
+            }else{
+                tableView.backgroundView = .none
+                return placeName.count
+            }
+        }
+        
+        
+        
+       // return isSearching ? filterArray.count : self.placeName.count
     }
 
     
@@ -155,18 +206,25 @@ class SearchTableViewController: UITableViewController {
             let cell = sender as! UITableViewCell
             let indexPath = self.searchTableView.indexPath(for: cell)
             let infoView = segue.destination as! PlaceInfoTableViewController
+            var selectedPlace: PlaceData!
             
-            
-            var i: PlaceData!
+            infoView.imgDelegate = self
             
             if isSearching{
-                i = places.first(where: {$0.name == filterArray[(indexPath! as NSIndexPath).row].name})
+                selectedPlace = places.first(where: {$0.name == filterArray[(indexPath! as NSIndexPath).row].name})
             }else{
-                i = places.first(where: {$0.name == places[(indexPath! as NSIndexPath).row].name})
+                selectedPlace = places.first(where: {$0.name == places[(indexPath! as NSIndexPath).row].name})
             }
             
-            infoView.getPlaceInfo(i, image: placeImages[i.name]!)
-          //  infoView.getInfo(places[(indexPath! as NSIndexPath).row], image: placeImages[places[(indexPath! as NSIndexPath).row].name]!)
+            if  placeImages[(selectedPlace.name)] != nil{
+                infoView.getPlaceInfo(selectedPlace, image: placeImages[(selectedPlace?.name)!]!)
+            }else{
+                infoView.getPlaceInfo(selectedPlace, image: UIImage(named: "wethere.jpeg")!)
+                infoView.downloadImgInfo(selectedPlace)
+            }
+          
+         //   infoView.getPlaceInfo(selectedPlace, image: placeImages[selectedPlace.name]!)
+         
         }
     }
     
