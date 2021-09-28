@@ -54,7 +54,7 @@ class MainPlaceViewController: UIViewController, UITableViewDelegate, UITableVie
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        print("이건 프로그래밍 방식이래요. 뭐가 다른건지 : " + UIDevice.current.identifierForVendor!.uuidString)
+       // print("이건 프로그래밍 방식이래요. 뭐가 다른건지 : " + UIDevice.current.identifierForVendor!.uuidString)
        
 
         loadPlaceData()
@@ -63,8 +63,9 @@ class MainPlaceViewController: UIViewController, UITableViewDelegate, UITableVie
         placeTableView.refreshControl = UIRefreshControl()    //새로고침
         placeTableView.refreshControl?.addTarget(self, action: #selector(pullToRefresh(_:)), for: .valueChanged)
 
-        placeTableView.tableFooterView = UIView(frame: CGRect.zero)
+      //  placeTableView.tableFooterView = UIView(frame: CGRect.zero) 마지막 빈 줄 없애기
         
+        placeTableView.separatorStyle = UITableViewCell.SeparatorStyle.singleLine
         
         NotificationCenter.default.addObserver(self, selector: #selector(newUpdate), name: NSNotification.Name(rawValue: "newPlaceUpdate"), object: nil)
         
@@ -234,12 +235,13 @@ class MainPlaceViewController: UIViewController, UITableViewDelegate, UITableVie
         
         
         cell.lblPlaceName.text = cellData[indexPath.row].name
-        cell.lblPlaceLocation.text = cellData[indexPath.row].location
-        
+       // cell.lblPlaceLocation.text = cellData[indexPath.row].location
+       // cell.lblPlaceInfo.text = cellData[indexPath.row].group + " ∙ " + cellData[indexPath.row].category
+     
         if places[indexPath.row].rate != "0.0"{
-            cell.lblPlaceInfo.text = cellData[indexPath.row].rate + "점"
+            cell.lblPlaceInfo.text = cellData[indexPath.row].group + " ∙ " + cellData[indexPath.row].category + " ∙ " + cellData[indexPath.row].rate + "점"
         }else{
-            cell.lblPlaceInfo.text = "가보고 싶어요!"
+            cell.lblPlaceInfo.text = cellData[indexPath.row].group + " ∙ " + cellData[indexPath.row].category + " ∙ " + "가보고 싶어요!"
         }
         
         cell.imgPlace.image = UIImage(named: "wethere.jpeg")

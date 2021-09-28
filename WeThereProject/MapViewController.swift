@@ -8,11 +8,14 @@
 import UIKit
 import MapKit
 import Firebase
+import FirebaseFirestore
 import GoogleMaps
 import GooglePlaces
 
-class MapViewController: UIViewController, CLLocationManagerDelegate, GMSMapViewDelegate, ImageDelegate {
+class MapViewController: UIViewController, CLLocationManagerDelegate , GMSMapViewDelegate, ImageDelegate, UIPickerViewDelegate, UIPickerViewDataSource {
    
+    let db: Firestore = Firestore.firestore()
+    let optionPicker = UIPickerView()
     var locationManager: CLLocationManager!
     var mapView: GMSMapView?
     var points = [GeoPoint]()
@@ -20,10 +23,22 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, GMSMapView
     var placeImages = [String : UIImage]()
     var placeTitle = ""
     var newUpdate = false
+    var groupList = ["전체"]
+    var categoryList = ["전체"]
+    var optionedPlaces = [PlaceData]()
+
+    @IBOutlet weak var optionTxtf: UITextField!
+    @IBOutlet weak var optionBtn: UIButton!
+    @IBOutlet weak var typeSegment : UISegmentedControl!
+    @IBOutlet weak var baseVeiw : UIView!
+    
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
  
+        loadCategory()
+        
         locationManager = CLLocationManager()
         locationManager.delegate = self
         
@@ -48,8 +63,52 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, GMSMapView
   //      let camera = GMSCameraPosition.camera(withLatitude: 37.566508, longitude: 126.977945, zoom: 12.0)
   //      mapView = GMSMapView.map(withFrame: self.view.frame, camera: camera)
         self.view.addSubview(mapView!)
+        self.view.bringSubviewToFront(optionTxtf)
+        
+        setOptionSearchPicker()
+    }
+    
+    func setOptionSearchPicker(){
+        let pickerToolbar = UIToolbar()
+        let btnPickerDone = UIBarButtonItem()
+        let flexSpace = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
 
-        // Creates a marker in the center of the map.
+        optionPicker.backgroundColor = UIColor.white
+        optionPicker.frame = CGRect(x: 0, y: 0, width: 0, height: 200)
+        pickerToolbar.frame = CGRect(x: 0, y: 0, width: 0, height: 40)
+        pickerToolbar.barTintColor = UIColor.white
+        optionTxtf.inputAccessoryView = pickerToolbar
+        
+        btnPickerDone.title = "검색"
+        btnPickerDone.tintColor = #colorLiteral(red: 0, green: 0.8924261928, blue: 0.8863361478, alpha: 1)
+        btnPickerDone.target = self
+        btnPickerDone.action = #selector(pickerDone)
+         
+        pickerToolbar.setItems([flexSpace, btnPickerDone], animated: true)
+         
+        optionPicker.delegate = self
+        optionTxtf.inputView = optionPicker
+        optionPicker.reloadAllComponents()
+    }
+    
+    @objc func pickerDone(){
+        mapView?.clear()
+        mark(optionedPlaces)
+        self.view.endEditing(true)
+    }
+    
+    func loadCategory(){
+        let docRef = db.collection("category").document(Uid)
+        docRef.getDocument { (document, error) in
+            if let document = document, document.exists {
+                self.groupList = self.groupList + (document.get("group") as? [String])!
+                self.categoryList = self.categoryList + (document.get("items") as? [String])!
+                self.optionPicker.reloadAllComponents()
+                print("Document Success!")
+            } else {
+                print("Document does not exist")
+            }
+        }
     }
     
     func didImageDone(_ controller: PlaceInfoTableViewController, newData: PlaceData, image: UIImage) {
@@ -66,7 +125,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, GMSMapView
     
     override func viewWillAppear(_ animated: Bool) {
         mapView?.clear()
-        mark()
+        mark(places)
     }
 
     func updateImg(){
@@ -82,8 +141,8 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, GMSMapView
         mainCont.updateImage(placeImages)
     }
     
-    func mark(){
-        for place in places{
+    func mark(_ placeList: [PlaceData]){
+        for place in placeList{
             self.makeMark(place.geopoint, placeTitle: place.name, placeAddress: place.location)
         }
     }
@@ -101,7 +160,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, GMSMapView
     
     func getPlace(_ data: [PlaceData], images: [String : UIImage]){
         places = data
-        mark()
+        mark(places)
         placeImages = images
     }
     
@@ -123,6 +182,51 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, GMSMapView
             return true
         }
  */
+    func numberOfComponents(in pickerView: UIPickerView) -> Int {
+        return 2
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+        if component == 0 {
+            return groupList.count
+        }else{
+            return categoryList.count
+        }
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+        if component == 0 {
+            return groupList[row]
+        }else{
+            return categoryList[row]
+        }
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+        let selectedGroup = pickerView.selectedRow(inComponent: 0)
+        let selectedCategory = pickerView.selectedRow(inComponent: 1)
+        
+        if selectedGroup != 0 && selectedCategory != 0{
+            optionedPlaces = places.filter{$0.group == groupList[selectedGroup] && $0.category == categoryList[selectedCategory]}
+        }else if selectedGroup != 0{
+            optionedPlaces = places.filter{$0.group == groupList[selectedGroup]}
+        }else if selectedCategory != 0{
+            optionedPlaces = places.filter{$0.category == categoryList[selectedCategory]}
+        }else{
+            optionedPlaces = places
+        }
+    }
+
+
+    @IBAction func changeSegmentType(_ sender: UISegmentedControl){
+        if sender.selectedSegmentIndex == 0{
+            
+        }else if sender.selectedSegmentIndex == 1{
+            
+        }else {
+            
+        }
+    }
     
     // MARK: - Navigation
 
@@ -146,4 +250,30 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, GMSMapView
         }
     }
 }
+/*
+extension MapViewController : UIPickerViewDelegate, UIPickerViewDataSource {
 
+    func numberOfComponents(in pickerView: UIPickerView) -> Int {
+        return 2
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+        if component == 0 {
+            return groupList.count
+        }else{
+            return categoryList.count
+        }
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+        if component == 0 {
+            return groupList[row]
+        }else{
+            return categoryList[row]
+        }
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+        
+    }
+}*/
