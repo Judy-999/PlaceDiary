@@ -30,7 +30,7 @@ class CalendarController: UIViewController, FSCalendarDelegate, FSCalendarDataSo
     override func viewDidLoad() {
         super.viewDidLoad()
        
-        tableView.separatorStyle = UITableViewCell.SeparatorStyle.none
+        //tableView.separatorStyle = UITableViewCell.SeparatorStyle.none
         setCalendar()
         calendar.reloadData()
     }
@@ -86,7 +86,7 @@ class CalendarController: UIViewController, FSCalendarDelegate, FSCalendarDataSo
         //placeDay.append(boo!)
     }
 
-    func didImageDone(_ controller: PlaceInfoTableViewController, newData: PlaceData, image: UIImage) {
+    func didImageDone(newData: PlaceData, image: UIImage) {
         placeImages.updateValue(image, forKey: newData.name)
         newUpdate = true
     }

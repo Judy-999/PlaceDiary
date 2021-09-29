@@ -52,7 +52,7 @@ class SearchTableViewController: UITableViewController, ImageDelegate {
         self.navigationItem.hidesSearchBarWhenScrolling = false
     }
 
-    func didImageDone(_ controller: PlaceInfoTableViewController, newData: PlaceData, image: UIImage) {
+    func didImageDone(newData: PlaceData, image: UIImage) {
         placeImages.updateValue(image, forKey: newData.name)
         newUpdate = true
     }
@@ -97,6 +97,7 @@ class SearchTableViewController: UITableViewController, ImageDelegate {
                 tableView.separatorStyle = .none
                 return 0
             }else{
+                tableView.separatorStyle = UITableViewCell.SeparatorStyle.singleLine
                 tableView.backgroundView = .none
                 return filterArray.count
             }
@@ -109,6 +110,7 @@ class SearchTableViewController: UITableViewController, ImageDelegate {
                 tableView.separatorStyle = .none
                 return 0
             }else{
+                tableView.separatorStyle = UITableViewCell.SeparatorStyle.singleLine
                 tableView.backgroundView = .none
                 return placeName.count
             }

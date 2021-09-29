@@ -14,8 +14,8 @@ import FirebaseStorage
 
 let Uid = UIDevice.current.identifierForVendor!.uuidString
 
-class MainPlaceViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
-   
+class MainPlaceViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, ImageDelegate {
+
     let storage = Storage.storage()
     let db: Firestore = Firestore.firestore()
     let storageRef = Storage.storage().reference()
@@ -64,8 +64,6 @@ class MainPlaceViewController: UIViewController, UITableViewDelegate, UITableVie
         placeTableView.refreshControl?.addTarget(self, action: #selector(pullToRefresh(_:)), for: .valueChanged)
 
       //  placeTableView.tableFooterView = UIView(frame: CGRect.zero) 마지막 빈 줄 없애기
-        
-        placeTableView.separatorStyle = UITableViewCell.SeparatorStyle.singleLine
         
         NotificationCenter.default.addObserver(self, selector: #selector(newUpdate), name: NSNotification.Name(rawValue: "newPlaceUpdate"), object: nil)
         
@@ -168,6 +166,11 @@ class MainPlaceViewController: UIViewController, UITableViewDelegate, UITableVie
         }
     }
     
+    func didImageDone(newData: PlaceData, image: UIImage) {
+        placeImages.updateValue(image, forKey: newData.name) 
+    }
+    
+   
     @objc func pullToRefresh(_ refresh: UIRefreshControl){
         placeTableView.reloadData()
         refresh.endRefreshing()
@@ -207,6 +210,7 @@ class MainPlaceViewController: UIViewController, UITableViewDelegate, UITableVie
                 tableView.separatorStyle = .none
                 return 0
             }else{
+                tableView.separatorStyle = UITableViewCell.SeparatorStyle.singleLine
                 tableView.backgroundView = .none
                 return places.count
             }
@@ -231,13 +235,18 @@ class MainPlaceViewController: UIViewController, UITableViewDelegate, UITableVie
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "placeCell", for: indexPath) as! PlaceCell
+        
         let cellData = getPlaceList(sectionNum: sgNum, index: indexPath)
         
         
-        cell.lblPlaceName.text = cellData[indexPath.row].name
        // cell.lblPlaceLocation.text = cellData[indexPath.row].location
        // cell.lblPlaceInfo.text = cellData[indexPath.row].group + " ∙ " + cellData[indexPath.row].category
      
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd"
+        cell.lblPlaceLocation.text = formatter.string(from: cellData[indexPath.row].date)
+        cell.lblPlaceName.text = cellData[indexPath.row].name
+        
         if places[indexPath.row].rate != "0.0"{
             cell.lblPlaceInfo.text = cellData[indexPath.row].group + " ∙ " + cellData[indexPath.row].category + " ∙ " + cellData[indexPath.row].rate + "점"
         }else{
@@ -251,11 +260,10 @@ class MainPlaceViewController: UIViewController, UITableViewDelegate, UITableVie
         } else {
             DispatchQueue.main.async { [self] in
             if let updateCell = tableView.cellForRow(at: indexPath) as? PlaceCell{
-                getImage(place: places[indexPath.row]){ photo in
+                getImage(place: cellData[indexPath.row]){ photo in
                 if photo != nil {
                         updateCell.imgPlace.image = photo
-                        placeImages.updateValue(photo!, forKey: self.places[indexPath.row].name)
-                            
+                        placeImages.updateValue(photo!, forKey: cellData[indexPath.row].name)
                         }
                     }
                 }
@@ -430,6 +438,8 @@ class MainPlaceViewController: UIViewController, UITableViewDelegate, UITableVie
             default:
                 cellData = places
             }
+            
+            infoView.imgDelegate = self
             
             if placeImages[cellData[(indexPath! as NSIndexPath).row].name] != nil{
                 infoView.getPlaceInfo(cellData[(indexPath! as NSIndexPath).row], image: placeImages[cellData[(indexPath! as NSIndexPath).row].name]!)

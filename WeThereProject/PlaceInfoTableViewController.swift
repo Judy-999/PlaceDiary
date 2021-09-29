@@ -10,7 +10,7 @@ import UIKit
 import Firebase
 
 protocol ImageDelegate {
-    func didImageDone(_ controller: PlaceInfoTableViewController, newData: PlaceData, image: UIImage)
+    func didImageDone(newData: PlaceData, image: UIImage)
 }
 
 class PlaceInfoTableViewController: UITableViewController, EditDelegate {
@@ -101,7 +101,7 @@ class PlaceInfoTableViewController: UITableViewController, EditDelegate {
                 self.setPlaceInfo()
                 print("image download!!!" + fileName)
                 if self.imgDelegate != nil{
-                    self.imgDelegate?.didImageDone(self, newData: place, image: downloadImg!)
+                    self.imgDelegate?.didImageDone(newData: place, image: downloadImg!)
                 }
             }else {
                 print(error as Any)

@@ -111,7 +111,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate , GMSMapVie
         }
     }
     
-    func didImageDone(_ controller: PlaceInfoTableViewController, newData: PlaceData, image: UIImage) {
+    func didImageDone(newData: PlaceData, image: UIImage) {
         placeImages.updateValue(image, forKey: newData.name)
         newUpdate = true
     }

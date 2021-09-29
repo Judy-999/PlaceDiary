@@ -17,25 +17,6 @@ protocol EditDelegate {
 
 class AddPlaceTableViewController: UITableViewController, UINavigationControllerDelegate, UIImagePickerControllerDelegate, UIPickerViewDelegate, UIPickerViewDataSource, UITextViewDelegate{
     
-    @IBOutlet var placeImageView: UIImageView!
-    @IBOutlet var tfPlaceName: UITextField!
-    @IBOutlet var tvPlacePosition: UITextView!
-    @IBOutlet var tfCategory: UITextField!
-    @IBOutlet var swVisit: UISwitch!
-    @IBOutlet var pkDate: UIDatePicker!
-    @IBOutlet var txvComent: UITextView!
-    @IBOutlet var lblVisit: UILabel!
-    @IBOutlet var lblRate: UILabel!
-    @IBOutlet var btnRate1: UIButton!
-    @IBOutlet var btnRate2: UIButton!
-    @IBOutlet var btnRate3: UIButton!
-    @IBOutlet var btnRate4: UIButton!
-    @IBOutlet var btnRate5: UIButton!
-    @IBOutlet weak var stepper: UIStepper!
-    @IBOutlet weak var lbltTryCount: UILabel!
-    @IBOutlet weak var tfGroup: UITextField!
-    @IBOutlet weak var starSlider: StarRatingUISlider!
-    
     let db: Firestore = Firestore.firestore()
     let storageRef = Storage.storage().reference()
     let imagePicker: UIImagePickerController! = UIImagePickerController()
@@ -63,6 +44,25 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
     var geoPoint: GeoPoint?
     var nowPlaceData = [PlaceData]()
     
+    @IBOutlet var placeImageView: UIImageView!
+    @IBOutlet var tfPlaceName: UITextField!
+    @IBOutlet var tvPlacePosition: UITextView!
+    @IBOutlet var tfCategory: UITextField!
+    @IBOutlet var swVisit: UISwitch!
+    @IBOutlet var pkDate: UIDatePicker!
+    @IBOutlet var txvComent: UITextView!
+    @IBOutlet var lblVisit: UILabel!
+    @IBOutlet var lblRate: UILabel!
+    @IBOutlet var btnRate1: UIButton!
+    @IBOutlet var btnRate2: UIButton!
+    @IBOutlet var btnRate3: UIButton!
+    @IBOutlet var btnRate4: UIButton!
+    @IBOutlet var btnRate5: UIButton!
+    @IBOutlet weak var stepper: UIStepper!
+    @IBOutlet weak var lbltTryCount: UILabel!
+    @IBOutlet weak var tfGroup: UITextField!
+    @IBOutlet weak var starSlider: StarRatingUISlider!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
     
@@ -76,7 +76,10 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
         rateButtons.append(btnRate3)
         rateButtons.append(btnRate4)
         rateButtons.append(btnRate5)
-    
+        
+       // pkDate.tintColor = .clear
+        pkDate.backgroundColor = #colorLiteral(red: 0, green: 1, blue: 1, alpha: 1)
+        
         if dataFromInfo {
             setPlaceInfo()
             txvComent.textColor = UIColor.black
@@ -90,11 +93,14 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
         let btnPickerDone = UIBarButtonItem()
         let flexSpace = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
 
+        categoryPicker.backgroundColor = UIColor.white
+        categoryPicker.frame = CGRect(x: 0, y: 0, width: 0, height: 200)
         pickerToolbar.frame = CGRect(x: 0, y: 0, width: 0, height: 35)
         pickerToolbar.barTintColor = UIColor.white
         self.tfCategory.inputAccessoryView = pickerToolbar
         
         btnPickerDone.title = "선택"
+        btnPickerDone.tintColor = #colorLiteral(red: 0, green: 0.8924261928, blue: 0.8863361478, alpha: 1)
         btnPickerDone.target = self
         btnPickerDone.action = #selector(pickerDone)
         
@@ -110,12 +116,16 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
         let groupToolbar = UIToolbar()
         let btnPickerDone = UIBarButtonItem()
         let flexSpace = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
-        
+
+    
+        groupPicker.backgroundColor = UIColor.white
+        groupPicker.frame = CGRect(x: 0, y: 0, width: 0, height: 200)
         groupToolbar.frame = CGRect(x: 0, y: 0, width: 0, height: 35)
         groupToolbar.barTintColor = UIColor.white
         self.tfGroup.inputAccessoryView = groupToolbar
         
         btnPickerDone.title = "선택"
+        btnPickerDone.tintColor = #colorLiteral(red: 0, green: 0.8924261928, blue: 0.8863361478, alpha: 1)
         btnPickerDone.target = self
         btnPickerDone.action = #selector(pickerDone)
         
@@ -393,6 +403,7 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
             return tfGroup.text = groupItem[row]
         }
     }
+    
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         selectedImage = info[UIImagePickerController.InfoKey.originalImage] as? UIImage //사진을 가져와 라이브러리에 저장
