@@ -27,8 +27,6 @@ class MapViewController: UIViewController, CLLocationManagerDelegate , GMSMapVie
     var optionedPlaces = [PlaceData]()
     var onePlace : PlaceData?
     
-    @IBOutlet weak var optionTxtf: UITextField!
-    
     override func viewDidLoad() {
         super.viewDidLoad()
  
@@ -55,24 +53,11 @@ class MapViewController: UIViewController, CLLocationManagerDelegate , GMSMapVie
         
         mapView?.delegate = self
         
-        
-        
         self.view.addSubview(mapView!)
-        self.view.bringSubviewToFront(optionTxtf)
-        
         
         if onePlace != nil{
             showAddressMarker(placeData: onePlace!)
-            print(onePlace!.name as String + "이름이요")
         }
-    }
-    
-
-    
-    @objc func pickerDone(){
-        mapView?.clear()
-        mark(optionedPlaces)
-        self.view.endEditing(true)
     }
     
     func loadCategory(){
@@ -137,7 +122,6 @@ class MapViewController: UIViewController, CLLocationManagerDelegate , GMSMapVie
     func mark(_ placeList: [PlaceData]){
         for place in placeList{
             self.makeMark(place.geopoint, placeTitle: place.name, placeAddress: place.location)
-            print("마크했어요 ----- " + place.name)
         }
     }
     
@@ -190,7 +174,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate , GMSMapVie
         optionPicker.dataSource = self
         optionPicker.reloadAllComponents()
         
-        let filterAlert = UIAlertController(title: "조건 선택", message: "\n\n\n\n\n\n\n\n\n\n", preferredStyle: .alert)
+        let filterAlert = UIAlertController(title: "조건 선택", message: "\n\n\n\n\n\n\n\n", preferredStyle: .alert)
         filterAlert.view.addSubview(optionPicker)
         
         filterAlert.addAction(UIAlertAction(title: "취소", style: .default, handler: nil))

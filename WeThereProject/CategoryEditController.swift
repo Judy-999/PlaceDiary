@@ -13,7 +13,6 @@ class CategoryEditController: UITableViewController, UIColorPickerViewController
     let db: Firestore = Firestore.firestore()
     var editType = ""
     var typeString = ""
-    var selectedColor = UIColor()
     var places = [PlaceData]()
     var editItems = [String](){
         didSet {
@@ -32,7 +31,6 @@ class CategoryEditController: UITableViewController, UIColorPickerViewController
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem
         loadCategory(editType)
-        selectedColor = UIColor.white
     }
     
     func loadCategory(_ type: String){
@@ -105,25 +103,7 @@ class CategoryEditController: UITableViewController, UIColorPickerViewController
     }
 
     
-    override func viewWillAppear(_ animated: Bool) {
-        tableView.backgroundColor = selectedColor
-    }
-    
-    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let picker = UIColorPickerViewController()
-        self.present(picker, animated: true, completion: nil)
-    }
-    
 
-    
-    func colorPickerViewControllerDidSelectColor(_ viewController: UIColorPickerViewController) {
-        print(viewController.selectedColor)
-    }
-    
-    func colorPickerViewControllerDidFinish(_ viewController: UIColorPickerViewController) {
-        print(viewController.selectedColor)
-        selectedColor = viewController.selectedColor
-    }
     /*
     // Override to support conditional editing of the table view.
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {

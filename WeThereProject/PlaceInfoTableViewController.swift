@@ -17,7 +17,7 @@ class PlaceInfoTableViewController: UITableViewController, EditDelegate {
     
     @IBOutlet var placeImg: UIImageView!
     @IBOutlet var lblPlacename: UILabel!
-    @IBOutlet var lblPosition: UILabel!
+    @IBOutlet var btnPosition: UIButton!
     @IBOutlet var lblDate: UILabel!
     @IBOutlet var lblCategory: UILabel!
     @IBOutlet weak var lblGroup: UILabel!
@@ -112,7 +112,9 @@ class PlaceInfoTableViewController: UITableViewController, EditDelegate {
     
     func setPlaceInfo(){
         lblPlacename.text = reName
-        lblPosition.text = rePositon
+        btnPosition.setTitle(" " + rePositon + "  >", for: .normal)
+        btnPosition.setTitleColor(.white, for: .normal)
+        btnPosition.contentHorizontalAlignment = .left
         lblDate.text = reDate
         lblCategory.text = reCategory
         txvComent.text = reComent
