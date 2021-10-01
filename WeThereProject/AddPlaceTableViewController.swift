@@ -77,7 +77,6 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
         rateButtons.append(btnRate4)
         rateButtons.append(btnRate5)
         
-       // pkDate.tintColor = .clear
         pkDate.backgroundColor = #colorLiteral(red: 0, green: 1, blue: 1, alpha: 1)
         
         if dataFromInfo {

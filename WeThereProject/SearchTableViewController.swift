@@ -69,7 +69,8 @@ class SearchTableViewController: UITableViewController, ImageDelegate {
         let mainCont = mainNav.topViewController as! MainPlaceViewController
         let calNav = self.tabBarController?.viewControllers![2] as! UINavigationController
         let calCont = calNav.topViewController as! CalendarController
-        let mapCont = self.tabBarController?.viewControllers![3] as! MapViewController
+        let mapNav = self.tabBarController?.viewControllers![3] as! UINavigationController
+        let mapCont = mapNav.topViewController as! MapViewController
             
         calCont.getDate(places, images: placeImages)
         mapCont.getPlace(places, images: placeImages)

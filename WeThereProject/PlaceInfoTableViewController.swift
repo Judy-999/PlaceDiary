@@ -29,6 +29,7 @@ class PlaceInfoTableViewController: UITableViewController, EditDelegate {
     @IBOutlet var btnRate4: UIButton!
     @IBOutlet var btnRate5: UIButton!
     @IBOutlet weak var lblCount: UILabel!
+    @IBOutlet weak var btnAddress: UIButton!
     
     let storage = Storage.storage()
     let db: Firestore = Firestore.firestore()
@@ -233,7 +234,11 @@ class PlaceInfoTableViewController: UITableViewController, EditDelegate {
             let imageView = segue.destination as! ImageViewController
             imageView.fullImage = placeImg.image
         }
-        
+        if segue.identifier == "showMap"{
+            let addressController = segue.destination  as! MapViewController
+            addressController.onePlace = editData!
+        }
     }
 }
+
 

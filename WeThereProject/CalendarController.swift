@@ -103,7 +103,8 @@ class CalendarController: UIViewController, FSCalendarDelegate, FSCalendarDataSo
         let mainCont = mainNav.topViewController as! MainPlaceViewController
         let searchNav = self.tabBarController?.viewControllers![1] as! UINavigationController
         let searchCont = searchNav.topViewController as! SearchTableViewController
-        let mapCont = self.tabBarController?.viewControllers![3] as! MapViewController
+        let mapNav = self.tabBarController?.viewControllers![3] as! UINavigationController
+        let mapCont = mapNav.topViewController as! MapViewController
             
         searchCont.setData(places, images: placeImages)
         mapCont.getPlace(places, images: placeImages)
@@ -115,8 +116,10 @@ class CalendarController: UIViewController, FSCalendarDelegate, FSCalendarDataSo
         let eventDay = dates.first(where: {$0.date == date})
         if eventDay == nil{
             return 0
-        }else{
+        }else if (eventDay?.name.count)! < 3{
             return (eventDay?.name.count)!
+        }else{
+            return 3
         }
     }
     

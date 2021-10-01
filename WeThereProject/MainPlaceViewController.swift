@@ -142,7 +142,9 @@ class MainPlaceViewController: UIViewController, UITableViewDelegate, UITableVie
         let searchController = searchNav.topViewController as! SearchTableViewController
         let calendarNav = tabBarController?.viewControllers![2] as! UINavigationController
         let calendarController = calendarNav.topViewController as! CalendarController
-        let mapController = tabBarController?.viewControllers![3] as! MapViewController
+     //   let mapController = tabBarController?.viewControllers![3] as! MapViewController
+       let mapNav = self.tabBarController?.viewControllers![3] as! UINavigationController
+       let mapController = mapNav.topViewController as! MapViewController
         let settingNav = tabBarController?.viewControllers![4] as! UINavigationController
         let settingController = settingNav.topViewController as! SettingTableController
         

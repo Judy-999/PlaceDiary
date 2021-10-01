@@ -15,7 +15,6 @@ import GooglePlaces
 class MapViewController: UIViewController, CLLocationManagerDelegate , GMSMapViewDelegate, ImageDelegate, UIPickerViewDelegate, UIPickerViewDataSource {
    
     let db: Firestore = Firestore.firestore()
-    let optionPicker = UIPickerView()
     var locationManager: CLLocationManager!
     var mapView: GMSMapView?
     var points = [GeoPoint]()
@@ -26,13 +25,9 @@ class MapViewController: UIViewController, CLLocationManagerDelegate , GMSMapVie
     var groupList = ["전체"]
     var categoryList = ["전체"]
     var optionedPlaces = [PlaceData]()
-
+    var onePlace : PlaceData?
+    
     @IBOutlet weak var optionTxtf: UITextField!
-    @IBOutlet weak var optionBtn: UIButton!
-    @IBOutlet weak var typeSegment : UISegmentedControl!
-    @IBOutlet weak var baseVeiw : UIView!
-    
-    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -53,6 +48,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate , GMSMapVie
         let latitude = (coor?.latitude ?? 37.566508) as Double
         let longitude = (coor?.longitude ?? 126.977945) as Double
         let camera = GMSCameraPosition.camera(withLatitude: latitude, longitude: longitude, zoom: 12.0)
+       
         mapView = GMSMapView.map(withFrame: self.view.frame, camera: camera)
         mapView?.settings.myLocationButton = true
         mapView?.isMyLocationEnabled = true
@@ -60,36 +56,18 @@ class MapViewController: UIViewController, CLLocationManagerDelegate , GMSMapVie
         mapView?.delegate = self
         
         
-  //      let camera = GMSCameraPosition.camera(withLatitude: 37.566508, longitude: 126.977945, zoom: 12.0)
-  //      mapView = GMSMapView.map(withFrame: self.view.frame, camera: camera)
+        
         self.view.addSubview(mapView!)
         self.view.bringSubviewToFront(optionTxtf)
         
-        setOptionSearchPicker()
+        
+        if onePlace != nil{
+            showAddressMarker(placeData: onePlace!)
+            print(onePlace!.name as String + "이름이요")
+        }
     }
     
-    func setOptionSearchPicker(){
-        let pickerToolbar = UIToolbar()
-        let btnPickerDone = UIBarButtonItem()
-        let flexSpace = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
 
-        optionPicker.backgroundColor = UIColor.white
-        optionPicker.frame = CGRect(x: 0, y: 0, width: 0, height: 200)
-        pickerToolbar.frame = CGRect(x: 0, y: 0, width: 0, height: 40)
-        pickerToolbar.barTintColor = UIColor.white
-        optionTxtf.inputAccessoryView = pickerToolbar
-        
-        btnPickerDone.title = "검색"
-        btnPickerDone.tintColor = #colorLiteral(red: 0, green: 0.8924261928, blue: 0.8863361478, alpha: 1)
-        btnPickerDone.target = self
-        btnPickerDone.action = #selector(pickerDone)
-         
-        pickerToolbar.setItems([flexSpace, btnPickerDone], animated: true)
-         
-        optionPicker.delegate = self
-        optionTxtf.inputView = optionPicker
-        optionPicker.reloadAllComponents()
-    }
     
     @objc func pickerDone(){
         mapView?.clear()
@@ -103,12 +81,25 @@ class MapViewController: UIViewController, CLLocationManagerDelegate , GMSMapVie
             if let document = document, document.exists {
                 self.groupList = self.groupList + (document.get("group") as? [String])!
                 self.categoryList = self.categoryList + (document.get("items") as? [String])!
-                self.optionPicker.reloadAllComponents()
+             //   self.optionPicker.reloadAllComponents()
                 print("Document Success!")
             } else {
                 print("Document does not exist")
             }
         }
+    }
+    
+    func showAddressMarker(placeData : PlaceData){
+        let oneList = [placeData]
+        let camera = GMSCameraPosition.camera(
+            withLatitude: (placeData.geopoint.latitude) as Double,
+            longitude: (placeData.geopoint.longitude) as Double,
+            zoom: 15
+          )
+
+        mapView?.clear()
+        mapView?.camera = camera
+        mark(oneList)
     }
     
     func didImageDone(newData: PlaceData, image: UIImage) {
@@ -122,10 +113,12 @@ class MapViewController: UIViewController, CLLocationManagerDelegate , GMSMapVie
             newUpdate = false
         }
     }
-    
+
     override func viewWillAppear(_ animated: Bool) {
-        mapView?.clear()
-        mark(places)
+        //mapView?.clear()
+        if onePlace == nil{
+            mark(places)
+        }
     }
 
     func updateImg(){
@@ -144,6 +137,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate , GMSMapVie
     func mark(_ placeList: [PlaceData]){
         for place in placeList{
             self.makeMark(place.geopoint, placeTitle: place.name, placeAddress: place.location)
+            print("마크했어요 ----- " + place.name)
         }
     }
     
@@ -155,6 +149,9 @@ class MapViewController: UIViewController, CLLocationManagerDelegate , GMSMapVie
         marker.icon = GMSMarker.markerImage(with: #colorLiteral(red: 0.4620226622, green: 0.8382837176, blue: 1, alpha: 1))
       //  marker.icon = UIImage(named: "example.jpeg")
         marker.map = mapView
+        if onePlace != nil {
+            mapView?.selectedMarker = marker
+        }
     }
     
     
@@ -166,8 +163,12 @@ class MapViewController: UIViewController, CLLocationManagerDelegate , GMSMapVie
     
     
     func mapView(_ mapView: GMSMapView, didTapInfoWindowOf marker: GMSMarker) {
-        placeTitle = marker.title!
-        self.performSegue(withIdentifier: "sgMapInfo", sender: self)
+        if onePlace == nil{
+            placeTitle = marker.title!
+            self.performSegue(withIdentifier: "sgMapInfo", sender: self)
+        }else{
+            _ = navigationController?.popViewController(animated: true)
+        }
     }
     
    /*
@@ -182,6 +183,26 @@ class MapViewController: UIViewController, CLLocationManagerDelegate , GMSMapVie
             return true
         }
  */
+    
+    @IBAction func addFilter(_ sender: UIButton){
+        let optionPicker = UIPickerView(frame: CGRect(x: 10, y: 50, width: 250, height: 150))
+        optionPicker.delegate = self
+        optionPicker.dataSource = self
+        optionPicker.reloadAllComponents()
+        
+        let filterAlert = UIAlertController(title: "조건 선택", message: "\n\n\n\n\n\n\n\n\n\n", preferredStyle: .alert)
+        filterAlert.view.addSubview(optionPicker)
+        
+        filterAlert.addAction(UIAlertAction(title: "취소", style: .default, handler: nil))
+        filterAlert.addAction(UIAlertAction(title: "확인", style: .default, handler: { UIAlertAction in
+            self.mapView?.clear()
+            self.mark(self.optionedPlaces)
+        }))
+        
+        self.present(filterAlert, animated: true, completion: nil)
+    }
+    
+    
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
         return 2
     }
@@ -216,17 +237,6 @@ class MapViewController: UIViewController, CLLocationManagerDelegate , GMSMapVie
             optionedPlaces = places
         }
     }
-
-
-    @IBAction func changeSegmentType(_ sender: UISegmentedControl){
-        if sender.selectedSegmentIndex == 0{
-            
-        }else if sender.selectedSegmentIndex == 1{
-            
-        }else {
-            
-        }
-    }
     
     // MARK: - Navigation
 
@@ -237,9 +247,11 @@ class MapViewController: UIViewController, CLLocationManagerDelegate , GMSMapVie
         if segue.identifier == "sgMapInfo"{
             let infoView = segue.destination as! PlaceInfoTableViewController
             let selectedPlace = places.first(where: {$0.name == placeTitle})
-            
-          //  infoView.getPlaceInfo(selectedPlace!, image: placeImages[(selectedPlace?.name)!]!)
+                
+            //  infoView.getPlaceInfo(selectedPlace!, image: placeImages[(selectedPlace?.name)!]!)
             infoView.imgDelegate = self
+            
+            infoView.modalPresentationStyle = .fullScreen
             
             if  placeImages[(selectedPlace?.name)!] != nil{
                 infoView.getPlaceInfo(selectedPlace!, image: placeImages[(selectedPlace?.name)!]!)

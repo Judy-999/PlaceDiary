@@ -195,21 +195,30 @@
                                                     </subviews>
                                                 </stackView>
                                                 <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="IHE-wl-yHC">
-                                                    <rect key="frame" x="16" y="40" width="343" height="20.333333333333329"/>
+                                                    <rect key="frame" x="16" y="40" width="343" height="31"/>
                                                     <subviews>
                                                         <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="mappin.and.ellipse" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="wlH-w9-hws">
-                                                            <rect key="frame" x="0.0" y="0.0" width="25" height="20.333333333333332"/>
+                                                            <rect key="frame" x="0.0" y="0.0" width="25" height="31"/>
                                                             <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="width" constant="25" id="Pms-8p-fWI"/>
                                                             </constraints>
                                                         </imageView>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="위치" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="U54-MU-p9I">
-                                                            <rect key="frame" x="25" y="0.0" width="318" height="20.333333333333332"/>
+                                                            <rect key="frame" x="25" y="0.0" width="26" height="31"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                                             <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
+                                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ULw-GN-dBQ">
+                                                            <rect key="frame" x="51" y="0.0" width="292" height="31"/>
+                                                            <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                            <state key="normal" title="Button"/>
+                                                            <buttonConfiguration key="configuration" style="plain" title="지도로 이동 &gt;"/>
+                                                            <connections>
+                                                                <segue destination="uTe-NZ-0Gm" kind="show" identifier="showMap" id="obp-7i-Agi"/>
+                                                            </connections>
+                                                        </button>
                                                     </subviews>
                                                 </stackView>
                                             </subviews>
@@ -404,6 +413,7 @@
                     </navigationItem>
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
+                        <outlet property="btnAddress" destination="ULw-GN-dBQ" id="9m2-dx-o83"/>
                         <outlet property="btnRate1" destination="oiw-PG-hYp" id="vsz-kb-euz"/>
                         <outlet property="btnRate2" destination="wgq-G3-d0f" id="4xp-bM-Xfz"/>
                         <outlet property="btnRate3" destination="gRv-KZ-YUd" id="ciC-bq-fJk"/>
@@ -1032,7 +1042,7 @@
             </objects>
             <point key="canvasLocation" x="-618" y="986"/>
         </scene>
-        <!--Map-->
+        <!--지도-->
         <scene sceneID="KYc-fI-Syg">
             <objects>
                 <viewController id="uTe-NZ-0Gm" customClass="MapViewController" customModule="WeThereProject" customModuleProvider="target" sceneMemberID="viewController">
@@ -1040,27 +1050,36 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="상세검색" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="AZC-bw-VfD">
-                                <rect key="frame" x="16" y="74" width="116" height="34"/>
+                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="필터 검색" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" id="m4W-hp-ick">
+                                <rect key="frame" x="269" y="144" width="80" height="34"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" red="0.50325342360000003" green="0.82423278320000004" blue="0.98328930140000004" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                 <color key="tintColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="30"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="Smg-fS-7zD"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                     </view>
-                    <tabBarItem key="tabBarItem" title="자도" image="map" catalog="system" selectedImage="map" id="tka-k1-pJ0"/>
-                    <navigationItem key="navigationItem" title="Map" largeTitleDisplayMode="always" id="5i3-RW-JXb"/>
+                    <toolbarItems/>
+                    <navigationItem key="navigationItem" title="지도" largeTitleDisplayMode="always" id="5i3-RW-JXb">
+                        <barButtonItem key="rightBarButtonItem" image="slider.horizontal.3" catalog="system" id="EN5-Gf-Ixd">
+                            <color key="tintColor" red="0.50325342360000003" green="0.82423278320000004" blue="0.98328930140000004" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                            <connections>
+                                <action selector="addFilter:" destination="uTe-NZ-0Gm" id="Y24-k4-NkQ"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                    <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
-                        <outlet property="optionTxtf" destination="AZC-bw-VfD" id="B0L-Lj-kVP"/>
+                        <outlet property="optionTxtf" destination="m4W-hp-ick" id="HoE-km-kRY"/>
                         <segue destination="E07-mG-Yqk" kind="show" identifier="sgMapInfo" id="ngF-ER-ywh"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="bxy-tf-cnT" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1152.8" y="984.23645320197045"/>
+            <point key="canvasLocation" x="1153" y="1691"/>
         </scene>
         <!--캘린더-->
         <scene sceneID="OfN-VQ-dso">
@@ -1255,6 +1274,23 @@
             </objects>
             <point key="canvasLocation" x="2936.8000000000002" y="2146.5517241379312"/>
         </scene>
+        <!--지도-->
+        <scene sceneID="NL5-BQ-98y">
+            <objects>
+                <navigationController id="h8L-lw-dN1" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="지도" image="map" catalog="system" selectedImage="map" id="eME-YV-PeX"/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="zfz-7t-0Ry">
+                        <rect key="frame" x="0.0" y="44" width="375" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="uTe-NZ-0Gm" kind="relationship" relationship="rootViewController" id="2Kc-dU-Vel"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="6He-YF-K3v" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1153" y="986"/>
+        </scene>
         <!--설정-->
         <scene sceneID="lr1-Vl-APf">
             <objects>
@@ -1329,8 +1365,8 @@
                         <segue destination="enk-Fm-Cmf" kind="relationship" relationship="viewControllers" id="CAL-55-cfI"/>
                         <segue destination="4QB-6h-SGi" kind="relationship" relationship="viewControllers" id="0uT-yc-7KM"/>
                         <segue destination="et2-Wk-wJo" kind="relationship" relationship="viewControllers" id="peL-tF-7vi"/>
-                        <segue destination="uTe-NZ-0Gm" kind="relationship" relationship="viewControllers" id="GUH-zR-TyU"/>
-                        <segue destination="qOY-eY-Ueu" kind="relationship" relationship="viewControllers" id="Rge-AW-hFF"/>
+                        <segue destination="h8L-lw-dN1" kind="relationship" relationship="viewControllers" id="Fjf-EO-gKt"/>
+                        <segue destination="qOY-eY-Ueu" kind="relationship" relationship="viewControllers" id="gyb-fh-iaK"/>
                     </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="PCh-MB-9Oq" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -1400,7 +1436,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="hGV-uX-rG2" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="316" y="1677.3399014778327"/>
+            <point key="canvasLocation" x="318" y="1691"/>
         </scene>
         <!--홈-->
         <scene sceneID="uKA-fz-8NX">
@@ -1428,8 +1464,9 @@
     </scenes>
     <inferredMetricsTieBreakers>
         <segue reference="LEn-q7-1yn"/>
+        <segue reference="2Kc-dU-Vel"/>
         <segue reference="qPa-7u-WXO"/>
-        <segue reference="I6j-V1-nTt"/>
+        <segue reference="ngF-ER-ywh"/>
     </inferredMetricsTieBreakers>
     <resources>
         <image name="calendar" catalog="system" width="128" height="106"/>
@@ -1443,6 +1480,7 @@
         <image name="photo" catalog="system" width="128" height="93"/>
         <image name="plus" catalog="system" width="128" height="113"/>
         <image name="rectangle.and.pencil.and.ellipsis" catalog="system" width="128" height="81"/>
+        <image name="slider.horizontal.3" catalog="system" width="128" height="100"/>
         <image name="star" catalog="system" width="128" height="116"/>
         <image name="star.fill" catalog="system" width="128" height="116"/>
         <systemColor name="labelColor">
