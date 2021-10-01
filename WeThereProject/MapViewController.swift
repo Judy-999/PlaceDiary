@@ -12,7 +12,7 @@ import FirebaseFirestore
 import GoogleMaps
 import GooglePlaces
 
-class MapViewController: UIViewController, CLLocationManagerDelegate , GMSMapViewDelegate, ImageDelegate, UIPickerViewDelegate, UIPickerViewDataSource {
+class MapViewController: UIViewController, CLLocationManagerDelegate , GMSMapViewDelegate, ImageDelegate{
    
     let db: Firestore = Firestore.firestore()
     var locationManager: CLLocationManager!
@@ -66,7 +66,6 @@ class MapViewController: UIViewController, CLLocationManagerDelegate , GMSMapVie
             if let document = document, document.exists {
                 self.groupList = self.groupList + (document.get("group") as? [String])!
                 self.categoryList = self.categoryList + (document.get("items") as? [String])!
-             //   self.optionPicker.reloadAllComponents()
                 print("Document Success!")
             } else {
                 print("Document does not exist")
@@ -81,7 +80,6 @@ class MapViewController: UIViewController, CLLocationManagerDelegate , GMSMapVie
             longitude: (placeData.geopoint.longitude) as Double,
             zoom: 15
           )
-
         mapView?.clear()
         mapView?.camera = camera
         mark(oneList)
@@ -100,7 +98,6 @@ class MapViewController: UIViewController, CLLocationManagerDelegate , GMSMapVie
     }
 
     override func viewWillAppear(_ animated: Bool) {
-        //mapView?.clear()
         if onePlace == nil{
             mark(places)
         }
@@ -169,24 +166,62 @@ class MapViewController: UIViewController, CLLocationManagerDelegate , GMSMapVie
  */
     
     @IBAction func addFilter(_ sender: UIButton){
-        let optionPicker = UIPickerView(frame: CGRect(x: 10, y: 50, width: 250, height: 150))
-        optionPicker.delegate = self
-        optionPicker.dataSource = self
-        optionPicker.reloadAllComponents()
-        
-        let filterAlert = UIAlertController(title: "조건 선택", message: "\n\n\n\n\n\n\n\n", preferredStyle: .alert)
-        filterAlert.view.addSubview(optionPicker)
-        
-        filterAlert.addAction(UIAlertAction(title: "취소", style: .default, handler: nil))
-        filterAlert.addAction(UIAlertAction(title: "확인", style: .default, handler: { UIAlertAction in
-            self.mapView?.clear()
-            self.mark(self.optionedPlaces)
-        }))
-        
-        self.present(filterAlert, animated: true, completion: nil)
+        if onePlace == nil{
+            let optionPicker = UIPickerView(frame: CGRect(x: 10, y: 50, width: 250, height: 150))
+            optionPicker.delegate = self
+            optionPicker.dataSource = self
+            optionPicker.reloadAllComponents()
+            
+            let filterAlert = UIAlertController(title: "조건 선택", message: "\n\n\n\n\n\n\n\n", preferredStyle: .alert)
+            filterAlert.view.addSubview(optionPicker)
+            
+            
+            pickerView(optionPicker, didSelectRow: 0, inComponent:0)
+            
+            filterAlert.addAction(UIAlertAction(title: "취소", style: .default, handler: nil))
+            filterAlert.addAction(UIAlertAction(title: "확인", style: .default, handler: { UIAlertAction in
+                self.mapView?.clear()
+                self.mark(self.optionedPlaces)
+            }))
+            
+            self.present(filterAlert, animated: true, completion: nil)
+        }else{
+            let onePlaceAlert = UIAlertController(title: "조건 검색 불가", message: "\n 현재 지도에선 상세 검색을 할 수 없습니다.", preferredStyle: .alert)
+            
+            onePlaceAlert.addAction(UIAlertAction(title: "확인", style: .default, handler: nil))
+            
+            self.present(onePlaceAlert, animated: true, completion: nil)
+        }
     }
+
     
-    
+    // MARK: - Navigation
+
+    // In a storyboard-based application, you will often want to do a little preparation before navigation
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        // Get the new view controller using segue.destination.
+        // Pass the selected object to the new view controller.
+        if segue.identifier == "sgMapInfo"{
+            let infoView = segue.destination as! PlaceInfoTableViewController
+            let selectedPlace = places.first(where: {$0.name == placeTitle})
+                
+            //  infoView.getPlaceInfo(selectedPlace!, image: placeImages[(selectedPlace?.name)!]!)
+            infoView.imgDelegate = self
+            
+            infoView.modalPresentationStyle = .fullScreen
+            
+            if  placeImages[(selectedPlace?.name)!] != nil{
+                infoView.getPlaceInfo(selectedPlace!, image: placeImages[(selectedPlace?.name)!]!)
+            }else{
+                infoView.getPlaceInfo(selectedPlace!, image: UIImage(named: "wethere.jpeg")!)
+                infoView.downloadImgInfo(selectedPlace!)
+            }
+        }
+    }
+}
+
+extension MapViewController : UIPickerViewDelegate, UIPickerViewDataSource {
+
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
         return 2
     }
@@ -221,55 +256,4 @@ class MapViewController: UIViewController, CLLocationManagerDelegate , GMSMapVie
             optionedPlaces = places
         }
     }
-    
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-        if segue.identifier == "sgMapInfo"{
-            let infoView = segue.destination as! PlaceInfoTableViewController
-            let selectedPlace = places.first(where: {$0.name == placeTitle})
-                
-            //  infoView.getPlaceInfo(selectedPlace!, image: placeImages[(selectedPlace?.name)!]!)
-            infoView.imgDelegate = self
-            
-            infoView.modalPresentationStyle = .fullScreen
-            
-            if  placeImages[(selectedPlace?.name)!] != nil{
-                infoView.getPlaceInfo(selectedPlace!, image: placeImages[(selectedPlace?.name)!]!)
-            }else{
-                infoView.getPlaceInfo(selectedPlace!, image: UIImage(named: "wethere.jpeg")!)
-                infoView.downloadImgInfo(selectedPlace!)
-            }
-        }
-    }
 }
-/*
-extension MapViewController : UIPickerViewDelegate, UIPickerViewDataSource {
-
-    func numberOfComponents(in pickerView: UIPickerView) -> Int {
-        return 2
-    }
-    
-    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        if component == 0 {
-            return groupList.count
-        }else{
-            return categoryList.count
-        }
-    }
-    
-    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-        if component == 0 {
-            return groupList[row]
-        }else{
-            return categoryList[row]
-        }
-    }
-    
-    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-        
-    }
-}*/

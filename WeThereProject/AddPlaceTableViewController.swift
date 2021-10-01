@@ -15,18 +15,17 @@ protocol EditDelegate {
     func didEditPlace(_ controller: AddPlaceTableViewController, data: PlaceData, image: UIImage)
 }
 
-class AddPlaceTableViewController: UITableViewController, UINavigationControllerDelegate, UIImagePickerControllerDelegate, UIPickerViewDelegate, UIPickerViewDataSource, UITextViewDelegate{
+class AddPlaceTableViewController: UITableViewController, UINavigationControllerDelegate, UIImagePickerControllerDelegate, UITextViewDelegate{
     
     let db: Firestore = Firestore.firestore()
     let storageRef = Storage.storage().reference()
     let imagePicker: UIImagePickerController! = UIImagePickerController()
-    var selectedImage: UIImage!
-    let PICKER_VIEW_COLUMN = 1
     let searchController = GMSAutocompleteViewController()
+    let rate = AddRate()
+    var selectedImage: UIImage!
     var categoryItem = [String]()
     var groupItem = [String]()
     var rateButtons = [UIButton]()
-    let rate = AddRate()
     var isImage = true
     var dataFromInfo = false
     var count = "0"
@@ -101,7 +100,7 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
         btnPickerDone.title = "선택"
         btnPickerDone.tintColor = #colorLiteral(red: 0, green: 0.8924261928, blue: 0.8863361478, alpha: 1)
         btnPickerDone.target = self
-        btnPickerDone.action = #selector(pickerDone)
+        btnPickerDone.action = #selector(categoryPickerDone)
         
         pickerToolbar.setItems([flexSpace, btnPickerDone], animated: true)
         
@@ -115,7 +114,6 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
         let groupToolbar = UIToolbar()
         let btnPickerDone = UIBarButtonItem()
         let flexSpace = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
-
     
         groupPicker.backgroundColor = UIColor.white
         groupPicker.frame = CGRect(x: 0, y: 0, width: 0, height: 200)
@@ -126,14 +124,27 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
         btnPickerDone.title = "선택"
         btnPickerDone.tintColor = #colorLiteral(red: 0, green: 0.8924261928, blue: 0.8863361478, alpha: 1)
         btnPickerDone.target = self
-        btnPickerDone.action = #selector(pickerDone)
-        
+        btnPickerDone.action = #selector(groupPickerDone)
         
         groupToolbar.setItems([flexSpace, btnPickerDone], animated: true)
         
         groupPicker.tag = 1
         groupPicker.delegate = self
         self.tfGroup.inputView = groupPicker
+    }
+    
+    @objc func groupPickerDone(){
+        if tfGroup.text == ""{
+            tfGroup.text = groupItem[0]
+        }
+        self.view.endEditing(true)
+    }
+    
+    @objc func categoryPickerDone(){
+        if tfCategory.text == ""{
+            tfCategory.text = categoryItem[0]
+        }
+        self.view.endEditing(true)
     }
     
     func setTextView(){
@@ -204,9 +215,7 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
         rate.fill(buttons: rateButtons, rate: NSString(string: reRate).floatValue)
     }
     
-    @objc func pickerDone(){
-        self.view.endEditing(true)
-    }
+   
 
     // MARK: - Table view data source
 
@@ -375,43 +384,11 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
         }
     }
 */
-    func numberOfComponents(in pickerView: UIPickerView) -> Int {
-        return PICKER_VIEW_COLUMN
-    }
-    
-    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        if pickerView.tag == 0{
-            return categoryItem.count
-        }else{
-            return groupItem.count
-        }
-    }
-    
-    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-        if pickerView.tag == 0{
-            return categoryItem[row]
-        }else{
-            return groupItem[row]
-        }
-    }
-    
-    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-        if pickerView.tag == 0{
-            tfCategory.text = categoryItem[row]
-        }else{
-            return tfGroup.text = groupItem[row]
-        }
-    }
-    
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         selectedImage = info[UIImagePickerController.InfoKey.originalImage] as? UIImage //사진을 가져와 라이브러리에 저장
 
         placeImageView.image = selectedImage
-        
-      //  placeImageView.image = selectedImage.resize(newWidth: 10)
-   
-     //   selectedImage = selectedImage.resize(newWidth: 50)
         
         self.dismiss(animated: true, completion: nil)   //현재 뷰 컨트롤러 제거
     }
@@ -452,12 +429,6 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
             stepper.isEnabled = false
         }
     }
-    
- /*   @IBAction func clickStar(_ sender: UIButton){
-        lblRate.text = String(describing: rate.checkAttr(buttons: rateButtons, button: sender))
-    }
-    
- */
     
     @IBAction func sliderChanged(_ sender: Any) {
         let starVal = starSlider.value
@@ -590,30 +561,43 @@ extension UIImage {
         let render = UIGraphicsImageRenderer(size: size)
         let renderImage = render.image {
             context in self.draw(in: CGRect(origin: .zero, size: size)) }
-    //    print("화면 배율: \(UIScreen.main.scale)")// 배수
-    //    print("origin: \(self), resize: \(renderImage)")
-     //   printDataSize(renderImage)
-        
         return renderImage
-    }
-    
-    func downSample2(size: CGSize, scale: CGFloat = UIScreen.main.scale) -> UIImage {
-        let imageSourceOption = [kCGImageSourceShouldCache: false] as CFDictionary
-        let data = self.pngData()! as CFData
-        let imageSource = CGImageSourceCreateWithData(data, imageSourceOption)!
-        let maxPixel = max(size.width, size.height) * scale
-        let downSampleOptions = [ kCGImageSourceCreateThumbnailFromImageAlways: true, kCGImageSourceShouldCacheImmediately: true,
-                                  kCGImageSourceCreateThumbnailWithTransform: true, kCGImageSourceThumbnailMaxPixelSize: maxPixel ] as CFDictionary
-        let downSampledImage = CGImageSourceCreateThumbnailAtIndex(imageSource, 0, downSampleOptions)!
-        let newImage = UIImage(cgImage: downSampledImage)
-        print("origin: \(self), resize: \(newImage)")
-        return newImage
     }
 }
 
+extension AddPlaceTableViewController :  UIPickerViewDelegate, UIPickerViewDataSource{
+    func numberOfComponents(in pickerView: UIPickerView) -> Int {
+        return 1
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+        if pickerView.tag == 0{
+            return categoryItem.count
+        }else{
+            return groupItem.count
+        }
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+        if pickerView.tag == 0{
+            return categoryItem[row]
+        }else{
+            return groupItem[row]
+        }
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+        if pickerView.tag == 0{
+            tfCategory.text = categoryItem[row]
+        }else{
+            return tfGroup.text = groupItem[row]
+        }
+    }
+    
+
+}
 
 class StarRatingUISlider: UISlider {
-
     override func beginTracking(_ touch: UITouch, with event: UIEvent?) -> Bool {
         let width = self.frame.size.width
         let tapPoint = touch.location(in: self)
