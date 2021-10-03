@@ -65,6 +65,8 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
     override func viewDidLoad() {
         super.viewDidLoad()
     
+        imagePicker.allowsEditing = true
+        
         downloadPickerItem()
         setTextView()
         setPickerView()
@@ -236,7 +238,7 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
         }else if tfPlaceName.text == ""{
             myAlert("필수 입력 미기재", message: "장소의 이름을 입력해주세요.")
         }else if tvPlacePosition.text == "위치를 입력하세요."{
-            myAlert("필수 입력 미기재", message: "장소의 위치를 입력해주세요.")
+            myAlert("필수 입력 미기재", message: "장소의 위치를 검색해주세요.")
         }else if tfCategory.text == "" {
             myAlert("필수 입력 미기재", message: "장소의 카테고리를 선택해주세요.")
         }else if tfCategory.text == "" {
@@ -386,8 +388,13 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
 */
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
-        selectedImage = info[UIImagePickerController.InfoKey.originalImage] as? UIImage //사진을 가져와 라이브러리에 저장
-
+        
+        if let img = info[UIImagePickerController.InfoKey.editedImage] as? UIImage{
+            selectedImage = img
+        }else if let img = info[UIImagePickerController.InfoKey.originalImage] as? UIImage{
+            selectedImage = img //사진을 가져와 라이브러리에 저장
+        }
+       
         placeImageView.image = selectedImage
         
         self.dismiss(animated: true, completion: nil)   //현재 뷰 컨트롤러 제거
@@ -402,7 +409,7 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
     //경고 표시
     func myAlert(_ title: String, message: String){
         let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
-        let action = UIAlertAction(title: "Ok", style: .default, handler: nil)
+        let action = UIAlertAction(title: "확인", style: .default, handler: nil)
         alert.addAction(action)
         present(alert, animated: true, completion: nil)
     }
@@ -434,11 +441,9 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
         let starVal = starSlider.value
         rate.sliderStar(buttons: rateButtons, rate: starVal)
         
-        
         let rateDown = starVal.rounded(.down)
         let half = starVal - rateDown
         let rateInt = Int(rateDown)
-        
         
         if half >= 0.5{
             lblRate.text = String(rateInt) + ".5"
@@ -472,6 +477,9 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
         present(searchController, animated: true, completion: nil)
     }
 
+    @IBAction func datePick(_ sender: UIDatePicker){
+        presentedViewController?.dismiss(animated: true, completion: nil)
+    }
     
     /*
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {

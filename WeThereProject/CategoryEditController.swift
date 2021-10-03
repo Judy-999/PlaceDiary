@@ -68,27 +68,29 @@ class CategoryEditController: UITableViewController, UIColorPickerViewController
         addAlert.addTextField()
         let alertOk = UIAlertAction(title: "추가", style: .default) { [self] (alertOk) in
             if addAlert.textFields?[0].text != nil{
-                if self.checkExisted(item: (addAlert.textFields?[0].text)!){
-                    self.uploadCategory(self.editType, item: (addAlert.textFields?[0].text)!, add: true)
-                    self.loadCategory(self.editType)
-                    self.tableView.reloadData()
+                if checkExisted(item: (addAlert.textFields?[0].text)!){
+                    uploadCategory(editType, item: (addAlert.textFields?[0].text)!, add: true)
+                    loadCategory(editType)
+                    tableView.reloadData()
                 }else{
-                    let cantInsertAlert = UIAlertController(title: "생성 불가", message: "이미 존재하는 항목입니다.", preferredStyle: .alert)
-                    let alertOk = UIAlertAction(title: "확인", style: .default) { (alertOk) in
-                    }
-                    cantInsertAlert.addAction(alertOk)
-                    self.present(cantInsertAlert, animated: true, completion: nil)
+                    simpleAlert(title: "생성 불가", message: "이미 존재하는 항목입니다.")
                 }
+            }else{
+                simpleAlert(title: "생성 불가", message: "생성할 이름을 입력해주세요")
             }
         }
-        let alertCancle = UIAlertAction(title: "취소", style: .default) { (alertCancel) in}
-        addAlert.addAction(alertCancle)
+        addAlert.addAction(UIAlertAction(title: "취소", style: .default, handler: nil))
         addAlert.addAction(alertOk)
         self.present(addAlert, animated: true, completion: nil)
     }
     
+    func simpleAlert(title: String, message: String){
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "확인", style: .default, handler: nil))
+        self.present(alert, animated: true, completion: nil)
+    }
+    
     func uploadCategory(_ type: String, item: String, add: Bool){
-        
         let categoryRef = db.collection("category").document(Uid)
         
         if add{
@@ -101,7 +103,44 @@ class CategoryEditController: UITableViewController, UIColorPickerViewController
             ])
         }
     }
+    
+    func updateField(_ type: String, items: [String]){
+        let categoryRef = db.collection("category").document(Uid)
 
+        categoryRef.updateData([
+                type : items
+        ])
+    }
+
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let editConfirmAlert = UIAlertController(title: "편집", message: "편집하시겠습니까?", preferredStyle: .actionSheet)
+        editConfirmAlert.addAction(UIAlertAction(title: "편집", style: .default, handler: { _ in
+            let editAlert = UIAlertController(title: "편집하기", message: "새로운 " + self.typeString + "(을)를 입력하세요.", preferredStyle: .alert)
+            editAlert.addTextField()
+            editAlert.textFields?[0].text = self.editItems[indexPath.row]
+            let alertOk = UIAlertAction(title: "저장", style: .default) { [self] _ in
+                if editAlert.textFields?[0].text != nil{
+                    if checkExisted(item: (editAlert.textFields?[0].text)!){
+                        if let index = editItems.firstIndex(of: editItems[indexPath.row]) {
+                            editItems[index] = (editAlert.textFields?[0].text)!
+                        }
+                        updateField(editType, items: editItems)
+                        loadCategory(editType)
+                        tableView.reloadData()
+                    }else{
+                        simpleAlert(title: "저장 불가", message: "이미 존재하는 항목입니다.")
+                    }
+                }else{
+                    simpleAlert(title: "저장 불가", message: "항목의 이름을 입력해주세요")
+                }
+            }
+            editAlert.addAction(UIAlertAction(title: "취소", style: .default, handler: nil))
+            editAlert.addAction(alertOk)
+            self.present(editAlert, animated: true, completion: nil)
+        }))
+        editConfirmAlert.addAction(UIAlertAction(title: "취소", style: .destructive, handler: nil))
+        self.present(editConfirmAlert, animated: true, completion: nil)
+    }
     
 
     /*
@@ -127,20 +166,14 @@ class CategoryEditController: UITableViewController, UIColorPickerViewController
                     }
                     tableView.deleteRows(at: [indexPath], with: .fade)
                 }
-                let alertNo = UIAlertAction(title: "취소", style: .default) { (alertNo) in
-                }
-               
+
                 canDeleteAlert.addAction(alertOk)
-                canDeleteAlert.addAction(alertNo)
+                canDeleteAlert.addAction(UIAlertAction(title: "취소", style: .default))
                 
                 self.present(canDeleteAlert, animated: true, completion: nil)
                 
             }else{
-                let cantDeleteAlert = UIAlertController(title: "삭제 불가", message: "사용 중인 항목은 삭제할 수 없습니다.", preferredStyle: .alert)
-                let alertOk = UIAlertAction(title: "확인", style: .default) { (alertOk) in
-                }
-                cantDeleteAlert.addAction(alertOk)
-                self.present(cantDeleteAlert, animated: true, completion: nil)
+                simpleAlert(title: "삭제 불가", message: "사용 중인 항목은 삭제할 수 없습니다.")
             }
     
         } else if editingStyle == .insert {

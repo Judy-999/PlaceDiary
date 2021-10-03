@@ -28,10 +28,7 @@ class MainPlaceViewController: UIViewController, UITableViewDelegate, UITableVie
     var categoryItem = [String]()
     var groupItem = [String]()
     var placeImages = [String : UIImage]()
-    
-    
-    var session: URLSession = URLSession.shared
-    
+
     var places = [PlaceData]() {
         didSet {
             DispatchQueue.main.async {
@@ -274,9 +271,6 @@ class MainPlaceViewController: UIViewController, UITableViewDelegate, UITableVie
         return cell
     }
     
-
-    
-    
     func getImage(place: PlaceData, completion: @escaping (UIImage?) -> ()) {
         let fileName = place.name
           if place.image == true {
@@ -295,19 +289,25 @@ class MainPlaceViewController: UIViewController, UITableViewDelegate, UITableVie
               completion(basicImg)
           }
       }
-      
-
     
     // Override to support editing the table view.
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {    //셀 삭제
             // Delete the row from the data source
             
-            let cellData = getPlaceList(sectionNum: sgNum, index: indexPath)
+            deleteConfirm(indexPath)
+        } else if editingStyle == .insert {
+            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
+        }
+    }
+    
+    func deleteConfirm(_ indexPath: IndexPath){
+        let cellData = getPlaceList(sectionNum: sgNum, index: indexPath)
+        let deletAlert = UIAlertController(title: "장소 삭제", message: cellData[indexPath.row].name + "(을)를 삭제하시겠습니까?", preferredStyle: .actionSheet)
+        let okAlert = UIAlertAction(title: "삭제", style: .destructive){ UIAlertAction in
             let removePlace = cellData[(indexPath as NSIndexPath).row].name as String
             
-            
-            db.collection(Uid).document(removePlace).delete() { err in
+            self.db.collection(Uid).document(removePlace).delete() { err in
                 if let err = err {
                     print("Error removing document: \(err)")
                 } else {
@@ -315,7 +315,7 @@ class MainPlaceViewController: UIViewController, UITableViewDelegate, UITableVie
                 }
             }
             
-            storage.reference().child(Uid + "/" + removePlace).delete { error in
+            self.storage.reference().child(Uid + "/" + removePlace).delete { error in
                 if let error = error {
                     print("Error removing image: \(error)")
                 } else {
@@ -323,18 +323,24 @@ class MainPlaceViewController: UIViewController, UITableViewDelegate, UITableVie
                 }
               }
      
-      
-           let removeDataIndex = places.firstIndex(where: {$0.name == cellData[(indexPath as NSIndexPath).row].name})!
-            places.remove(at: removeDataIndex)
+            let removeDataIndex = self.places.firstIndex(where: {$0.name == cellData[(indexPath as NSIndexPath).row].name})!
+            self.places.remove(at: removeDataIndex)
             
-            newUapdate = true
+            self.newUapdate = true
             
-            tableView.deleteRows(at: [indexPath], with: .fade)
-            placeTableView.reloadData()
-            
-        } else if editingStyle == .insert {
-            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
+            self.placeTableView.deleteRows(at: [indexPath], with: .fade)
+            self.placeTableView.reloadData()
         }
+                                    
+        let cancelAlert = UIAlertAction(title: "취소", style: .cancel, handler: nil)
+
+        deletAlert.addAction(okAlert)
+        deletAlert.addAction(cancelAlert)
+        self.present(deletAlert, animated: true, completion: nil)
+    }
+    
+    func deleteHandler(alertAction: UIAlertAction!) -> Void {
+
     }
     
     @IBAction func sortBtn(_ sender: UIBarItem){
@@ -356,7 +362,7 @@ class MainPlaceViewController: UIViewController, UITableViewDelegate, UITableVie
             self.places.sort(by: {$0.date > $1.date})
         })
 
-        alert.addAction(UIAlertAction(title: "취소", style: .default) { _ in
+        alert.addAction(UIAlertAction(title: "취소", style: .cancel) { _ in
             
         })
         present(alert, animated: true)

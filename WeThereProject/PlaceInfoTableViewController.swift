@@ -72,8 +72,6 @@ class PlaceInfoTableViewController: UITableViewController, EditDelegate {
 
     }
     
-
-    
     func getPlaceInfo(_ data: PlaceData, image: UIImage){
         editData = data
         
@@ -143,17 +141,10 @@ class PlaceInfoTableViewController: UITableViewController, EditDelegate {
         })
 
         alert.addAction(UIAlertAction(title: "장소 삭제", style: .default) { _ in
-            let alert = UIAlertController(title: "장소 삭제 확인", message: "장소를 삭제하시겠습니까?", preferredStyle: .alert)
-            let action = UIAlertAction(title: "확인", style: .default){ [self] _ in
-                NotificationCenter.default.post(name: NSNotification.Name(rawValue: "newPlaceUpdate"), object: editData)
-                _ = navigationController?.popViewController(animated: true)
-            }
-            let actionCancle = UIAlertAction(title: "취소", style: .default, handler: nil)
-            alert.addAction(action)
-            alert.addAction(actionCancle)
-            self.present(alert, animated: true, completion: nil)
+            _ = self.navigationController?.popViewController(animated: true)
+            NotificationCenter.default.post(name: NSNotification.Name(rawValue: "newPlaceUpdate"), object: self.editData)
         })
-        alert.addAction(UIAlertAction(title: "취소", style: .default) { _ in
+        alert.addAction(UIAlertAction(title: "취소", style: .cancel) { _ in
             
         })
 
