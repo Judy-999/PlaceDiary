@@ -245,6 +245,8 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
             myAlert("필수 입력 미기재", message: "장소의 그룹을 선택해주세요.")
         }else if geoPoint == nil {
             myAlert("장소 위치 선택 오류", message: "장소의 이름 또는 주소를 검색하여 선택해주세요.")
+        }else if swVisit.isOn == true && count == "0"{
+            myAlert("방문 횟수 미선택", message: "방문 횟수를 입력해주세요.")
         }else{
             //    tfPlaceName.placeholder = "이름을 입력하세요."
             

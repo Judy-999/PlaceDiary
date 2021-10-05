@@ -113,7 +113,7 @@ class CategoryEditController: UITableViewController, UIColorPickerViewController
     }
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let editConfirmAlert = UIAlertController(title: "편집", message: "편집하시겠습니까?", preferredStyle: .actionSheet)
+        let editConfirmAlert = UIAlertController(title: "편집하기", message: "편집하시겠습니까?", preferredStyle: .actionSheet)
         editConfirmAlert.addAction(UIAlertAction(title: "편집", style: .default, handler: { _ in
             let editAlert = UIAlertController(title: "편집하기", message: "새로운 " + self.typeString + "(을)를 입력하세요.", preferredStyle: .alert)
             editAlert.addTextField()
@@ -140,6 +140,7 @@ class CategoryEditController: UITableViewController, UIColorPickerViewController
         }))
         editConfirmAlert.addAction(UIAlertAction(title: "취소", style: .destructive, handler: nil))
         self.present(editConfirmAlert, animated: true, completion: nil)
+        tableView.deselectRow(at: indexPath, animated: true)
     }
     
 

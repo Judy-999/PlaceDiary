@@ -178,7 +178,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate , GMSMapVie
             
             pickerView(optionPicker, didSelectRow: 0, inComponent:0)
             
-            filterAlert.addAction(UIAlertAction(title: "취소", style: .default, handler: nil))
+            filterAlert.addAction(UIAlertAction(title: "취소", style: .cancel, handler: nil))
             filterAlert.addAction(UIAlertAction(title: "확인", style: .default, handler: { UIAlertAction in
                 self.mapView?.clear()
                 self.mark(self.optionedPlaces)

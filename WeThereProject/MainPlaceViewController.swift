@@ -246,7 +246,7 @@ class MainPlaceViewController: UIViewController, UITableViewDelegate, UITableVie
         cell.lblPlaceLocation.text = formatter.string(from: cellData[indexPath.row].date)
         cell.lblPlaceName.text = cellData[indexPath.row].name
         
-        if places[indexPath.row].rate != "0.0"{
+        if places[indexPath.row].count != "0"{
             cell.lblPlaceInfo.text = cellData[indexPath.row].group + " ∙ " + cellData[indexPath.row].category + " ∙ " + cellData[indexPath.row].rate + "점"
         }else{
             cell.lblPlaceInfo.text = cellData[indexPath.row].group + " ∙ " + cellData[indexPath.row].category + " ∙ " + "가보고 싶어요!"

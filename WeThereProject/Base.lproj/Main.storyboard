@@ -498,24 +498,37 @@
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="120"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <imageView clipsSubviews="YES" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="photo" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="vVH-t3-yer">
-                                                    <rect key="frame" x="16" y="12.666666666666515" width="106" height="100"/>
-                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                    <color key="backgroundColor" systemColor="tertiarySystemGroupedBackgroundColor"/>
-                                                    <color key="tintColor" systemColor="systemGrayColor"/>
-                                                </imageView>
-                                                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="HRk-ch-1jU">
-                                                    <rect key="frame" x="130" y="26" width="77" height="68"/>
-                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                    <color key="tintColor" red="0.451170603" green="0.96130981760000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-                                                    <state key="normal">
-                                                        <imageReference key="image" image="plus" catalog="system" symbolScale="large"/>
-                                                    </state>
-                                                    <connections>
-                                                        <action selector="btnAddPhoto:" destination="Lcc-Ir-Tux" eventType="touchUpInside" id="DdI-81-AR0"/>
-                                                    </connections>
-                                                </button>
+                                                <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="15" translatesAutoresizingMaskIntoConstraints="NO" id="Y6f-JK-eQh">
+                                                    <rect key="frame" x="16" y="5" width="343" height="110"/>
+                                                    <subviews>
+                                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="fill" contentVerticalAlignment="fill" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="HRk-ch-1jU">
+                                                            <rect key="frame" x="0.0" y="0.0" width="104.33333333333333" height="110"/>
+                                                            <color key="tintColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                            <state key="normal">
+                                                                <color key="titleShadowColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                                <imageReference key="image" image="photo.on.rectangle.angled" catalog="system" symbolScale="large"/>
+                                                            </state>
+                                                            <connections>
+                                                                <action selector="btnAddPhoto:" destination="Lcc-Ir-Tux" eventType="touchUpInside" id="DdI-81-AR0"/>
+                                                            </connections>
+                                                        </button>
+                                                        <imageView clipsSubviews="YES" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="vVH-t3-yer">
+                                                            <rect key="frame" x="119.33333333333334" y="0.0" width="104.33333333333334" height="110"/>
+                                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                            <color key="tintColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                        </imageView>
+                                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="fk8-ew-hdq">
+                                                            <rect key="frame" x="238.66666666666666" y="0.0" width="104.33333333333334" height="110"/>
+                                                        </imageView>
+                                                    </subviews>
+                                                </stackView>
                                             </subviews>
+                                            <constraints>
+                                                <constraint firstItem="Y6f-JK-eQh" firstAttribute="leading" secondItem="KR6-3Z-9cq" secondAttribute="leading" constant="16" id="dWj-Qz-apg"/>
+                                                <constraint firstItem="Y6f-JK-eQh" firstAttribute="top" secondItem="KR6-3Z-9cq" secondAttribute="top" constant="5" id="kZ4-zx-AMa"/>
+                                                <constraint firstAttribute="bottom" secondItem="Y6f-JK-eQh" secondAttribute="bottom" constant="5" id="njD-6v-y1M"/>
+                                                <constraint firstAttribute="trailing" secondItem="Y6f-JK-eQh" secondAttribute="trailing" constant="16" id="rFE-wV-9CC"/>
+                                            </constraints>
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" rowHeight="50" id="5Ez-z5-bxi">
@@ -1461,8 +1474,8 @@
     <inferredMetricsTieBreakers>
         <segue reference="LEn-q7-1yn"/>
         <segue reference="2Kc-dU-Vel"/>
-        <segue reference="qPa-7u-WXO"/>
-        <segue reference="I6j-V1-nTt"/>
+        <segue reference="R1O-xY-QdV"/>
+        <segue reference="1cJ-Xl-0QN"/>
     </inferredMetricsTieBreakers>
     <resources>
         <image name="calendar" catalog="system" width="128" height="106"/>
@@ -1473,8 +1486,7 @@
         <image name="map" catalog="system" width="128" height="110"/>
         <image name="mappin.and.ellipse" catalog="system" width="118" height="128"/>
         <image name="person" catalog="system" width="128" height="117"/>
-        <image name="photo" catalog="system" width="128" height="93"/>
-        <image name="plus" catalog="system" width="128" height="113"/>
+        <image name="photo.on.rectangle.angled" catalog="system" width="128" height="100"/>
         <image name="rectangle.and.pencil.and.ellipsis" catalog="system" width="128" height="81"/>
         <image name="slider.horizontal.3" catalog="system" width="128" height="100"/>
         <image name="star" catalog="system" width="128" height="116"/>
@@ -1490,12 +1502,6 @@
         </systemColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-        </systemColor>
-        <systemColor name="systemGrayColor">
-            <color red="0.55686274509803924" green="0.55686274509803924" blue="0.57647058823529407" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-        </systemColor>
-        <systemColor name="tertiarySystemGroupedBackgroundColor">
-            <color red="0.94901960784313721" green="0.94901960784313721" blue="0.96862745098039216" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
     </resources>
 </document>
