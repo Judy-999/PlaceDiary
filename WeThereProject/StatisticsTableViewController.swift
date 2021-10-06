@@ -72,7 +72,7 @@ class StatisticsTableViewController: UITableViewController {
         // #warning Incomplete implementation, return the number of sections
         return 2
     }
-
+    
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
         if section == 0{
@@ -91,17 +91,15 @@ class StatisticsTableViewController: UITableViewController {
         
         let cell = tableView.dequeueReusableCell(withIdentifier: "statisticsCell", for: indexPath)
         
-        cell.textLabel?.font = UIFont .boldSystemFont(ofSize: 17)
+        cell.textLabel?.font = UIFont.boldSystemFont(ofSize: 17)
         cell.detailTextLabel?.font = UIFont .systemFont(ofSize: 17)
-        
-        
         
         if indexPath.section == 0{
             cell.textLabel?.text = categoryList[(indexPath as NSIndexPath).row]
-            cell.detailTextLabel?.text = calculate(name: categoryList[(indexPath as NSIndexPath).row]) + "곳"
+            cell.detailTextLabel?.text = calculate(name: categoryList[(indexPath as NSIndexPath).row]) + " 곳"
         }else{
             cell.textLabel?.text = groupList[(indexPath as NSIndexPath).row]
-            cell.detailTextLabel?.text = calculate(name: groupList[(indexPath as NSIndexPath).row]) + "곳"
+            cell.detailTextLabel?.text = calculate(name: groupList[(indexPath as NSIndexPath).row]) + " 곳"
         }
 
         return cell

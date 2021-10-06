@@ -8,6 +8,7 @@
 
 import UIKit
 import Firebase
+import NVActivityIndicatorView
 
 protocol ImageDelegate {
     func didImageDone(newData: PlaceData, image: UIImage)
@@ -29,7 +30,7 @@ class PlaceInfoTableViewController: UITableViewController, EditDelegate {
     @IBOutlet var btnRate4: UIButton!
     @IBOutlet var btnRate5: UIButton!
     @IBOutlet weak var lblCount: UILabel!
-    @IBOutlet weak var btnAddress: UIButton!
+   
     
     let storage = Storage.storage()
     let db: Firestore = Firestore.firestore()
@@ -48,6 +49,8 @@ class PlaceInfoTableViewController: UITableViewController, EditDelegate {
     var count = "0"
     var reGroup = ""
     var imgDelegate : ImageDelegate?
+    let loadingView = UIView()
+    var loading = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -69,7 +72,20 @@ class PlaceInfoTableViewController: UITableViewController, EditDelegate {
         let tap = UITapGestureRecognizer(target: self, action: #selector(imageTapped))
         placeImg.isUserInteractionEnabled = true
         placeImg.addGestureRecognizer(tap)
-
+                
+        if loading{
+            let width = placeImg.frame.midX
+            let height = placeImg.frame.midY
+            loadingView.frame = CGRect(x: 0, y: 0, width: placeImg.frame.width, height: placeImg.frame.height)
+            loadingView.backgroundColor = UIColor.white
+            self.view.addSubview(loadingView)
+            let indicator = NVActivityIndicatorView(frame: CGRect(x: width - 25 , y: height - 25 , width: 50, height: 50),
+                                                    type: .ballRotateChase,
+                                                    color: .cyan,
+                                                    padding: 0)
+            loadingView.addSubview(indicator)
+            indicator.startAnimating()
+        }
     }
     
     func getPlaceInfo(_ data: PlaceData, image: UIImage){
@@ -93,6 +109,7 @@ class PlaceInfoTableViewController: UITableViewController, EditDelegate {
     func downloadImgInfo(_ place: PlaceData){
         let fileName = place.name
         let islandRef = storage.reference().child(Uid + "/" + fileName)
+        loading = true
         islandRef.getData(maxSize: 1 * 1024 * 1024) { data, error in
             let downloadImg = UIImage(data: data! as Data)
             if error == nil {
@@ -102,6 +119,7 @@ class PlaceInfoTableViewController: UITableViewController, EditDelegate {
                 if self.imgDelegate != nil{
                     self.imgDelegate?.didImageDone(newData: place, image: downloadImg!)
                 }
+                self.loadingView.removeFromSuperview()
             }else {
                 print(error as Any)
             }
@@ -127,10 +145,6 @@ class PlaceInfoTableViewController: UITableViewController, EditDelegate {
     func didEditPlace(_ controller: AddPlaceTableViewController, data: PlaceData, image: UIImage) {
          getPlaceInfo(data, image: image)
          setPlaceInfo()
-    }
-    
-    @IBAction func clickRate(_ sender: UIButton){
-        lblRate.text = String(describing: fillRate.checkAttr(buttons: rateBtn, button: sender))
     }
     
     @IBAction func editBtn(_ sender: UIButton){
