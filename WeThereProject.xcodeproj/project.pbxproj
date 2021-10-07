@@ -18,9 +18,11 @@
 		204CEEB7267F0A3F000D395F /* CategoryEditController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 204CEEB6267F0A3F000D395F /* CategoryEditController.swift */; };
 		204CEEB9267F0BD1000D395F /* SettingTableController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 204CEEB8267F0BD1000D395F /* SettingTableController.swift */; };
 		20544EFB268AFBD700D780E4 /* CalendarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20544EFA268AFBD700D780E4 /* CalendarController.swift */; };
+		2055D69E270EE1F800B1FB24 /* marker_basic.png in Resources */ = {isa = PBXBuildFile; fileRef = 2055D69B270EE1F700B1FB24 /* marker_basic.png */; };
+		2055D69F270EE1F800B1FB24 /* marker_novisit.png in Resources */ = {isa = PBXBuildFile; fileRef = 2055D69C270EE1F700B1FB24 /* marker_novisit.png */; };
+		2055D6A0270EE1F800B1FB24 /* marker_select.png in Resources */ = {isa = PBXBuildFile; fileRef = 2055D69D270EE1F800B1FB24 /* marker_select.png */; };
 		207E4F862660985D00AC0A6E /* AddPlaceTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 207E4F852660985D00AC0A6E /* AddPlaceTableViewController.swift */; };
 		208382A526DB8C5000CC5FEE /* TagTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2044A8342671E989002ABBD8 /* TagTextView.swift */; };
-		20841264265F28A4006FE0EF /* example.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = 20841263265F28A4006FE0EF /* example.jpeg */; };
 		208D9FE9266DFD4A00FC2067 /* AddRate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 208D9FE8266DFD4A00FC2067 /* AddRate.swift */; };
 		20B113832689BBC200A6A0FD /* PlaceCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20B113822689BBC200A6A0FD /* PlaceCell.swift */; };
 		20CB7C9C269F28130057EAF0 /* MainPlaceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20CB7C9B269F28130057EAF0 /* MainPlaceViewController.swift */; };
@@ -47,8 +49,10 @@
 		204CEEB6267F0A3F000D395F /* CategoryEditController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryEditController.swift; sourceTree = "<group>"; };
 		204CEEB8267F0BD1000D395F /* SettingTableController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingTableController.swift; sourceTree = "<group>"; };
 		20544EFA268AFBD700D780E4 /* CalendarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarController.swift; sourceTree = "<group>"; };
+		2055D69B270EE1F700B1FB24 /* marker_basic.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = marker_basic.png; sourceTree = "<group>"; };
+		2055D69C270EE1F700B1FB24 /* marker_novisit.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = marker_novisit.png; sourceTree = "<group>"; };
+		2055D69D270EE1F800B1FB24 /* marker_select.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = marker_select.png; sourceTree = "<group>"; };
 		207E4F852660985D00AC0A6E /* AddPlaceTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddPlaceTableViewController.swift; sourceTree = "<group>"; };
-		20841263265F28A4006FE0EF /* example.jpeg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = example.jpeg; sourceTree = "<group>"; };
 		208D9FE8266DFD4A00FC2067 /* AddRate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddRate.swift; sourceTree = "<group>"; };
 		20B113822689BBC200A6A0FD /* PlaceCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceCell.swift; sourceTree = "<group>"; };
 		20CB7C9B269F28130057EAF0 /* MainPlaceViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainPlaceViewController.swift; sourceTree = "<group>"; };
@@ -93,8 +97,10 @@
 		2067AA1B266B82C200F7B891 /* Resource */ = {
 			isa = PBXGroup;
 			children = (
-				20841263265F28A4006FE0EF /* example.jpeg */,
 				201F392C26A9BAAE00FA9289 /* wethere.jpeg */,
+				2055D69B270EE1F700B1FB24 /* marker_basic.png */,
+				2055D69C270EE1F700B1FB24 /* marker_novisit.png */,
+				2055D69D270EE1F800B1FB24 /* marker_select.png */,
 			);
 			path = Resource;
 			sourceTree = "<group>";
@@ -227,9 +233,11 @@
 				20E3E2DD265E263A004BDFF6 /* LaunchScreen.storyboard in Resources */,
 				20E3E2DA265E263A004BDFF6 /* Assets.xcassets in Resources */,
 				201F392D26A9BAAE00FA9289 /* wethere.jpeg in Resources */,
+				2055D6A0270EE1F800B1FB24 /* marker_select.png in Resources */,
+				2055D69F270EE1F800B1FB24 /* marker_novisit.png in Resources */,
 				20105EFB2664DA35007AA233 /* GoogleService-Info.plist in Resources */,
 				20E3E2D8265E2639004BDFF6 /* Main.storyboard in Resources */,
-				20841264265F28A4006FE0EF /* example.jpeg in Resources */,
+				2055D69E270EE1F800B1FB24 /* marker_basic.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -209,8 +209,12 @@
                                                                 </imageView>
                                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="WVX-OT-jD6">
                                                                     <rect key="frame" x="25" y="0.0" width="335" height="35"/>
+                                                                    <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                                                     <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                                                                     <state key="normal" title="Button"/>
+                                                                    <connections>
+                                                                        <segue destination="uTe-NZ-0Gm" kind="show" identifier="showMap" id="F5n-pi-x46"/>
+                                                                    </connections>
                                                                 </button>
                                                             </subviews>
                                                         </stackView>
@@ -1469,6 +1473,7 @@
     </scenes>
     <inferredMetricsTieBreakers>
         <segue reference="LEn-q7-1yn"/>
+        <segue reference="F5n-pi-x46"/>
         <segue reference="R1O-xY-QdV"/>
         <segue reference="ngF-ER-ywh"/>
     </inferredMetricsTieBreakers>

@@ -118,17 +118,25 @@ class MapViewController: UIViewController, CLLocationManagerDelegate , GMSMapVie
     
     func mark(_ placeList: [PlaceData]){
         for place in placeList{
-            self.makeMark(place.geopoint, placeTitle: place.name, placeAddress: place.location)
+            self.makeMark(place)
         }
     }
     
-    func makeMark(_ point: GeoPoint, placeTitle: String, placeAddress: String){
+    func makeMark(_ place: PlaceData){
+                  //point: GeoPoint, placeTitle: String, placeAddress: String){
         let marker = GMSMarker()
-        marker.position = CLLocationCoordinate2D(latitude: point.latitude, longitude: point.longitude)
-        marker.title = placeTitle
-        marker.snippet = placeAddress
-        marker.icon = GMSMarker.markerImage(with: #colorLiteral(red: 0.4620226622, green: 0.8382837176, blue: 1, alpha: 1))
-      //  marker.icon = UIImage(named: "example.jpeg")
+        marker.position = CLLocationCoordinate2D(latitude: place.geopoint.latitude, longitude: place.geopoint.longitude)
+        marker.title = place.name
+        marker.snippet = place.location
+     //   marker.icon = GMSMarker.markerImage(with: #colorLiteral(red: 0.4620226622, green: 0.8382837176, blue: 1, alpha: 1))
+        if place.visit {
+            marker.icon = UIImage(named: "marker_basic")
+            marker.userData = 0
+        }else{
+            marker.icon = UIImage(named: "marker_novisit")
+            marker.userData = 1
+        }
+        marker.setIconSize(scaledToSize: .init(width: 30, height: 40))
         marker.map = mapView
         if onePlace != nil {
             mapView?.selectedMarker = marker
@@ -152,18 +160,24 @@ class MapViewController: UIViewController, CLLocationManagerDelegate , GMSMapVie
         }
     }
     
-   /*
-    func mapView(_ mapView: GMSMapView, didTap marker: GMSMarker) -> Bool {
-            print("markerTapped")
-        let storyboard : UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
-        let vc = storyboard.instantiateViewController(withIdentifier: "MapInfoController")
-        vc.modalPresentationStyle = .popover
-      //  let popover: UIPopoverPresentationController = vc.popoverPresentationController!
-       // popover.barButtonItem = sender
-        present(vc, animated: true, completion: nil)
-            return true
+    func mapView(_ mapView: GMSMapView, didCloseInfoWindowOf marker: GMSMarker) {
+        if marker.userData as! Int == 0{
+            marker.icon = UIImage(named: "marker_basic")
+            marker.setIconSize(scaledToSize: .init(width: 30, height: 40))
+        }else{
+            marker.icon = UIImage(named: "marker_novisit")
+            marker.setIconSize(scaledToSize: .init(width: 30, height: 40))
         }
- */
+    }
+    
+   
+    func mapView(_ mapView: GMSMapView, didTap marker: GMSMarker) -> Bool {
+        marker.icon = UIImage(named: "marker_select")
+        marker.setIconSize(scaledToSize: .init(width: 30, height: 40))
+        
+        return false
+    }
+ 
     
     @IBAction func addFilter(_ sender: UIButton){
         if onePlace == nil{
@@ -255,5 +269,15 @@ extension MapViewController : UIPickerViewDelegate, UIPickerViewDataSource {
         }else{
             optionedPlaces = places
         }
+    }
+}
+
+extension GMSMarker {
+    func setIconSize(scaledToSize newSize: CGSize) {
+        UIGraphicsBeginImageContextWithOptions(newSize, false, 0.0)
+        icon?.draw(in: CGRect(x: 0, y: 0, width: newSize.width, height: newSize.height))
+        let newImage: UIImage = UIGraphicsGetImageFromCurrentImageContext()!
+        UIGraphicsEndImageContext()
+        icon = newImage
     }
 }

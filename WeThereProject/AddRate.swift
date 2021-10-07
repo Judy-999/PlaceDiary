@@ -18,34 +18,6 @@ class AddRate{
         }
     }
     
-   /*
-    func checkAttr(buttons: [UIButton], button: UIButton) -> Float{
-        var i = 0
-        while button != buttons[i] {
-            i = i + 1
-        }
-        rateFill(buttons: buttons, index: i)
-        
-        if buttonState[i] == true {
-            return Float(i) + 0.5
-        }else{
-            return Float(i) + 1.0
-        }
-    }
-    
-    private func rateFill(buttons: [UIButton], index: Int){
-        if buttonState[index] == false{
-            buttons[index].setImage(UIImage(systemName: "star.leadinghalf.fill"), for: .normal)
-            buttonState[index] = true
-        }
-        else{
-            buttons[index].setImage(UIImage(systemName: "star.fill"), for: .normal)
-            buttonState[index] = false
-        }
-        fillStar(buttons: buttons, index: index)
-        clearStar(buttons: buttons, index: index)
-    }
-    */
     func fill(buttons: [UIButton], rate: Float){
         let rateInt = Int(rate)
         fillStar(buttons: buttons, index: rateInt)
@@ -77,7 +49,6 @@ class AddRate{
             i = i - 1
         }
     }
-    
     
     public func sliderStar(buttons: [UIButton], rate: Float){
         let rateDown = rate.rounded(.down)
