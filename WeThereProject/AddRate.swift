@@ -18,7 +18,7 @@ class AddRate{
         }
     }
     
-    
+   /*
     func checkAttr(buttons: [UIButton], button: UIButton) -> Float{
         var i = 0
         while button != buttons[i] {
@@ -45,7 +45,7 @@ class AddRate{
         fillStar(buttons: buttons, index: index)
         clearStar(buttons: buttons, index: index)
     }
-    
+    */
     func fill(buttons: [UIButton], rate: Float){
         let rateInt = Int(rate)
         fillStar(buttons: buttons, index: rateInt)

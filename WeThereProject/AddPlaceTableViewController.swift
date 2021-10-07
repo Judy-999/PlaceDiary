@@ -28,20 +28,16 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
     var rateButtons = [UIButton]()
     var isImage = true
     var dataFromInfo = false
-    var count = "0"
+    var count = "0", reName = "", rePositon = "", reCategory = "", reRate = "", reGroup = "", reComent = ""
     var receiveImage : UIImage?
-    var reName = ""
-    var rePositon = ""
     var reDate: Date?
-    var reCategory = ""
     var reVisit = false
-    var reRate = ""
-    var reComent = ""
-    var reGroup = ""
     var editData: PlaceData?
     var editDelegate: EditDelegate?
     var geoPoint: GeoPoint?
     var nowPlaceData = [PlaceData]()
+    let categoryPicker = UIPickerView()
+    let groupPicker = UIPickerView()
     
     @IBOutlet var placeImageView: UIImageView!
     @IBOutlet var tfPlaceName: UITextField!
@@ -69,8 +65,9 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
         
         downloadPickerItem()
         setTextView()
-        setPickerView()
-        setGroupPicker()
+        
+        setPicker(categoryPicker)
+        setPicker(groupPicker)
         
         rateButtons.append(btnRate1)
         rateButtons.append(btnRate2)
@@ -87,52 +84,44 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
         }
     }
     
-    func setPickerView(){
-        let categoryPicker = UIPickerView()
+    func setPicker(_ picker: UIPickerView){
         let pickerToolbar = UIToolbar()
         let btnPickerDone = UIBarButtonItem()
+        let btnAdd = UIBarButtonItem()
         let flexSpace = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
-
-        categoryPicker.backgroundColor = UIColor.white
-        categoryPicker.frame = CGRect(x: 0, y: 0, width: 0, height: 200)
-        pickerToolbar.frame = CGRect(x: 0, y: 0, width: 0, height: 35)
+        
+        let picker = picker
+        
+        picker.backgroundColor = UIColor.white
+        picker.frame = CGRect(x: 0, y: 0, width: 0, height: 200)
+        pickerToolbar.frame = CGRect(x: 0, y: 0, width: 0, height: 40)
         pickerToolbar.barTintColor = UIColor.white
-        self.tfCategory.inputAccessoryView = pickerToolbar
         
         btnPickerDone.title = "선택"
         btnPickerDone.tintColor = #colorLiteral(red: 0, green: 0.8924261928, blue: 0.8863361478, alpha: 1)
         btnPickerDone.target = self
-        btnPickerDone.action = #selector(categoryPickerDone)
         
-        pickerToolbar.setItems([flexSpace, btnPickerDone], animated: true)
+        btnAdd.title = "추가"
+        btnAdd.tintColor = #colorLiteral(red: 0, green: 0.8924261928, blue: 0.8863361478, alpha: 1)
+        btnAdd.target = self
         
-        categoryPicker.tag = 0
-        categoryPicker.delegate = self
-        self.tfCategory.inputView = categoryPicker
-    }
-    
-    func setGroupPicker(){
-        let groupPicker = UIPickerView()
-        let groupToolbar = UIToolbar()
-        let btnPickerDone = UIBarButtonItem()
-        let flexSpace = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
-    
-        groupPicker.backgroundColor = UIColor.white
-        groupPicker.frame = CGRect(x: 0, y: 0, width: 0, height: 200)
-        groupToolbar.frame = CGRect(x: 0, y: 0, width: 0, height: 35)
-        groupToolbar.barTintColor = UIColor.white
-        self.tfGroup.inputAccessoryView = groupToolbar
+        pickerToolbar.setItems([btnAdd, flexSpace, btnPickerDone], animated: true)
         
-        btnPickerDone.title = "선택"
-        btnPickerDone.tintColor = #colorLiteral(red: 0, green: 0.8924261928, blue: 0.8863361478, alpha: 1)
-        btnPickerDone.target = self
-        btnPickerDone.action = #selector(groupPickerDone)
+        picker.delegate = self
         
-        groupToolbar.setItems([flexSpace, btnPickerDone], animated: true)
-        
-        groupPicker.tag = 1
-        groupPicker.delegate = self
-        self.tfGroup.inputView = groupPicker
+        if picker == categoryPicker{
+            self.tfCategory.inputAccessoryView = pickerToolbar
+            btnPickerDone.action = #selector(categoryPickerDone)
+            btnAdd.action = #selector(editCategory)
+            picker.tag = 0
+            self.tfCategory.inputView = picker
+        }else{
+            self.tfGroup.inputAccessoryView = pickerToolbar
+            btnPickerDone.action = #selector(groupPickerDone)
+            btnAdd.action = #selector(editGroup)
+            picker.tag = 1
+            self.tfGroup.inputView = picker
+        }
     }
     
     @objc func groupPickerDone(){
@@ -147,6 +136,73 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
             tfCategory.text = categoryItem[0]
         }
         self.view.endEditing(true)
+    }
+    
+    @objc func editCategory(){
+        addNewCategory("분류")
+    }
+    
+    @objc func editGroup(){
+        addNewCategory("그룹")
+    }
+    
+    func addNewCategory(_ type: String){
+        let addAlert = UIAlertController(title: type + " 추가", message: "새로운 항목을 입력하세요.", preferredStyle: .alert)
+        addAlert.addTextField()
+        let alertOk = UIAlertAction(title: "추가", style: .default) { [self] (alertOk) in
+            if addAlert.textFields?[0].text != nil{
+                if checkExisted(item: (addAlert.textFields?[0].text)!, type: type){
+                    uploadCategory(type, item: (addAlert.textFields?[0].text)!)
+                }else{
+                    simpleAlert(title: "생성 불가", message: "이미 존재하는 항목입니다.")
+                }
+            }else{
+                simpleAlert(title: "생성 불가", message: "생성할 이름을 입력해주세요")
+            }
+        }
+        addAlert.addAction(UIAlertAction(title: "취소", style: .default, handler: nil))
+        addAlert.addAction(alertOk)
+        self.present(addAlert, animated: true, completion: nil)
+    }
+    
+    func checkExisted(item: String, type: String) -> Bool{
+        var array = categoryItem
+        if type == "그룹"{
+            array = groupItem
+        }
+        for name in array{ ////요것두!!!
+            if name == item{
+                return false
+            }
+        }
+        return true
+    }
+    
+    func simpleAlert(title: String, message: String){
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "확인", style: .default, handler: nil))
+        self.present(alert, animated: true, completion: nil)
+    }
+    
+    func uploadCategory(_ type: String, item: String){
+        let categoryRef = db.collection("category").document(Uid)
+        var target : String!
+        var array = [String]()
+        
+        if type == "분류"{
+            target = "items"
+            categoryItem.append(item)
+            array = categoryItem
+            categoryPicker.reloadAllComponents()
+        }else{
+            target = "group"
+            groupItem.append(item)
+            array = groupItem
+            groupPicker.reloadAllComponents()
+        }
+        categoryRef.updateData([
+            target : array
+        ])
     }
     
     func setTextView(){
@@ -205,12 +261,16 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
             for btn in rateButtons{
                 btn.isEnabled = true
             }
+            stepper.isEnabled = true
+            starSlider.isEnabled = true
             lblVisit.text = "가봤어요!"
         }else{
             for btn in rateButtons{
                 btn.isEnabled = false
                 btn.setImage(UIImage(systemName: "star"), for: .normal)
             }
+            stepper.isEnabled = false
+            starSlider.isEnabled = false
             lblRate.text = "0.0"
             lblVisit.text = "가보고 싶어요!"
         }
@@ -222,12 +282,10 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
     // MARK: - Table view data source
 
     override func numberOfSections(in tableView: UITableView) -> Int {
-        // #warning Incomplete implementation, return the number of sections
         return 1
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // #warning Incomplete implementation, return the number of rows
         return 10
     }
 
@@ -248,7 +306,6 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
         }else if swVisit.isOn == true && count == "0"{
             myAlert("방문 횟수 미선택", message: "방문 횟수를 입력해주세요.")
         }else{
-            //    tfPlaceName.placeholder = "이름을 입력하세요."
             
             if txvComent.text == "코멘트를 입력하세요."{
                 txvComent.text = ""
@@ -318,8 +375,6 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
                 NotificationCenter.default.post(name: NSNotification.Name(rawValue: "newPlaceUpdate"), object: nil)
                 _ = navigationController?.popViewController(animated: true)
             }
-             
-          //  _ = navigationController?.popViewController(animated: true)
         }
     }
     
@@ -380,15 +435,7 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
             textView.textColor = UIColor.black
         }
     }
-    /*
-    func textViewDidEndEditing(_ textView: UITextView) {
-        if textView.text.isEmpty {
-            textView.text = "코멘트를 입력하세요."
-            textView.textColor = UIColor.lightGray
-        }
-    }
-*/
-    
+
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         
         if let img = info[UIImagePickerController.InfoKey.editedImage] as? UIImage{
@@ -483,60 +530,7 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
         presentedViewController?.dismiss(animated: true, completion: nil)
     }
     
-    /*
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath)
-
-        // Configure the cell...
-
-        return cell
-    }
-    */
-
-    /*
-    // Override to support conditional editing of the table view.
-    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the specified item to be editable.
-        return true
-    }
-    */
-
-    /*
-    // Override to support editing the table view.
-    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-        if editingStyle == .delete {
-            // Delete the row from the data source
-            tableView.deleteRows(at: [indexPath], with: .fade)
-        } else if editingStyle == .insert {
-            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-        }    
-    }
-    */
-
-    /*
-    // Override to support rearranging the table view.
-    override func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath) {
-
-    }
-    */
-
-    /*
-    // Override to support conditional rearranging of the table view.
-    override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the item to be re-orderable.
-        return true
-    }
-    */
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
+    
 
 }
 
