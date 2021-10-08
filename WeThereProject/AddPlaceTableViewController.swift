@@ -19,14 +19,16 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
     
     let db: Firestore = Firestore.firestore()
     let storageRef = Storage.storage().reference()
-    let imagePicker: UIImagePickerController! = UIImagePickerController()
+    let imagePicker = UIImagePickerController()
     let searchController = GMSAutocompleteViewController()
-    let rate = AddRate()
+    let addRate = AddRate()
+    let categoryPicker = UIPickerView()
+    let groupPicker = UIPickerView()
     var selectedImage: UIImage!
     var categoryItem = [String]()
     var groupItem = [String]()
     var rateButtons = [UIButton]()
-    var isImage = true
+    var hasImage = true
     var dataFromInfo = false
     var count = "0", reName = "", rePositon = "", reCategory = "", reRate = "", reGroup = "", reComent = ""
     var receiveImage : UIImage?
@@ -36,8 +38,6 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
     var editDelegate: EditDelegate?
     var geoPoint: GeoPoint?
     var nowPlaceData = [PlaceData]()
-    let categoryPicker = UIPickerView()
-    let groupPicker = UIPickerView()
     
     @IBOutlet var placeImageView: UIImageView!
     @IBOutlet var tfPlaceName: UITextField!
@@ -84,12 +84,11 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
         }
     }
     
-    func setPicker(_ picker: UIPickerView){
+    func setPicker(_ picker: UIPickerView){ // setting picker
         let pickerToolbar = UIToolbar()
         let btnPickerDone = UIBarButtonItem()
         let btnAdd = UIBarButtonItem()
         let flexSpace = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
-        
         let picker = picker
         
         picker.backgroundColor = UIColor.white
@@ -106,7 +105,6 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
         btnAdd.target = self
         
         pickerToolbar.setItems([btnAdd, flexSpace, btnPickerDone], animated: true)
-        
         picker.delegate = self
         
         if picker == categoryPicker{
@@ -150,9 +148,9 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
         let addAlert = UIAlertController(title: type + " 추가", message: "새로운 항목을 입력하세요.", preferredStyle: .alert)
         addAlert.addTextField()
         let alertOk = UIAlertAction(title: "추가", style: .default) { [self] (alertOk) in
-            if addAlert.textFields?[0].text != nil{
-                if checkExisted(item: (addAlert.textFields?[0].text)!, type: type){
-                    uploadCategory(type, item: (addAlert.textFields?[0].text)!)
+            if let newItem = addAlert.textFields?[0].text{
+                if checkExisted(item: newItem, type: type){
+                    uploadCategory(type, item: newItem)
                 }else{
                     simpleAlert(title: "생성 불가", message: "이미 존재하는 항목입니다.")
                 }
@@ -167,10 +165,12 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
     
     func checkExisted(item: String, type: String) -> Bool{
         var array = categoryItem
+        
         if type == "그룹"{
             array = groupItem
         }
-        for name in array{ ////요것두!!!
+        
+        for name in array{
             if name == item{
                 return false
             }
@@ -245,7 +245,6 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
     
     func setPlaceInfo(){
         placeImageView.image = receiveImage
-        
         tfPlaceName.text = reName as String
         tvPlacePosition.text = rePositon
         tfCategory.text = reCategory
@@ -274,7 +273,7 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
             lblRate.text = "0.0"
             lblVisit.text = "가보고 싶어요!"
         }
-        rate.fill(buttons: rateButtons, rate: NSString(string: reRate).floatValue)
+        addRate.fill(buttons: rateButtons, rate: NSString(string: reRate).floatValue)
     }
     
    
@@ -290,8 +289,8 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
     }
 
     @IBAction func btnAddDone(_ sender: UIButton){
-        let i = nowPlaceData.first(where: {$0.name == tfPlaceName.text})
-        if i != nil{
+        let sameNamePlace = nowPlaceData.first(where: {$0.name == tfPlaceName.text})
+        if sameNamePlace != nil{
             myAlert("장소 이름 중복", message: "같은 이름의 장소가 존재합니다.")
         }else if tfPlaceName.text == ""{
             myAlert("필수 입력 미기재", message: "장소의 이름을 입력해주세요.")
@@ -309,10 +308,6 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
             
             if txvComent.text == "코멘트를 입력하세요."{
                 txvComent.text = ""
-            }
-            
-            if tfGroup.text == ""{
-                tfGroup.text = "기본"
             }
             
             uploadData()
@@ -335,7 +330,7 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
            
             if receiveImage == nil {
                 if selectedImage == nil{
-                    isImage = false
+                    hasImage = false
                     uploadData()
                     NotificationCenter.default.post(name: NSNotification.Name(rawValue: "newPlaceUpdate"), object: nil)
                     _ = navigationController?.popViewController(animated: true)
@@ -343,8 +338,7 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
                     uploadImage(tfPlaceName.text!, image: selectedImage.resize(newWidth: 300))
                     editData?.newImg = selectedImage
                     NotificationCenter.default.post(name: NSNotification.Name(rawValue: "newPlaceUpdate"), object: editData)
-                  //  placeImages.updateValue(selectedImage, forKey: tfPlaceName.text!)
-                    isImage = true
+                    hasImage = true
                 }
             }else if receiveImage != selectedImage{
                 if reName != tfPlaceName.text!{
@@ -357,10 +351,9 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
                       }
                 }
                 uploadImage(tfPlaceName.text!, image: selectedImage.resize(newWidth: 300))
-               // placeImages.updateValue(selectedImage, forKey: tfPlaceName.text!)
                 editData?.newImg = selectedImage
                 NotificationCenter.default.post(name: NSNotification.Name(rawValue: "newPlaceUpdate"), object: editData)
-                isImage = true
+                hasImage = true
             }else{
                 if reName != tfPlaceName.text!{
                     storageRef.child(Uid + "/" + reName).delete { error in
@@ -391,14 +384,14 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
         let docData: [String: Any] = [
             "name": tfPlaceName.text!,
             "position": tvPlacePosition.text!,
-            "date": pkDate.date,  //Timestamp(date: Date()),
+            "date": pkDate.date,
             "visit": swVisit.isOn,
             "count": count,
             "rate": lblRate.text!,
             "coment": txvComent.text!,
             "category": tfCategory.text!,
             "geopoint": geoPoint!,
-            "image": isImage,
+            "image": hasImage,
             "group": tfGroup.text!
         ]
 
@@ -453,9 +446,8 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
         self.dismiss(animated: true, completion: nil)   //이미지 피커를 제거하고 초기 뷰를 보여줌
     }
-        
     
-    //경고 표시
+    
     func myAlert(_ title: String, message: String){
         let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
         let action = UIAlertAction(title: "확인", style: .default, handler: nil)
@@ -488,7 +480,7 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
     
     @IBAction func sliderChanged(_ sender: Any) {
         let starVal = starSlider.value
-        rate.sliderStar(buttons: rateButtons, rate: starVal)
+        addRate.sliderStar(buttons: rateButtons, rate: starVal)
         
         let rateDown = starVal.rounded(.down)
         let half = starVal - rateDown
@@ -511,7 +503,7 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
                 
             present(imagePicker, animated: true, completion: nil)
         }else{
-            myAlert("Photo album inaccessable", message: "Application cannot access the photo album.")
+            myAlert("갤러리 접근 불가.", message: "갤러리에 접근 할 수 없습니다.")
         }
     }
     
@@ -529,32 +521,26 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
     @IBAction func datePick(_ sender: UIDatePicker){
         presentedViewController?.dismiss(animated: true, completion: nil)
     }
-    
-    
-
 }
 
 
 extension AddPlaceTableViewController: GMSAutocompleteViewControllerDelegate { //해당 뷰컨트롤러를 익스텐션으로 딜리게이트를 달아준다.
     func viewController(_ viewController: GMSAutocompleteViewController, didAutocompleteWith place: GMSPlace) {
-    //     print("Place name: \(String(describing: place.name))") //셀탭한 글씨출력
         let address = place.formattedAddress?.replacingOccurrences(of: "대한민국 ", with: "")
         self.tvPlacePosition.text = address
         self.tvPlacePosition.textColor = UIColor.black
         self.tvPlacePosition.isEditable = true
         self.geoPoint = GeoPoint(latitude: place.coordinate.latitude, longitude: place.coordinate.longitude)
-        dismiss(animated: true, completion: nil) //화면꺼지게
-        
+        dismiss(animated: true, completion: nil)
     } //원하는 셀 탭했을 때 꺼지게
     
     func viewController(_ viewController: GMSAutocompleteViewController, didFailAutocompleteWithError error: Error) {
-        print(error.localizedDescription)//에러났을 때 출력
+        print(error.localizedDescription) //에러났을 때 출력
     } //실패했을 때
     
     func wasCancelled(_ viewController: GMSAutocompleteViewController) {
-        dismiss(animated: true, completion: nil) //화면 꺼지게
+        dismiss(animated: true, completion: nil)
     } //캔슬버튼 눌렀을 때 화면 꺼지게
-    
 }
 
 extension UIImage {

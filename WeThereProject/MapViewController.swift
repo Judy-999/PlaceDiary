@@ -97,11 +97,11 @@ class MapViewController: UIViewController, CLLocationManagerDelegate , GMSMapVie
         }
     }
 
-    override func viewWillAppear(_ animated: Bool) {
+    /*override func viewWillAppear(_ animated: Bool) {
         if onePlace == nil{
             mark(places)
         }
-    }
+    }*/
 
     func updateImg(){
         let mainNav = self.tabBarController?.viewControllers![0] as! UINavigationController
@@ -118,38 +118,31 @@ class MapViewController: UIViewController, CLLocationManagerDelegate , GMSMapVie
     
     func mark(_ placeList: [PlaceData]){
         for place in placeList{
-            self.makeMark(place)
+            let marker = GMSMarker()
+            marker.position = CLLocationCoordinate2D(latitude: place.geopoint.latitude, longitude: place.geopoint.longitude)
+            marker.title = place.name
+            marker.snippet = place.location
+         //   marker.icon = GMSMarker.markerImage(with: #colorLiteral(red: 0.4620226622, green: 0.8382837176, blue: 1, alpha: 1))
+            if place.visit {
+                marker.icon = UIImage(named: "marker_basic")
+                marker.userData = 0
+            }else{
+                marker.icon = UIImage(named: "marker_novisit")
+                marker.userData = 1
+            }
+            marker.setIconSize(scaledToSize: .init(width: 30, height: 40))
+            marker.map = mapView
+            if onePlace != nil {
+                mapView?.selectedMarker = marker
+            }
         }
     }
-    
-    func makeMark(_ place: PlaceData){
-                  //point: GeoPoint, placeTitle: String, placeAddress: String){
-        let marker = GMSMarker()
-        marker.position = CLLocationCoordinate2D(latitude: place.geopoint.latitude, longitude: place.geopoint.longitude)
-        marker.title = place.name
-        marker.snippet = place.location
-     //   marker.icon = GMSMarker.markerImage(with: #colorLiteral(red: 0.4620226622, green: 0.8382837176, blue: 1, alpha: 1))
-        if place.visit {
-            marker.icon = UIImage(named: "marker_basic")
-            marker.userData = 0
-        }else{
-            marker.icon = UIImage(named: "marker_novisit")
-            marker.userData = 1
-        }
-        marker.setIconSize(scaledToSize: .init(width: 30, height: 40))
-        marker.map = mapView
-        if onePlace != nil {
-            mapView?.selectedMarker = marker
-        }
-    }
-    
     
     func getPlace(_ data: [PlaceData], images: [String : UIImage]){
         places = data
         mark(places)
         placeImages = images
     }
-    
     
     func mapView(_ mapView: GMSMapView, didTapInfoWindowOf marker: GMSMarker) {
         if onePlace == nil{
@@ -163,20 +156,19 @@ class MapViewController: UIViewController, CLLocationManagerDelegate , GMSMapVie
     func mapView(_ mapView: GMSMapView, didCloseInfoWindowOf marker: GMSMarker) {
         if marker.userData as! Int == 0{
             marker.icon = UIImage(named: "marker_basic")
-            marker.setIconSize(scaledToSize: .init(width: 30, height: 40))
         }else{
             marker.icon = UIImage(named: "marker_novisit")
-            marker.setIconSize(scaledToSize: .init(width: 30, height: 40))
         }
+        marker.setIconSize(scaledToSize: .init(width: 30, height: 40))
     }
     
    
     func mapView(_ mapView: GMSMapView, didTap marker: GMSMarker) -> Bool {
         marker.icon = UIImage(named: "marker_select")
         marker.setIconSize(scaledToSize: .init(width: 30, height: 40))
-        
         return false
     }
+    
  
     
     @IBAction func addFilter(_ sender: UIButton){
@@ -189,7 +181,6 @@ class MapViewController: UIViewController, CLLocationManagerDelegate , GMSMapVie
             let filterAlert = UIAlertController(title: "조건 선택", message: "\n\n\n\n\n\n\n\n", preferredStyle: .alert)
             filterAlert.view.addSubview(optionPicker)
             
-            
             pickerView(optionPicker, didSelectRow: 0, inComponent:0)
             
             filterAlert.addAction(UIAlertAction(title: "취소", style: .cancel, handler: nil))
@@ -201,9 +192,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate , GMSMapVie
             self.present(filterAlert, animated: true, completion: nil)
         }else{
             let onePlaceAlert = UIAlertController(title: "조건 검색 불가", message: "\n 현재 지도에선 상세 검색을 할 수 없습니다.", preferredStyle: .alert)
-            
             onePlaceAlert.addAction(UIAlertAction(title: "확인", style: .default, handler: nil))
-            
             self.present(onePlaceAlert, animated: true, completion: nil)
         }
     }
@@ -213,19 +202,16 @@ class MapViewController: UIViewController, CLLocationManagerDelegate , GMSMapVie
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
         if segue.identifier == "sgMapInfo"{
             let infoView = segue.destination as! PlaceInfoTableViewController
             let selectedPlace = places.first(where: {$0.name == placeTitle})
-                
-            //  infoView.getPlaceInfo(selectedPlace!, image: placeImages[(selectedPlace?.name)!]!)
+
             infoView.imgDelegate = self
             
             infoView.modalPresentationStyle = .fullScreen
             
-            if  placeImages[(selectedPlace?.name)!] != nil{
-                infoView.getPlaceInfo(selectedPlace!, image: placeImages[(selectedPlace?.name)!]!)
+            if let placeImage = placeImages[(selectedPlace?.name)!]{
+                infoView.getPlaceInfo(selectedPlace!, image: placeImage)
             }else{
                 infoView.getPlaceInfo(selectedPlace!, image: UIImage(named: "wethere.jpeg")!)
                 infoView.downloadImgInfo(selectedPlace!)

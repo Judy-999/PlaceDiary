@@ -15,9 +15,6 @@ struct PlaceDate{
 
 class CalendarController: UIViewController, FSCalendarDelegate, FSCalendarDataSource, ImageDelegate {
 
-    @IBOutlet weak var calendar: FSCalendar!
-    @IBOutlet weak var tableView: UITableView!
-    
     var newUpdate = false
     var placeDay = [Date]()
     var places = [PlaceData]()
@@ -27,6 +24,10 @@ class CalendarController: UIViewController, FSCalendarDelegate, FSCalendarDataSo
     var selectedName = [String]()
     var dates = [PlaceDate]()
     
+    @IBOutlet weak var calendar: FSCalendar!
+    @IBOutlet weak var tableView: UITableView!
+    
+
     override func viewDidLoad() {
         super.viewDidLoad()
        
@@ -38,9 +39,9 @@ class CalendarController: UIViewController, FSCalendarDelegate, FSCalendarDataSo
     func getDate(_ data: [PlaceData], images: [String : UIImage]){
         dates.removeAll()
         places = data
-        for i in places{
-            let placeDay = transDate(i.date)
-            let placeName = i.name
+        for place in places{
+            let placeDay = transDate(place.date)
+            let placeName = place.name
             var sameDay = dates.first(where: {$0.date == placeDay})
             if sameDay == nil{
                 let placeDate: PlaceDate = PlaceDate(date: placeDay, name: [placeName])
@@ -70,7 +71,6 @@ class CalendarController: UIViewController, FSCalendarDelegate, FSCalendarDataSo
         calendar.appearance.eventSelectionColor = #colorLiteral(red: 0.4745098054, green: 0.8392156959, blue: 0.9764705896, alpha: 1)
         calendar.scrollDirection = .vertical
         
-        
         calendar.locale = Locale(identifier: "ko_KR")
     }
     
@@ -80,10 +80,9 @@ class CalendarController: UIViewController, FSCalendarDelegate, FSCalendarDataSo
         formatter.dateFormat = "yyyy-MM-dd"
         
         let dateString = formatter.string(from: day)
-        let boo = formatter.date(from: dateString)
+        let date = formatter.date(from: dateString)
 
-        return boo!
-        //placeDay.append(boo!)
+        return date!
     }
 
     func didImageDone(newData: PlaceData, image: UIImage) {
@@ -112,7 +111,6 @@ class CalendarController: UIViewController, FSCalendarDelegate, FSCalendarDataSo
     }
     
     func calendar(_ calendar: FSCalendar, numberOfEventsFor date: Date) -> Int {
-    //    if placeDay.contains(date){
         let eventDay = dates.first(where: {$0.date == date})
         if eventDay == nil{
             return 0
@@ -124,22 +122,13 @@ class CalendarController: UIViewController, FSCalendarDelegate, FSCalendarDataSo
     }
     
     func calendar(_ calendar: FSCalendar, didSelect date: Date, at monthPosition: FSCalendarMonthPosition) {
-        let eventDay = dates.first(where: {$0.date == date})
-        if eventDay != nil{
-            selectedName = eventDay!.name
+        if let eventDay = dates.first(where: {$0.date == date}){
+            selectedName = eventDay.name
             tableView.reloadData()
         }else{
             selectedName.removeAll()
             tableView.reloadData()
         }
-        /*    if placeDay.contains(date){
-            let name = nameDate[date]
-            selectedDate = name!
-            
-            performSegue(withIdentifier: "sgCalendarInfo", sender: self)
-            
-        }
- */
     }
     
     // MARK: - Navigation
@@ -190,8 +179,8 @@ extension CalendarController: UITableViewDelegate, UITableViewDataSource{
             
             infoView.imgDelegate = self
             
-            if  placeImages[(selectedPlace?.name)!] != nil{
-                infoView.getPlaceInfo(selectedPlace!, image: placeImages[(selectedPlace?.name)!]!)
+            if let placeImage = placeImages[(selectedPlace?.name)!]{
+                infoView.getPlaceInfo(selectedPlace!, image: placeImage)
             }else{
                 infoView.getPlaceInfo(selectedPlace!, image: UIImage(named: "wethere.jpeg")!)
                 infoView.downloadImgInfo(selectedPlace!)

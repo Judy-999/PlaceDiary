@@ -16,42 +16,33 @@ protocol ImageDelegate {
 
 class PlaceInfoTableViewController: UITableViewController, EditDelegate {
     
-    @IBOutlet var placeImg: UIImageView!
-    @IBOutlet var lblPlacename: UILabel!
-    @IBOutlet var btnPosition: UIButton!
-    @IBOutlet var lblDate: UILabel!
-    @IBOutlet var lblCategory: UILabel!
-    @IBOutlet weak var lblGroup: UILabel!
-    @IBOutlet var lblRate: UILabel!
-    @IBOutlet var txvComent: UITextView!
-    @IBOutlet var btnRate1: UIButton!
-    @IBOutlet var btnRate2: UIButton!
-    @IBOutlet var btnRate3: UIButton!
-    @IBOutlet var btnRate4: UIButton!
-    @IBOutlet var btnRate5: UIButton!
-    @IBOutlet weak var lblCount: UILabel!
-   
-    
     let storage = Storage.storage()
     let db: Firestore = Firestore.firestore()
-    var receiveImage: UIImage?
-    var reName = ""
-    var rePositon = ""
-    var reDate = ""
-    var reCategory = ""
-    var reVisit = false
-    var reRate = ""
-    var reComent = ""
-    var rateBtn = [UIButton]()
     let fillRate = AddRate()
-    var rateF : Float?
+    var receiveImage: UIImage?
+    var reName = "", rePositon = "", reDate = "", reCategory = "", reComent = "", reRate = "", reGroup = "", count = "0"
+    var reVisit = false
+    var rateBtn = [UIButton]()
     var editData : PlaceData?
-    var count = "0"
-    var reGroup = ""
     var imgDelegate : ImageDelegate?
     let loadingView = UIView()
-    var loading = false
+    var isLoading = false
     
+    @IBOutlet weak var placeImg: UIImageView!
+    @IBOutlet weak var lblPlacename: UILabel!
+    @IBOutlet weak var btnPosition: UIButton!
+    @IBOutlet weak var lblDate: UILabel!
+    @IBOutlet weak var lblCategory: UILabel!
+    @IBOutlet weak var lblGroup: UILabel!
+    @IBOutlet weak var lblRate: UILabel!
+    @IBOutlet weak var txvComent: UITextView!
+    @IBOutlet weak var btnRate1: UIButton!
+    @IBOutlet weak var btnRate2: UIButton!
+    @IBOutlet weak var btnRate3: UIButton!
+    @IBOutlet weak var btnRate4: UIButton!
+    @IBOutlet weak var btnRate5: UIButton!
+    @IBOutlet weak var lblCount: UILabel!
+ 
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -73,7 +64,7 @@ class PlaceInfoTableViewController: UITableViewController, EditDelegate {
         placeImg.isUserInteractionEnabled = true
         placeImg.addGestureRecognizer(tap)
                 
-        if loading{
+        if isLoading{
             let width = placeImg.frame.midX
             let height = placeImg.frame.midY
             loadingView.frame = CGRect(x: 0, y: 0, width: placeImg.frame.width, height: placeImg.frame.height)
@@ -109,17 +100,17 @@ class PlaceInfoTableViewController: UITableViewController, EditDelegate {
     func downloadImgInfo(_ place: PlaceData){
         let fileName = place.name
         let islandRef = storage.reference().child(Uid + "/" + fileName)
-        loading = true
-        islandRef.getData(maxSize: 1 * 1024 * 1024) { data, error in
+        isLoading = true
+        islandRef.getData(maxSize: 1 * 1024 * 1024) { [self] data, error in
             let downloadImg = UIImage(data: data! as Data)
             if error == nil {
-                self.getPlaceInfo(place, image: downloadImg!)
-                self.setPlaceInfo()
+                getPlaceInfo(place, image: downloadImg!)
+                setPlaceInfo()
                 print("image download!!!" + fileName)
-                if self.imgDelegate != nil{
-                    self.imgDelegate?.didImageDone(newData: place, image: downloadImg!)
+                if imgDelegate != nil{
+                    imgDelegate?.didImageDone(newData: place, image: downloadImg!)
                 }
-                self.loadingView.removeFromSuperview()
+                loadingView.removeFromSuperview()
             }else {
                 print(error as Any)
             }
@@ -141,7 +132,6 @@ class PlaceInfoTableViewController: UITableViewController, EditDelegate {
         fillRate.fill(buttons: rateBtn, rate: NSString(string: reRate).floatValue)
     }
     
-    
     func didEditPlace(_ controller: AddPlaceTableViewController, data: PlaceData, image: UIImage) {
          getPlaceInfo(data, image: image)
          setPlaceInfo()
@@ -158,10 +148,7 @@ class PlaceInfoTableViewController: UITableViewController, EditDelegate {
             _ = self.navigationController?.popViewController(animated: true)
             NotificationCenter.default.post(name: NSNotification.Name(rawValue: "newPlaceUpdate"), object: self.editData)
         })
-        alert.addAction(UIAlertAction(title: "취소", style: .cancel) { _ in
-            
-        })
-
+        alert.addAction(UIAlertAction(title: "취소", style: .cancel))
         present(alert, animated: true)
     }
     
@@ -181,51 +168,6 @@ class PlaceInfoTableViewController: UITableViewController, EditDelegate {
         // #warning Incomplete implementation, return the number of rows
         return 4
     }
-
-    /*
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath)
-
-        // Configure the cell...
-
-        return cell
-    }
-    */
-
-    /*
-    // Override to support conditional editing of the table view.
-    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the specified item to be editable.
-        return true
-    }
-    */
-
-    /*
-    // Override to support editing the table view.
-    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-        if editingStyle == .delete {
-            // Delete the row from the data source
-            tableView.deleteRows(at: [indexPath], with: .fade)
-        } else if editingStyle == .insert {
-            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-        }    
-    }
-    */
-
-    /*
-    // Override to support rearranging the table view.
-    override func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath) {
-
-    }
-    */
-
-    /*
-    // Override to support conditional rearranging of the table view.
-    override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the item to be re-orderable.
-        return true
-    }
-    */
 
     
     // MARK: - Navigation

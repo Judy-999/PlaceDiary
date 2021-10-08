@@ -11,8 +11,7 @@ import FirebaseFirestore
 class CategoryEditController: UITableViewController, UIColorPickerViewControllerDelegate {
 
     let db: Firestore = Firestore.firestore()
-    var editType = ""
-    var typeString = ""
+    var editType = "", typeString = ""
     var places = [PlaceData]()
     var editItems = [String](){
         didSet {
@@ -67,9 +66,9 @@ class CategoryEditController: UITableViewController, UIColorPickerViewController
         let addAlert = UIAlertController(title: typeString + " 추가", message: "새로운 " + typeString + "(을)를 입력하세요.", preferredStyle: .alert)
         addAlert.addTextField()
         let alertOk = UIAlertAction(title: "추가", style: .default) { [self] (alertOk) in
-            if addAlert.textFields?[0].text != nil{
-                if checkExisted(item: (addAlert.textFields?[0].text)!){
-                    uploadCategory(editType, item: (addAlert.textFields?[0].text)!, add: true)
+            if let newItem = addAlert.textFields?[0].text{
+                if checkExisted(item: newItem){
+                    uploadCategory(editType, item: newItem, add: true)
                     loadCategory(editType)
                     tableView.reloadData()
                 }else{
@@ -119,10 +118,10 @@ class CategoryEditController: UITableViewController, UIColorPickerViewController
             editAlert.addTextField()
             editAlert.textFields?[0].text = self.editItems[indexPath.row]
             let alertOk = UIAlertAction(title: "저장", style: .default) { [self] _ in
-                if editAlert.textFields?[0].text != nil{
-                    if checkExisted(item: (editAlert.textFields?[0].text)!){
+                if let newItem = editAlert.textFields?[0].text{
+                    if checkExisted(item: newItem){
                         if let index = editItems.firstIndex(of: editItems[indexPath.row]) {
-                            editItems[index] = (editAlert.textFields?[0].text)!
+                            editItems[index] = newItem
                         }
                         updateField(editType, items: editItems)
                         loadCategory(editType)
@@ -143,15 +142,6 @@ class CategoryEditController: UITableViewController, UIColorPickerViewController
         tableView.deselectRow(at: indexPath, animated: true)
     }
     
-
-    /*
-    // Override to support conditional editing of the table view.
-    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the specified item to be editable.
-        return true
-    }
-    */
-
     
     // Override to support editing the table view.
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
@@ -167,7 +157,6 @@ class CategoryEditController: UITableViewController, UIColorPickerViewController
                     }
                     tableView.deleteRows(at: [indexPath], with: .fade)
                 }
-
                 canDeleteAlert.addAction(alertOk)
                 canDeleteAlert.addAction(UIAlertAction(title: "취소", style: .default))
                 
@@ -209,20 +198,6 @@ class CategoryEditController: UITableViewController, UIColorPickerViewController
         return true
     }
     
-    /*
-    // Override to support rearranging the table view.
-    override func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath) {
-
-    }
-    */
-
-    /*
-    // Override to support conditional rearranging of the table view.
-    override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the item to be re-orderable.
-        return true
-    }
-    */
 
     /*
     // MARK: - Navigation
@@ -235,14 +210,3 @@ class CategoryEditController: UITableViewController, UIColorPickerViewController
     */
 
 }
-/*
-extension CategoryEditController: UIColorPickerViewControllerDelegate {
-    func colorPickerViewControllerDidSelectColor(_ viewController: UIColorPickerViewController) {
-        print(viewController.selectedColor)
-    }
-    
-    func colorPickerViewControllerDidFinish(_ viewController: UIColorPickerViewController) {
-    //
-    }
-}
-*/

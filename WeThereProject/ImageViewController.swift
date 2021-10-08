@@ -20,12 +20,6 @@ class ImageViewController: UIViewController, UIScrollViewDelegate {
         super.viewDidLoad()
 
         scrollView.delegate = self
-    /*    initImgWidth = imgView.frame.width
-        initImgHeight = imgView.frame.height
-        initImgOrigin = imgView.frame.origin
-        let pinch = UIPinchGestureRecognizer(target: self, action: #selector(doPinch(_:)))
-        self.view.addGestureRecognizer(pinch)
-         */
         setImage()
     }
     
@@ -33,6 +27,7 @@ class ImageViewController: UIViewController, UIScrollViewDelegate {
     func setImage(){
         imgView.image = fullImage
     }
+    
     /*
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         let touch = touches.first! as UITouch   //발생한 터치 이벤트 받아오기
@@ -48,11 +43,12 @@ class ImageViewController: UIViewController, UIScrollViewDelegate {
             
         }
     }
-    
     */
+    
     func viewForZooming(in scrollView: UIScrollView) -> UIView? {
         return self.imgView
     }
+    
     /*
     @objc func doPinch(_ pinch: UIPinchGestureRecognizer){
         imgView.transform = imgView.transform.scaledBy(x: pinch.scale, y: pinch.scale)  //이미지를 scale에 맞게 변경

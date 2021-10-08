@@ -134,15 +134,12 @@ class SearchTableViewController: UITableViewController, ImageDelegate {
             address.addAttribute(NSAttributedString.Key.foregroundColor,
                               value: #colorLiteral(red: 0, green: 0.8924261928, blue: 0.8863361478, alpha: 1), range: (filterArray[(indexPath as NSIndexPath).row].location as NSString).range(of: self.txtSearch!))
             
-        //    cell.lblName.text = filterArray[(indexPath as NSIndexPath).row].name
             cell.lblName.attributedText = name
             cell.lblLocation.attributedText = address
-         //   cell.lblLocation.text = filterArray[(indexPath as NSIndexPath).row].location
-            //cell.textLabel?.text = filterArray[(indexPath as NSIndexPath).row]
+
         }else{
             cell.lblName.text = places[(indexPath as NSIndexPath).row].name
             cell.lblLocation.text = places[(indexPath as NSIndexPath).row].location
-           // cell.textLabel?.text = placeName[(indexPath as NSIndexPath).row]
         }
         return cell
     }
@@ -164,41 +161,6 @@ class SearchTableViewController: UITableViewController, ImageDelegate {
         return isActive && isSearchBarHasText
     }
   
-   
-    /*
-    // Override to support conditional editing of the table view.
-    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the specified item to be editable.
-        return true
-    }
-    */
-
-    /*
-    // Override to support editing the table view.
-    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-        if editingStyle == .delete {
-            // Delete the row from the data source
-            tableView.deleteRows(at: [indexPath], with: .fade)
-        } else if editingStyle == .insert {
-            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-        }    
-    }
-    */
-
-    /*
-    // Override to support rearranging the table view.
-    override func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath) {
-
-    }
-    */
-
-    /*
-    // Override to support conditional rearranging of the table view.
-    override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the item to be re-orderable.
-        return true
-    }
-    */
 
     
     // MARK: - Navigation
@@ -219,15 +181,13 @@ class SearchTableViewController: UITableViewController, ImageDelegate {
                 selectedPlace = places.first(where: {$0.name == places[(indexPath! as NSIndexPath).row].name})
             }
             
-            if  placeImages[(selectedPlace.name)] != nil{
-                infoView.getPlaceInfo(selectedPlace, image: placeImages[(selectedPlace?.name)!]!)
+            if let placeImage = placeImages[(selectedPlace.name)]{
+                infoView.getPlaceInfo(selectedPlace, image: placeImage)
             }else{
                 infoView.getPlaceInfo(selectedPlace, image: UIImage(named: "wethere.jpeg")!)
                 infoView.downloadImgInfo(selectedPlace)
             }
           
-         //   infoView.getPlaceInfo(selectedPlace, image: placeImages[selectedPlace.name]!)
-         
         }
     }
     
@@ -237,16 +197,10 @@ class SearchTableViewController: UITableViewController, ImageDelegate {
 extension SearchTableViewController: UISearchResultsUpdating {
     func updateSearchResults(for searchController: UISearchController) {
         guard let searchText = searchController.searchBar.text?.lowercased() else { return }
-      //  self.filterArray = self.placeName.filter {$0.localizedCaseInsensitiveContains(searchText)}
+        
         self.txtSearch = searchText
         self.filterArray =  self.places.filter {$0.name.localizedCaseInsensitiveContains(searchText) || $0.location.localizedCaseInsensitiveContains(searchText) || $0.coment.localizedCaseInsensitiveContains(searchText)}
-        
-     //   self.filterArray.removeAll()
-        
-      //  for i in self.resultArray{
-      //      self.filterArray.append(i.name)
-       // }
-        
+          
         self.tableView.reloadData()
     }
 }

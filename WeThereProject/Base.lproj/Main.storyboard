@@ -1047,7 +1047,6 @@
                 <navigationController id="4QB-6h-SGi" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="검색" image="magnifyingglass" catalog="system" selectedImage="magnifyingglass" id="sUj-Kg-ebc"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="5MN-yD-S86">
-                        <rect key="frame" x="0.0" y="44" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <color key="tintColor" red="0.46202266219999999" green="0.83828371759999998" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <color key="barTintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -1094,7 +1093,6 @@
                 <navigationController id="et2-Wk-wJo" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="캘린더" image="calendar" catalog="system" selectedImage="calendar" id="K8E-Ul-vYU"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="Itw-RL-sGR">
-                        <rect key="frame" x="0.0" y="44" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <color key="tintColor" red="0.46202266219999999" green="0.83828371759999998" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <color key="barTintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -1287,7 +1285,6 @@
                 <navigationController id="h8L-lw-dN1" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="지도" image="map" catalog="system" selectedImage="map" id="eME-YV-PeX"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="zfz-7t-0Ry">
-                        <rect key="frame" x="0.0" y="44" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <color key="tintColor" red="0.50325342360000003" green="0.82423278320000004" blue="0.98328930140000004" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                         <color key="barTintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -1307,7 +1304,6 @@
                     <tabBarItem key="tabBarItem" title="설정" image="person" catalog="system" selectedImage="person" id="S6H-5t-e1V"/>
                     <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="uvP-fS-DZb">
-                        <rect key="frame" x="0.0" y="44" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <color key="tintColor" red="0.46202266219999999" green="0.83828371759999998" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <color key="barTintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -1456,7 +1452,6 @@
                     </tabBarItem>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="JgM-v3-kiH">
-                        <rect key="frame" x="0.0" y="44" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <color key="tintColor" red="0.46202266219999999" green="0.83828371759999998" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <color key="barTintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>

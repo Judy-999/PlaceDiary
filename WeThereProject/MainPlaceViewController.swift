@@ -8,9 +8,6 @@
 import UIKit
 import FirebaseFirestore
 import FirebaseStorage
-import NVActivityIndicatorView
-
-import FirebaseStorage
 
 let Uid = UIDevice.current.identifierForVendor!.uuidString
 
@@ -50,9 +47,6 @@ class MainPlaceViewController: UIViewController, UITableViewDelegate, UITableVie
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-       // print("이건 프로그래밍 방식이래요. 뭐가 다른건지 : " + UIDevice.current.identifierForVendor!.uuidString)
-       
 
         loadPlaceData()
         downloadList()
@@ -60,10 +54,9 @@ class MainPlaceViewController: UIViewController, UITableViewDelegate, UITableVie
         placeTableView.refreshControl = UIRefreshControl()    //새로고침
         placeTableView.refreshControl?.addTarget(self, action: #selector(pullToRefresh(_:)), for: .valueChanged)
 
-      //  placeTableView.tableFooterView = UIView(frame: CGRect.zero) 마지막 빈 줄 없애기
+        placeTableView.tableFooterView = UIView(frame: CGRect.zero) // 마지막 빈 줄 없애기
         
         NotificationCenter.default.addObserver(self, selector: #selector(newUpdate), name: NSNotification.Name(rawValue: "newPlaceUpdate"), object: nil)
-        
     }
 
     @objc func newUpdate(_ notification: Notification){
@@ -115,8 +108,8 @@ class MainPlaceViewController: UIViewController, UITableViewDelegate, UITableVie
             } else {
                 print("Document does not exist")
                 let basicCategory: [String: [String]] = [
-                    "items": ["카페", "음식점", "디저트", "베이커리", "액티비티", "야외"],
-                    "group": ["기본", "친구", "가족", "혼자"]
+                    "items": ["카페", "음식점", "디저트", "영화관", "액티비티", "야외"],
+                    "group": ["친구", "가족", "애인", "혼자"]
                 ]
                 self.db.collection("category").document(Uid).setData(basicCategory) { err in
                     if let err = err {
@@ -139,9 +132,8 @@ class MainPlaceViewController: UIViewController, UITableViewDelegate, UITableVie
         let searchController = searchNav.topViewController as! SearchTableViewController
         let calendarNav = tabBarController?.viewControllers![2] as! UINavigationController
         let calendarController = calendarNav.topViewController as! CalendarController
-     //   let mapController = tabBarController?.viewControllers![3] as! MapViewController
-       let mapNav = self.tabBarController?.viewControllers![3] as! UINavigationController
-       let mapController = mapNav.topViewController as! MapViewController
+        let mapNav = tabBarController?.viewControllers![3] as! UINavigationController
+        let mapController = mapNav.topViewController as! MapViewController
         let settingNav = tabBarController?.viewControllers![4] as! UINavigationController
         let settingController = settingNav.topViewController as! SettingTableController
         
@@ -177,7 +169,7 @@ class MainPlaceViewController: UIViewController, UITableViewDelegate, UITableVie
     
     override func viewWillAppear(_ animated: Bool) {
         downloadList()
-        placeTableView.reloadData()  //목록 재로딩
+        placeTableView.reloadData()
     }
     
     override func viewDidDisappear(_ animated: Bool) {
@@ -236,10 +228,6 @@ class MainPlaceViewController: UIViewController, UITableViewDelegate, UITableVie
         let cell = tableView.dequeueReusableCell(withIdentifier: "placeCell", for: indexPath) as! PlaceCell
         
         let cellData = getPlaceList(sectionNum: sgNum, index: indexPath)
-        
-        
-       // cell.lblPlaceLocation.text = cellData[indexPath.row].location
-       // cell.lblPlaceInfo.text = cellData[indexPath.row].group + " ∙ " + cellData[indexPath.row].category
      
         let formatter = DateFormatter()
         formatter.dateFormat = "yyyy-MM-dd"
@@ -254,15 +242,15 @@ class MainPlaceViewController: UIViewController, UITableViewDelegate, UITableVie
         
         cell.imgPlace.image = UIImage(named: "wethere.jpeg")
     
-        if placeImages[cellData[indexPath.row].name] != nil {
-            cell.imgPlace.image = placeImages[cellData[indexPath.row].name]
+        if let placeImage = placeImages[cellData[indexPath.row].name] {
+            cell.imgPlace.image = placeImage
         } else {
             DispatchQueue.main.async { [self] in
-            if let updateCell = tableView.cellForRow(at: indexPath) as? PlaceCell{
-                getImage(place: cellData[indexPath.row]){ photo in
-                if photo != nil {
-                        updateCell.imgPlace.image = photo
-                        placeImages.updateValue(photo!, forKey: cellData[indexPath.row].name)
+                if let updateCell = tableView.cellForRow(at: indexPath) as? PlaceCell{
+                    getImage(place: cellData[indexPath.row]){ photo in
+                        if photo != nil {
+                            updateCell.imgPlace.image = photo
+                            placeImages.updateValue(photo!, forKey: cellData[indexPath.row].name)
                         }
                     }
                 }
@@ -281,7 +269,7 @@ class MainPlaceViewController: UIViewController, UITableViewDelegate, UITableVie
                       completion(downloadImg)
                       print("image download!!!" + fileName)
                   } else {
-                          completion(nil)
+                        completion(nil)
                   }
               }
           }else{
@@ -294,7 +282,6 @@ class MainPlaceViewController: UIViewController, UITableViewDelegate, UITableVie
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {    //셀 삭제
             // Delete the row from the data source
-            
             deleteConfirm(indexPath)
         } else if editingStyle == .insert {
             // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
@@ -332,16 +319,12 @@ class MainPlaceViewController: UIViewController, UITableViewDelegate, UITableVie
             self.placeTableView.reloadData()
         }
                                     
-        let cancelAlert = UIAlertAction(title: "취소", style: .cancel, handler: nil)
-
+        deletAlert.addAction(UIAlertAction(title: "취소", style: .cancel, handler: nil))
         deletAlert.addAction(okAlert)
-        deletAlert.addAction(cancelAlert)
+       
         self.present(deletAlert, animated: true, completion: nil)
     }
     
-    func deleteHandler(alertAction: UIAlertAction!) -> Void {
-
-    }
     
     @IBAction func sortBtn(_ sender: UIBarItem){
         let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
@@ -362,9 +345,7 @@ class MainPlaceViewController: UIViewController, UITableViewDelegate, UITableVie
             self.places.sort(by: {$0.date > $1.date})
         })
 
-        alert.addAction(UIAlertAction(title: "취소", style: .cancel) { _ in
-            
-        })
+        alert.addAction(UIAlertAction(title: "취소", style: .cancel))
         present(alert, animated: true)
     }
 
@@ -425,37 +406,22 @@ class MainPlaceViewController: UIViewController, UITableViewDelegate, UITableVie
     
     // MARK: - Navigation
 
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
         if segue.identifier == "sgPlaceInfo"{
             let cell = sender as! UITableViewCell
             let indexPath = self.placeTableView.indexPath(for: cell)
             let infoView = segue.destination as! PlaceInfoTableViewController
-            
-            var cellData = [PlaceData]()
-            
-            switch sgNum {
-            case 0:
-                cellData = places
-            case 1:
-                cellData = places.filter({$0.group == sectionName[indexPath!.section]})
-            case 2:
-                cellData = places.filter({$0.category == sectionName[indexPath!.section]})
-            default:
-                cellData = places
-            }
+            let sectionPlaces = getPlaceList(sectionNum: sgNum, index: indexPath!)
+            let selectedData = sectionPlaces[(indexPath! as NSIndexPath).row]
             
             infoView.imgDelegate = self
             
-            if placeImages[cellData[(indexPath! as NSIndexPath).row].name] != nil{
-                infoView.getPlaceInfo(cellData[(indexPath! as NSIndexPath).row], image: placeImages[cellData[(indexPath! as NSIndexPath).row].name]!)
+            if let placeImage = placeImages[selectedData.name] {
+                infoView.getPlaceInfo(selectedData, image: placeImage)
             }else{
-                infoView.getPlaceInfo(cellData[(indexPath! as NSIndexPath).row], image: UIImage(named: "wethere.jpeg")!)
-                infoView.downloadImgInfo(cellData[(indexPath! as NSIndexPath).row])
+                infoView.getPlaceInfo(selectedData, image: UIImage(named: "wethere.jpeg")!)
+                infoView.downloadImgInfo(selectedData)
             }
-        
         }
         if segue.identifier == "sgAddPlace"{
             let addView = segue.destination as! AddPlaceTableViewController
