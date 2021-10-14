@@ -55,6 +55,8 @@ class MapViewController: UIViewController, CLLocationManagerDelegate , GMSMapVie
         
         self.view.addSubview(mapView!)
         
+        mark(places)
+        
         if onePlace != nil{
             showAddressMarker(placeData: onePlace!)
         }
@@ -213,7 +215,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate , GMSMapVie
             if let placeImage = placeImages[(selectedPlace?.name)!]{
                 infoView.getPlaceInfo(selectedPlace!, image: placeImage)
             }else{
-                infoView.getPlaceInfo(selectedPlace!, image: UIImage(named: "wethere.jpeg")!)
+                infoView.getPlaceInfo(selectedPlace!, image: UIImage(named: "pdicon")!)
                 infoView.downloadImgInfo(selectedPlace!)
             }
         }

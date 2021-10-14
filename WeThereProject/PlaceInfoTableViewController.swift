@@ -27,6 +27,7 @@ class PlaceInfoTableViewController: UITableViewController, EditDelegate {
     var imgDelegate : ImageDelegate?
     let loadingView = UIView()
     var isLoading = false
+    var hasimage = true
     
     @IBOutlet weak var placeImg: UIImageView!
     @IBOutlet weak var lblPlacename: UILabel!
@@ -77,6 +78,8 @@ class PlaceInfoTableViewController: UITableViewController, EditDelegate {
             loadingView.addSubview(indicator)
             indicator.startAnimating()
         }
+        
+        tableView.tableFooterView = UIView(frame: CGRect.zero)
     }
     
     func getPlaceInfo(_ data: PlaceData, image: UIImage){
@@ -169,6 +172,15 @@ class PlaceInfoTableViewController: UITableViewController, EditDelegate {
         return 4
     }
 
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        if indexPath.row == 0{
+            if hasimage == false{
+                return 0
+            }
+        }
+        return super.tableView(tableView, heightForRowAt: indexPath)
+    }
+    
     
     // MARK: - Navigation
 

@@ -228,29 +228,31 @@ class MainPlaceViewController: UIViewController, UITableViewDelegate, UITableVie
         let cell = tableView.dequeueReusableCell(withIdentifier: "placeCell", for: indexPath) as! PlaceCell
         
         let cellData = getPlaceList(sectionNum: sgNum, index: indexPath)
-     
+        let cellPlace = cellData[indexPath.row]
         let formatter = DateFormatter()
         formatter.dateFormat = "yyyy-MM-dd"
-        cell.lblPlaceLocation.text = formatter.string(from: cellData[indexPath.row].date)
-        cell.lblPlaceName.text = cellData[indexPath.row].name
+        cell.lblPlaceLocation.text = formatter.string(from: cellPlace.date)
+        cell.lblPlaceName.text = cellPlace.name
         
-        if places[indexPath.row].count != "0"{
-            cell.lblPlaceInfo.text = cellData[indexPath.row].group + " ∙ " + cellData[indexPath.row].category + " ∙ " + cellData[indexPath.row].rate + "점"
+        if cellPlace.count != "0"{
+            cell.lblPlaceInfo.text = cellPlace.group + " ∙ " + cellPlace.category + " ∙ " + cellPlace.rate + "점"
         }else{
-            cell.lblPlaceInfo.text = cellData[indexPath.row].group + " ∙ " + cellData[indexPath.row].category + " ∙ " + "가보고 싶어요!"
+            cell.lblPlaceInfo.text = cellPlace.group + " ∙ " + cellPlace.category + " ∙ " + "가보고 싶어요!"
         }
         
-        cell.imgPlace.image = UIImage(named: "wethere.jpeg")
+        cell.imgPlace.image = UIImage(named: "pdicon")
     
-        if let placeImage = placeImages[cellData[indexPath.row].name] {
-            cell.imgPlace.image = placeImage
-        } else {
-            DispatchQueue.main.async { [self] in
-                if let updateCell = tableView.cellForRow(at: indexPath) as? PlaceCell{
-                    getImage(place: cellData[indexPath.row]){ photo in
-                        if photo != nil {
-                            updateCell.imgPlace.image = photo
-                            placeImages.updateValue(photo!, forKey: cellData[indexPath.row].name)
+        if cellPlace.image{
+            if let placeImage = placeImages[cellPlace.name] {
+                cell.imgPlace.image = placeImage
+            } else {
+                DispatchQueue.main.async { [self] in
+                    if let updateCell = tableView.cellForRow(at: indexPath) as? PlaceCell{
+                        getImage(place: cellPlace){ photo in
+                            if photo != nil {
+                                updateCell.imgPlace.image = photo
+                                placeImages.updateValue(photo!, forKey: cellPlace.name)
+                            }
                         }
                     }
                 }
@@ -261,22 +263,21 @@ class MainPlaceViewController: UIViewController, UITableViewDelegate, UITableVie
     
     func getImage(place: PlaceData, completion: @escaping (UIImage?) -> ()) {
         let fileName = place.name
-          if place.image == true {
-              let islandRef = storage.reference().child(Uid + "/" + fileName)
-              islandRef.getData(maxSize: 1 * 1024 * 1024) { data, error in
-                  let downloadImg = UIImage(data: data! as Data)
-                  if error == nil {
-                      completion(downloadImg)
-                      print("image download!!!" + fileName)
-                  } else {
-                        completion(nil)
-                  }
-              }
-          }else{
-              let basicImg = UIImage(named: "wethere.jpeg")
-              completion(basicImg)
-          }
+        let islandRef = storage.reference().child(Uid + "/" + fileName)
+        islandRef.getData(maxSize: 1 * 1024 * 1024) { data, error in
+            let downloadImg = UIImage(data: data! as Data)
+                if error == nil {
+                    completion(downloadImg)
+                    print("image download!!!" + fileName)
+                } else {
+                completion(nil)
+            }
+         }
       }
+    
+    func tableView(_ tableView: UITableView, titleForDeleteConfirmationButtonForRowAt indexPath: IndexPath) -> String? {
+        return "삭제"
+    }
     
     // Override to support editing the table view.
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
@@ -419,8 +420,12 @@ class MainPlaceViewController: UIViewController, UITableViewDelegate, UITableVie
             if let placeImage = placeImages[selectedData.name] {
                 infoView.getPlaceInfo(selectedData, image: placeImage)
             }else{
-                infoView.getPlaceInfo(selectedData, image: UIImage(named: "wethere.jpeg")!)
-                infoView.downloadImgInfo(selectedData)
+                if selectedData.image{
+                    infoView.downloadImgInfo(selectedData)
+                }else{
+                    infoView.hasimage = false
+                    infoView.getPlaceInfo(selectedData, image: UIImage(named: "pdicon")!)
+                }
             }
         }
         if segue.identifier == "sgAddPlace"{
