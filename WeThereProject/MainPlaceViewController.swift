@@ -188,33 +188,24 @@ class MainPlaceViewController: UIViewController, ExpyTableViewDataSource,  ExpyT
     // MARK: - Table view data source
 
     func tableView(_ tableView: ExpyTableView, canExpandSection section: Int) -> Bool {
-        return true
+        if sgNum != 0{
+            return true
+        }else{
+            return false
+        }
     }
 
     func tableView(_ tableView: ExpyTableView, expyState state: ExpyState, changeForSection section: Int) {
-        print("\(section)섹션")
-               
-               switch state {
-               case .willExpand:
-                print("WILL EXPAND")
 
-               case .willCollapse:
-                print("WILL COLLAPSE")
-
-               case .didExpand:
-                print("DID EXPAND")
-
-               case .didCollapse:
-                print("DID COLLAPSE")
-               }
     }
     
     func tableView(_ tableView: ExpyTableView, expandableCellForSection section: Int) -> UITableViewCell {
         let cell = UITableViewCell()
         
-        //cell.backgroundColor = .systemGray6 //백그라운드 컬러
+        cell.backgroundColor = #colorLiteral(red: 0.4745098054, green: 0.8392156959, blue: 0.9764705896, alpha: 1) //백그라운드 컬러
         cell.selectionStyle = .none //선택했을 때 회색되는거 없애기
-        
+        cell.textLabel?.font = .boldSystemFont(ofSize: 20)
+        cell.textLabel?.textColor = .white
         cell.textLabel?.text = sectionName[section]
         
         return cell
@@ -237,10 +228,10 @@ class MainPlaceViewController: UIViewController, ExpyTableViewDataSource,  ExpyT
             }
         }else if sgNum == 1{
             let filteredArray = places.filter({$0.group == sectionName[section]})
-            return filteredArray.count
+            return filteredArray.count + 1
         }else{
             let filteredArray = places.filter({$0.category == sectionName[section]})
-            return filteredArray.count
+            return filteredArray.count + 1
         }
     }
 
@@ -248,7 +239,17 @@ class MainPlaceViewController: UIViewController, ExpyTableViewDataSource,  ExpyT
         let cell = tableView.dequeueReusableCell(withIdentifier: "placeCell", for: indexPath) as! PlaceCell
         
         let cellData = getPlaceList(sectionNum: sgNum, index: indexPath)
-        let cellPlace = cellData[indexPath.row]
+        let cellPlace : PlaceData!
+        if sgNum == 0{
+            cellPlace = cellData[indexPath.row]
+        }else{
+            if indexPath.row == 0{
+                cellPlace = cellData[indexPath.row]
+            }else{
+                cellPlace = cellData[indexPath.row - 1]
+            }
+        }
+        
         let formatter = DateFormatter()
         formatter.dateFormat = "yyyy-MM-dd"
         cell.lblPlaceLocation.text = formatter.string(from: cellPlace.date)
@@ -287,6 +288,14 @@ class MainPlaceViewController: UIViewController, ExpyTableViewDataSource,  ExpyT
         return sectionNum
     }
     
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        if sgNum != 0, indexPath.row == 0 {
+            return 40
+        }else {
+            return 80
+        }
+    }
+    
     //섹션 당 셀 개수
   /*  func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
@@ -296,13 +305,13 @@ class MainPlaceViewController: UIViewController, ExpyTableViewDataSource,  ExpyT
   /*  func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         return sectionName[section]
     }
-    */
+    
     func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
         (view as! UITableViewHeaderFooterView).contentView.backgroundColor = #colorLiteral(red: 0.4745098054, green: 0.8392156959, blue: 0.9764705896, alpha: 1)
         (view as! UITableViewHeaderFooterView).textLabel?.textColor = UIColor.white
     }
     
-    /*
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
     }
@@ -460,7 +469,12 @@ class MainPlaceViewController: UIViewController, ExpyTableViewDataSource,  ExpyT
             let indexPath = self.placeTableView.indexPath(for: cell)
             let infoView = segue.destination as! PlaceInfoTableViewController
             let sectionPlaces = getPlaceList(sectionNum: sgNum, index: indexPath!)
-            let selectedData = sectionPlaces[(indexPath! as NSIndexPath).row]
+            let selectedData : PlaceData!
+            if sgNum == 0{
+                selectedData = sectionPlaces[(indexPath! as NSIndexPath).row]
+            }else{
+                selectedData = sectionPlaces[(indexPath! as NSIndexPath).row - 1]
+            }
             
             infoView.imgDelegate = self
             
