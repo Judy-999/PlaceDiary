@@ -32,7 +32,7 @@
                                     <action selector="sgChangeListType:" destination="cpN-Hq-ZC8" eventType="valueChanged" id="4I1-m6-EtP"/>
                                 </connections>
                             </segmentedControl>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="80" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="O7v-dG-ASV">
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="80" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="O7v-dG-ASV" customClass="ExpyTableView" customModule="ExpyTableView">
                                 <rect key="frame" x="0.0" y="123" width="375" height="689"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="placeCell" rowHeight="80" id="i88-ZH-u3w" customClass="PlaceCell" customModule="WeThereProject" customModuleProvider="target">
@@ -1476,8 +1476,8 @@
     <inferredMetricsTieBreakers>
         <segue reference="LEn-q7-1yn"/>
         <segue reference="F5n-pi-x46"/>
-        <segue reference="R1O-xY-QdV"/>
-        <segue reference="VOi-XO-Ujb"/>
+        <segue reference="qPa-7u-WXO"/>
+        <segue reference="I6j-V1-nTt"/>
     </inferredMetricsTieBreakers>
     <resources>
         <image name="calendar" catalog="system" width="128" height="106"/>

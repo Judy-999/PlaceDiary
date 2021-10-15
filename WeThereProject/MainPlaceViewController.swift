@@ -8,10 +8,12 @@
 import UIKit
 import FirebaseFirestore
 import FirebaseStorage
+import ExpyTableView
 
 let Uid = UIDevice.current.identifierForVendor!.uuidString
 
-class MainPlaceViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, ImageDelegate {
+class MainPlaceViewController: UIViewController, ExpyTableViewDataSource,  ExpyTableViewDelegate
+, ImageDelegate {
 
     let storage = Storage.storage()
     let db: Firestore = Firestore.firestore()
@@ -43,7 +45,7 @@ class MainPlaceViewController: UIViewController, UITableViewDelegate, UITableVie
         }
     }
     
-    @IBOutlet var placeTableView: UITableView!
+    @IBOutlet var placeTableView: ExpyTableView!
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -185,12 +187,40 @@ class MainPlaceViewController: UIViewController, UITableViewDelegate, UITableVie
     
     // MARK: - Table view data source
 
-    //테이블 섹션의 개수
-    func numberOfSections(in tableView: UITableView) -> Int {
-        return sectionNum
+    func tableView(_ tableView: ExpyTableView, canExpandSection section: Int) -> Bool {
+        return true
+    }
+
+    func tableView(_ tableView: ExpyTableView, expyState state: ExpyState, changeForSection section: Int) {
+        print("\(section)섹션")
+               
+               switch state {
+               case .willExpand:
+                print("WILL EXPAND")
+
+               case .willCollapse:
+                print("WILL COLLAPSE")
+
+               case .didExpand:
+                print("DID EXPAND")
+
+               case .didCollapse:
+                print("DID COLLAPSE")
+               }
     }
     
-    //섹션 당 셀 개수
+    func tableView(_ tableView: ExpyTableView, expandableCellForSection section: Int) -> UITableViewCell {
+        let cell = UITableViewCell()
+        
+        //cell.backgroundColor = .systemGray6 //백그라운드 컬러
+        cell.selectionStyle = .none //선택했을 때 회색되는거 없애기
+        
+        cell.textLabel?.text = sectionName[section]
+        
+        return cell
+    }
+
+
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if sgNum == 0{
             if places.count == 0{
@@ -213,17 +243,7 @@ class MainPlaceViewController: UIViewController, UITableViewDelegate, UITableVie
             return filteredArray.count
         }
     }
-    
-    // Returns the title of the section.
-    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return sectionName[section]
-    }
-    
-    func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
-        (view as! UITableViewHeaderFooterView).contentView.backgroundColor = #colorLiteral(red: 0.4745098054, green: 0.8392156959, blue: 0.9764705896, alpha: 1)
-        (view as! UITableViewHeaderFooterView).textLabel?.textColor = UIColor.white
-    }
-    
+
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "placeCell", for: indexPath) as! PlaceCell
         
@@ -260,6 +280,33 @@ class MainPlaceViewController: UIViewController, UITableViewDelegate, UITableVie
         }
         return cell
     }
+    
+    
+    //테이블 섹션의 개수
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return sectionNum
+    }
+    
+    //섹션 당 셀 개수
+  /*  func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        
+    }*/
+    
+    // Returns the title of the section.
+  /*  func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        return sectionName[section]
+    }
+    */
+    func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
+        (view as! UITableViewHeaderFooterView).contentView.backgroundColor = #colorLiteral(red: 0.4745098054, green: 0.8392156959, blue: 0.9764705896, alpha: 1)
+        (view as! UITableViewHeaderFooterView).textLabel?.textColor = UIColor.white
+    }
+    
+    /*
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        
+    }
+    */
     
     func getImage(place: PlaceData, completion: @escaping (UIImage?) -> ()) {
         let fileName = place.name

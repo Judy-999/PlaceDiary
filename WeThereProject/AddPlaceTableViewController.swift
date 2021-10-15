@@ -77,6 +77,8 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
         
         pkDate.backgroundColor = #colorLiteral(red: 0, green: 1, blue: 1, alpha: 1)
         
+        tableView.tableFooterView = UIView(frame: CGRect.zero)
+        
         if dataFromInfo {
             setPlaceInfo()
             txvComent.textColor = UIColor.black

@@ -215,8 +215,12 @@ class MapViewController: UIViewController, CLLocationManagerDelegate , GMSMapVie
             if let placeImage = placeImages[(selectedPlace?.name)!]{
                 infoView.getPlaceInfo(selectedPlace!, image: placeImage)
             }else{
-                infoView.getPlaceInfo(selectedPlace!, image: UIImage(named: "pdicon")!)
-                infoView.downloadImgInfo(selectedPlace!)
+                if selectedPlace!.image{
+                    infoView.downloadImgInfo(selectedPlace!)
+                }else{
+                    infoView.hasimage = false
+                    infoView.getPlaceInfo(selectedPlace!, image: UIImage(named: "pdicon")!)
+                }
             }
         }
     }
