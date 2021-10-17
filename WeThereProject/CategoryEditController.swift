@@ -111,6 +111,27 @@ class CategoryEditController: UITableViewController, UIColorPickerViewController
         ])
     }
 
+    func modifyCategory(oldItem: String, newItem: String){
+        
+        if editType == "group"{
+            for place in places{
+                if place.group == oldItem{
+                    db.collection(Uid).document(place.name).updateData([
+                        "group" : newItem
+                    ])
+                }
+            }
+        }else{
+            for place in places{
+                if place.category == oldItem{
+                    db.collection(Uid).document(place.name).updateData([
+                        "category" : newItem
+                    ])
+                }
+            }
+        }
+    }
+    
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let editConfirmAlert = UIAlertController(title: "편집하기", message: "편집하시겠습니까?", preferredStyle: .actionSheet)
         editConfirmAlert.addAction(UIAlertAction(title: "편집", style: .default, handler: { _ in
@@ -120,9 +141,11 @@ class CategoryEditController: UITableViewController, UIColorPickerViewController
             let alertOk = UIAlertAction(title: "저장", style: .default) { [self] _ in
                 if let newItem = editAlert.textFields?[0].text{
                     if checkExisted(item: newItem){
+                        let old = editItems[indexPath.row]
                         if let index = editItems.firstIndex(of: editItems[indexPath.row]) {
                             editItems[index] = newItem
                         }
+                        modifyCategory(oldItem: old, newItem: newItem)
                         updateField(editType, items: editItems)
                         loadCategory(editType)
                         tableView.reloadData()

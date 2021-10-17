@@ -201,7 +201,7 @@ class MainPlaceViewController: UIViewController, ExpyTableViewDataSource,  ExpyT
     
     func tableView(_ tableView: ExpyTableView, expandableCellForSection section: Int) -> UITableViewCell {
         let cell = UITableViewCell()
-        
+       
         cell.backgroundColor = #colorLiteral(red: 0.4745098054, green: 0.8392156959, blue: 0.9764705896, alpha: 1) //백그라운드 컬러
         cell.selectionStyle = .none //선택했을 때 회색되는거 없애기
         cell.textLabel?.font = .boldSystemFont(ofSize: 20)
@@ -290,7 +290,7 @@ class MainPlaceViewController: UIViewController, ExpyTableViewDataSource,  ExpyT
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         if sgNum != 0, indexPath.row == 0 {
-            return 40
+            return 35
         }else {
             return 80
         }
@@ -420,6 +420,9 @@ class MainPlaceViewController: UIViewController, ExpyTableViewDataSource,  ExpyT
                 sectionName.append(group)
             }
             placeTableView.reloadData()
+            for sc in 0..<sectionNum{
+                placeTableView.collapse(sc)
+            }
         }else if sender.selectedSegmentIndex == 2{
             sectionNum = categoryItem.count
             sgNum = 2
@@ -428,6 +431,9 @@ class MainPlaceViewController: UIViewController, ExpyTableViewDataSource,  ExpyT
                 sectionName.append(name)
             }
             placeTableView.reloadData()
+            for sc in 0..<sectionNum{
+                placeTableView.collapse(sc)
+            }
         }
     }
 
