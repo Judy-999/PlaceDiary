@@ -81,8 +81,8 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
         
         if dataFromInfo {
             setPlaceInfo()
-            txvComent.textColor = UIColor.black
-            tvPlacePosition.textColor = UIColor.black
+            txvComent.textColor = UIColor.label
+            tvPlacePosition.textColor = UIColor.label
         }
     }
     
@@ -93,7 +93,7 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
         let flexSpace = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
         let picker = picker
         
-        picker.backgroundColor = UIColor.white
+        picker.backgroundColor = UIColor.clear
         picker.frame = CGRect(x: 0, y: 0, width: 0, height: 200)
         pickerToolbar.frame = CGRect(x: 0, y: 0, width: 0, height: 40)
         pickerToolbar.barTintColor = UIColor.white
@@ -427,7 +427,7 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
     func textViewDidBeginEditing(_ textView: UITextView) {
         if textView.textColor == UIColor.lightGray{
             textView.text = nil
-            textView.textColor = UIColor.black
+            textView.textColor = UIColor.label
         }
     }
 
@@ -530,7 +530,7 @@ extension AddPlaceTableViewController: GMSAutocompleteViewControllerDelegate { /
     func viewController(_ viewController: GMSAutocompleteViewController, didAutocompleteWith place: GMSPlace) {
         let address = place.formattedAddress?.replacingOccurrences(of: "대한민국 ", with: "")
         self.tvPlacePosition.text = address
-        self.tvPlacePosition.textColor = UIColor.black
+        self.tvPlacePosition.textColor = UIColor.label
         self.tvPlacePosition.isEditable = true
         self.geoPoint = GeoPoint(latitude: place.coordinate.latitude, longitude: place.coordinate.longitude)
         dismiss(animated: true, completion: nil)
