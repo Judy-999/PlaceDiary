@@ -15,8 +15,6 @@ class PlaceCell: UITableViewCell {
     @IBOutlet weak var lblPlaceLocation: UILabel!
     @IBOutlet weak var lblPlaceInfo: UILabel!
     
-    let storage = Storage.storage()
-    
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code

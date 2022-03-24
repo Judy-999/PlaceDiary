@@ -15,20 +15,20 @@ let Uid = UIDevice.current.identifierForVendor!.uuidString
 class MainPlaceViewController: UIViewController, ExpyTableViewDataSource,  ExpyTableViewDelegate
 , ImageDelegate {
 
-    let storage = Storage.storage()
+    // let storage = Storage.storage()
     let db: Firestore = Firestore.firestore()
     let storageRef = Storage.storage().reference()
     private let loadingView = UIView();
-    var newUapdate = true
-    var loadingCount = 0
-    var sectionNum = 1
-    var sgNum = 0
-    var sectionName = [""]
+    var newUapdate: Bool = true
+    var loadingCount: Int = 0
+    var sectionNum: Int = 1
+    var segmentedIndex: Int = 0
+    var sectionName: [String] = [""]
     var categoryItem = [String]()
     var groupItem = [String]()
     var placeImages = [String : UIImage]()
 
-    var places = [PlaceData]() {
+    var placeList = [PlaceData]() {
         didSet {
             DispatchQueue.main.async {
                 self.placeTableView.reloadData()
@@ -40,7 +40,7 @@ class MainPlaceViewController: UIViewController, ExpyTableViewDataSource,  ExpyT
        private var allPlaces = [PlaceData]() {
         didSet {
             DispatchQueue.main.async {
-                self.places = self.allPlaces
+                self.placeList = self.allPlaces
             }
         }
     }
@@ -71,22 +71,22 @@ class MainPlaceViewController: UIViewController, ExpyTableViewDataSource,  ExpyT
                 let deleteName = data.name
                 var index: Int!
                 var sectionIndex: Int!
-                switch sgNum {
+                switch segmentedIndex {
                 case 0:
-                    index = places.firstIndex(where: {$0.name == deleteName})
+                    index = placeList.firstIndex(where: {$0.name == deleteName})
                     sectionIndex = 0
                 case 1:
-                    let removePlace = places.first(where: {$0.name == deleteName})
+                    let removePlace = placeList.first(where: {$0.name == deleteName})
                     sectionIndex = sectionName.firstIndex(of: removePlace!.group)
-                    let cellData = places.filter({$0.group == removePlace!.group})
+                    let cellData = placeList.filter({$0.group == removePlace!.group})
                     index = cellData.firstIndex(where: {$0.name == deleteName})
                 case 2:
-                    let removePlace = places.first(where: {$0.name == deleteName})
+                    let removePlace = placeList.first(where: {$0.name == deleteName})
                     sectionIndex = sectionName.firstIndex(of: removePlace!.category)
-                    let cellData = places.filter({$0.category == removePlace!.category})
+                    let cellData = placeList.filter({$0.category == removePlace!.category})
                     index = cellData.firstIndex(where: {$0.name == deleteName})
                 default:
-                    index = places.firstIndex(where: {$0.name == deleteName})
+                    index = placeList.firstIndex(where: {$0.name == deleteName})
                     sectionIndex = 0
                 }
                 tableView(placeTableView, commit: .delete, forRowAt: [sectionIndex, index])
@@ -101,6 +101,7 @@ class MainPlaceViewController: UIViewController, ExpyTableViewDataSource,  ExpyT
         }
     }
 
+    // 카테고리와 그룹 정보를 받아오는 함수
     func downloadList(){
         let docRef = db.collection("category").document(Uid)
         docRef.getDocument { (document, error) in
@@ -125,11 +126,13 @@ class MainPlaceViewController: UIViewController, ExpyTableViewDataSource,  ExpyT
         }
     }
     
-    func updateImage(_ image: [String : UIImage]){
-        placeImages = image
+    // 장소 이미지 리스트를 새로운 리스트로 변경하는 함수
+    func updateImage(_ newImageList: [String : UIImage]){
+        placeImages = newImageList
     }
         
-   func passData(){
+    // 다른 페이지로 장소 정보와 이미지를 넘겨주는 함수
+    func passData(){
         let searchNav = tabBarController?.viewControllers![1] as! UINavigationController
         let searchController = searchNav.topViewController as! SearchTableViewController
         let calendarNav = tabBarController?.viewControllers![2] as! UINavigationController
@@ -139,31 +142,33 @@ class MainPlaceViewController: UIViewController, ExpyTableViewDataSource,  ExpyT
         let settingNav = tabBarController?.viewControllers![4] as! UINavigationController
         let settingController = settingNav.topViewController as! SettingTableController
         
-        searchController.setData(places, images: placeImages)
-        mapController.getPlace(places, images: placeImages)
-        calendarController.getDate(places, images: placeImages)
-        settingController.getPlaces(places)
+        searchController.setData(placeList, images: placeImages)
+        mapController.getPlace(placeList, images: placeImages)
+        calendarController.getDate(placeList, images: placeImages)
+        settingController.getPlaces(placeList)
     }
     
-    
+    // 선택한 장소 보기별로 장소 리스트를 변경해주는 함수
     func getPlaceList(sectionNum: Int, index: IndexPath) -> [PlaceData]{
-        switch sgNum {
+        switch segmentedIndex {
         case 0:
-            return places
+            return placeList
         case 1:
-            return places.filter({$0.group == sectionName[index.section]})
+            return placeList.filter({$0.group == sectionName[index.section]})
         case 2:
-            return places.filter({$0.category == sectionName[index.section]})
+            return placeList.filter({$0.category == sectionName[index.section]})
         default:
-            return places
+            return placeList
         }
     }
     
+    // ImageDelegat 프로토콜
     func didImageDone(newData: PlaceData, image: UIImage) {
         placeImages.updateValue(image, forKey: newData.name) 
     }
     
    
+    // 테이블 뷰를 끌어내려서 로딩
     @objc func pullToRefresh(_ refresh: UIRefreshControl){
         placeTableView.reloadData()
         refresh.endRefreshing()
@@ -188,7 +193,7 @@ class MainPlaceViewController: UIViewController, ExpyTableViewDataSource,  ExpyT
     // MARK: - Table view data source
 
     func tableView(_ tableView: ExpyTableView, canExpandSection section: Int) -> Bool {
-        if sgNum != 0{
+        if segmentedIndex != 0{
             return true
         }else{
             return false
@@ -213,8 +218,8 @@ class MainPlaceViewController: UIViewController, ExpyTableViewDataSource,  ExpyT
 
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if sgNum == 0{
-            if places.count == 0{
+        if segmentedIndex == 0{
+            if placeList.count == 0{
                 let emptyLabel = UILabel(frame: CGRect(x: 0, y: 0, width: self.view.bounds.size.width, height: self.view.bounds.size.height))
                 emptyLabel.text = "장소를 추가해보세요!"
                 emptyLabel.textAlignment = NSTextAlignment.center
@@ -224,13 +229,13 @@ class MainPlaceViewController: UIViewController, ExpyTableViewDataSource,  ExpyT
             }else{
                 tableView.separatorStyle = UITableViewCell.SeparatorStyle.singleLine
                 tableView.backgroundView = .none
-                return places.count
+                return placeList.count
             }
-        }else if sgNum == 1{
-            let filteredArray = places.filter({$0.group == sectionName[section]})
+        }else if segmentedIndex == 1{
+            let filteredArray = placeList.filter({$0.group == sectionName[section]})
             return filteredArray.count + 1
         }else{
-            let filteredArray = places.filter({$0.category == sectionName[section]})
+            let filteredArray = placeList.filter({$0.category == sectionName[section]})
             return filteredArray.count + 1
         }
     }
@@ -238,9 +243,9 @@ class MainPlaceViewController: UIViewController, ExpyTableViewDataSource,  ExpyT
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "placeCell", for: indexPath) as! PlaceCell
         
-        let cellData = getPlaceList(sectionNum: sgNum, index: indexPath)
+        let cellData = getPlaceList(sectionNum: segmentedIndex, index: indexPath)
         let cellPlace : PlaceData!
-        if sgNum == 0{
+        if segmentedIndex == 0{
             cellPlace = cellData[indexPath.row]
         }else{
             if indexPath.row == 0{
@@ -289,7 +294,7 @@ class MainPlaceViewController: UIViewController, ExpyTableViewDataSource,  ExpyT
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        if sgNum != 0, indexPath.row == 0 {
+        if segmentedIndex != 0, indexPath.row == 0 {
             return 35
         }else {
             return 80
@@ -319,7 +324,7 @@ class MainPlaceViewController: UIViewController, ExpyTableViewDataSource,  ExpyT
     
     func getImage(place: PlaceData, completion: @escaping (UIImage?) -> ()) {
         let fileName = place.name
-        let islandRef = storage.reference().child(Uid + "/" + fileName)
+        let islandRef = storageRef.child(Uid + "/" + fileName)
         islandRef.getData(maxSize: 1 * 1024 * 1024) { data, error in
             let downloadImg = UIImage(data: data! as Data)
                 if error == nil {
@@ -335,18 +340,15 @@ class MainPlaceViewController: UIViewController, ExpyTableViewDataSource,  ExpyT
         return "삭제"
     }
     
-    // Override to support editing the table view.
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {    //셀 삭제
-            // Delete the row from the data source
             deleteConfirm(indexPath)
         } else if editingStyle == .insert {
-            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
         }
     }
     
     func deleteConfirm(_ indexPath: IndexPath){
-        let cellData = getPlaceList(sectionNum: sgNum, index: indexPath)
+        let cellData = getPlaceList(sectionNum: segmentedIndex, index: indexPath)
         let deletAlert = UIAlertController(title: "장소 삭제", message: cellData[indexPath.row].name + "(을)를 삭제하시겠습니까?", preferredStyle: .actionSheet)
         let okAlert = UIAlertAction(title: "삭제", style: .destructive){ UIAlertAction in
             let removePlace = cellData[(indexPath as NSIndexPath).row].name as String
@@ -359,7 +361,7 @@ class MainPlaceViewController: UIViewController, ExpyTableViewDataSource,  ExpyT
                 }
             }
             
-            self.storage.reference().child(Uid + "/" + removePlace).delete { error in
+            self.storageRef.child(Uid + "/" + removePlace).delete { error in
                 if let error = error {
                     print("Error removing image: \(error)")
                 } else {
@@ -367,8 +369,8 @@ class MainPlaceViewController: UIViewController, ExpyTableViewDataSource,  ExpyT
                 }
               }
      
-            let removeDataIndex = self.places.firstIndex(where: {$0.name == cellData[(indexPath as NSIndexPath).row].name})!
-            self.places.remove(at: removeDataIndex)
+            let removeDataIndex = self.placeList.firstIndex(where: {$0.name == cellData[(indexPath as NSIndexPath).row].name})!
+            self.placeList.remove(at: removeDataIndex)
             
             self.newUapdate = true
             
@@ -387,19 +389,19 @@ class MainPlaceViewController: UIViewController, ExpyTableViewDataSource,  ExpyT
         let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
 
         alert.addAction(UIAlertAction(title: "별점 높은 순", style: .default) { _ in
-            self.places.sort(by: {$0.rate > $1.rate})
+            self.placeList.sort(by: {$0.rate > $1.rate})
         })
 
         alert.addAction(UIAlertAction(title: "가나다 순", style: .default) { _ in
-            self.places.sort(by: {$0.name < $1.name})
+            self.placeList.sort(by: {$0.name < $1.name})
         })
         
         alert.addAction(UIAlertAction(title: "방문 횟수 순", style: .default) { _ in
-            self.places.sort(by: {$0.count > $1.count})
+            self.placeList.sort(by: {$0.count > $1.count})
         })
         
         alert.addAction(UIAlertAction(title: "방문 날짜 순", style: .default) { _ in
-            self.places.sort(by: {$0.date > $1.date})
+            self.placeList.sort(by: {$0.date > $1.date})
         })
 
         alert.addAction(UIAlertAction(title: "취소", style: .cancel))
@@ -407,33 +409,36 @@ class MainPlaceViewController: UIViewController, ExpyTableViewDataSource,  ExpyT
     }
 
     @IBAction func sgChangeListType(_ sender: UISegmentedControl){
-        if sender.selectedSegmentIndex == 0{
+        switch sender.selectedSegmentIndex{
+        case 0:
             sectionNum = 1
-            sgNum = 0
+            segmentedIndex = 0
             sectionName = [""]
             placeTableView.reloadData()
-        }else if sender.selectedSegmentIndex == 1{
+        case 1:
             sectionNum = groupItem.count
-            sgNum = 1
+            segmentedIndex = 1
             sectionName.removeAll()
             for group in groupItem{
                 sectionName.append(group)
             }
             placeTableView.reloadData()
             for sc in 0..<sectionNum{
-                placeTableView.collapse(sc)
+                placeTableView.expand(sc)
             }
-        }else if sender.selectedSegmentIndex == 2{
+        case 2:
             sectionNum = categoryItem.count
-            sgNum = 2
+            segmentedIndex = 2
             sectionName.removeAll()
             for name in categoryItem{
                 sectionName.append(name)
             }
             placeTableView.reloadData()
             for sc in 0..<sectionNum{
-                placeTableView.collapse(sc)
+                placeTableView.expand(sc)
             }
+        default:
+            sender.selectedSegmentIndex = 0
         }
     }
 
@@ -474,9 +479,9 @@ class MainPlaceViewController: UIViewController, ExpyTableViewDataSource,  ExpyT
             let cell = sender as! UITableViewCell
             let indexPath = self.placeTableView.indexPath(for: cell)
             let infoView = segue.destination as! PlaceInfoTableViewController
-            let sectionPlaces = getPlaceList(sectionNum: sgNum, index: indexPath!)
+            let sectionPlaces = getPlaceList(sectionNum: segmentedIndex, index: indexPath!)
             let selectedData : PlaceData!
-            if sgNum == 0{
+            if segmentedIndex == 0{
                 selectedData = sectionPlaces[(indexPath! as NSIndexPath).row]
             }else{
                 selectedData = sectionPlaces[(indexPath! as NSIndexPath).row - 1]
@@ -497,7 +502,7 @@ class MainPlaceViewController: UIViewController, ExpyTableViewDataSource,  ExpyT
         }
         if segue.identifier == "sgAddPlace"{
             let addView = segue.destination as! AddPlaceTableViewController
-            addView.nowPlaceData = places
+            addView.nowPlaceData = placeList
         }
     }
     

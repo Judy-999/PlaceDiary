@@ -6,16 +6,16 @@
 //
 
 import Foundation
-import FirebaseFirestore
+import Firebase
 
 extension PlaceData {
     static func build(from documents: [QueryDocumentSnapshot]) -> [PlaceData] {
-        var places = [PlaceData]()
+        var placeList = [PlaceData]()
     
         for document in documents {
             let date = document["date"] as! Timestamp
             
-            places.append(PlaceData(name: document["name"] as? String ?? "",
+            placeList.append(PlaceData(name: document["name"] as? String ?? "",
                                     location: document["position"] as? String ?? "",
                                     date: date.dateValue(),
                                     visit: (document["visit"] as? Bool)!,
@@ -27,6 +27,6 @@ extension PlaceData {
                                     geopoint: (document["geopoint"] as? GeoPoint)!,
                                     group: document["group"] as? String ?? ""))
         }
-        return places
+        return placeList
     }
 }
