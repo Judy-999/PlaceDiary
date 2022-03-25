@@ -27,10 +27,12 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
     var starButtons = [UIButton]()
     var hasImage: Bool = true
     var dataFromInfo: Bool = false
+    
     var count = "0", reName = "", rePositon = "", reCategory = "", reRate = "", reGroup = "", reComent = ""
     var receiveImage : UIImage?
     var reDate: Date?
     var reVisit = false
+    
     var editData: PlaceData?
     var editDelegate: EditDelegate?
     var geoPoint: GeoPoint?
@@ -83,7 +85,8 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
         }
     }
     
-    func setPicker(_ picker: UIPickerView){ // setting picker
+    // Picker 설정
+    func setPicker(_ picker: UIPickerView){
         let pickerToolbar = UIToolbar()
         let btnPickerDone = UIBarButtonItem()
         let btnAdd = UIBarButtonItem()
@@ -121,6 +124,7 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
         }
     }
     
+    // 그룹 선택 완료
     @objc func groupPickerDone(){
         if tfGroup.text == ""{
             tfGroup.text = groupItem[0]
@@ -128,6 +132,7 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
         self.view.endEditing(true)
     }
     
+    // 문류 선택 완료
     @objc func categoryPickerDone(){
         if tfCategory.text == ""{
             tfCategory.text = categoryItem[0]
@@ -143,6 +148,7 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
         addNewCategory("그룹")
     }
     
+    // 새로운 분류 or 그룹을 바로 추가하는 함수
     func addNewCategory(_ type: String){
         let addAlert = UIAlertController(title: type + " 추가", message: "새로운 항목을 입력하세요.", preferredStyle: .alert)
         addAlert.addTextField()
@@ -162,6 +168,7 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
         self.present(addAlert, animated: true, completion: nil)
     }
     
+    // 새로 추가하려는 분류나 그룹이 이미 존재하는지 확인하는 함수
     func checkExisted(item: String, type: String) -> Bool{
         var array = categoryItem
         
@@ -183,6 +190,7 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
         self.present(alert, animated: true, completion: nil)
     }
     
+    // 새로 추가한 분류나 그룹을 Firebase에 올리는 함수
     func uploadCategory(_ type: String, item: String){
         let categoryRef = db.collection("category").document(Uid)
         var target : String!
@@ -204,6 +212,7 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
         ])
     }
     
+    // 텍스트뷰(위치, 코멘트)에 placeholder 넣는 함수
     func setTextView(){
         txvComent.delegate = self
         tvPlacePosition.delegate = self
@@ -213,6 +222,7 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
         txvComent.textColor = UIColor.lightGray
     }
     
+    // 분류와 그룹 리스트를 Firebase에서 받아오는 함수
     func downloadPickerItem(){
         let docRef = db.collection("category").document(Uid)
         docRef.getDocument { (document, error) in
@@ -225,7 +235,11 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
         }
     }
     
+    // 편집하는 장소 데이터를 받아오는 함수
     func setPlaceDataFromInfo(data: PlaceData, image: UIImage){
+        
+        // 하나하나 받아오지 말고 PlaceData 채로 넘겨 받아도 될듯
+        
         receiveImage = image
         selectedImage = image
         reName = data.name
@@ -242,6 +256,7 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
         editData = data
     }
     
+    // 편집할 장소 데이터로 정보창을 설정하는 함수
     func setPlaceInfo(){
         let addRate = AddRate()
         
@@ -256,6 +271,8 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
         lbltTryCount.text = Int(count)!.description + "회"
         stepper.value = NSString(string: count).doubleValue
         tfGroup.text = reGroup
+        
+        // 이거 AddRate 클래스에 함수로 넣어버려도 될듯
         
         if reVisit == true{
             for btn in starButtons{
@@ -290,88 +307,84 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
     }
 
     @IBAction func btnAddDone(_ sender: UIButton){
-        let sameNamePlace = nowPlaceData.first(where: {$0.name == tfPlaceName.text})
-        if sameNamePlace != nil{
+        guard nowPlaceData.first(where: {$0.name == tfPlaceName.text}) == nil else {
             myAlert("장소 이름 중복", message: "같은 이름의 장소가 존재합니다.")
-        }else if tfPlaceName.text == ""{
-            myAlert("필수 입력 미기재", message: "장소의 이름을 입력해주세요.")
-        }else if tvPlacePosition.text == "위치를 입력하세요."{
-            myAlert("필수 입력 미기재", message: "장소의 위치를 검색해주세요.")
-        }else if tfCategory.text == "" {
-            myAlert("필수 입력 미기재", message: "장소의 카테고리를 선택해주세요.")
-        }else if tfCategory.text == "" {
-            myAlert("필수 입력 미기재", message: "장소의 그룹을 선택해주세요.")
-        }else if geoPoint == nil {
-            myAlert("장소 위치 선택 오류", message: "장소의 이름 또는 주소를 검색하여 선택해주세요.")
-        }else if swVisit.isOn == true && count == "0"{
-            myAlert("방문 횟수 미선택", message: "방문 횟수를 입력해주세요.")
-        }else{
+           return
+        }
+        
+        guard tfPlaceName.text != "", tvPlacePosition.text != "위치를 입력하세요.", tfCategory.text != "", tfGroup.text != "", geoPoint != nil, (swVisit.isOn == true && count == "0") == false else {
+            myAlert("필수 입력 미기재", message: "모든 항목을 입력해주세요.")
+            return
+        }
+
+        // 코멘트를 입력하지 않은 상태면 코멘트는 빈칸으로 저장
+        if txvComent.text == "코멘트를 입력하세요."{
+            txvComent.text = ""
+        }
             
-            if txvComent.text == "코멘트를 입력하세요."{
-                txvComent.text = ""
-            }
-            
-            uploadData()
+        uploadData()
  
-            if editDelegate != nil{
-                editData?.name = tfPlaceName.text!
-                editData?.location = tvPlacePosition.text
-                editData?.category = tfCategory.text!
-                editData?.visit = swVisit.isOn
-                editData?.date = pkDate.date
-                editData?.coment = txvComent.text
-                editData?.rate = lblRate.text!
-                editData?.geopoint = geoPoint!
-                editData?.count = count
-                editData?.group = tfGroup.text!
-                editDelegate?.didEditPlace(self, data: editData!, image: selectedImage)
-            }
+        // 장소를 편집하는 중이었으면 장소 정보 페이지로 새로운 장소 정보 넘겨주기
+        if editDelegate != nil{
+            editData?.name = tfPlaceName.text!
+            editData?.location = tvPlacePosition.text
+            editData?.category = tfCategory.text!
+            editData?.visit = swVisit.isOn
+            editData?.date = pkDate.date
+            editData?.coment = txvComent.text
+            editData?.rate = lblRate.text!
+            editData?.geopoint = geoPoint!
+            editData?.count = count
+            editData?.group = tfGroup.text!
+            editDelegate?.didEditPlace(self, data: editData!, image: selectedImage)
+        }
          
-             NotificationCenter.default.post(name: NSNotification.Name(rawValue: "newPlaceUpdate"), object: nil)
+        NotificationCenter.default.post(name: NSNotification.Name(rawValue: "newPlaceUpdate"), object: nil)
            
-            if receiveImage == nil {
-                if selectedImage == nil{
-                    hasImage = false
-                    uploadData()
-                    NotificationCenter.default.post(name: NSNotification.Name(rawValue: "newPlaceUpdate"), object: nil)
-                    _ = navigationController?.popViewController(animated: true)
-                }else{
-                    uploadImage(tfPlaceName.text!, image: selectedImage.resize(newWidth: 300))
-                    editData?.newImg = selectedImage
-                    NotificationCenter.default.post(name: NSNotification.Name(rawValue: "newPlaceUpdate"), object: editData)
-                    hasImage = true
-                }
-            }else if receiveImage != selectedImage{
-                if reName != tfPlaceName.text!{
-                    storageRef.child(Uid + "/" + reName).delete { error in
-                        if let error = error {
-                            print("Error removing image: \(error)")
-                        } else {
-                            print("Image successfully removed!")
-                        }
-                      }
-                }
+        // 사진이나 이름이 변경되었는지 확인하고 업로드
+        if receiveImage == nil {
+            if selectedImage == nil{
+                hasImage = false
+                uploadData()
+                NotificationCenter.default.post(name: NSNotification.Name(rawValue: "newPlaceUpdate"), object: nil)
+                _ = navigationController?.popViewController(animated: true)
+            }else{
                 uploadImage(tfPlaceName.text!, image: selectedImage.resize(newWidth: 300))
                 editData?.newImg = selectedImage
                 NotificationCenter.default.post(name: NSNotification.Name(rawValue: "newPlaceUpdate"), object: editData)
                 hasImage = true
-            }else{
-                if reName != tfPlaceName.text!{
-                    storageRef.child(Uid + "/" + reName).delete { error in
+            }
+        }else if receiveImage != selectedImage{
+            if reName != tfPlaceName.text!{
+                storageRef.child(Uid + "/" + reName).delete { error in
                         if let error = error {
                             print("Error removing image: \(error)")
                         } else {
                             print("Image successfully removed!")
                         }
-                      }
-                    uploadImage(tfPlaceName.text!, image: receiveImage!.resize(newWidth: 300))
-                }
-                NotificationCenter.default.post(name: NSNotification.Name(rawValue: "newPlaceUpdate"), object: nil)
-                _ = navigationController?.popViewController(animated: true)
+                    }
             }
+            uploadImage(tfPlaceName.text!, image: selectedImage.resize(newWidth: 300))
+            editData?.newImg = selectedImage
+            NotificationCenter.default.post(name: NSNotification.Name(rawValue: "newPlaceUpdate"), object: editData)
+            hasImage = true
+        }else{
+            if reName != tfPlaceName.text!{
+                storageRef.child(Uid + "/" + reName).delete { error in
+                    if let error = error {
+                        print("Error removing image: \(error)")
+                    } else {
+                        print("Image successfully removed!")
+                    }
+                    }
+                uploadImage(tfPlaceName.text!, image: receiveImage!.resize(newWidth: 300))
+            }
+            NotificationCenter.default.post(name: NSNotification.Name(rawValue: "newPlaceUpdate"), object: nil)
+            _ = navigationController?.popViewController(animated: true)
         }
     }
     
+    // 장소 정보를 Firebase에 업로드하는 함수
     func uploadData(){
         if reName != "" && reName != tfPlaceName.text! {
             db.collection(Uid).document(reName).delete() { err in
@@ -405,6 +418,7 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
         }
     }
     
+    // 선택된 이미지를 Storage에 업로드하는 함수
     func uploadImage(_ path: String, image: UIImage){
         let original = image
         var data = Data()
@@ -423,6 +437,7 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
         }
     }
     
+    // TextView 편집을 시작하면 글자 색상을 변경하는 함수
     func textViewDidBeginEditing(_ textView: UITextView) {
         if textView.textColor == UIColor.lightGray{
             textView.text = nil
@@ -430,6 +445,7 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
         }
     }
 
+    // 이미지 선택하는 함수
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         
         if let img = info[UIImagePickerController.InfoKey.editedImage] as? UIImage{
