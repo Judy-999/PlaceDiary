@@ -19,17 +19,14 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
     
     let db: Firestore = Firestore.firestore()
     let storageRef = Storage.storage().reference()
-    let imagePicker = UIImagePickerController()
-    let searchController = GMSAutocompleteViewController()
-    let addRate = AddRate()
     let categoryPicker = UIPickerView()
     let groupPicker = UIPickerView()
-    var selectedImage: UIImage!
     var categoryItem = [String]()
     var groupItem = [String]()
-    var rateButtons = [UIButton]()
-    var hasImage = true
-    var dataFromInfo = false
+    var selectedImage: UIImage!
+    var starButtons = [UIButton]()
+    var hasImage: Bool = true
+    var dataFromInfo: Bool = false
     var count = "0", reName = "", rePositon = "", reCategory = "", reRate = "", reGroup = "", reComent = ""
     var receiveImage : UIImage?
     var reDate: Date?
@@ -61,7 +58,7 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
     override func viewDidLoad() {
         super.viewDidLoad()
     
-        imagePicker.allowsEditing = true
+        
         
         downloadPickerItem()
         setTextView()
@@ -69,11 +66,11 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
         setPicker(categoryPicker)
         setPicker(groupPicker)
         
-        rateButtons.append(btnRate1)
-        rateButtons.append(btnRate2)
-        rateButtons.append(btnRate3)
-        rateButtons.append(btnRate4)
-        rateButtons.append(btnRate5)
+        starButtons.append(btnRate1)
+        starButtons.append(btnRate2)
+        starButtons.append(btnRate3)
+        starButtons.append(btnRate4)
+        starButtons.append(btnRate5)
         
         pkDate.backgroundColor = #colorLiteral(red: 0, green: 1, blue: 1, alpha: 1)
         
@@ -246,6 +243,8 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
     }
     
     func setPlaceInfo(){
+        let addRate = AddRate()
+        
         placeImageView.image = receiveImage
         tfPlaceName.text = reName as String
         tvPlacePosition.text = rePositon
@@ -259,14 +258,14 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
         tfGroup.text = reGroup
         
         if reVisit == true{
-            for btn in rateButtons{
+            for btn in starButtons{
                 btn.isEnabled = true
             }
             stepper.isEnabled = true
             starSlider.isEnabled = true
             lblVisit.text = "가봤어요!"
         }else{
-            for btn in rateButtons{
+            for btn in starButtons{
                 btn.isEnabled = false
                 btn.setImage(UIImage(systemName: "star"), for: .normal)
             }
@@ -275,7 +274,7 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
             lblRate.text = "0.0"
             lblVisit.text = "가보고 싶어요!"
         }
-        addRate.fill(buttons: rateButtons, rate: NSString(string: reRate).floatValue)
+        addRate.fill(buttons: starButtons, rate: NSString(string: reRate).floatValue)
     }
     
    
@@ -460,14 +459,14 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
 
     @IBAction func switchOn(_ sender: UISwitch){
         if sender.isOn == true{
-            for btn in rateButtons{
+            for btn in starButtons{
                 btn.isEnabled = true
             }
             lblVisit.text = "가봤어요!"
             starSlider.isEnabled = true
             stepper.isEnabled = true
         }else{
-            for btn in rateButtons{
+            for btn in starButtons{
                 btn.isEnabled = false
                 btn.setImage(UIImage(systemName: "star"), for: .normal)
             }
@@ -481,8 +480,9 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
     }
     
     @IBAction func sliderChanged(_ sender: Any) {
+        let addRate = AddRate()
         let starVal = starSlider.value
-        addRate.sliderStar(buttons: rateButtons, rate: starVal)
+        addRate.sliderStar(buttons: starButtons, rate: starVal)
         
         let rateDown = starVal.rounded(.down)
         let half = starVal - rateDown
@@ -496,8 +496,9 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
     }
     
     @IBAction func btnAddPhoto(_ sender: UIButton){
+        let imagePicker = UIImagePickerController()
+        imagePicker.allowsEditing = true
         if(UIImagePickerController.isSourceTypeAvailable(.photoLibrary)){
-            
             imagePicker.delegate = self
             imagePicker.sourceType = .photoLibrary
             imagePicker.mediaTypes = [kUTTypeImage as String]
@@ -516,6 +517,7 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
     
     @IBAction func searchPosition(_ sender: UIButton){
         //구글 자동완성 뷰컨트롤러 생성
+        let searchController = GMSAutocompleteViewController()
         searchController.delegate = self
         present(searchController, animated: true, completion: nil)
     }
