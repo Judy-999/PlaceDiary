@@ -65,9 +65,9 @@ class MainPlaceViewController: UIViewController, ExpyTableViewDataSource,  ExpyT
         newUapdate = true
         if notification.object != nil{
             let data = notification.object as! PlaceData
-            if data.newImg != nil{
+            if data.newImg != nil{ // 새로운 이미지 추가
                 placeImages.updateValue(data.newImg!, forKey: data.name)
-            }else{
+            }else{  // 장소 삭제 
                 let deleteName = data.name
                 var index: Int!
                 var sectionIndex: Int!
