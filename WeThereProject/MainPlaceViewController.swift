@@ -301,27 +301,6 @@ class MainPlaceViewController: UIViewController, ExpyTableViewDataSource,  ExpyT
         }
     }
     
-    //섹션 당 셀 개수
-  /*  func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        
-    }*/
-    
-    // Returns the title of the section.
-  /*  func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return sectionName[section]
-    }
-    
-    func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
-        (view as! UITableViewHeaderFooterView).contentView.backgroundColor = #colorLiteral(red: 0.4745098054, green: 0.8392156959, blue: 0.9764705896, alpha: 1)
-        (view as! UITableViewHeaderFooterView).textLabel?.textColor = UIColor.white
-    }
-    
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        
-    }
-    */
-    
     func getImage(place: PlaceData, completion: @escaping (UIImage?) -> ()) {
         let fileName = place.name
         let islandRef = storageRef.child(Uid + "/" + fileName)
@@ -495,7 +474,7 @@ class MainPlaceViewController: UIViewController, ExpyTableViewDataSource,  ExpyT
                 if selectedData.image{
                     infoView.downloadImgInfo(selectedData)
                 }else{
-                    infoView.hasimage = false
+                    //infoView.hasimage = false
                     infoView.getPlaceInfo(selectedData, image: UIImage(named: "pdicon")!)
                 }
             }

@@ -185,7 +185,7 @@ extension CalendarController: UITableViewDelegate, UITableViewDataSource{
                 if selectedPlace!.image{
                     infoView.downloadImgInfo(selectedPlace!)
                 }else{
-                    infoView.hasimage = false
+                    //infoView.hasimage = false
                     infoView.getPlaceInfo(selectedPlace!, image: UIImage(named: "pdicon")!)
                 }
             }

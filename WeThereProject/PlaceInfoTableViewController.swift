@@ -15,19 +15,21 @@ protocol ImageDelegate {
 }
 
 class PlaceInfoTableViewController: UITableViewController, EditDelegate {
-    
     let storage = Storage.storage()
     let db: Firestore = Firestore.firestore()
-    let fillRate = AddRate()
+    
     var receiveImage: UIImage?
-    var reName = "", rePositon = "", reDate = "", reCategory = "", reComent = "", reRate = "", reGroup = "", count = "0"
-    var reVisit = false
-    var rateBtn = [UIButton]()
+    
+   // var hasimage = true
+  //  var reName = "", rePositon = "", reDate = "", reCategory = "", reComent = "", reRate = "", reGroup = "", count = "0"
+  //  var reVisit = false
+    
+    var rateButtons = [UIButton]()
     var editData : PlaceData?
     var imgDelegate : ImageDelegate?
     let loadingView = UIView()
     var isLoading = false
-    var hasimage = true
+    
     
     @IBOutlet weak var placeImg: UIImageView!
     @IBOutlet weak var lblPlacename: UILabel!
@@ -53,11 +55,11 @@ class PlaceInfoTableViewController: UITableViewController, EditDelegate {
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         //self.navigationItem.rightBarButtonItem = self.editButtonItem
      
-        rateBtn.append(btnRate1)
-        rateBtn.append(btnRate2)
-        rateBtn.append(btnRate3)
-        rateBtn.append(btnRate4)
-        rateBtn.append(btnRate5)
+        rateButtons.append(btnRate1)
+        rateButtons.append(btnRate2)
+        rateButtons.append(btnRate3)
+        rateButtons.append(btnRate4)
+        rateButtons.append(btnRate5)
         
         setPlaceInfo()
         
@@ -82,24 +84,7 @@ class PlaceInfoTableViewController: UITableViewController, EditDelegate {
         tableView.tableFooterView = UIView(frame: CGRect.zero)
     }
     
-    func getPlaceInfo(_ data: PlaceData, image: UIImage){
-        editData = data
-        
-        reName = data.name
-        rePositon = data.location
-        receiveImage = image
-        reCategory = data.category
-        reVisit = data.visit
-        reRate = data.rate
-        reComent = data.coment
-        count = data.count
-        reGroup = data.group
-        
-        let formatter = DateFormatter()
-        formatter.dateFormat = "yyyy-MM-dd"
-        reDate = formatter.string(from: data.date)
-    }
-    
+    // 메인 페이지에서 이미지가 다운되지 못했을 경우 정보 상세 페이지에서 이미지를 받아오는 함수
     func downloadImgInfo(_ place: PlaceData){
         let fileName = place.name
         let islandRef = storage.reference().child(Uid + "/" + fileName)
@@ -119,25 +104,34 @@ class PlaceInfoTableViewController: UITableViewController, EditDelegate {
             }
         }
     }
+   
+    func getPlaceInfo(_ data: PlaceData, image: UIImage){
+        editData = data
+        receiveImage = image
+    }
     
     func setPlaceInfo(){
-        lblPlacename.text = reName
-        btnPosition.setTitle(" " + rePositon + "  >", for: .normal)
+        lblPlacename.text = editData?.name
+        btnPosition.setTitle(" " + editData!.location + "  >", for: .normal) // 장소 위치 버튼 설정
         btnPosition.setTitleColor(.white, for: .normal)
         btnPosition.contentHorizontalAlignment = .left
-        lblDate.text = reDate
-        lblCategory.text = reCategory
-        txvComent.text = reComent
-        lblRate.text = "  " + reRate + " 점"
-        lblCount.text = count + "회"
-        lblGroup.text = reGroup
+        lblCategory.text = editData?.category
+        txvComent.text = editData?.coment
+        lblRate.text = "  " + editData!.rate + " 점"
+        lblCount.text = editData!.count + "회"
+        lblGroup.text = editData?.group
         placeImg.image = receiveImage
-        fillRate.fill(buttons: rateBtn, rate: NSString(string: reRate).floatValue)
+        let fillRate = AddRate()
+        fillRate.fill(buttons: rateButtons, rate: NSString(string: editData!.rate).floatValue)
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd"
+        lblDate.text = formatter.string(from: editData!.date)
     }
     
     func didEditPlace(_ controller: AddPlaceTableViewController, data: PlaceData, image: UIImage) {
          getPlaceInfo(data, image: image)
          setPlaceInfo()
+        tableView.reloadData()
     }
     
     @IBAction func editBtn(_ sender: UIButton){
@@ -173,10 +167,8 @@ class PlaceInfoTableViewController: UITableViewController, EditDelegate {
     }
 
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        if indexPath.row == 0{
-            if hasimage == false{
-                return 0
-            }
+        if indexPath.row == 0 && editData?.image == false{
+            return 0
         }
         return super.tableView(tableView, heightForRowAt: indexPath)
     }
@@ -186,18 +178,19 @@ class PlaceInfoTableViewController: UITableViewController, EditDelegate {
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == "editPlace"{
+        switch segue.identifier{
+        case "editPlace":
             let addPlaceViewController = segue.destination as! AddPlaceTableViewController
             addPlaceViewController.setPlaceDataFromInfo(data: editData!, image: receiveImage!)
             addPlaceViewController.editDelegate = self
-        }
-        if segue.identifier == "sgShowImage"{
+        case "sgShowImage":
             let imageView = segue.destination as! ImageViewController
             imageView.fullImage = placeImg.image
-        }
-        if segue.identifier == "showMap"{
+        case "showMap":
             let addressController = segue.destination  as! MapViewController
             addressController.onePlace = editData!
+        default:
+            print("잘못된 segue")
         }
     }
 }

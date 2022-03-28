@@ -1388,7 +1388,6 @@
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="WHc-c7-DM7" customClass="FSCalendar">
                                         <rect key="frame" x="0.0" y="0.0" width="375" height="427.33333333333331"/>
-                                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                         <connections>
                                             <outlet property="dataSource" destination="VSK-5y-Ar7" id="Uf8-d5-iSI"/>
                                             <outlet property="delegate" destination="VSK-5y-Ar7" id="DVt-4y-JUi"/>
@@ -1467,7 +1466,7 @@
         <segue reference="LEn-q7-1yn"/>
         <segue reference="2Kc-dU-Vel"/>
         <segue reference="qPa-7u-WXO"/>
-        <segue reference="I6j-V1-nTt"/>
+        <segue reference="ngF-ER-ywh"/>
     </inferredMetricsTieBreakers>
     <resources>
         <image name="calendar" catalog="system" width="128" height="106"/>
