@@ -111,7 +111,7 @@ class MainPlaceViewController: UIViewController, ExpyTableViewDataSource,  ExpyT
             } else {
                 print("Document does not exist")
                 let basicCategory: [String: [String]] = [
-                    "items": ["카페", "음식점", "디저트", "영화관", "액티비티", "야외"],
+                    "items": ["카페", "음식점", "디저트", "전시회", "액티비티", "야외"],
                     "group": ["친구", "가족", "애인", "혼자"]
                 ]
                 self.db.collection("category").document(Uid).setData(basicCategory) { err in
@@ -207,7 +207,8 @@ class MainPlaceViewController: UIViewController, ExpyTableViewDataSource,  ExpyT
     func tableView(_ tableView: ExpyTableView, expandableCellForSection section: Int) -> UITableViewCell {
         let cell = UITableViewCell()
        
-        cell.backgroundColor = #colorLiteral(red: 0.4745098054, green: 0.8392156959, blue: 0.9764705896, alpha: 1) //백그라운드 컬러
+       // cell.backgroundColor = #colorLiteral(red: 0.4745098054, green: 0.8392156959, blue: 0.9764705896, alpha: 1) //백그라운드 컬러
+        cell.backgroundColor = #colorLiteral(red: 0.2113277912, green: 0.9666495919, blue: 0.9550952315, alpha: 1)
         cell.selectionStyle = .none //선택했을 때 회색되는거 없애기
         cell.textLabel?.font = .boldSystemFont(ofSize: 20)
         cell.textLabel?.textColor = .white
@@ -257,14 +258,17 @@ class MainPlaceViewController: UIViewController, ExpyTableViewDataSource,  ExpyT
         
         let formatter = DateFormatter()
         formatter.dateFormat = "yyyy-MM-dd"
-        cell.lblPlaceLocation.text = formatter.string(from: cellPlace.date)
+        cell.lblPlaceDate.text = formatter.string(from: cellPlace.date)
         cell.lblPlaceName.text = cellPlace.name
         
-        if cellPlace.count != "0"{
+      /*  if cellPlace.count != "0"{
             cell.lblPlaceInfo.text = cellPlace.group + " ∙ " + cellPlace.category + " ∙ " + cellPlace.rate + "점"
         }else{
             cell.lblPlaceInfo.text = cellPlace.group + " ∙ " + cellPlace.category + " ∙ " + "가보고 싶어요!"
-        }
+        }*/
+        cell.lblPlaceInfo.text = cellPlace.group + " ∙ " + cellPlace.category
+        cell.lblPlaceRate.text =  "⭐️ " + cellPlace.rate + "  점"
+        
         
         cell.imgPlace.image = UIImage(named: "pdicon")
     

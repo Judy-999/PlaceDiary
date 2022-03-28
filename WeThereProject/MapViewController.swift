@@ -27,6 +27,8 @@ class MapViewController: UIViewController, CLLocationManagerDelegate , GMSMapVie
     var optionedPlaces = [PlaceData]()
     var onePlace : PlaceData?
     
+    @IBOutlet var viewMap: UIView!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
  
@@ -53,7 +55,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate , GMSMapVie
         
         mapView?.delegate = self
         
-        self.view.addSubview(mapView!)
+        viewMap.addSubview(mapView!)
         
         mark(places)
         
@@ -209,7 +211,6 @@ class MapViewController: UIViewController, CLLocationManagerDelegate , GMSMapVie
             let selectedPlace = places.first(where: {$0.name == placeTitle})
 
             infoView.imgDelegate = self
-            
             infoView.modalPresentationStyle = .fullScreen
             
             if let placeImage = placeImages[(selectedPlace?.name)!]{

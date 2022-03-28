@@ -76,12 +76,12 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
         
         pkDate.backgroundColor = #colorLiteral(red: 0, green: 1, blue: 1, alpha: 1)
         tableView.tableFooterView = UIView(frame: CGRect.zero)
-        
       
         if dataFromInfo {
             setPlaceInfo()
             txvComent.textColor = UIColor.label
             tvPlacePosition.textColor = UIColor.label
+            tvPlacePosition.isEditable = true
         }
     }
     
@@ -99,11 +99,11 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
         pickerToolbar.barTintColor = UIColor.white
         
         btnPickerDone.title = "선택"
-        btnPickerDone.tintColor = #colorLiteral(red: 0, green: 0.8924261928, blue: 0.8863361478, alpha: 1)
+        btnPickerDone.tintColor = #colorLiteral(red: 0.2113277912, green: 0.9666495919, blue: 0.9550952315, alpha: 1)
         btnPickerDone.target = self
         
         btnAdd.title = "추가"
-        btnAdd.tintColor = #colorLiteral(red: 0, green: 0.8924261928, blue: 0.8863361478, alpha: 1)
+        btnAdd.tintColor = #colorLiteral(red: 0.2113277912, green: 0.9666495919, blue: 0.9550952315, alpha: 1)
         btnAdd.target = self
         
         pickerToolbar.setItems([btnAdd, flexSpace, btnPickerDone], animated: true)

@@ -112,15 +112,21 @@ class PlaceInfoTableViewController: UITableViewController, EditDelegate {
     
     func setPlaceInfo(){
         lblPlacename.text = editData?.name
-        btnPosition.setTitle(" " + editData!.location + "  >", for: .normal) // 장소 위치 버튼 설정
-        btnPosition.setTitleColor(.white, for: .normal)
-        btnPosition.contentHorizontalAlignment = .left
         lblCategory.text = editData?.category
         txvComent.text = editData?.coment
         lblRate.text = "  " + editData!.rate + " 점"
         lblCount.text = editData!.count + "회"
         lblGroup.text = editData?.group
         placeImg.image = receiveImage
+        let locationArray = editData!.location.components(separatedBy: " ")
+        var location: String = ""
+        for i in 0...2{
+            location += locationArray[i]
+            location += " "
+        }
+        btnPosition.setTitle(" " + location + "  〉 ", for: .normal) 
+       // btnPosition.setTitleColor(.white, for: .normal)
+        btnPosition.contentHorizontalAlignment = .left
         let fillRate = AddRate()
         fillRate.fill(buttons: rateButtons, rate: NSString(string: editData!.rate).floatValue)
         let formatter = DateFormatter()
