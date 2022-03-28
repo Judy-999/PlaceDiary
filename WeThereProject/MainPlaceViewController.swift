@@ -277,7 +277,7 @@ class MainPlaceViewController: UIViewController, ExpyTableViewDataSource,  ExpyT
                         getImage(place: cellPlace){ photo in
                             if photo != nil {
                                 updateCell.imgPlace.image = photo
-                                placeImages.updateValue(photo!, forKey: cellPlace.name)
+                                self.placeImages.updateValue(photo!, forKey: cellPlace.name)
                             }
                         }
                     }

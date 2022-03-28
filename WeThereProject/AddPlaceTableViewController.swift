@@ -25,22 +25,24 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
     var groupItem = [String]()
     var selectedImage: UIImage!
     var starButtons = [UIButton]()
-    var hasImage: Bool = false
+    var hasImage: Bool = true
     var dataFromInfo: Bool = false
     
-    var visitCount = "0"
-    var placeGeoPoint: GeoPoint?
+ /*   var count = "0", reName = "", rePositon = "", reCategory = "", reRate = "", reGroup = "", reComent = ""
+    var geoPoint: GeoPoint?
+    var reDate: Date?
+    var reVisit = false
+    */
     
     var receiveImage: UIImage?
     var receiveName: String = ""
-    
-  /*  var reCount = "0", reName = "", rePositon = "", reCategory = "", reRate = "", reGroup = "", reComent = ""
-    var reDate: Date?
-    var reVisit = false
-    var reGeoPoint: GeoPoint?
-    */
-
+  
+    var visitCount = "0"
+    var placeGeoPoint: GeoPoint?
+     
+    var editData: PlaceData?
     var editDelegate: EditDelegate?
+   
     var nowPlaceData = [PlaceData]()
     
     @IBOutlet var placeImageView: UIImageView!
@@ -65,6 +67,8 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
     override func viewDidLoad() {
         super.viewDidLoad()
     
+        
+        
         downloadPickerItem()
         setTextView()
         
@@ -81,7 +85,12 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
         
         tableView.tableFooterView = UIView(frame: CGRect.zero)
         
-        
+      
+        if dataFromInfo {
+            setPlaceInfo()
+            txvComent.textColor = UIColor.label
+            tvPlacePosition.textColor = UIColor.label
+        }
     }
     
     // Picker 설정
@@ -238,53 +247,36 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
     func setPlaceDataFromInfo(data: PlaceData, image: UIImage){
         
         // 하나하나 받아오지 말고 PlaceData 채로 넘겨 받아도 될듯
-        let editData: PlaceData  = data
+        editData = data
         receiveImage = image
         selectedImage = image
         dataFromInfo = true
         receiveName = data.name
         
-        if dataFromInfo {
-            setPlaceInfo(passing: editData)
-            txvComent.textColor = UIColor.label
-            tvPlacePosition.textColor = UIColor.label
-        }
-        
-        /*
-        reName = data.name
-        rePositon = data.location
-        reDate = data.date
-        reCategory = data.category
-        reVisit = data.visit
-        reRate = data.rate
-        reComent = data.coment
-        reGeoPoint = data.geopoint
-        reCount = data.count
-        reGroup = data.group
-         */
-        
+        placeGeoPoint = data.geopoint
+        visitCount = data.count
+    
     }
     
     // 편집할 장소 데이터로 정보창을 설정하는 함수
-    func setPlaceInfo(passing place: PlaceData){
+    func setPlaceInfo(){
         let addRate = AddRate()
         
         placeImageView.image = receiveImage
-        tfPlaceName.text = place.name
-        tvPlacePosition.text = place.location
-        tfCategory.text = place.category
-        swVisit.isOn = place.visit
-        pkDate.date = place.date
-        txvComent.text = place.coment
-        lblRate.text = place.rate
-        lbltTryCount.text = Int(place.count)!.description + "회"
-        stepper.value = NSString(string: place.count).doubleValue
-        tfGroup.text = place.group
+        tfPlaceName.text = editData?.name
+        tvPlacePosition.text = editData?.location
+        tfCategory.text = editData?.category
+        swVisit.isOn = editData!.visit
+        pkDate.date = editData!.date
+        txvComent.text = editData?.coment
+        lblRate.text = editData?.rate
+        lbltTryCount.text = Int(editData!.count)!.description + "회"
+        stepper.value = NSString(string: editData!.count).doubleValue
+        tfGroup.text = editData?.group
         
-        // count Int형으로 바꿀까?? (firebase도 같이 바꿔야함)
         // 이거 AddRate 클래스에 함수로 넣어버려도 될듯
         
-        if place.visit == true{
+        if editData?.visit == true{
             for btn in starButtons{
                 btn.isEnabled = true
             }
@@ -301,7 +293,7 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
             lblRate.text = "0.0"
             lblVisit.text = "가보고 싶어요!"
         }
-        addRate.fill(buttons: starButtons, rate: NSString(string: place.rate).floatValue)
+        addRate.fill(buttons: starButtons, rate: NSString(string: editData!.rate).floatValue)
     }
     
    
@@ -323,15 +315,15 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
         }
         
         guard tfPlaceName.text != "", tvPlacePosition.text != "위치를 입력하세요.", tfCategory.text != "", tfGroup.text != "", placeGeoPoint != nil, (swVisit.isOn == true && visitCount == "0") == false else {
-            myAlert("입력되지 않은 항목이 있습니다.", message: "모든 항목을 입력해주세요!")
+            myAlert("필수 입력 미기재", message: "모든 항목을 입력해주세요.")
             return
         }
-
+                    
         // 코멘트를 입력하지 않은 상태면 코멘트는 빈칸으로 저장
         if txvComent.text == "코멘트를 입력하세요."{
             txvComent.text = ""
         }
-            
+
         var newPlaceInfo: PlaceData = PlaceData(name: tfPlaceName.text!, location: tvPlacePosition.text, date: pkDate.date, visit: swVisit.isOn, image: (selectedImage != nil), count: visitCount, category: tfCategory.text!, rate: lblRate.text!, coment: txvComent.text, geopoint: placeGeoPoint!, group: tfGroup.text!, newImg: nil)
         
         if editDelegate != nil{ // 장소를 편집하는 중이라면
@@ -352,15 +344,14 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
                 if receiveImage != selectedImage{   // 새로운 사진으로 변경했을 때
                     uploadImage(newPlaceInfo.name, image: selectedImage.resize(newWidth: 300))
                     if receiveName != newPlaceInfo.name{    // 이름을 변경했을 때
-                        deleteData(name: receiveName)
-                        deleteImage(name: receiveName)
+                        deletePlaceData(name: receiveName)
                     }
                     newPlaceInfo.newImg = selectedImage
                     NotificationCenter.default.post(name: NSNotification.Name(rawValue: "newPlaceUpdate"), object: newPlaceInfo)
                 }else{  // 사진이 변경되지 않았을 때
                     if receiveName != newPlaceInfo.name{    // 이름을 변경했을 때
                         uploadImage(newPlaceInfo.name, image: selectedImage.resize(newWidth: 300))
-                        deleteImage(name: receiveName)
+                        deletePlaceData(name: receiveName)
                         newPlaceInfo.newImg = receiveImage
                         NotificationCenter.default.post(name: NSNotification.Name(rawValue: "newPlaceUpdate"), object: newPlaceInfo)
                     }else{  // 이름을 변경하지 않았을 때
@@ -384,42 +375,38 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
         _ = navigationController?.popViewController(animated: true)
     }
     
-    // 이름을 변경했으먄 이전 이름의 이미지는 삭제해야 함
-    func deleteImage(name image: String){
-        storageRef.child(Uid + "/" + image).delete { error in
-            if let error = error {
-                print("Error removing image: \(error)")
-            } else {
-                print("Image successfully removed!")
-            }
-        }
-    }
-    
-    // 이름을 변경했으먄 이전 이름의 장소는 삭제해야 함
-    func deleteData(name place: String){
-        db.collection(Uid).document(place).delete() { err in
-            if let err = err {
-                print("Error removing document: \(err)")
-            } else {
-                print("Document successfully removed!")
-            }
-        }
-    }
-    
-    // 장소 정보를 Firebase에 업로드하는 함수
-    func uploadData(place data: PlaceData){
-        let docData: [String: Any] = [
-            "name": data.name, //tfPlaceName.text!,
-            "position": data.location, //tvPlacePosition.text!,
-            "date": data.date, //pkDate.date,
-            "visit": data.visit, //swVisit.isOn,
-            "count": data.count, //visitCount,
-            "rate": data.rate, //lblRate.text!,
-            "coment": data.coment, //txvComent.text!,
-            "category": data.category, //tfCategory.text!,
-            "geopoint": data.geopoint, // placeGeoPoint!,
-            "image": data.image, //hasImage,
-            "group": data.group //tfGroup.text!
+     // 이름을 변경했으먄 이전 이름의 장소와 사진은 삭제해야 함
+     func deletePlaceData(name place: String){
+         db.collection(Uid).document(place).delete() { err in
+             if let err = err {
+                 print("Error removing document: \(err)")
+             } else {
+                 print("Document successfully removed!")
+             }
+         }
+         storageRef.child(Uid + "/" + place).delete { error in
+             if let error = error {
+                 print("Error removing image: \(error)")
+             } else {
+                 print("Image successfully removed!")
+             }
+         }
+     }
+     
+     // 장소 정보를 Firebase에 업로드하는 함수
+     func uploadData(place data: PlaceData){
+         let docData: [String: Any] = [
+            "name": data.name,
+            "position": data.location,
+            "date": data.date,
+            "visit": data.visit,
+            "count": data.count,
+            "rate": data.rate,
+            "coment": data.coment,
+            "category": data.category,
+            "geopoint": data.geopoint,
+            "image": data.image,
+            "group": data.group
         ]
 
         db.collection(Uid).document(tfPlaceName.text!).setData(docData) { err in
@@ -460,15 +447,12 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
 
     // 이미지 선택하는 함수
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
-        
         if let img = info[UIImagePickerController.InfoKey.editedImage] as? UIImage{
             selectedImage = img
         }else if let img = info[UIImagePickerController.InfoKey.originalImage] as? UIImage{
             selectedImage = img //사진을 가져와 라이브러리에 저장
         }
-       
         placeImageView.image = selectedImage
-        
         self.dismiss(animated: true, completion: nil)   //현재 뷰 컨트롤러 제거
     }
         
