@@ -161,11 +161,13 @@ class MapViewController: UIViewController, CLLocationManagerDelegate , GMSMapVie
     }
     
     func mapView(_ mapView: GMSMapView, didCloseInfoWindowOf marker: GMSMarker) {
-        if marker.userData as! Int == 0{
+  /*      if marker.userData as! Int == 0{
             marker.icon = UIImage(named: "marker_basic")
         }else{
             marker.icon = UIImage(named: "marker_novisit")
         }
+   */
+        marker.icon = UIImage(named: "marker_basic")
         marker.setIconSize(scaledToSize: .init(width: 30, height: 40))
     }
     

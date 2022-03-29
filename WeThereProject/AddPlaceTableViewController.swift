@@ -39,18 +39,14 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
     @IBOutlet var tfPlaceName: UITextField!
     @IBOutlet var tvPlacePosition: UITextView!
     @IBOutlet var tfCategory: UITextField!
-//    @IBOutlet var swVisit: UISwitch!
     @IBOutlet var pkDate: UIDatePicker!
     @IBOutlet var txvComent: UITextView!
- //   @IBOutlet var lblVisit: UILabel!
     @IBOutlet var lblRate: UILabel!
     @IBOutlet var btnRate1: UIButton!
     @IBOutlet var btnRate2: UIButton!
     @IBOutlet var btnRate3: UIButton!
     @IBOutlet var btnRate4: UIButton!
     @IBOutlet var btnRate5: UIButton!
- //   @IBOutlet weak var stepper: UIStepper!
- //   @IBOutlet weak var lbltTryCount: UILabel!
     @IBOutlet weak var tfGroup: UITextField!
     @IBOutlet weak var starSlider: StarRatingUISlider!
     
@@ -65,9 +61,9 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
         txvComent.delegate = self
         tvPlacePosition.delegate = self
         txvComent.text = "코멘트를 입력하세요."
-        tvPlacePosition.text = "위치를 검색하세요."
-        tvPlacePosition.textColor = UIColor.lightGray
-        txvComent.textColor = UIColor.lightGray
+        tvPlacePosition.text = "이름 또는 주소로 위치를 검색하세요."
+        tvPlacePosition.textColor = #colorLiteral(red: 0.768627286, green: 0.7686277032, blue: 0.7772355676, alpha: 1)
+        txvComent.textColor = #colorLiteral(red: 0.768627286, green: 0.7686277032, blue: 0.7772355676, alpha: 1)
         
         btnGallery.layer.borderWidth = 1
         btnGallery.layer.borderColor = UIColor.lightGray.cgColor
@@ -78,7 +74,7 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
         starButtons.append(btnRate4)
         starButtons.append(btnRate5)
         
-       //색을 굳이 넣어햐하나 pkDate.backgroundColor = #colorLiteral(red: 0, green: 1, blue: 1, alpha: 1)
+    //    pkDate.backgroundColor = #colorLiteral(red: 0, green: 1, blue: 1, alpha: 1)
         tableView.tableFooterView = UIView(frame: CGRect.zero)
       
         if dataFromInfo {
@@ -130,7 +126,7 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
     
     // 그룹 선택 완료
     @objc func groupPickerDone(){
-        if tfGroup.text == ""{
+        if tfGroup.text == "그룹 선택"{
             tfGroup.text = groupItem[0]
         }
         self.view.endEditing(true)
@@ -138,7 +134,7 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
     
     // 문류 선택 완료
     @objc func categoryPickerDone(){
-        if tfCategory.text == ""{
+        if tfCategory.text == "분류 선택"{
             tfCategory.text = categoryItem[0]
         }
         self.view.endEditing(true)
@@ -242,32 +238,11 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
         tfPlaceName.text = editData?.name
         tvPlacePosition.text = editData?.location
         tfCategory.text = editData?.category
-  //      swVisit.isOn = editData!.visit
         pkDate.date = editData!.date
         txvComent.text = editData?.coment
         lblRate.text = editData?.rate
-   //     lbltTryCount.text = Int(editData!.count)!.description + "회"
-   //     stepper.value = NSString(string: editData!.count).doubleValue
         tfGroup.text = editData?.group
         
-  /*      if editData?.visit == true{
-            for btn in starButtons{
-                btn.isEnabled = true
-            }
-            stepper.isEnabled = true
-            starSlider.isEnabled = true
-            lblVisit.text = "가봤어요!"
-        }else{
-            for btn in starButtons{
-                btn.isEnabled = false
-                btn.setImage(UIImage(systemName: "star"), for: .normal)
-            }
-            stepper.isEnabled = false
-            starSlider.isEnabled = false
-            lblRate.text = "0.0"
-            lblVisit.text = "가보고 싶어요!"
-        }
-   */
         addRate.fill(buttons: starButtons, rate: NSString(string: editData!.rate).floatValue)
     }
 
@@ -290,7 +265,7 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
         guard tfPlaceName.text != "", tvPlacePosition.text != "위치를 입력하세요.", tfCategory.text != "", tfGroup.text != "", placeGeoPoint != nil else {
             myAlert("필수 입력 미기재", message: "모든 항목을 입력해주세요.")
             return
-        }   //, (swVisit.isOn == true && visitCount == "0") == false
+        }
                     
         // 코멘트를 입력하지 않은 상태면 코멘트는 빈칸으로 저장
         if txvComent.text == "코멘트를 입력하세요."{
@@ -443,29 +418,6 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
         present(alert, animated: true, completion: nil)
     }
     
-
-   /* @IBAction func switchOn(_ sender: UISwitch){
-        if sender.isOn == true{
-            for btn in starButtons{
-                btn.isEnabled = true
-            }
-            lblVisit.text = "가봤어요!"
-            starSlider.isEnabled = true
-            stepper.isEnabled = true
-        }else{
-            for btn in starButtons{
-                btn.isEnabled = false
-                btn.setImage(UIImage(systemName: "star"), for: .normal)
-            }
-            lblRate.text = "0.0"
-            lblVisit.text = "가보고 싶어요!"
-            starSlider.isEnabled = false
-            stepper.value = 0
-            lbltTryCount.text = "0회"
-            stepper.isEnabled = false
-        }
-    }*/
-    
     @IBAction func sliderChanged(_ sender: Any) {
         let addRate = AddRate()
         let starVal = starSlider.value
@@ -496,11 +448,7 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
         }
     }
     
- /*   @IBAction func updownStepper(_ sender: UIStepper) {
-        lbltTryCount.text = Int(sender.value).description + "회"
-        visitCount = Int(sender.value).description
-    }*/
-    
+
     @IBAction func searchPosition(_ sender: UIButton){
         //구글 자동완성 뷰컨트롤러 생성
         let searchController = GMSAutocompleteViewController()

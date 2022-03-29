@@ -21,8 +21,7 @@ class PlaceInfoTableViewController: UITableViewController, EditDelegate {
     var receiveImage: UIImage?
     
    // var hasimage = true
-  //  var reName = "", rePositon = "", reDate = "", reCategory = "", reComent = "", reRate = "", reGroup = "", count = "0"
-  //  var reVisit = false
+    var reName = "", rePositon = "", reDate = "", reCategory = "", reComent = "", reRate = "", reGroup = ""
     
     var rateButtons = [UIButton]()
     var editData : PlaceData?
@@ -48,13 +47,7 @@ class PlaceInfoTableViewController: UITableViewController, EditDelegate {
  
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
-
-        // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-        //self.navigationItem.rightBarButtonItem = self.editButtonItem
-     
+        
         rateButtons.append(btnRate1)
         rateButtons.append(btnRate2)
         rateButtons.append(btnRate3)
@@ -108,30 +101,38 @@ class PlaceInfoTableViewController: UITableViewController, EditDelegate {
     func getPlaceInfo(_ data: PlaceData, image: UIImage){
         editData = data
         receiveImage = image
+        reName = data.name
+        rePositon = data.location
+        reCategory = data.category
+        reComent = data.coment
+        reRate = data.rate
+        reGroup = data.group
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd"
+        reDate = formatter.string(from: data.date)
     }
     
     func setPlaceInfo(){
-        lblPlacename.text = editData?.name
-        lblCategory.text = editData?.category
-        txvComent.text = editData?.coment
-        lblRate.text = "  " + editData!.rate + " 점"
- //       lblCount.text = editData!.count + "회"
-        lblGroup.text = editData?.group
+        lblPlacename.text = reName
+        lblCategory.text = reCategory
+        txvComent.text = reComent
+        lblRate.text = "  " + reRate + " 점"
+        lblGroup.text = reGroup
         placeImg.image = receiveImage
-        let locationArray = editData!.location.components(separatedBy: " ")
-        var location: String = ""
-        for i in 0...2{
-            location += locationArray[i]
-            location += " "
+        if rePositon != ""{
+            let locationArray = rePositon.components(separatedBy: " ")
+            var location: String = ""
+            for i in 0...2{
+                location += locationArray[i]
+                location += " "
+            }
+            btnPosition.setTitle(" " + location + "  〉 ", for: .normal)
+           // btnPosition.setTitleColor(.white, for: .normal)
+            btnPosition.contentHorizontalAlignment = .left
         }
-        btnPosition.setTitle(" " + location + "  〉 ", for: .normal) 
-       // btnPosition.setTitleColor(.white, for: .normal)
-        btnPosition.contentHorizontalAlignment = .left
         let fillRate = AddRate()
-        fillRate.fill(buttons: rateButtons, rate: NSString(string: editData!.rate).floatValue)
-        let formatter = DateFormatter()
-        formatter.dateFormat = "yyyy-MM-dd"
-        lblDate.text = formatter.string(from: editData!.date)
+        fillRate.fill(buttons: rateButtons, rate: NSString(string: reRate).floatValue)
+        lblDate.text = reDate
     }
     
     func didEditPlace(_ controller: AddPlaceTableViewController, data: PlaceData, image: UIImage) {
