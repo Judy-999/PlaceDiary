@@ -3,11 +3,10 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 51;
+	objectVersion = 50;
 	objects = {
 
 /* Begin PBXBuildFile section */
-		0B0E44EDBACD18DF8B1F7ABE /* Pods_WeThereProject.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AFAC6B7ACF40C6C09FA85A3A /* Pods_WeThereProject.framework */; };
 		20105EFB2664DA35007AA233 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 20105EFA2664DA35007AA233 /* GoogleService-Info.plist */; };
 		20166C2F26830F55002AF187 /* SearchTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20166C2E26830F55002AF187 /* SearchTableViewController.swift */; };
 		201CADB52718052900DA5FB7 /* basic.png in Resources */ = {isa = PBXBuildFile; fileRef = 201CADB42718052900DA5FB7 /* basic.png */; };
@@ -61,7 +60,7 @@
 		20B113822689BBC200A6A0FD /* PlaceCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceCell.swift; sourceTree = "<group>"; };
 		20CB7C9B269F28130057EAF0 /* MainPlaceViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainPlaceViewController.swift; sourceTree = "<group>"; };
 		20D7B4AE26EDEF5100DF954E /* StatisticsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatisticsTableViewController.swift; sourceTree = "<group>"; };
-		20E3E2CD265E2639004BDFF6 /* WeThereProject.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WeThereProject.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		20E3E2CD265E2639004BDFF6 /* WeThereProject.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; name = WeThereProject.app; path = "/Users/kimjuyoung/Documents/Xcode/Project/PlaceDiary/build/Debug-iphoneos/WeThereProject.app"; sourceTree = "<absolute>"; };
 		20E3E2D0265E2639004BDFF6 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		20E3E2D2265E2639004BDFF6 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		20E3E2D7265E2639004BDFF6 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -71,9 +70,6 @@
 		20E3E2E4265E355D004BDFF6 /* MapViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewController.swift; sourceTree = "<group>"; };
 		20F88AC6266CD8820015B42E /* PlaceInfoTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceInfoTableViewController.swift; sourceTree = "<group>"; };
 		20FE6BCD26982C0F0007DC5C /* SearchResultCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultCell.swift; sourceTree = "<group>"; };
-		564B9711581E7EB1F841B0E7 /* Pods-WeThereProject.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WeThereProject.release.xcconfig"; path = "Target Support Files/Pods-WeThereProject/Pods-WeThereProject.release.xcconfig"; sourceTree = "<group>"; };
-		693FBFB748967DEC769D88F9 /* Pods-WeThereProject.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WeThereProject.debug.xcconfig"; path = "Target Support Files/Pods-WeThereProject/Pods-WeThereProject.debug.xcconfig"; sourceTree = "<group>"; };
-		AFAC6B7ACF40C6C09FA85A3A /* Pods_WeThereProject.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_WeThereProject.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -81,7 +77,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0B0E44EDBACD18DF8B1F7ABE /* Pods_WeThereProject.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -115,18 +110,7 @@
 			isa = PBXGroup;
 			children = (
 				20E3E2CF265E2639004BDFF6 /* WeThereProject */,
-				20E3E2CE265E2639004BDFF6 /* Products */,
-				8D76104825E9ECF8DBD716BA /* Pods */,
-				592FA594008DC6837D5E2836 /* Frameworks */,
 			);
-			sourceTree = "<group>";
-		};
-		20E3E2CE265E2639004BDFF6 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				20E3E2CD265E2639004BDFF6 /* WeThereProject.app */,
-			);
-			name = Products;
 			sourceTree = "<group>";
 		};
 		20E3E2CF265E2639004BDFF6 /* WeThereProject */ = {
@@ -159,23 +143,6 @@
 			path = WeThereProject;
 			sourceTree = "<group>";
 		};
-		592FA594008DC6837D5E2836 /* Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-				AFAC6B7ACF40C6C09FA85A3A /* Pods_WeThereProject.framework */,
-			);
-			name = Frameworks;
-			sourceTree = "<group>";
-		};
-		8D76104825E9ECF8DBD716BA /* Pods */ = {
-			isa = PBXGroup;
-			children = (
-				693FBFB748967DEC769D88F9 /* Pods-WeThereProject.debug.xcconfig */,
-				564B9711581E7EB1F841B0E7 /* Pods-WeThereProject.release.xcconfig */,
-			);
-			path = Pods;
-			sourceTree = "<group>";
-		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -183,12 +150,9 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 20E3E2E1265E263A004BDFF6 /* Build configuration list for PBXNativeTarget "WeThereProject" */;
 			buildPhases = (
-				25F205F64F4175146A31BE64 /* [CP] Check Pods Manifest.lock */,
 				20E3E2C9265E2639004BDFF6 /* Sources */,
 				20E3E2CA265E2639004BDFF6 /* Frameworks */,
 				20E3E2CB265E2639004BDFF6 /* Resources */,
-				4B744B39787E68140398E8B7 /* [CP] Embed Pods Frameworks */,
-				2BF337A84C9AEBF8AF061690 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -222,7 +186,7 @@
 				Base,
 			);
 			mainGroup = 20E3E2C4265E2639004BDFF6;
-			productRefGroup = 20E3E2CE265E2639004BDFF6 /* Products */;
+			productRefGroup = 20E3E2C4265E2639004BDFF6;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
@@ -250,65 +214,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
-
-/* Begin PBXShellScriptBuildPhase section */
-		25F205F64F4175146A31BE64 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-WeThereProject-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		2BF337A84C9AEBF8AF061690 /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-WeThereProject/Pods-WeThereProject-resources-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Copy Pods Resources";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-WeThereProject/Pods-WeThereProject-resources-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-WeThereProject/Pods-WeThereProject-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		4B744B39787E68140398E8B7 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-WeThereProject/Pods-WeThereProject-frameworks-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-WeThereProject/Pods-WeThereProject-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-WeThereProject/Pods-WeThereProject-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		20E3E2C9265E2639004BDFF6 /* Sources */ = {
@@ -477,7 +382,6 @@
 		};
 		20E3E2E2265E263A004BDFF6 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 693FBFB748967DEC769D88F9 /* Pods-WeThereProject.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -499,7 +403,6 @@
 		};
 		20E3E2E3265E263A004BDFF6 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 564B9711581E7EB1F841B0E7 /* Pods-WeThereProject.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;

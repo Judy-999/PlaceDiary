@@ -34,6 +34,7 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
     var editDelegate: EditDelegate?
     var nowPlaceData = [PlaceData]()
     
+    @IBOutlet var btnGallery: UIButton!
     @IBOutlet var placeImageView: UIImageView!
     @IBOutlet var tfPlaceName: UITextField!
     @IBOutlet var tvPlacePosition: UITextView!
@@ -67,6 +68,9 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
         tvPlacePosition.text = "위치를 검색하세요."
         tvPlacePosition.textColor = UIColor.lightGray
         txvComent.textColor = UIColor.lightGray
+        
+        btnGallery.layer.borderWidth = 1
+        btnGallery.layer.borderColor = UIColor.lightGray.cgColor
         
         starButtons.append(btnRate1)
         starButtons.append(btnRate2)
@@ -273,7 +277,7 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 10
+        return 9
     }
 
     @IBAction func btnAddDone(_ sender: UIButton){
