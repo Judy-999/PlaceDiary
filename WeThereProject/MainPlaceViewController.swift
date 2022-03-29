@@ -379,9 +379,9 @@ class MainPlaceViewController: UIViewController, ExpyTableViewDataSource,  ExpyT
             self.placeList.sort(by: {$0.name < $1.name})
         })
         
-        alert.addAction(UIAlertAction(title: "방문 횟수 순", style: .default) { _ in
+   /*  카운트   alert.addAction(UIAlertAction(title: "방문 횟수 순", style: .default) { _ in
             self.placeList.sort(by: {$0.count > $1.count})
-        })
+        })*/
         
         alert.addAction(UIAlertAction(title: "방문 날짜 순", style: .default) { _ in
             self.placeList.sort(by: {$0.date > $1.date})

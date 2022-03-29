@@ -39,18 +39,18 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
     @IBOutlet var tfPlaceName: UITextField!
     @IBOutlet var tvPlacePosition: UITextView!
     @IBOutlet var tfCategory: UITextField!
-    @IBOutlet var swVisit: UISwitch!
+//    @IBOutlet var swVisit: UISwitch!
     @IBOutlet var pkDate: UIDatePicker!
     @IBOutlet var txvComent: UITextView!
-    @IBOutlet var lblVisit: UILabel!
+ //   @IBOutlet var lblVisit: UILabel!
     @IBOutlet var lblRate: UILabel!
     @IBOutlet var btnRate1: UIButton!
     @IBOutlet var btnRate2: UIButton!
     @IBOutlet var btnRate3: UIButton!
     @IBOutlet var btnRate4: UIButton!
     @IBOutlet var btnRate5: UIButton!
-    @IBOutlet weak var stepper: UIStepper!
-    @IBOutlet weak var lbltTryCount: UILabel!
+ //   @IBOutlet weak var stepper: UIStepper!
+ //   @IBOutlet weak var lbltTryCount: UILabel!
     @IBOutlet weak var tfGroup: UITextField!
     @IBOutlet weak var starSlider: StarRatingUISlider!
     
@@ -78,7 +78,7 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
         starButtons.append(btnRate4)
         starButtons.append(btnRate5)
         
-        pkDate.backgroundColor = #colorLiteral(red: 0, green: 1, blue: 1, alpha: 1)
+       //색을 굳이 넣어햐하나 pkDate.backgroundColor = #colorLiteral(red: 0, green: 1, blue: 1, alpha: 1)
         tableView.tableFooterView = UIView(frame: CGRect.zero)
       
         if dataFromInfo {
@@ -231,7 +231,7 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
         receiveName = data.name
         placeHasImg = data.image
         placeGeoPoint = data.geopoint
-        visitCount = data.count
+    //    visitCount = data.count
     }
     
     // 편집할 장소 데이터로 정보창을 설정하는 함수
@@ -242,15 +242,15 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
         tfPlaceName.text = editData?.name
         tvPlacePosition.text = editData?.location
         tfCategory.text = editData?.category
-        swVisit.isOn = editData!.visit
+  //      swVisit.isOn = editData!.visit
         pkDate.date = editData!.date
         txvComent.text = editData?.coment
         lblRate.text = editData?.rate
-        lbltTryCount.text = Int(editData!.count)!.description + "회"
-        stepper.value = NSString(string: editData!.count).doubleValue
+   //     lbltTryCount.text = Int(editData!.count)!.description + "회"
+   //     stepper.value = NSString(string: editData!.count).doubleValue
         tfGroup.text = editData?.group
         
-        if editData?.visit == true{
+  /*      if editData?.visit == true{
             for btn in starButtons{
                 btn.isEnabled = true
             }
@@ -267,6 +267,7 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
             lblRate.text = "0.0"
             lblVisit.text = "가보고 싶어요!"
         }
+   */
         addRate.fill(buttons: starButtons, rate: NSString(string: editData!.rate).floatValue)
     }
 
@@ -277,7 +278,7 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 9
+        return 7
     }
 
     @IBAction func btnAddDone(_ sender: UIButton){
@@ -286,17 +287,17 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
            return
         }
         
-        guard tfPlaceName.text != "", tvPlacePosition.text != "위치를 입력하세요.", tfCategory.text != "", tfGroup.text != "", placeGeoPoint != nil, (swVisit.isOn == true && visitCount == "0") == false else {
+        guard tfPlaceName.text != "", tvPlacePosition.text != "위치를 입력하세요.", tfCategory.text != "", tfGroup.text != "", placeGeoPoint != nil else {
             myAlert("필수 입력 미기재", message: "모든 항목을 입력해주세요.")
             return
-        }
+        }   //, (swVisit.isOn == true && visitCount == "0") == false
                     
         // 코멘트를 입력하지 않은 상태면 코멘트는 빈칸으로 저장
         if txvComent.text == "코멘트를 입력하세요."{
             txvComent.text = ""
         }
 
-        var newPlaceInfo: PlaceData = PlaceData(name: tfPlaceName.text!, location: tvPlacePosition.text, date: pkDate.date, visit: swVisit.isOn, image: placeHasImg, count: visitCount, category: tfCategory.text!, rate: lblRate.text!, coment: txvComent.text, geopoint: placeGeoPoint!, group: tfGroup.text!, newImg: nil)
+        var newPlaceInfo: PlaceData = PlaceData(name: tfPlaceName.text!, location: tvPlacePosition.text, date: pkDate.date, image: placeHasImg, category: tfCategory.text!, rate: lblRate.text!, coment: txvComent.text, geopoint: placeGeoPoint!, group: tfGroup.text!, newImg: nil)
         
         if editDelegate != nil{ // 장소를 편집하는 중이라면
             if placeHasImg == false{ // 원래 사진이 없을 때
@@ -372,8 +373,8 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
             "name": data.name,
             "position": data.location,
             "date": data.date,
-            "visit": data.visit,
-            "count": data.count,
+     //       "visit": data.visit,
+     //       "count": data.count,
             "rate": data.rate,
             "coment": data.coment,
             "category": data.category,
@@ -443,7 +444,7 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
     }
     
 
-    @IBAction func switchOn(_ sender: UISwitch){
+   /* @IBAction func switchOn(_ sender: UISwitch){
         if sender.isOn == true{
             for btn in starButtons{
                 btn.isEnabled = true
@@ -463,7 +464,7 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
             lbltTryCount.text = "0회"
             stepper.isEnabled = false
         }
-    }
+    }*/
     
     @IBAction func sliderChanged(_ sender: Any) {
         let addRate = AddRate()
@@ -495,10 +496,10 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
         }
     }
     
-    @IBAction func updownStepper(_ sender: UIStepper) {
+ /*   @IBAction func updownStepper(_ sender: UIStepper) {
         lbltTryCount.text = Int(sender.value).description + "회"
         visitCount = Int(sender.value).description
-    }
+    }*/
     
     @IBAction func searchPosition(_ sender: UIButton){
         //구글 자동완성 뷰컨트롤러 생성

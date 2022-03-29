@@ -44,7 +44,7 @@ class PlaceInfoTableViewController: UITableViewController, EditDelegate {
     @IBOutlet weak var btnRate3: UIButton!
     @IBOutlet weak var btnRate4: UIButton!
     @IBOutlet weak var btnRate5: UIButton!
-    @IBOutlet weak var lblCount: UILabel!
+  //  @IBOutlet weak var lblCount: UILabel!
  
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -115,7 +115,7 @@ class PlaceInfoTableViewController: UITableViewController, EditDelegate {
         lblCategory.text = editData?.category
         txvComent.text = editData?.coment
         lblRate.text = "  " + editData!.rate + " 점"
-        lblCount.text = editData!.count + "회"
+ //       lblCount.text = editData!.count + "회"
         lblGroup.text = editData?.group
         placeImg.image = receiveImage
         let locationArray = editData!.location.components(separatedBy: " ")

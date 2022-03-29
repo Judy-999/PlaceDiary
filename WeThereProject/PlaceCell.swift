@@ -15,7 +15,6 @@ class PlaceCell: UITableViewCell {
     @IBOutlet weak var lblPlaceDate: UILabel!
     @IBOutlet weak var lblPlaceInfo: UILabel!
     @IBOutlet weak var lblPlaceRate: UILabel!
-    @IBOutlet weak var starImageView: UIImage!
     
     override func awakeFromNib() {
         super.awakeFromNib()
