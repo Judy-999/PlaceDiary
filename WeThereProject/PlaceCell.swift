@@ -14,7 +14,7 @@ class PlaceCell: UITableViewCell {
     @IBOutlet weak var lblPlaceName: UILabel!
     @IBOutlet weak var lblPlaceDate: UILabel!
     @IBOutlet weak var lblPlaceInfo: UILabel!
-    @IBOutlet weak var lblPlaceRate: UILabel!
+    @IBOutlet weak var btnFavorit: UIButton!
     
     override func awakeFromNib() {
         super.awakeFromNib()

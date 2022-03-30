@@ -156,8 +156,8 @@ class CategoryEditController: UITableViewController, UIColorPickerViewController
                     simpleAlert(title: "저장 불가", message: "항목의 이름을 입력해주세요")
                 }
             }
-            editAlert.addAction(UIAlertAction(title: "취소", style: .default, handler: nil))
             editAlert.addAction(alertOk)
+            editAlert.addAction(UIAlertAction(title: "취소", style: .default, handler: nil))
             self.present(editAlert, animated: true, completion: nil)
         }))
         editConfirmAlert.addAction(UIAlertAction(title: "취소", style: .destructive, handler: nil))
@@ -183,9 +183,8 @@ class CategoryEditController: UITableViewController, UIColorPickerViewController
                     }
                     tableView.deleteRows(at: [indexPath], with: .fade)
                 }
-                canDeleteAlert.addAction(alertOk)
                 canDeleteAlert.addAction(UIAlertAction(title: "취소", style: .default))
-                
+                canDeleteAlert.addAction(alertOk)
                 self.present(canDeleteAlert, animated: true, completion: nil)
                 
             }else{

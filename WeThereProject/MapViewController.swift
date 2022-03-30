@@ -127,16 +127,13 @@ class MapViewController: UIViewController, CLLocationManagerDelegate , GMSMapVie
             marker.title = place.name
             marker.snippet = place.location
          //   marker.icon = GMSMarker.markerImage(with: #colorLiteral(red: 0.4620226622, green: 0.8382837176, blue: 1, alpha: 1)) 색깔로만
-            /* 즐겨찾기로 변경해서 쓰자
-            if place.visit {
+            if place.isFavorit {
                 marker.icon = UIImage(named: "marker_basic")
                 marker.userData = 0
             }else{
                 marker.icon = UIImage(named: "marker_novisit")
                 marker.userData = 1
             }
-             */
-            marker.icon = UIImage(named: "marker_basic")
             marker.setIconSize(scaledToSize: .init(width: 30, height: 40))
             marker.map = mapView
             if onePlace != nil {
@@ -161,13 +158,12 @@ class MapViewController: UIViewController, CLLocationManagerDelegate , GMSMapVie
     }
     
     func mapView(_ mapView: GMSMapView, didCloseInfoWindowOf marker: GMSMarker) {
-  /*      if marker.userData as! Int == 0{
+        if marker.userData as! Int == 0{
             marker.icon = UIImage(named: "marker_basic")
         }else{
             marker.icon = UIImage(named: "marker_novisit")
         }
-   */
-        marker.icon = UIImage(named: "marker_basic")
+
         marker.setIconSize(scaledToSize: .init(width: 30, height: 40))
     }
     

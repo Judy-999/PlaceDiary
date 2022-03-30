@@ -260,17 +260,15 @@ class MainPlaceViewController: UIViewController, ExpyTableViewDataSource,  ExpyT
         cell.lblPlaceDate.text = formatter.string(from: cellPlace.date)
         cell.lblPlaceName.text = cellPlace.name
         
-      /*  if cellPlace.count != "0"{
-            cell.lblPlaceInfo.text = cellPlace.group + " ∙ " + cellPlace.category + " ∙ " + cellPlace.rate + "점"
-        }else{
-            cell.lblPlaceInfo.text = cellPlace.group + " ∙ " + cellPlace.category + " ∙ " + "가보고 싶어요!"
-        }*/
         cell.lblPlaceInfo.text = cellPlace.group + " ∙ " + cellPlace.category + " ∙ " + cellPlace.rate + " 점"
-        cell.lblPlaceRate.text =  "" //"⭐️ " + cellPlace.rate + " 점"
-        
-        
+       // cell.lblPlaceRate.text = "⭐️ " + cellPlace.rate + " 점"
         cell.imgPlace.image = UIImage(named: "pdicon")
     
+        cell.btnFavorit.tag = indexPath.row
+        
+        cellPlace.isFavorit ? cell.btnFavorit.setImage(UIImage(systemName: "heart.fill"), for: .normal) :
+        cell.btnFavorit.setImage(UIImage(systemName: "heart"), for: .normal)
+        
         if cellPlace.image{
             if let placeImage = placeImages[cellPlace.name] {
                 cell.imgPlace.image = placeImage
@@ -377,16 +375,17 @@ class MainPlaceViewController: UIViewController, ExpyTableViewDataSource,  ExpyT
         alert.addAction(UIAlertAction(title: "가나다 순", style: .default) { _ in
             self.placeList.sort(by: {$0.name < $1.name})
         })
-        
-   /*  카운트   alert.addAction(UIAlertAction(title: "방문 횟수 순", style: .default) { _ in
-            self.placeList.sort(by: {$0.count > $1.count})
-        })*/
-        
+
         alert.addAction(UIAlertAction(title: "방문 날짜 순", style: .default) { _ in
             self.placeList.sort(by: {$0.date > $1.date})
         })
-
-        alert.addAction(UIAlertAction(title: "취소", style: .cancel))
+        
+        alert.addAction(UIAlertAction(title: "즐겨찾기만 보기", style: .default) { _ in
+            let favoritPlalces = self.placeList.filter({$0.isFavorit == true})
+            self.placeList = favoritPlalces
+        })
+        
+        alert.addAction(UIAlertAction(title: "취소", style: .destructive))
         present(alert, animated: true)
     }
 
@@ -424,6 +423,24 @@ class MainPlaceViewController: UIViewController, ExpyTableViewDataSource,  ExpyT
         }
     }
 
+    @IBAction func clickHotButton(_ sender: UIButton){
+        let place = getPlaceList(sectionNum: segmentedIndex, index: [sectionNum, sender.tag])
+        let selectedData = place[sender.tag]
+        let placeRef = db.collection(Uid).document(selectedData.name)
+        if selectedData.isFavorit {
+            sender.setImage(UIImage(systemName: "heart"), for: .normal)
+        }else{
+            sender.setImage(UIImage(systemName: "heart.fill"), for: .normal)
+        }
+        placeRef.updateData([ "favorit": !(selectedData.isFavorit) ]) { err in
+            if let err = err {
+                print("Error updating document: \(err)")
+            } else {
+                print("Document successfully updated")
+            }
+        }
+        placeTableView.reloadData()
+    }
 
     /*
     // Override to support rearranging the table view.
@@ -473,14 +490,11 @@ class MainPlaceViewController: UIViewController, ExpyTableViewDataSource,  ExpyT
             
             if let placeImage = placeImages[selectedData.name] {
                 infoView.getPlaceInfo(selectedData, image: placeImage)
-                print("나나나나?1111")
             }else{
                 if selectedData.image{
                     infoView.downloadImgInfo(selectedData)
-                    print("나나나나?2222222")
                 }else{
                     //infoView.hasimage = false
-                    print("나나나나?33333")
                     infoView.getPlaceInfo(selectedData, image: UIImage(named: "pdicon")!)
                 }
             }

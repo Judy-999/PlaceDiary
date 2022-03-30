@@ -12,9 +12,8 @@ struct PlaceData {
     var name: String
     var location: String
     var date: Date
-//    var visit: Bool
+    var isFavorit: Bool
     var image: Bool
- //   var count: String
     var category : String
     var rate: String
     var coment: String

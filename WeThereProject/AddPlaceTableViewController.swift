@@ -25,8 +25,7 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
     var hasImage: Bool = true
     var dataFromInfo: Bool = false
     var selectedImage: UIImage!
-    var receiveImage: UIImage?
-    var receiveName: String = ""
+    var receiveImage: UIImage?, receiveName: String = "", receiveFavofit: Bool = false
     var placeHasImg: Bool = false
     var visitCount = "0"
     var placeGeoPoint: GeoPoint?
@@ -225,9 +224,9 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
         selectedImage = image
         dataFromInfo = true
         receiveName = data.name
+        receiveFavofit = data.isFavorit
         placeHasImg = data.image
         placeGeoPoint = data.geopoint
-    //    visitCount = data.count
     }
     
     // 편집할 장소 데이터로 정보창을 설정하는 함수
@@ -269,10 +268,10 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
                     
         // 코멘트를 입력하지 않은 상태면 코멘트는 빈칸으로 저장
         if txvComent.text == "코멘트를 입력하세요."{
-            txvComent.text = ""
+            txvComent.text = "내용 없음"
         }
 
-        var newPlaceInfo: PlaceData = PlaceData(name: tfPlaceName.text!, location: tvPlacePosition.text, date: pkDate.date, image: placeHasImg, category: tfCategory.text!, rate: lblRate.text!, coment: txvComent.text, geopoint: placeGeoPoint!, group: tfGroup.text!, newImg: nil)
+        var newPlaceInfo: PlaceData = PlaceData(name: tfPlaceName.text!, location: tvPlacePosition.text, date: pkDate.date, isFavorit: receiveFavofit, image: placeHasImg, category: tfCategory.text!, rate: lblRate.text!, coment: txvComent.text, geopoint: placeGeoPoint!, group: tfGroup.text!, newImg: nil)
         
         if editDelegate != nil{ // 장소를 편집하는 중이라면
             if placeHasImg == false{ // 원래 사진이 없을 때
@@ -348,8 +347,7 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
             "name": data.name,
             "position": data.location,
             "date": data.date,
-     //       "visit": data.visit,
-     //       "count": data.count,
+            "favorit": data.isFavorit,
             "rate": data.rate,
             "coment": data.coment,
             "category": data.category,
@@ -388,7 +386,7 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
     
     // TextView 편집을 시작하면 글자 색상을 변경하는 함수
     func textViewDidBeginEditing(_ textView: UITextView) {
-        if textView.textColor == UIColor.lightGray{
+        if textView.textColor == #colorLiteral(red: 0.768627286, green: 0.7686277032, blue: 0.7772355676, alpha: 1){
             textView.text = nil
             textView.textColor = UIColor.label
         }

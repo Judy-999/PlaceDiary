@@ -122,11 +122,15 @@ class PlaceInfoTableViewController: UITableViewController, EditDelegate {
         if rePositon != ""{
             let locationArray = rePositon.components(separatedBy: " ")
             var location: String = ""
-            for i in 0...2{
-                location += locationArray[i]
-                location += " "
+            if locationArray.count >= 3{
+                for i in 0...2{
+                    location += locationArray[i]
+                    location += " "
+                }
+                btnPosition.setTitle(" " + location + "  〉 ", for: .normal)
+            }else{
+                btnPosition.setTitle(" " + rePositon + "  〉 ", for: .normal)
             }
-            btnPosition.setTitle(" " + location + "  〉 ", for: .normal)
            // btnPosition.setTitleColor(.white, for: .normal)
             btnPosition.contentHorizontalAlignment = .left
         }
@@ -143,16 +147,35 @@ class PlaceInfoTableViewController: UITableViewController, EditDelegate {
     
     @IBAction func editBtn(_ sender: UIButton){
         let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
-
-        alert.addAction(UIAlertAction(title: "장소 편집", style: .default) { _ in
-            self.performSegue(withIdentifier: "editPlace", sender: self)
+        let txtFavorit: String
+        editData!.isFavorit ? (txtFavorit = "즐겨찾기 해제") : (txtFavorit = "즐겨찾기 추가")
+        
+        alert.addAction(UIAlertAction(title: "장소 편집", style: .default) { [self] _ in
+            performSegue(withIdentifier: "editPlace", sender: self)
         })
 
-        alert.addAction(UIAlertAction(title: "장소 삭제", style: .default) { _ in
-            _ = self.navigationController?.popViewController(animated: true)
-            NotificationCenter.default.post(name: NSNotification.Name(rawValue: "newPlaceUpdate"), object: self.editData)
+        alert.addAction(UIAlertAction(title: "장소 삭제", style: .default) { [self] _ in
+            _ = navigationController?.popViewController(animated: true)
+            NotificationCenter.default.post(name: NSNotification.Name(rawValue: "newPlaceUpdate"), object: editData)
         })
-        alert.addAction(UIAlertAction(title: "취소", style: .cancel))
+        
+        alert.addAction(UIAlertAction(title: txtFavorit, style: .default){ [self] _ in
+            let placeRef = db.collection(Uid).document(reName)
+            let isFavorit = editData!.isFavorit
+            editData?.isFavorit = !isFavorit
+            placeRef.updateData([ "favorit": !isFavorit ]) { err in
+                if let err = err {
+                    print("Error updating document: \(err)")
+                } else {
+                    print("Document successfully updated")
+                }
+            }
+            let alert = UIAlertController(title: txtFavorit, message: "즐겨찾기가 변경되었습니다.", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "확인", style: .default, handler: nil))
+            present(alert, animated: true, completion: nil)
+        })
+                        
+        alert.addAction(UIAlertAction(title: "취소", style: .destructive))
         present(alert, animated: true)
     }
     
