@@ -7,7 +7,8 @@
 
 
 import UIKit
-import Firebase
+import FirebaseStorage
+import FirebaseFirestore
 import NVActivityIndicatorView
 
 protocol ImageDelegate {
@@ -16,7 +17,7 @@ protocol ImageDelegate {
 
 class PlaceInfoTableViewController: UITableViewController, EditDelegate {
     let storage = Storage.storage()
-    let db: Firestore = Firestore.firestore()
+    let db = Firestore.firestore()
     
     var receiveImage: UIImage?
     

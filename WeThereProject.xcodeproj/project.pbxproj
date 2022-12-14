@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 52;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -22,6 +22,11 @@
 		2055D69E270EE1F800B1FB24 /* marker_basic.png in Resources */ = {isa = PBXBuildFile; fileRef = 2055D69B270EE1F700B1FB24 /* marker_basic.png */; };
 		2055D69F270EE1F800B1FB24 /* marker_novisit.png in Resources */ = {isa = PBXBuildFile; fileRef = 2055D69C270EE1F700B1FB24 /* marker_novisit.png */; };
 		2055D6A0270EE1F800B1FB24 /* marker_select.png in Resources */ = {isa = PBXBuildFile; fileRef = 2055D69D270EE1F800B1FB24 /* marker_select.png */; };
+		2078A3A7294A089600DA04A2 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 2078A3A6294A089600DA04A2 /* FirebaseAuth */; };
+		2078A3A9294A089600DA04A2 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 2078A3A8294A089600DA04A2 /* FirebaseFirestore */; };
+		2078A3AB294A089600DA04A2 /* FirebaseFirestoreSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 2078A3AA294A089600DA04A2 /* FirebaseFirestoreSwift */; };
+		2078A3AD294A089600DA04A2 /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = 2078A3AC294A089600DA04A2 /* FirebaseStorage */; };
+		207CE0FC2949D383008257DA /* FSCalendar in Frameworks */ = {isa = PBXBuildFile; productRef = 207CE0FB2949D383008257DA /* FSCalendar */; };
 		207E4F862660985D00AC0A6E /* AddPlaceTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 207E4F852660985D00AC0A6E /* AddPlaceTableViewController.swift */; };
 		208382A526DB8C5000CC5FEE /* TagTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2044A8342671E989002ABBD8 /* TagTextView.swift */; };
 		208D9FE9266DFD4A00FC2067 /* AddRate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 208D9FE8266DFD4A00FC2067 /* AddRate.swift */; };
@@ -36,6 +41,7 @@
 		20E3E2E5265E355D004BDFF6 /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20E3E2E4265E355D004BDFF6 /* MapViewController.swift */; };
 		20F88AC7266CD8820015B42E /* PlaceInfoTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20F88AC6266CD8820015B42E /* PlaceInfoTableViewController.swift */; };
 		20FE6BCE26982C0F0007DC5C /* SearchResultCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20FE6BCD26982C0F0007DC5C /* SearchResultCell.swift */; };
+		4A9C78EF25F0E6A9C41872CE /* Pods_WeThereProject.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C1DC0293B36E8F3EBB6AAC2C /* Pods_WeThereProject.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -55,12 +61,12 @@
 		2055D69B270EE1F700B1FB24 /* marker_basic.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = marker_basic.png; sourceTree = "<group>"; };
 		2055D69C270EE1F700B1FB24 /* marker_novisit.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = marker_novisit.png; sourceTree = "<group>"; };
 		2055D69D270EE1F800B1FB24 /* marker_select.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = marker_select.png; sourceTree = "<group>"; };
+		207CE0F42949D2BE008257DA /* WeThereProject.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WeThereProject.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		207E4F852660985D00AC0A6E /* AddPlaceTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddPlaceTableViewController.swift; sourceTree = "<group>"; };
 		208D9FE8266DFD4A00FC2067 /* AddRate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddRate.swift; sourceTree = "<group>"; };
 		20B113822689BBC200A6A0FD /* PlaceCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceCell.swift; sourceTree = "<group>"; };
 		20CB7C9B269F28130057EAF0 /* MainPlaceViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainPlaceViewController.swift; sourceTree = "<group>"; };
 		20D7B4AE26EDEF5100DF954E /* StatisticsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatisticsTableViewController.swift; sourceTree = "<group>"; };
-		20E3E2CD265E2639004BDFF6 /* WeThereProject.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; name = WeThereProject.app; path = "/Users/kimjuyoung/Documents/Xcode/Project/PlaceDiary/build/Debug-iphoneos/WeThereProject.app"; sourceTree = "<absolute>"; };
 		20E3E2D0265E2639004BDFF6 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		20E3E2D2265E2639004BDFF6 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		20E3E2D7265E2639004BDFF6 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -70,6 +76,9 @@
 		20E3E2E4265E355D004BDFF6 /* MapViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewController.swift; sourceTree = "<group>"; };
 		20F88AC6266CD8820015B42E /* PlaceInfoTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceInfoTableViewController.swift; sourceTree = "<group>"; };
 		20FE6BCD26982C0F0007DC5C /* SearchResultCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultCell.swift; sourceTree = "<group>"; };
+		8D7A0F72AF8348B751211179 /* Pods-WeThereProject.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WeThereProject.release.xcconfig"; path = "Target Support Files/Pods-WeThereProject/Pods-WeThereProject.release.xcconfig"; sourceTree = "<group>"; };
+		B25B71EF03C8F60AB114ABB5 /* Pods-WeThereProject.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WeThereProject.debug.xcconfig"; path = "Target Support Files/Pods-WeThereProject/Pods-WeThereProject.debug.xcconfig"; sourceTree = "<group>"; };
+		C1DC0293B36E8F3EBB6AAC2C /* Pods_WeThereProject.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_WeThereProject.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -77,6 +86,12 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2078A3AB294A089600DA04A2 /* FirebaseFirestoreSwift in Frameworks */,
+				207CE0FC2949D383008257DA /* FSCalendar in Frameworks */,
+				2078A3A9294A089600DA04A2 /* FirebaseFirestore in Frameworks */,
+				2078A3A7294A089600DA04A2 /* FirebaseAuth in Frameworks */,
+				4A9C78EF25F0E6A9C41872CE /* Pods_WeThereProject.framework in Frameworks */,
+				2078A3AD294A089600DA04A2 /* FirebaseStorage in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -110,6 +125,9 @@
 			isa = PBXGroup;
 			children = (
 				20E3E2CF265E2639004BDFF6 /* WeThereProject */,
+				207CE0F42949D2BE008257DA /* WeThereProject.app */,
+				469EAA3F4D78AF7A0A1D4D94 /* Pods */,
+				3C2728C313429DF3266EE4BE /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -143,6 +161,23 @@
 			path = WeThereProject;
 			sourceTree = "<group>";
 		};
+		3C2728C313429DF3266EE4BE /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				C1DC0293B36E8F3EBB6AAC2C /* Pods_WeThereProject.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		469EAA3F4D78AF7A0A1D4D94 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				B25B71EF03C8F60AB114ABB5 /* Pods-WeThereProject.debug.xcconfig */,
+				8D7A0F72AF8348B751211179 /* Pods-WeThereProject.release.xcconfig */,
+			);
+			path = Pods;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -150,17 +185,27 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 20E3E2E1265E263A004BDFF6 /* Build configuration list for PBXNativeTarget "WeThereProject" */;
 			buildPhases = (
+				7AF351AE206DD43B12D5F22F /* [CP] Check Pods Manifest.lock */,
 				20E3E2C9265E2639004BDFF6 /* Sources */,
 				20E3E2CA265E2639004BDFF6 /* Frameworks */,
 				20E3E2CB265E2639004BDFF6 /* Resources */,
+				88908D377A77E2D1AB32E9A7 /* [CP] Embed Pods Frameworks */,
+				D4AE50D315C773ACA6E8163F /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 			);
 			name = WeThereProject;
+			packageProductDependencies = (
+				207CE0FB2949D383008257DA /* FSCalendar */,
+				2078A3A6294A089600DA04A2 /* FirebaseAuth */,
+				2078A3A8294A089600DA04A2 /* FirebaseFirestore */,
+				2078A3AA294A089600DA04A2 /* FirebaseFirestoreSwift */,
+				2078A3AC294A089600DA04A2 /* FirebaseStorage */,
+			);
 			productName = WeThereProject;
-			productReference = 20E3E2CD265E2639004BDFF6 /* WeThereProject.app */;
+			productReference = 207CE0F42949D2BE008257DA /* WeThereProject.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -186,6 +231,10 @@
 				Base,
 			);
 			mainGroup = 20E3E2C4265E2639004BDFF6;
+			packageReferences = (
+				207CE0FA2949D383008257DA /* XCRemoteSwiftPackageReference "FSCalendar" */,
+				2078A3A5294A089600DA04A2 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+			);
 			productRefGroup = 20E3E2C4265E2639004BDFF6;
 			projectDirPath = "";
 			projectRoot = "";
@@ -214,6 +263,65 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		7AF351AE206DD43B12D5F22F /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-WeThereProject-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		88908D377A77E2D1AB32E9A7 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-WeThereProject/Pods-WeThereProject-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-WeThereProject/Pods-WeThereProject-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-WeThereProject/Pods-WeThereProject-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		D4AE50D315C773ACA6E8163F /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-WeThereProject/Pods-WeThereProject-resources-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-WeThereProject/Pods-WeThereProject-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-WeThereProject/Pods-WeThereProject-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		20E3E2C9265E2639004BDFF6 /* Sources */ = {
@@ -382,12 +490,13 @@
 		};
 		20E3E2E2265E263A004BDFF6 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = B25B71EF03C8F60AB114ABB5 /* Pods-WeThereProject.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 28V3YA4B43;
-				ENABLE_BITCODE = YES;
+				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = WeThereProject/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.1;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -403,12 +512,13 @@
 		};
 		20E3E2E3265E263A004BDFF6 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 8D7A0F72AF8348B751211179 /* Pods-WeThereProject.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 28V3YA4B43;
-				ENABLE_BITCODE = YES;
+				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = WeThereProject/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.1;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -445,6 +555,53 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		2078A3A5294A089600DA04A2 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
+			requirement = {
+				branch = master;
+				kind = branch;
+			};
+		};
+		207CE0FA2949D383008257DA /* XCRemoteSwiftPackageReference "FSCalendar" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/WenchaoD/FSCalendar";
+			requirement = {
+				branch = master;
+				kind = branch;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		2078A3A6294A089600DA04A2 /* FirebaseAuth */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 2078A3A5294A089600DA04A2 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAuth;
+		};
+		2078A3A8294A089600DA04A2 /* FirebaseFirestore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 2078A3A5294A089600DA04A2 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseFirestore;
+		};
+		2078A3AA294A089600DA04A2 /* FirebaseFirestoreSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 2078A3A5294A089600DA04A2 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseFirestoreSwift;
+		};
+		2078A3AC294A089600DA04A2 /* FirebaseStorage */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 2078A3A5294A089600DA04A2 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseStorage;
+		};
+		207CE0FB2949D383008257DA /* FSCalendar */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 207CE0FA2949D383008257DA /* XCRemoteSwiftPackageReference "FSCalendar" */;
+			productName = FSCalendar;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 20E3E2C5265E2639004BDFF6 /* Project object */;
 }
