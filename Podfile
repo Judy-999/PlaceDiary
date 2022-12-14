@@ -9,6 +9,5 @@ target 'WeThereProject' do
     pod 'GoogleMaps'
     pod 'GooglePlaces'
     pod 'NVActivityIndicatorView'
-    pod 'ExpyTableView'
 end
 

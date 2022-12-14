@@ -18,7 +18,7 @@ extension PlaceData {
             placeList.append(PlaceData(name: document["name"] as? String ?? "",
                                     location: document["position"] as? String ?? "",
                                     date: date.dateValue(),
-                                    visit: (document["visit"] as? Bool)!,
+                                    visit: (document["visit"] as? Bool) ?? true,
                                     image: (document["image"] as? Bool)!,
                                     count: document["count"] as? String ?? "",
                                     category: document["category"] as? String ?? "",
