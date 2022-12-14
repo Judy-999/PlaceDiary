@@ -2,7 +2,7 @@
 //  CategoryEditController.swift
 //  WeThereProject
 //
-//  Created by 김주영 on 2021/06/20.
+//  Created by 김주영 on 2021/06/20. --> refacted on 2022/12/14.
 //
 
 import UIKit
@@ -23,12 +23,6 @@ class CategoryEditController: UITableViewController, UIColorPickerViewController
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
-
-        // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-        // self.navigationItem.rightBarButtonItem = self.editButtonItem
         loadCategory(editType)
     }
     
@@ -44,7 +38,6 @@ class CategoryEditController: UITableViewController, UIColorPickerViewController
     }
     
     // MARK: - Table view data source
-
     override func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
@@ -169,10 +162,8 @@ class CategoryEditController: UITableViewController, UIColorPickerViewController
         return "삭제"
     }
     
-    // Override to support editing the table view.
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
-            // Delete the row from the data source
             let removeItem = editItems[(indexPath as NSIndexPath).row] as String
             if checkUsedItem(item: removeItem){
                 let canDeleteAlert = UIAlertController(title: "삭제 확인", message: removeItem + "을(를) 삭제하시겠습니까?", preferredStyle: .alert)
@@ -193,7 +184,6 @@ class CategoryEditController: UITableViewController, UIColorPickerViewController
             }
     
         } else if editingStyle == .insert {
-            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
         }    
     }
     
@@ -223,16 +213,4 @@ class CategoryEditController: UITableViewController, UIColorPickerViewController
         }
         return true
     }
-    
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
 }

@@ -2,7 +2,7 @@
 //  MainPlaceViewController.swift
 //  WeThereProject
 //
-//  Created by 김주영 on 2021/07/14.
+//  Created by 김주영 on 2021/07/14. --> refacted on 2022/12/14.
 //
 
 import UIKit
@@ -14,8 +14,6 @@ let Uid = UIDevice.current.identifierForVendor!.uuidString
 
 class MainPlaceViewController: UIViewController, ExpyTableViewDataSource,  ExpyTableViewDelegate
 , ImageDelegate {
-
-    // let storage = Storage.storage()
     let db: Firestore = Firestore.firestore()
     let storageRef = Storage.storage().reference()
     private let loadingView = UIView();
@@ -191,7 +189,6 @@ class MainPlaceViewController: UIViewController, ExpyTableViewDataSource,  ExpyT
     }
     
     // MARK: - Table view data source
-
     func tableView(_ tableView: ExpyTableView, canExpandSection section: Int) -> Bool {
         if segmentedIndex != 0{
             return true
@@ -206,10 +203,9 @@ class MainPlaceViewController: UIViewController, ExpyTableViewDataSource,  ExpyT
     
     func tableView(_ tableView: ExpyTableView, expandableCellForSection section: Int) -> UITableViewCell {
         let cell = UITableViewCell()
-       
-       // cell.backgroundColor = #colorLiteral(red: 0.4745098054, green: 0.8392156959, blue: 0.9764705896, alpha: 1) //백그라운드 컬러
+
         cell.backgroundColor = #colorLiteral(red: 0.2113277912, green: 0.9666495919, blue: 0.9550952315, alpha: 1)
-        cell.selectionStyle = .none //선택했을 때 회색되는거 없애기
+        cell.selectionStyle = .none
         cell.textLabel?.font = .boldSystemFont(ofSize: 20)
         cell.textLabel?.textColor = .white
         cell.textLabel?.text = sectionName[section]
@@ -260,12 +256,6 @@ class MainPlaceViewController: UIViewController, ExpyTableViewDataSource,  ExpyT
         formatter.dateFormat = "yyyy-MM-dd"
         cell.lblPlaceDate.text = formatter.string(from: cellPlace.date)
         cell.lblPlaceName.text = cellPlace.name
-        
-      /*  if cellPlace.count != "0"{
-            cell.lblPlaceInfo.text = cellPlace.group + " ∙ " + cellPlace.category + " ∙ " + cellPlace.rate + "점"
-        }else{
-            cell.lblPlaceInfo.text = cellPlace.group + " ∙ " + cellPlace.category + " ∙ " + "가보고 싶어요!"
-        }*/
         cell.lblPlaceInfo.text = cellPlace.group + " ∙ " + cellPlace.category
         cell.lblPlaceRate.text =  "⭐️ " + cellPlace.rate + "  점"
         
@@ -367,7 +357,6 @@ class MainPlaceViewController: UIViewController, ExpyTableViewDataSource,  ExpyT
         self.present(deletAlert, animated: true, completion: nil)
     }
     
-    
     @IBAction func sortBtn(_ sender: UIBarItem){
         let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
 
@@ -424,39 +413,8 @@ class MainPlaceViewController: UIViewController, ExpyTableViewDataSource,  ExpyT
             sender.selectedSegmentIndex = 0
         }
     }
-
-
-    /*
-    // Override to support rearranging the table view.
-    override func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath) {
-       
-        let titleToMove = placeTitles[(fromIndexPath as NSIndexPath).row]
-        let imageToMove = placeImages[(fromIndexPath as NSIndexPath).row]
-        let subToMove = placeSubTitles[(fromIndexPath as NSIndexPath).row]
-        
-        
-        placeTitles.remove(at: (fromIndexPath as NSIndexPath).row)
-        placeImages.remove(at: (fromIndexPath as NSIndexPath).row)
-        placeSubTitles.remove(at: (fromIndexPath as NSIndexPath).row)
-        
-        placeTitles.insert(titleToMove, at: (to as NSIndexPath).row)
-        placeImages.insert(imageToMove, at: (to as NSIndexPath).row)
-        placeSubTitles.insert(subToMove, at: (to as NSIndexPath).row)
- 
-    }
-    */
-
-    /*
-    // Override to support conditional rearranging of the table view.
-    override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the item to be re-orderable.
-        return true
-    }
-    */
-
     
     // MARK: - Navigation
-
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "sgPlaceInfo"{
             let cell = sender as! UITableViewCell
@@ -478,7 +436,6 @@ class MainPlaceViewController: UIViewController, ExpyTableViewDataSource,  ExpyT
                 if selectedData.image{
                     infoView.downloadImgInfo(selectedData)
                 }else{
-                    //infoView.hasimage = false
                     infoView.getPlaceInfo(selectedData, image: UIImage(named: "pdicon")!)
                 }
             }
@@ -488,5 +445,4 @@ class MainPlaceViewController: UIViewController, ExpyTableViewDataSource,  ExpyT
             addView.nowPlaceData = placeList
         }
     }
-    
 }

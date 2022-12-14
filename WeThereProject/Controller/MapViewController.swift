@@ -2,7 +2,7 @@
 //  MapViewController.swift
 //  WeThereProject
 //
-//  Created by 김주영 on 2021/05/26.
+//  Created by 김주영 on 2021/05/26. --> refacted on 2022/12/14.
 //
 
 import UIKit
@@ -100,13 +100,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate , GMSMapVie
             newUpdate = false
         }
     }
-
-    /*override func viewWillAppear(_ animated: Bool) {
-        if onePlace == nil{
-            mark(places)
-        }
-    }*/
-
+    
     func updateImg(){
         let mainNav = self.tabBarController?.viewControllers![0] as! UINavigationController
         let mainCont = mainNav.topViewController as! MainPlaceViewController
@@ -126,7 +120,6 @@ class MapViewController: UIViewController, CLLocationManagerDelegate , GMSMapVie
             marker.position = CLLocationCoordinate2D(latitude: place.geopoint.latitude, longitude: place.geopoint.longitude)
             marker.title = place.name
             marker.snippet = place.location
-         //   marker.icon = GMSMarker.markerImage(with: #colorLiteral(red: 0.4620226622, green: 0.8382837176, blue: 1, alpha: 1))
             if place.visit {
                 marker.icon = UIImage(named: "marker_basic")
                 marker.userData = 0
@@ -173,8 +166,6 @@ class MapViewController: UIViewController, CLLocationManagerDelegate , GMSMapVie
         return false
     }
     
- 
-    
     @IBAction func addFilter(_ sender: UIButton){
         if onePlace == nil{
             let optionPicker = UIPickerView(frame: CGRect(x: 10, y: 50, width: 250, height: 150))
@@ -203,8 +194,6 @@ class MapViewController: UIViewController, CLLocationManagerDelegate , GMSMapVie
 
     
     // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "sgMapInfo"{
             let infoView = segue.destination as! PlaceInfoTableViewController
@@ -219,7 +208,6 @@ class MapViewController: UIViewController, CLLocationManagerDelegate , GMSMapVie
                 if selectedPlace!.image{
                     infoView.downloadImgInfo(selectedPlace!)
                 }else{
-                    //infoView.hasimage = false
                     infoView.getPlaceInfo(selectedPlace!, image: UIImage(named: "pdicon")!)
                 }
             }

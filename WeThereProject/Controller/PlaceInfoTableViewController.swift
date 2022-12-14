@@ -2,7 +2,7 @@
 //  PlaceInfoTableViewController.swift
 //  WeThereProject
 //
-//  Created by 김주영 on 2021/06/06.
+//  Created by 김주영 on 2021/06/06. --> refacted on 2022/12/14.
 //
 
 
@@ -18,19 +18,12 @@ protocol ImageDelegate {
 class PlaceInfoTableViewController: UITableViewController, EditDelegate {
     let storage = Storage.storage()
     let db = Firestore.firestore()
-    
     var receiveImage: UIImage?
-    
-   // var hasimage = true
-  //  var reName = "", rePositon = "", reDate = "", reCategory = "", reComent = "", reRate = "", reGroup = "", count = "0"
-  //  var reVisit = false
-    
     var rateButtons = [UIButton]()
     var editData : PlaceData?
     var imgDelegate : ImageDelegate?
     let loadingView = UIView()
     var isLoading = false
-    
     
     @IBOutlet weak var placeImg: UIImageView!
     @IBOutlet weak var lblPlacename: UILabel!
@@ -49,13 +42,6 @@ class PlaceInfoTableViewController: UITableViewController, EditDelegate {
  
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
-
-        // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-        //self.navigationItem.rightBarButtonItem = self.editButtonItem
-     
         rateButtons.append(btnRate1)
         rateButtons.append(btnRate2)
         rateButtons.append(btnRate3)
@@ -125,8 +111,7 @@ class PlaceInfoTableViewController: UITableViewController, EditDelegate {
             location += locationArray[i]
             location += " "
         }
-        btnPosition.setTitle(" " + location + "  〉 ", for: .normal) 
-       // btnPosition.setTitleColor(.white, for: .normal)
+        btnPosition.setTitle(" " + location + "  〉 ", for: .normal)
         btnPosition.contentHorizontalAlignment = .left
         let fillRate = AddRate()
         fillRate.fill(buttons: rateButtons, rate: NSString(string: editData!.rate).floatValue)
@@ -162,14 +147,11 @@ class PlaceInfoTableViewController: UITableViewController, EditDelegate {
     
 
     // MARK: - Table view data source
-
     override func numberOfSections(in tableView: UITableView) -> Int {
-        // #warning Incomplete implementation, return the number of sections
         return 1
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // #warning Incomplete implementation, return the number of rows
         return 4
     }
 
@@ -182,8 +164,6 @@ class PlaceInfoTableViewController: UITableViewController, EditDelegate {
     
     
     // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         switch segue.identifier{
         case "editPlace":
