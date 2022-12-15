@@ -9,15 +9,21 @@ import Foundation
 import FirebaseFirestore
 
 class FirebaseManager {
-    let database = Firestore.firestore()
-
-    func get(collectionID: String, handler: @escaping ([Place]) -> Void) {
+    static let shared = FirebaseManager()
+    private let database = Firestore.firestore()
+    
+    private init() {}
+    
+    func loadData(collectionID: String, handler: @escaping ([Place]) -> Void) {
         database.collection(collectionID).order(by: "date", descending: true).addSnapshotListener { querySnapshot, err in
             if let error = err {
                 print(error)
-                handler([])
-            } else {
-                handler(Place.build(from: querySnapshot?.documents ?? []))
+                return
+            }
+            
+            if let documents = querySnapshot?.documents {
+                let places = documents.compactMap{ Place(from: $0) }
+                handler(places)
             }
         }
     }

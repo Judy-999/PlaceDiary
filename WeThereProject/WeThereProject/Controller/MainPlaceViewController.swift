@@ -90,8 +90,7 @@ class MainPlaceViewController: UIViewController, ImageDelegate {
     }
     
     func loadPlaceData() {
-        service = FirebaseManager()
-        service?.get(collectionID: Uid) { places in
+        FirebaseManager.shared.loadData(collectionID: Uid) { places in
             self.allPlaces = places
         }
     }
