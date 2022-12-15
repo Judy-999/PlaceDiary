@@ -5,11 +5,9 @@
 //  Created by 김주영 on 2021/06/06. --> Refacted on 2022/12/15
 //
 
-
 import UIKit
 import FirebaseStorage
 import FirebaseFirestore
-import NVActivityIndicatorView
 
 protocol ImageDelegate {
     func didImageDone(newData: PlaceData, image: UIImage)
@@ -23,7 +21,7 @@ class PlaceInfoTableViewController: UITableViewController, EditDelegate {
     var rateButtons = [UIButton]()
     var editData : PlaceData?
     var imgDelegate : ImageDelegate?
-    let loadingView = UIView()
+    let loadingView = UIActivityIndicatorView(style: .large)
     var isLoading = false
     
     
@@ -57,17 +55,10 @@ class PlaceInfoTableViewController: UITableViewController, EditDelegate {
         placeImg.addGestureRecognizer(tap)
                 
         if isLoading{
-            let width = placeImg.frame.midX
-            let height = placeImg.frame.midY
             loadingView.frame = CGRect(x: 0, y: 0, width: placeImg.frame.width, height: placeImg.frame.height)
-            loadingView.backgroundColor = UIColor.white
+            loadingView.color = .systemGray
             self.view.addSubview(loadingView)
-            let indicator = NVActivityIndicatorView(frame: CGRect(x: width - 25 , y: height - 25 , width: 50, height: 50),
-                                                    type: .ballRotateChase,
-                                                    color: .cyan,
-                                                    padding: 0)
-            loadingView.addSubview(indicator)
-            indicator.startAnimating()
+            loadingView.startAnimating()
         }
         
         tableView.tableFooterView = UIView(frame: CGRect.zero)
@@ -127,7 +118,7 @@ class PlaceInfoTableViewController: UITableViewController, EditDelegate {
             }else{
                 btnPosition.setTitle(" " + rePositon + "  〉 ", for: .normal)
             }
-           // btnPosition.setTitleColor(.white, for: .normal)
+
             btnPosition.contentHorizontalAlignment = .left
         }
         let fillRate = AddRate()

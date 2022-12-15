@@ -8,5 +8,4 @@ target 'WeThereProject' do
   # Pods for WeThereProject
     pod 'GoogleMaps'
     pod 'GooglePlaces'
-    pod 'NVActivityIndicatorView'
 end
