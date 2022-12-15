@@ -8,12 +8,10 @@
 import UIKit
 import FirebaseFirestore
 import FirebaseStorage
-import ExpyTableView
 
 let Uid = UIDevice.current.identifierForVendor!.uuidString
 
-class MainPlaceViewController: UIViewController, ExpyTableViewDataSource,  ExpyTableViewDelegate
-, ImageDelegate {
+class MainPlaceViewController: UIViewController, ImageDelegate {
     let db: Firestore = Firestore.firestore()
     let storageRef = Storage.storage().reference()
     private let loadingView = UIView();
@@ -43,7 +41,7 @@ class MainPlaceViewController: UIViewController, ExpyTableViewDataSource,  ExpyT
         }
     }
     
-    @IBOutlet var placeTableView: ExpyTableView!
+    @IBOutlet var placeTableView: UITableView!
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -186,115 +184,6 @@ class MainPlaceViewController: UIViewController, ExpyTableViewDataSource,  ExpyT
         super.didReceiveMemoryWarning()
     }
     
-    // MARK: - Table view data source
-    func tableView(_ tableView: ExpyTableView, canExpandSection section: Int) -> Bool {
-        if segmentedIndex != 0{
-            return true
-        }else{
-            return false
-        }
-    }
-
-    func tableView(_ tableView: ExpyTableView, expyState state: ExpyState, changeForSection section: Int) {
-
-    }
-    
-    func tableView(_ tableView: ExpyTableView, expandableCellForSection section: Int) -> UITableViewCell {
-        let cell = UITableViewCell()
-       
-        cell.backgroundColor = #colorLiteral(red: 0.4745098054, green: 0.8392156959, blue: 0.9764705896, alpha: 1) //백그라운드 컬러
-        cell.textLabel?.textColor = UIColor.white
-        cell.selectionStyle = .none //선택했을 때 회색되는거 없애기
-        cell.textLabel?.font = .boldSystemFont(ofSize: 20)
-        cell.textLabel?.text = sectionName[section]
-        
-        return cell
-    }
-
-
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if segmentedIndex == 0{
-            if placeList.count == 0{
-                let emptyLabel = UILabel(frame: CGRect(x: 0, y: 0, width: self.view.bounds.size.width, height: self.view.bounds.size.height))
-                emptyLabel.text = "장소를 추가해보세요!"
-                emptyLabel.textAlignment = NSTextAlignment.center
-                tableView.backgroundView = emptyLabel
-                tableView.separatorStyle = .none
-                return 0
-            }else{
-                tableView.separatorStyle = UITableViewCell.SeparatorStyle.singleLine
-                tableView.backgroundView = .none
-                return placeList.count
-            }
-        }else if segmentedIndex == 1{
-            let filteredArray = placeList.filter({$0.group == sectionName[section]})
-            return filteredArray.count + 1
-        }else{
-            let filteredArray = placeList.filter({$0.category == sectionName[section]})
-            return filteredArray.count + 1
-        }
-    }
-
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "placeCell", for: indexPath) as! PlaceCell
-        
-        let cellData = getPlaceList(sectionNum: segmentedIndex, index: indexPath)
-        let cellPlace : PlaceData!
-        if segmentedIndex == 0{
-            cellPlace = cellData[indexPath.row]
-        }else{
-            if indexPath.row == 0{
-                cellPlace = cellData[indexPath.row]
-            }else{
-                cellPlace = cellData[indexPath.row - 1]
-            }
-        }
-        
-        let formatter = DateFormatter()
-        formatter.dateFormat = "yyyy-MM-dd"
-        cell.lblPlaceDate.text = formatter.string(from: cellPlace.date)
-        cell.lblPlaceName.text = cellPlace.name
-        
-        cell.lblPlaceInfo.text = cellPlace.group + " ∙ " + cellPlace.category + " ∙ " + cellPlace.rate + " 점"
-        cell.imgPlace.image = UIImage(named: "pdicon")
-    
-        cell.btnFavorit.tag = indexPath.row
-        
-        cellPlace.isFavorit ? cell.btnFavorit.setImage(UIImage(systemName: "heart.fill"), for: .normal) :
-        cell.btnFavorit.setImage(UIImage(systemName: "heart"), for: .normal)
-        
-        if cellPlace.image{
-            if let placeImage = placeImages[cellPlace.name] {
-                cell.imgPlace.image = placeImage
-            } else {
-                DispatchQueue.main.async { [self] in
-                    if let updateCell = tableView.cellForRow(at: indexPath) as? PlaceCell{
-                        getImage(place: cellPlace){ photo in
-                            if photo != nil {
-                                updateCell.imgPlace.image = photo
-                                self.placeImages.updateValue(photo!, forKey: cellPlace.name)
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        return cell
-    }
-    
-    //테이블 섹션의 개수
-    func numberOfSections(in tableView: UITableView) -> Int {
-        return sectionNum
-    }
-    
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        if segmentedIndex != 0, indexPath.row == 0 {
-            return 35
-        }else {
-            return 90
-        }
-    }
-    
     func getImage(place: PlaceData, completion: @escaping (UIImage?) -> ()) {
         let fileName = place.name
         let islandRef = storageRef.child(Uid + "/" + fileName)
@@ -309,16 +198,7 @@ class MainPlaceViewController: UIViewController, ExpyTableViewDataSource,  ExpyT
          }
       }
     
-    func tableView(_ tableView: UITableView, titleForDeleteConfirmationButtonForRowAt indexPath: IndexPath) -> String? {
-        return "삭제"
-    }
-    
-    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-        if editingStyle == .delete {    //셀 삭제
-            deleteConfirm(indexPath)
-        } else if editingStyle == .insert {
-        }
-    }
+  
     
     func deleteConfirm(_ indexPath: IndexPath){
         let cellData = getPlaceList(sectionNum: segmentedIndex, index: indexPath)
@@ -397,9 +277,6 @@ class MainPlaceViewController: UIViewController, ExpyTableViewDataSource,  ExpyT
                 sectionName.append(group)
             }
             placeTableView.reloadData()
-            for sc in 0..<sectionNum{
-                placeTableView.expand(sc)
-            }
         case 2:
             sectionNum = categoryItem.count
             segmentedIndex = 2
@@ -408,9 +285,6 @@ class MainPlaceViewController: UIViewController, ExpyTableViewDataSource,  ExpyT
                 sectionName.append(name)
             }
             placeTableView.reloadData()
-            for sc in 0..<sectionNum{
-                placeTableView.expand(sc)
-            }
         default:
             sender.selectedSegmentIndex = 0
         }
@@ -467,5 +341,100 @@ class MainPlaceViewController: UIViewController, ExpyTableViewDataSource,  ExpyT
             addView.nowPlaceData = placeList
         }
     }
+}
+
+// MARK: - TableViewDataSource & TableViewDelegate
+extension MainPlaceViewController: UITableViewDataSource,  UITableViewDelegate {
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return sectionNum
+    }
     
+    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        return sectionName[section]
+    }
+
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        if segmentedIndex == 0{
+            if placeList.count == 0{
+                let emptyLabel = UILabel(frame: CGRect(x: 0, y: 0, width: self.view.bounds.size.width, height: self.view.bounds.size.height))
+                emptyLabel.text = "장소를 추가해보세요!"
+                emptyLabel.textAlignment = NSTextAlignment.center
+                tableView.backgroundView = emptyLabel
+                tableView.separatorStyle = .none
+                return 0
+            }else{
+                tableView.separatorStyle = UITableViewCell.SeparatorStyle.singleLine
+                tableView.backgroundView = .none
+                return placeList.count
+            }
+        }else if segmentedIndex == 1{
+            let filteredArray = placeList.filter({$0.group == sectionName[section]})
+            return filteredArray.count
+        }else{
+            let filteredArray = placeList.filter({$0.category == sectionName[section]})
+            return filteredArray.count
+        }
+    }
+
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "placeCell", for: indexPath) as! PlaceCell
+        
+        let cellData = getPlaceList(sectionNum: segmentedIndex, index: indexPath)
+        let cellPlace : PlaceData!
+        if segmentedIndex == 0{
+            cellPlace = cellData[indexPath.row]
+        }else{
+            if indexPath.row == 0{
+                cellPlace = cellData[indexPath.row]
+            }else{
+                cellPlace = cellData[indexPath.row - 1]
+            }
+        }
+        
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd"
+        cell.lblPlaceDate.text = formatter.string(from: cellPlace.date)
+        cell.lblPlaceName.text = cellPlace.name
+        
+        cell.lblPlaceInfo.text = cellPlace.group + " ∙ " + cellPlace.category + " ∙ " + cellPlace.rate + " 점"
+        cell.imgPlace.image = UIImage(named: "pdicon")
+    
+        cell.btnFavorit.tag = indexPath.row
+        
+        cellPlace.isFavorit ? cell.btnFavorit.setImage(UIImage(systemName: "heart.fill"), for: .normal) :
+        cell.btnFavorit.setImage(UIImage(systemName: "heart"), for: .normal)
+        
+        if cellPlace.image{
+            if let placeImage = placeImages[cellPlace.name] {
+                cell.imgPlace.image = placeImage
+            } else {
+                DispatchQueue.main.async { [self] in
+                    if let updateCell = tableView.cellForRow(at: indexPath) as? PlaceCell{
+                        getImage(place: cellPlace){ photo in
+                            if photo != nil {
+                                updateCell.imgPlace.image = photo
+                                self.placeImages.updateValue(photo!, forKey: cellPlace.name)
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return cell
+    }
+    
+    func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
+        (view as! UITableViewHeaderFooterView).contentView.backgroundColor = #colorLiteral(red: 0.4745098054, green: 0.8392156959, blue: 0.9764705896, alpha: 1)
+        (view as! UITableViewHeaderFooterView).textLabel?.textColor = UIColor.white
+    }
+    
+    func tableView(_ tableView: UITableView, titleForDeleteConfirmationButtonForRowAt indexPath: IndexPath) -> String? {
+        return "삭제"
+    }
+    
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == .delete {
+            deleteConfirm(indexPath)
+        }
+    }
 }
