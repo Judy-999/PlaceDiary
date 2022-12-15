@@ -54,6 +54,29 @@ class FirebaseManager {
             }
         }
     }
+    
+    func savePlace(_ place: Place) {
+        let saveData: [String: Any] = [
+           "name": place.name,
+           "position": place.location,
+           "date": place.date,
+           "favorit": place.isFavorit,
+           "rate": place.rate,
+           "coment": place.coment,
+           "category": place.category,
+           "geopoint": place.geopoint,
+           "image": place.hasImage,
+           "group": place.group
+       ]
+
+       database.collection(Uid).document(place.name).setData(saveData) { err in
+           if let err = err {
+               print("Error writing document: \(err)")
+           } else {
+               print("Document successfully written!")
+           }
+       }
+    }
 }
 
 enum Classification {

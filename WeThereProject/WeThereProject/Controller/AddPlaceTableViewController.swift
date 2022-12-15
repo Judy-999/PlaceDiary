@@ -204,14 +204,9 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
     
     // 분류와 그룹 리스트를 Firebase에서 받아오는 함수
     func downloadPickerItem(){
-        let docRef = db.collection("category").document(Uid)
-        docRef.getDocument { (document, error) in
-            if let document = document, document.exists {
-                self.categoryItem = (document.get("items") as? [String])!
-                self.groupItem = (document.get("group") as? [String])!
-            } else {
-                print("Document does not exist")
-            }
+        FirebaseManager.shared.loadClassification { categoryItems, groupItems in
+            self.categoryItem = categoryItems
+            self.groupItem = groupItems
         }
     }
     
@@ -336,26 +331,7 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
      
      // 장소 정보를 Firebase에 업로드하는 함수
      func uploadData(place data: Place){
-         let docData: [String: Any] = [
-            "name": data.name,
-            "position": data.location,
-            "date": data.date,
-            "favorit": data.isFavorit,
-            "rate": data.rate,
-            "coment": data.coment,
-            "category": data.category,
-            "geopoint": data.geopoint,
-            "image": data.hasImage,
-            "group": data.group
-        ]
-
-        db.collection(Uid).document(tfPlaceName.text!).setData(docData) { err in
-            if let err = err {
-                print("Error writing document: \(err)")
-            } else {
-                print("Document successfully written!")
-            }
-        }
+         FirebaseManager.shared.savePlace(data)
     }
     
     // 선택된 이미지를 Storage에 업로드하는 함수

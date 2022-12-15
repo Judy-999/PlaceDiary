@@ -27,9 +27,7 @@ class StatisticsTableViewController: UITableViewController {
             }
         }
     }
-    
-    let db: Firestore = Firestore.firestore()
-    
+      
     override func viewDidLoad() {
         super.viewDidLoad()
 
