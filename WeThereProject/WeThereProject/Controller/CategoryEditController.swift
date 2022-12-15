@@ -25,14 +25,13 @@ class CategoryEditController: UITableViewController, UIColorPickerViewController
 
         loadCategory(editType)
     }
-    
-    func loadCategory(_ type: String){
-        let docRef = db.collection("category").document(Uid)
-        docRef.getDocument { (document, error) in
-            if let document = document, document.exists {
-                self.editItems = (document.get(type) as? [String])!
+        
+    func loadCategory(_ type: String) {
+        FirebaseManager.shared.loadClassification { categoryItems, groupItems in
+            if type == "group" {
+                self.editItems = groupItems
             } else {
-                print("Document does not exist")
+                self.editItems = categoryItems
             }
         }
     }

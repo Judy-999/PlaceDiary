@@ -97,26 +97,9 @@ class MainPlaceViewController: UIViewController, ImageDelegate {
 
     // 카테고리와 그룹 정보를 받아오는 함수
     func downloadList(){
-        let docRef = db.collection("category").document(Uid)
-        docRef.getDocument { (document, error) in
-            if let document = document, document.exists {
-                self.categoryItem = (document.get("items") as? [String])!
-                self.groupItem = (document.get("group") as? [String])!
-            } else {
-                print("Document does not exist")
-                let basicCategory: [String: [String]] = [
-                    "items": ["카페", "음식점", "디저트", "전시회", "액티비티", "야외"],
-                    "group": ["친구", "가족", "애인", "혼자"]
-                ]
-                self.db.collection("category").document(Uid).setData(basicCategory) { err in
-                    if let err = err {
-                        print("Error writing document: \(err)")
-                    } else {
-                        print("Document successfully written!")
-                        self.downloadList()
-                    }
-                }
-            }
+        FirebaseManager.shared.loadClassification { categoryItems, groupItems in
+            self.categoryItem = categoryItems
+            self.groupItem = groupItems
         }
     }
     
@@ -190,14 +173,11 @@ class MainPlaceViewController: UIViewController, ImageDelegate {
             let downloadImg = UIImage(data: data! as Data)
                 if error == nil {
                     completion(downloadImg)
-                    print("image download!!!" + fileName)
                 } else {
                 completion(nil)
             }
          }
       }
-    
-  
     
     func deleteConfirm(_ indexPath: IndexPath){
         let cellData = getPlaceList(sectionNum: segmentedIndex, index: indexPath)

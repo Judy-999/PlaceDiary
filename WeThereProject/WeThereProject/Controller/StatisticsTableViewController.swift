@@ -37,14 +37,9 @@ class StatisticsTableViewController: UITableViewController {
     }
     
     func loadCategory(){
-        let docRef = db.collection("category").document(Uid)
-        docRef.getDocument { (document, error) in
-            if let document = document, document.exists {
-                self.categoryList = (document.get("items") as? [String])!
-                self.groupList = (document.get("group") as? [String])!
-            } else {
-                print("Document does not exist")
-            }
+        FirebaseManager.shared.loadClassification { categoryItems, groupItems in
+            self.categoryList = categoryItems
+            self.groupList = groupItems
         }
     }
     
