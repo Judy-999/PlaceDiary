@@ -1,0 +1,34 @@
+PODS:
+  - ExpyTableView (1.2.1)
+  - GoogleMaps (5.0.0):
+    - GoogleMaps/Maps (= 5.0.0)
+  - GoogleMaps/Base (5.0.0)
+  - GoogleMaps/Maps (5.0.0):
+    - GoogleMaps/Base
+  - GooglePlaces (5.0.0)
+  - NVActivityIndicatorView (5.1.1):
+    - NVActivityIndicatorView/Base (= 5.1.1)
+  - NVActivityIndicatorView/Base (5.1.1)
+
+DEPENDENCIES:
+  - ExpyTableView
+  - GoogleMaps
+  - GooglePlaces
+  - NVActivityIndicatorView
+
+SPEC REPOS:
+  trunk:
+    - ExpyTableView
+    - GoogleMaps
+    - GooglePlaces
+    - NVActivityIndicatorView
+
+SPEC CHECKSUMS:
+  ExpyTableView: 19cf224c2ff04b1ec215ec52bc4ba6f81fa809ed
+  GoogleMaps: 600e5e69bdf7f4ed7cac4d6aa96c7ec08a5aa254
+  GooglePlaces: 5d87ca13ed98b7a937e0d8bc7026f718c7263271
+  NVActivityIndicatorView: 1f6c5687f1171810aa27a3296814dc2d7dec3667
+
+PODFILE CHECKSUM: 99b20bc14cce710836ad78a008dd61b749b0800c
+
+COCOAPODS: 1.11.3

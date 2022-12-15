@@ -6,7 +6,7 @@
 //
 
 import Foundation
-import Firebase
+import FirebaseFirestore
 
 extension PlaceData {
     static func build(from documents: [QueryDocumentSnapshot]) -> [PlaceData] {

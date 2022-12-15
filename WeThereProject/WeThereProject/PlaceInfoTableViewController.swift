@@ -7,7 +7,8 @@
 
 
 import UIKit
-import Firebase
+import FirebaseStorage
+import FirebaseFirestore
 import NVActivityIndicatorView
 
 protocol ImageDelegate {
