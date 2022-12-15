@@ -185,14 +185,8 @@ class MainPlaceViewController: UIViewController, ImageDelegate {
         let okAlert = UIAlertAction(title: "삭제", style: .destructive){ UIAlertAction in
             let removePlace = cellData[(indexPath as NSIndexPath).row].name as String
             
-            self.db.collection(Uid).document(removePlace).delete() { err in
-                if let err = err {
-                    print("Error removing document: \(err)")
-                } else {
-                    print("Document successfully removed!")
-                }
-            }
-            
+            FirebaseManager.shared.deletePlace(removePlace)
+
             self.storageRef.child(Uid + "/" + removePlace).delete { error in
                 if let error = error {
                     print("Error removing image: \(error)")

@@ -44,6 +44,16 @@ class FirebaseManager {
             }
         }
     }
+    
+    func deletePlace(_ name: String) {
+        database.collection(Uid).document(name).delete() { err in
+            if let err = err {
+                print("Error removing document: \(err)")
+            } else {
+                print("Document successfully removed!")
+            }
+        }
+    }
 }
 
 enum Classification {

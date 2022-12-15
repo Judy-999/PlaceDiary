@@ -322,14 +322,9 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
     }
     
      // 장소의 이름을 변경했으면 이전 이름의 장소와 사진을 삭제하는 함수
-     func deletePlaceData(name place: String){
-         db.collection(Uid).document(place).delete() { err in
-             if let err = err {
-                 print("Error removing document: \(err)")
-             } else {
-                 print("Document successfully removed!")
-             }
-         }
+     func deletePlaceData(name place: String) {
+         FirebaseManager.shared.deletePlace(place)
+
          storageRef.child(Uid + "/" + place).delete { error in
              if let error = error {
                  print("Error removing image: \(error)")
