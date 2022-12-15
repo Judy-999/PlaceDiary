@@ -2,14 +2,12 @@
 //  AddRate.swift
 //  WeThereProject
 //
-//  Created by 김주영 on 2021/06/07.
+//  Created by 김주영 on 2021/06/07. --> Refacted on 2022/12/15
 //
 
-import Foundation
 import UIKit
 
 class AddRate{
-    
     var buttonState = [Bool]()
     
     init() {
@@ -29,7 +27,6 @@ class AddRate{
         if rate == 0{
             clearStar(buttons: buttons, index: -1)
         }
-        
     }
     
     private func fillStar(buttons: [UIButton], index: Int){

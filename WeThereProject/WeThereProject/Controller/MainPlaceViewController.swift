@@ -2,7 +2,7 @@
 //  MainPlaceViewController.swift
 //  WeThereProject
 //
-//  Created by 김주영 on 2021/07/14.
+//  Created by 김주영 on 2021/07/14. --> Refacted on 2022/12/15
 //
 
 import UIKit
@@ -14,8 +14,6 @@ let Uid = UIDevice.current.identifierForVendor!.uuidString
 
 class MainPlaceViewController: UIViewController, ExpyTableViewDataSource,  ExpyTableViewDelegate
 , ImageDelegate {
-
-    // let storage = Storage.storage()
     let db: Firestore = Firestore.firestore()
     let storageRef = Storage.storage().reference()
     private let loadingView = UIView();
@@ -53,10 +51,9 @@ class MainPlaceViewController: UIViewController, ExpyTableViewDataSource,  ExpyT
         loadPlaceData()
         downloadList()
         
-        placeTableView.refreshControl = UIRefreshControl()    //새로고침
+        placeTableView.refreshControl = UIRefreshControl()
         placeTableView.refreshControl?.addTarget(self, action: #selector(pullToRefresh(_:)), for: .valueChanged)
-
-        placeTableView.tableFooterView = UIView(frame: CGRect.zero) // 마지막 빈 줄 없애기
+        placeTableView.tableFooterView = UIView(frame: CGRect.zero)
         
         NotificationCenter.default.addObserver(self, selector: #selector(newUpdate), name: NSNotification.Name(rawValue: "newPlaceUpdate"), object: nil)
     }
@@ -166,7 +163,6 @@ class MainPlaceViewController: UIViewController, ExpyTableViewDataSource,  ExpyT
     func didImageDone(newData: PlaceData, image: UIImage) {
         placeImages.updateValue(image, forKey: newData.name) 
     }
-    
    
     // 테이블 뷰를 끌어내려서 로딩
     @objc func pullToRefresh(_ refresh: UIRefreshControl){
@@ -191,7 +187,6 @@ class MainPlaceViewController: UIViewController, ExpyTableViewDataSource,  ExpyT
     }
     
     // MARK: - Table view data source
-
     func tableView(_ tableView: ExpyTableView, canExpandSection section: Int) -> Bool {
         if segmentedIndex != 0{
             return true
@@ -261,7 +256,6 @@ class MainPlaceViewController: UIViewController, ExpyTableViewDataSource,  ExpyT
         cell.lblPlaceName.text = cellPlace.name
         
         cell.lblPlaceInfo.text = cellPlace.group + " ∙ " + cellPlace.category + " ∙ " + cellPlace.rate + " 점"
-       // cell.lblPlaceRate.text = "⭐️ " + cellPlace.rate + " 점"
         cell.imgPlace.image = UIImage(named: "pdicon")
     
         cell.btnFavorit.tag = indexPath.row
@@ -287,7 +281,6 @@ class MainPlaceViewController: UIViewController, ExpyTableViewDataSource,  ExpyT
         }
         return cell
     }
-    
     
     //테이블 섹션의 개수
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -442,35 +435,6 @@ class MainPlaceViewController: UIViewController, ExpyTableViewDataSource,  ExpyT
         placeTableView.reloadData()
     }
 
-    /*
-    // Override to support rearranging the table view.
-    override func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath) {
-       
-        let titleToMove = placeTitles[(fromIndexPath as NSIndexPath).row]
-        let imageToMove = placeImages[(fromIndexPath as NSIndexPath).row]
-        let subToMove = placeSubTitles[(fromIndexPath as NSIndexPath).row]
-        
-        
-        placeTitles.remove(at: (fromIndexPath as NSIndexPath).row)
-        placeImages.remove(at: (fromIndexPath as NSIndexPath).row)
-        placeSubTitles.remove(at: (fromIndexPath as NSIndexPath).row)
-        
-        placeTitles.insert(titleToMove, at: (to as NSIndexPath).row)
-        placeImages.insert(imageToMove, at: (to as NSIndexPath).row)
-        placeSubTitles.insert(subToMove, at: (to as NSIndexPath).row)
- 
-    }
-    */
-
-    /*
-    // Override to support conditional rearranging of the table view.
-    override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the item to be re-orderable.
-        return true
-    }
-    */
-
-    
     // MARK: - Navigation
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -494,7 +458,6 @@ class MainPlaceViewController: UIViewController, ExpyTableViewDataSource,  ExpyT
                 if selectedData.image{
                     infoView.downloadImgInfo(selectedData)
                 }else{
-                    //infoView.hasimage = false
                     infoView.getPlaceInfo(selectedData, image: UIImage(named: "pdicon")!)
                 }
             }

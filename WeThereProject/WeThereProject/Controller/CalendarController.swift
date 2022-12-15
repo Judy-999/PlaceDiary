@@ -2,7 +2,7 @@
 //  CalendarController.swift
 //  WeThereProject
 //
-//  Created by 김주영 on 2021/06/29.
+//  Created by 김주영 on 2021/06/29. --> Refacted on 2022/12/15
 //
 
 import UIKit
@@ -27,11 +27,8 @@ class CalendarController: UIViewController, FSCalendarDelegate, FSCalendarDataSo
     @IBOutlet weak var calendar: FSCalendar!
     @IBOutlet weak var tableView: UITableView!
     
-
     override func viewDidLoad() {
         super.viewDidLoad()
-       
-        //tableView.separatorStyle = UITableViewCell.SeparatorStyle.none
         setCalendar()
         calendar.reloadData()
     }
@@ -61,14 +58,12 @@ class CalendarController: UIViewController, FSCalendarDelegate, FSCalendarDataSo
         calendar.appearance.headerDateFormat = "YYYY년 M월"
         calendar.appearance.weekdayTextColor = UIColor.black
         calendar.appearance.headerTitleColor = UIColor.black
-      //  calendar.appearance.eventColor = UIColor.greenColor
         calendar.appearance.selectionColor = #colorLiteral(red: 0, green: 0.8924261928, blue: 0.8863361478, alpha: 1)
         calendar.appearance.todayColor = #colorLiteral(red: 0.4745098054, green: 0.8392156959, blue: 0.9764705896, alpha: 1)
         calendar.appearance.todaySelectionColor = #colorLiteral(red: 0, green: 0.8924261928, blue: 0.8863361478, alpha: 1)
         calendar.appearance.titleWeekendColor = UIColor.blue
         calendar.appearance.headerMinimumDissolvedAlpha = 0.0
         calendar.appearance.eventDefaultColor = #colorLiteral(red: 0, green: 0.8924261928, blue: 0.8863361478, alpha: 1)
-        //calendar.appearance.eventSelectionColor = #colorLiteral(red: 0.4745098054, green: 0.8392156959, blue: 0.9764705896, alpha: 1)
         calendar.appearance.eventSelectionColor = .red
         calendar.backgroundColor = UIColor.white
         calendar.locale = Locale(identifier: "ko_KR")
@@ -130,21 +125,7 @@ class CalendarController: UIViewController, FSCalendarDelegate, FSCalendarDataSo
             tableView.reloadData()
         }
     }
-    
-    // MARK: - Navigation
-/*
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == "sgCalendarInfo"{
-            let infoView = segue.destination as! PlaceInfoTableViewController
-            let i = places.first(where: {$0.name == selectedDate})
-            infoView.getInfo(i!, image: placeImages[(i?.name)!]!)
-        }
-    }
-    */
-
 }
-
 
 extension CalendarController: UITableViewDelegate, UITableViewDataSource{
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -185,7 +166,6 @@ extension CalendarController: UITableViewDelegate, UITableViewDataSource{
                 if selectedPlace!.image{
                     infoView.downloadImgInfo(selectedPlace!)
                 }else{
-                    //infoView.hasimage = false
                     infoView.getPlaceInfo(selectedPlace!, image: UIImage(named: "pdicon")!)
                 }
             }

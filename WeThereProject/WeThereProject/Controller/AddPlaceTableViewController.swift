@@ -2,7 +2,7 @@
 //  AddPlaceTableViewController.swift
 //  WeThereProject
 //
-//  Created by 김주영 on 2021/05/28.
+//  Created by 김주영 on 2021/05/28. --> Refacted on 2022/12/15
 //
 
 import UIKit
@@ -56,7 +56,6 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
         setPicker(categoryPicker)
         setPicker(groupPicker)
         
-        // 텍스트뷰(위치, 코멘트)에 placeholder 넣기
         txvComent.delegate = self
         tvPlacePosition.delegate = self
         txvComent.text = "코멘트를 입력하세요."
@@ -72,8 +71,7 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
         starButtons.append(btnRate3)
         starButtons.append(btnRate4)
         starButtons.append(btnRate5)
-        
-    //    pkDate.backgroundColor = #colorLiteral(red: 0, green: 1, blue: 1, alpha: 1)
+
         tableView.tableFooterView = UIView(frame: CGRect.zero)
       
         if dataFromInfo {
@@ -519,8 +517,6 @@ extension AddPlaceTableViewController :  UIPickerViewDelegate, UIPickerViewDataS
             return tfGroup.text = groupItem[row]
         }
     }
-    
-
 }
 
 class StarRatingUISlider: UISlider {

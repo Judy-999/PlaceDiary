@@ -2,13 +2,12 @@
 //  SearchTableViewController.swift
 //  WeThereProject
 //
-//  Created by 김주영 on 2021/06/23.
+//  Created by 김주영 on 2021/06/23. --> Refacted on 2022/12/15
 //
 
 import UIKit
 
 class SearchTableViewController: UITableViewController, ImageDelegate {
-
     @IBOutlet var searchTableView: UITableView!
     
     var newUpdate = false
@@ -24,19 +23,12 @@ class SearchTableViewController: UITableViewController, ImageDelegate {
         }
     }
     
-    
     override func viewDidLoad() {
         super.viewDidLoad()
 
         self.setSearchController()
         self.tableView.delegate = self
         self.tableView.dataSource = self
-        
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
-
-        // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-        // self.navigationItem.rightBarButtonItem = self.editButtonItem
     }
 
     func setSearchController(){
@@ -116,12 +108,7 @@ class SearchTableViewController: UITableViewController, ImageDelegate {
                 return placeName.count
             }
         }
-        
-        
-        
-       // return isSearching ? filterArray.count : self.placeName.count
     }
-
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "searchCell", for: indexPath) as! SearchResultCell
@@ -160,12 +147,8 @@ class SearchTableViewController: UITableViewController, ImageDelegate {
         let isSearchBarHasText = searchController?.searchBar.text?.isEmpty == false
         return isActive && isSearchBarHasText
     }
-  
-
     
     // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "sgSearchInfo"{
             let cell = sender as! UITableViewCell
@@ -194,8 +177,6 @@ class SearchTableViewController: UITableViewController, ImageDelegate {
           
         }
     }
-    
-
 }
 
 extension SearchTableViewController: UISearchResultsUpdating {

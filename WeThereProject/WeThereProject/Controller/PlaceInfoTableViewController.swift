@@ -2,7 +2,7 @@
 //  PlaceInfoTableViewController.swift
 //  WeThereProject
 //
-//  Created by 김주영 on 2021/06/06.
+//  Created by 김주영 on 2021/06/06. --> Refacted on 2022/12/15
 //
 
 
@@ -18,12 +18,8 @@ protocol ImageDelegate {
 class PlaceInfoTableViewController: UITableViewController, EditDelegate {
     let storage = Storage.storage()
     let db: Firestore = Firestore.firestore()
-    
     var receiveImage: UIImage?
-    
-   // var hasimage = true
     var reName = "", rePositon = "", reDate = "", reCategory = "", reComent = "", reRate = "", reGroup = ""
-    
     var rateButtons = [UIButton]()
     var editData : PlaceData?
     var imgDelegate : ImageDelegate?
@@ -44,7 +40,6 @@ class PlaceInfoTableViewController: UITableViewController, EditDelegate {
     @IBOutlet weak var btnRate3: UIButton!
     @IBOutlet weak var btnRate4: UIButton!
     @IBOutlet weak var btnRate5: UIButton!
-  //  @IBOutlet weak var lblCount: UILabel!
  
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -206,8 +201,6 @@ class PlaceInfoTableViewController: UITableViewController, EditDelegate {
     
     
     // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         switch segue.identifier{
         case "editPlace":
@@ -225,5 +218,3 @@ class PlaceInfoTableViewController: UITableViewController, EditDelegate {
         }
     }
 }
-
-
