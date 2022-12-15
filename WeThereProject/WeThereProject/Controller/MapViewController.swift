@@ -18,14 +18,14 @@ class MapViewController: UIViewController, CLLocationManagerDelegate , GMSMapVie
     var locationManager: CLLocationManager!
     var mapView: GMSMapView?
     var points = [GeoPoint]()
-    var places = [PlaceData]()
+    var places = [Place]()
     var placeImages = [String : UIImage]()
     var placeTitle = ""
     var newUpdate = false
     var groupList = ["전체"]
     var categoryList = ["전체"]
-    var optionedPlaces = [PlaceData]()
-    var onePlace : PlaceData?
+    var optionedPlaces = [Place]()
+    var onePlace : Place?
     
     @IBOutlet var viewMap: UIView!
     
@@ -77,7 +77,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate , GMSMapVie
         }
     }
     
-    func showAddressMarker(placeData : PlaceData){
+    func showAddressMarker(placeData : Place){
         let oneList = [placeData]
         let camera = GMSCameraPosition.camera(
             withLatitude: (placeData.geopoint.latitude) as Double,
@@ -89,7 +89,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate , GMSMapVie
         mark(oneList)
     }
     
-    func didImageDone(newData: PlaceData, image: UIImage) {
+    func didImageDone(newData: Place, image: UIImage) {
         placeImages.updateValue(image, forKey: newData.name)
         newUpdate = true
     }
@@ -120,7 +120,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate , GMSMapVie
         mainCont.updateImage(placeImages)
     }
     
-    func mark(_ placeList: [PlaceData]){
+    func mark(_ placeList: [Place]){
         for place in placeList{
             let marker = GMSMarker()
             marker.position = CLLocationCoordinate2D(latitude: place.geopoint.latitude, longitude: place.geopoint.longitude)
@@ -142,7 +142,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate , GMSMapVie
         }
     }
     
-    func getPlace(_ data: [PlaceData], images: [String : UIImage]){
+    func getPlace(_ data: [Place], images: [String : UIImage]){
         places = data
         mark(places)
         placeImages = images
@@ -217,7 +217,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate , GMSMapVie
             if let placeImage = placeImages[(selectedPlace?.name)!]{
                 infoView.getPlaceInfo(selectedPlace!, image: placeImage)
             }else{
-                if selectedPlace!.image{
+                if selectedPlace!.hasImage{
                     infoView.downloadImgInfo(selectedPlace!)
                 }else{
                     //infoView.hasimage = false

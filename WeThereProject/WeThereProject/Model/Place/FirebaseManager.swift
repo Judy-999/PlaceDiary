@@ -8,16 +8,16 @@
 import Foundation
 import FirebaseFirestore
 
-class PlaceService {
+class FirebaseManager {
     let database = Firestore.firestore()
 
-    func get(collectionID: String, handler: @escaping ([PlaceData]) -> Void) {
+    func get(collectionID: String, handler: @escaping ([Place]) -> Void) {
         database.collection(collectionID).order(by: "date", descending: true).addSnapshotListener { querySnapshot, err in
             if let error = err {
                 print(error)
                 handler([])
             } else {
-                handler(PlaceData.build(from: querySnapshot?.documents ?? []))
+                handler(Place.build(from: querySnapshot?.documents ?? []))
             }
         }
     }

@@ -24,7 +24,7 @@ class MainPlaceViewController: UIViewController, ImageDelegate {
     var groupItem = [String]()
     var placeImages = [String : UIImage]()
 
-    var placeList = [PlaceData]() {
+    var placeList = [Place]() {
         didSet {
             DispatchQueue.main.async {
                 self.placeTableView.reloadData()
@@ -32,8 +32,8 @@ class MainPlaceViewController: UIViewController, ImageDelegate {
         }
     }
     
-    private var service: PlaceService?
-       private var allPlaces = [PlaceData]() {
+    private var service: FirebaseManager?
+       private var allPlaces = [Place]() {
         didSet {
             DispatchQueue.main.async {
                 self.placeList = self.allPlaces
@@ -59,7 +59,7 @@ class MainPlaceViewController: UIViewController, ImageDelegate {
     @objc func newUpdate(_ notification: Notification){
         newUapdate = true
         if notification.object != nil{
-            let data = notification.object as! PlaceData
+            let data = notification.object as! Place
             if data.newImg != nil{ // 새로운 이미지 추가
                 placeImages.updateValue(data.newImg!, forKey: data.name)
             }else{  // 장소 삭제 
@@ -90,7 +90,7 @@ class MainPlaceViewController: UIViewController, ImageDelegate {
     }
     
     func loadPlaceData() {
-        service = PlaceService()
+        service = FirebaseManager()
         service?.get(collectionID: Uid) { places in
             self.allPlaces = places
         }
@@ -144,7 +144,7 @@ class MainPlaceViewController: UIViewController, ImageDelegate {
     }
     
     // 선택한 장소 보기별로 장소 리스트를 변경해주는 함수
-    func getPlaceList(sectionNum: Int, index: IndexPath) -> [PlaceData]{
+    func getPlaceList(sectionNum: Int, index: IndexPath) -> [Place]{
         switch segmentedIndex {
         case 0:
             return placeList
@@ -158,7 +158,7 @@ class MainPlaceViewController: UIViewController, ImageDelegate {
     }
     
     // ImageDelegat 프로토콜
-    func didImageDone(newData: PlaceData, image: UIImage) {
+    func didImageDone(newData: Place, image: UIImage) {
         placeImages.updateValue(image, forKey: newData.name) 
     }
    
@@ -184,7 +184,7 @@ class MainPlaceViewController: UIViewController, ImageDelegate {
         super.didReceiveMemoryWarning()
     }
     
-    func getImage(place: PlaceData, completion: @escaping (UIImage?) -> ()) {
+    func getImage(place: Place, completion: @escaping (UIImage?) -> ()) {
         let fileName = place.name
         let islandRef = storageRef.child(Uid + "/" + fileName)
         islandRef.getData(maxSize: 1 * 1024 * 1024) { data, error in
@@ -317,7 +317,7 @@ class MainPlaceViewController: UIViewController, ImageDelegate {
             let indexPath = self.placeTableView.indexPath(for: cell)
             let infoView = segue.destination as! PlaceInfoTableViewController
             let sectionPlaces = getPlaceList(sectionNum: segmentedIndex, index: indexPath!)
-            let selectedData : PlaceData!
+            let selectedData : Place!
             if segmentedIndex == 0{
                 selectedData = sectionPlaces[(indexPath! as NSIndexPath).row]
             }else{
@@ -329,7 +329,7 @@ class MainPlaceViewController: UIViewController, ImageDelegate {
             if let placeImage = placeImages[selectedData.name] {
                 infoView.getPlaceInfo(selectedData, image: placeImage)
             }else{
-                if selectedData.image{
+                if selectedData.hasImage{
                     infoView.downloadImgInfo(selectedData)
                 }else{
                     infoView.getPlaceInfo(selectedData, image: UIImage(named: "pdicon")!)
@@ -380,7 +380,7 @@ extension MainPlaceViewController: UITableViewDataSource,  UITableViewDelegate {
         let cell = tableView.dequeueReusableCell(withIdentifier: "placeCell", for: indexPath) as! PlaceCell
         
         let cellData = getPlaceList(sectionNum: segmentedIndex, index: indexPath)
-        let cellPlace : PlaceData!
+        let cellPlace : Place!
         if segmentedIndex == 0{
             cellPlace = cellData[indexPath.row]
         }else{
@@ -404,7 +404,7 @@ extension MainPlaceViewController: UITableViewDataSource,  UITableViewDelegate {
         cellPlace.isFavorit ? cell.btnFavorit.setImage(UIImage(systemName: "heart.fill"), for: .normal) :
         cell.btnFavorit.setImage(UIImage(systemName: "heart"), for: .normal)
         
-        if cellPlace.image{
+        if cellPlace.hasImage{
             if let placeImage = placeImages[cellPlace.name] {
                 cell.imgPlace.image = placeImage
             } else {

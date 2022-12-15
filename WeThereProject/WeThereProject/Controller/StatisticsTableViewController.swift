@@ -10,7 +10,7 @@ import FirebaseFirestore
 
 class StatisticsTableViewController: UITableViewController {
     let sectionName = ["분류", "그룹"]
-    var places = [PlaceData]()
+    var places = [Place]()
     var dicCategory = [String : Int]()
     var dicGroup = [String : Int]()
     var categoryList = [String](){

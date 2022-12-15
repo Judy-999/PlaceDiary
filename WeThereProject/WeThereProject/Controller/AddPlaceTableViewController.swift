@@ -12,7 +12,7 @@ import FirebaseStorage
 import GooglePlaces
 
 protocol EditDelegate {
-    func didEditPlace(_ controller: AddPlaceTableViewController, data: PlaceData, image: UIImage)
+    func didEditPlace(_ controller: AddPlaceTableViewController, data: Place, image: UIImage)
 }
 
 class AddPlaceTableViewController: UITableViewController, UINavigationControllerDelegate, UIImagePickerControllerDelegate, UITextViewDelegate{
@@ -29,9 +29,9 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
     var placeHasImg: Bool = false
     var visitCount = "0"
     var placeGeoPoint: GeoPoint?
-    var editData: PlaceData?
+    var editData: Place?
     var editDelegate: EditDelegate?
-    var nowPlaceData = [PlaceData]()
+    var nowPlaceData = [Place]()
     
     @IBOutlet var btnGallery: UIButton!
     @IBOutlet var placeImageView: UIImageView!
@@ -216,14 +216,14 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
     }
     
     // 편집하는 장소 데이터를 받아오는 함수
-    func setPlaceDataFromInfo(data: PlaceData, image: UIImage){
+    func setPlaceDataFromInfo(data: Place, image: UIImage){
         editData = data
         receiveImage = image
         selectedImage = image
         dataFromInfo = true
         receiveName = data.name
         receiveFavofit = data.isFavorit
-        placeHasImg = data.image
+        placeHasImg = data.hasImage
         placeGeoPoint = data.geopoint
     }
     
@@ -269,23 +269,23 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
             txvComent.text = "내용 없음"
         }
 
-        var newPlaceInfo: PlaceData = PlaceData(name: tfPlaceName.text!, location: tvPlacePosition.text, date: pkDate.date, isFavorit: receiveFavofit, image: placeHasImg, category: tfCategory.text!, rate: lblRate.text!, coment: txvComent.text, geopoint: placeGeoPoint!, group: tfGroup.text!, newImg: nil)
+        var newPlaceInfo: Place = Place(name: tfPlaceName.text!, location: tvPlacePosition.text, date: pkDate.date, isFavorit: receiveFavofit, hasImage: placeHasImg, category: tfCategory.text!, rate: lblRate.text!, coment: txvComent.text, geopoint: placeGeoPoint!, group: tfGroup.text!, newImg: nil)
         
         if editDelegate != nil{ // 장소를 편집하는 중이라면
             if placeHasImg == false{ // 원래 사진이 없을 때
                 print("저한테 듷어오긴 하나요>>>>")
                 if selectedImage != UIImage(named: "pdicon"){    // 새로 사진을 선택했을 때
-                    newPlaceInfo.image = true
+                    newPlaceInfo.hasImage = true
                     uploadImage(newPlaceInfo.name, image: selectedImage.resize(newWidth: 300))
                     newPlaceInfo.newImg = selectedImage
                     NotificationCenter.default.post(name: NSNotification.Name(rawValue: "newPlaceUpdate"), object: newPlaceInfo)
                 }else{  // 새로 사진이 없을 때
-                    newPlaceInfo.image = false
+                    newPlaceInfo.hasImage = false
                     NotificationCenter.default.post(name: NSNotification.Name(rawValue: "newPlaceUpdate"), object: nil)
                 }
                 uploadData(place: newPlaceInfo)
             }else{  // 원래 사진이 있을 때
-                newPlaceInfo.image = true
+                newPlaceInfo.hasImage = true
                 uploadData(place: newPlaceInfo)
                 if receiveImage != selectedImage{   // 새로운 사진으로 변경했을 때
                     uploadImage(newPlaceInfo.name, image: selectedImage.resize(newWidth: 300))
@@ -308,10 +308,10 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
             editDelegate?.didEditPlace(self, data: newPlaceInfo, image: selectedImage)  // 장소 정보 페이지로 변경된 장소 정보 보내주기
         }else{  // 새로운 장소 추가
             if selectedImage == nil{    // 선택한 이미지 없음
-                newPlaceInfo.image = false
+                newPlaceInfo.hasImage = false
                 NotificationCenter.default.post(name: NSNotification.Name(rawValue: "newPlaceUpdate"), object: nil)
             }else{  // 선택한 이미지 있음
-                newPlaceInfo.image = true
+                newPlaceInfo.hasImage = true
                 uploadImage(newPlaceInfo.name, image: selectedImage.resize(newWidth: 300))
                 newPlaceInfo.newImg = selectedImage
                 NotificationCenter.default.post(name: NSNotification.Name(rawValue: "newPlaceUpdate"), object: newPlaceInfo)
@@ -340,7 +340,7 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
      }
      
      // 장소 정보를 Firebase에 업로드하는 함수
-     func uploadData(place data: PlaceData){
+     func uploadData(place data: Place){
          let docData: [String: Any] = [
             "name": data.name,
             "position": data.location,
@@ -350,7 +350,7 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
             "coment": data.coment,
             "category": data.category,
             "geopoint": data.geopoint,
-            "image": data.image,
+            "image": data.hasImage,
             "group": data.group
         ]
 

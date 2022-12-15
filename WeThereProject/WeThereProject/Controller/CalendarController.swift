@@ -17,7 +17,7 @@ class CalendarController: UIViewController, FSCalendarDelegate, FSCalendarDataSo
 
     var newUpdate = false
     var placeDay = [Date]()
-    var places = [PlaceData]()
+    var places = [Place]()
     var placeImages = [String : UIImage]()
     var selectedDate = ""
     var nameDate = [Date : String]()
@@ -33,7 +33,7 @@ class CalendarController: UIViewController, FSCalendarDelegate, FSCalendarDataSo
         calendar.reloadData()
     }
 
-    func getDate(_ data: [PlaceData], images: [String : UIImage]){
+    func getDate(_ data: [Place], images: [String : UIImage]){
         dates.removeAll()
         places = data
         for place in places{
@@ -80,7 +80,7 @@ class CalendarController: UIViewController, FSCalendarDelegate, FSCalendarDataSo
         return date!
     }
 
-    func didImageDone(newData: PlaceData, image: UIImage) {
+    func didImageDone(newData: Place, image: UIImage) {
         placeImages.updateValue(image, forKey: newData.name)
         newUpdate = true
     }
@@ -163,7 +163,7 @@ extension CalendarController: UITableViewDelegate, UITableViewDataSource{
             if let placeImage = placeImages[(selectedPlace?.name)!]{
                 infoView.getPlaceInfo(selectedPlace!, image: placeImage)
             }else{
-                if selectedPlace!.image{
+                if selectedPlace!.hasImage{
                     infoView.downloadImgInfo(selectedPlace!)
                 }else{
                     infoView.getPlaceInfo(selectedPlace!, image: UIImage(named: "pdicon")!)

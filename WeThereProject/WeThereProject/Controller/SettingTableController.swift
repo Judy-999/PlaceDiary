@@ -9,7 +9,7 @@ import UIKit
 
 
 class SettingTableController: UITableViewController {
-    var places = [PlaceData]()
+    var places = [Place]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -25,7 +25,7 @@ class SettingTableController: UITableViewController {
         return 4
     }
     
-    func getPlaces(_ data: [PlaceData]){
+    func getPlaces(_ data: [Place]){
         places = data
     }
     

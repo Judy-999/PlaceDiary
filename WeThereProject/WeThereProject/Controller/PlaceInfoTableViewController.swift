@@ -10,7 +10,7 @@ import FirebaseStorage
 import FirebaseFirestore
 
 protocol ImageDelegate {
-    func didImageDone(newData: PlaceData, image: UIImage)
+    func didImageDone(newData: Place, image: UIImage)
 }
 
 class PlaceInfoTableViewController: UITableViewController, EditDelegate {
@@ -19,7 +19,7 @@ class PlaceInfoTableViewController: UITableViewController, EditDelegate {
     var receiveImage: UIImage?
     var reName = "", rePositon = "", reDate = "", reCategory = "", reComent = "", reRate = "", reGroup = ""
     var rateButtons = [UIButton]()
-    var editData : PlaceData?
+    var editData : Place?
     var imgDelegate : ImageDelegate?
     let loadingView = UIActivityIndicatorView(style: .large)
     var isLoading = false
@@ -65,7 +65,7 @@ class PlaceInfoTableViewController: UITableViewController, EditDelegate {
     }
     
     // 메인 페이지에서 이미지가 다운되지 못했을 경우 정보 상세 페이지에서 이미지를 받아오는 함수
-    func downloadImgInfo(_ place: PlaceData){
+    func downloadImgInfo(_ place: Place){
         let fileName = place.name
         let islandRef = storage.reference().child(Uid + "/" + fileName)
         isLoading = true
@@ -85,7 +85,7 @@ class PlaceInfoTableViewController: UITableViewController, EditDelegate {
         }
     }
    
-    func getPlaceInfo(_ data: PlaceData, image: UIImage){
+    func getPlaceInfo(_ data: Place, image: UIImage){
         editData = data
         receiveImage = image
         reName = data.name
@@ -126,7 +126,7 @@ class PlaceInfoTableViewController: UITableViewController, EditDelegate {
         lblDate.text = reDate
     }
     
-    func didEditPlace(_ controller: AddPlaceTableViewController, data: PlaceData, image: UIImage) {
+    func didEditPlace(_ controller: AddPlaceTableViewController, data: Place, image: UIImage) {
          getPlaceInfo(data, image: image)
          setPlaceInfo()
         tableView.reloadData()
@@ -184,7 +184,7 @@ class PlaceInfoTableViewController: UITableViewController, EditDelegate {
     }
 
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        if indexPath.row == 0 && editData?.image == false{
+        if indexPath.row == 0 && editData?.hasImage == false{
             return 0
         }
         return super.tableView(tableView, heightForRowAt: indexPath)

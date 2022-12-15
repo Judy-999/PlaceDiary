@@ -11,7 +11,7 @@ import FirebaseFirestore
 class CategoryEditController: UITableViewController, UIColorPickerViewControllerDelegate {
     let db: Firestore = Firestore.firestore()
     var editType = "", typeString = ""
-    var places = [PlaceData]()
+    var places = [Place]()
     var editItems = [String](){
         didSet {
             DispatchQueue.main.async {

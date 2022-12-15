@@ -11,9 +11,9 @@ class SearchTableViewController: UITableViewController, ImageDelegate {
     @IBOutlet var searchTableView: UITableView!
     
     var newUpdate = false
-    var places = [PlaceData]()
+    var places = [Place]()
     var placeImages = [String : UIImage]()
-    var filterArray = [PlaceData]()
+    var filterArray = [Place]()
     var txtSearch : String?
     var placeName = [String](){
         didSet {
@@ -44,7 +44,7 @@ class SearchTableViewController: UITableViewController, ImageDelegate {
         self.navigationItem.hidesSearchBarWhenScrolling = false
     }
 
-    func didImageDone(newData: PlaceData, image: UIImage) {
+    func didImageDone(newData: Place, image: UIImage) {
         placeImages.updateValue(image, forKey: newData.name)
         newUpdate = true
     }
@@ -132,7 +132,7 @@ class SearchTableViewController: UITableViewController, ImageDelegate {
     }
     
 
-    func setData(_ data: [PlaceData], images: [String : UIImage]){
+    func setData(_ data: [Place], images: [String : UIImage]){
         places = data
         placeName.removeAll()
         for place in data{
@@ -154,7 +154,7 @@ class SearchTableViewController: UITableViewController, ImageDelegate {
             let cell = sender as! UITableViewCell
             let indexPath = self.searchTableView.indexPath(for: cell)
             let infoView = segue.destination as! PlaceInfoTableViewController
-            var selectedPlace: PlaceData!
+            var selectedPlace: Place!
             
             infoView.imgDelegate = self
             
@@ -167,7 +167,7 @@ class SearchTableViewController: UITableViewController, ImageDelegate {
             if let placeImage = placeImages[(selectedPlace.name)]{
                 infoView.getPlaceInfo(selectedPlace, image: placeImage)
             }else{
-                if selectedPlace.image{
+                if selectedPlace.hasImage{
                     infoView.downloadImgInfo(selectedPlace)
                 }else{
                     //infoView.hasimage = false

@@ -8,12 +8,12 @@
 import Firebase
 import UIKit
 
-struct PlaceData {
+struct Place {
     var name: String
     var location: String
     var date: Date
     var isFavorit: Bool
-    var image: Bool
+    var hasImage: Bool
     var category : String
     var rate: String
     var coment: String

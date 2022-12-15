@@ -8,18 +8,18 @@
 import Foundation
 import FirebaseFirestore
 
-extension PlaceData {
-    static func build(from documents: [QueryDocumentSnapshot]) -> [PlaceData] {
-        var placeList = [PlaceData]()
+extension Place {
+    static func build(from documents: [QueryDocumentSnapshot]) -> [Place] {
+        var placeList = [Place]()
     
         for document in documents {
             let date = document["date"] as! Timestamp
             
-            placeList.append(PlaceData(name: document["name"] as? String ?? "",
+            placeList.append(Place(name: document["name"] as? String ?? "",
                                     location: document["position"] as? String ?? "",
                                     date: date.dateValue(),
                                     isFavorit: (document["favorit"] as? Bool)!,
-                                    image: (document["image"] as? Bool)!,
+                                    hasImage: (document["image"] as? Bool)!,
                                     category: document["category"] as? String ?? "",
                                     rate: document["rate"] as? String ?? "",
                                     coment: document["coment"] as? String ?? "",
