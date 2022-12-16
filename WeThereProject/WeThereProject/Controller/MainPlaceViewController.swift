@@ -6,8 +6,6 @@
 //
 
 import UIKit
-import FirebaseFirestore
-import FirebaseStorage
 
 let Uid = UIDevice.current.identifierForVendor!.uuidString
 

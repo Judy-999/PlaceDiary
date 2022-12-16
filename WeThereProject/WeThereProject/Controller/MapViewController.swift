@@ -6,8 +6,6 @@
 //
 
 import UIKit
-import MapKit
-import Firebase
 import FirebaseFirestore
 import GoogleMaps
 import GooglePlaces

@@ -6,7 +6,6 @@
 //
 
 import UIKit
-import FirebaseFirestore
 
 class StatisticsTableViewController: UITableViewController {
     let sectionName = ["분류", "그룹"]

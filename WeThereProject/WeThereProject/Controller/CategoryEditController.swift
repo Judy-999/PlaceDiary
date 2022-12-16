@@ -6,7 +6,6 @@
 //
 
 import UIKit
-import FirebaseFirestore
 
 class CategoryEditController: UITableViewController, UIColorPickerViewControllerDelegate {
     var editType = "", typeString = ""

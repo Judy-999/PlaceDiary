@@ -7,7 +7,6 @@
 
 import UIKit
 
-
 class SettingTableController: UITableViewController {
     var places = [Place]()
     
