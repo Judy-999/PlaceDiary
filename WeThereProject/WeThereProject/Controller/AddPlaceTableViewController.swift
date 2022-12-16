@@ -16,7 +16,6 @@ protocol EditDelegate {
 }
 
 class AddPlaceTableViewController: UITableViewController, UINavigationControllerDelegate, UIImagePickerControllerDelegate, UITextViewDelegate{
-    let storageRef = Storage.storage().reference()
     let categoryPicker = UIPickerView(), groupPicker = UIPickerView()
     var categoryItem = [String](), groupItem = [String]()
     var starButtons = [UIButton]()
@@ -324,22 +323,8 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
     }
     
     // 선택된 이미지를 Storage에 업로드하는 함수
-    func uploadImage(_ path: String, image: UIImage){
-        let original = image
-        var data = Data()
-        data = original.jpegData(compressionQuality: 0.8)!
-        let filePath = path
-        let metaData = StorageMetadata()
-        metaData.contentType = "image/jpeg"
-        storageRef.child(Uid + "/" + filePath).putData(data, metadata: metaData){
-            (metaData, error) in if let error = error{
-                print(error.localizedDescription)
-                return
-            }else{
-                _ = self.navigationController?.popViewController(animated: true)
-                print("Image successfully upload!")
-            }
-        }
+    func uploadImage(_ placeName: String, image: UIImage){
+        StorageManager.shared.saveImage(image, name: placeName)
     }
     
     // TextView 편집을 시작하면 글자 색상을 변경하는 함수

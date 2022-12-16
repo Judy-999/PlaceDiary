@@ -14,6 +14,19 @@ class StorageManager {
     
     private init() {}
     
+    func saveImage(_ image: UIImage, name: String) {
+        guard let imageData = image.jpegData(compressionQuality: 0.8) else { return }
+        let metaData = StorageMetadata()
+        metaData.contentType = "image/jpeg"
+        
+        storage.child(Uid + "/" + name).putData(imageData, metadata: metaData) { (metaData, error) in
+            if let error = error {
+                print(error.localizedDescription)
+            } else {
+                print("Image successfully upload!")
+            }
+        }
+    }
     
     func getImage(name: String, completion: @escaping (UIImage?) -> ()) {
         let size: Int64 = 1024 * 1024
