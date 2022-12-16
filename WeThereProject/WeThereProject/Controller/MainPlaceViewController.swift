@@ -8,28 +8,19 @@
 import UIKit
 
 class MainPlaceViewController: UIViewController, ImageDelegate {
-    private let loadingView = UIView();
-    var newUapdate: Bool = true
-    var loadingCount: Int = 0
-    var sectionNum: Int = 1
-    var segmentedIndex: Int = 0
-    var sectionName: [String] = [""]
-    var categoryItem = [String]()
-    var groupItem = [String]()
-    var placeImages = [String : UIImage]()
-
-    var placeList = [Place]() {
+    private let loadingView = UIView()
+    private var newUapdate: Bool = true
+    private var loadingCount: Int = 0
+    private var sectionNum: Int = 1
+    private var segmentedIndex: Int = 0
+    private var sectionName: [String] = [""]
+    private var categoryItem = [String]()
+    private var groupItem = [String]()
+    private var placeImages = [String : UIImage]()
+    private var places = [Place]() {
         didSet {
             DispatchQueue.main.async {
                 self.placeTableView.reloadData()
-            }
-        }
-    }
-    
-    private var allPlaces = [Place]() {
-        didSet {
-            DispatchQueue.main.async {
-                self.placeList = self.allPlaces
             }
         }
     }
@@ -61,20 +52,20 @@ class MainPlaceViewController: UIViewController, ImageDelegate {
                 var sectionIndex: Int!
                 switch segmentedIndex {
                 case 0:
-                    index = placeList.firstIndex(where: {$0.name == deleteName})
+                    index = places.firstIndex(where: {$0.name == deleteName})
                     sectionIndex = 0
                 case 1:
-                    let removePlace = placeList.first(where: {$0.name == deleteName})
+                    let removePlace = places.first(where: {$0.name == deleteName})
                     sectionIndex = sectionName.firstIndex(of: removePlace!.group)
-                    let cellData = placeList.filter({$0.group == removePlace!.group})
+                    let cellData = places.filter({$0.group == removePlace!.group})
                     index = cellData.firstIndex(where: {$0.name == deleteName})
                 case 2:
-                    let removePlace = placeList.first(where: {$0.name == deleteName})
+                    let removePlace = places.first(where: {$0.name == deleteName})
                     sectionIndex = sectionName.firstIndex(of: removePlace!.category)
-                    let cellData = placeList.filter({$0.category == removePlace!.category})
+                    let cellData = places.filter({$0.category == removePlace!.category})
                     index = cellData.firstIndex(where: {$0.name == deleteName})
                 default:
-                    index = placeList.firstIndex(where: {$0.name == deleteName})
+                    index = places.firstIndex(where: {$0.name == deleteName})
                     sectionIndex = 0
                 }
                 tableView(placeTableView, commit: .delete, forRowAt: [sectionIndex, index])
@@ -84,7 +75,7 @@ class MainPlaceViewController: UIViewController, ImageDelegate {
     
     func loadPlaceData() {
         FirestoreManager.shared.loadData() { places in
-            self.allPlaces = places
+            self.places = places
         }
     }
 
@@ -112,23 +103,23 @@ class MainPlaceViewController: UIViewController, ImageDelegate {
         let settingNav = tabBarController?.viewControllers![4] as! UINavigationController
         let settingController = settingNav.topViewController as! SettingTableController
         
-        searchController.setData(placeList, images: placeImages)
-        mapController.getPlace(placeList, images: placeImages)
-        calendarController.getDate(placeList, images: placeImages)
-        settingController.getPlaces(placeList)
+        searchController.setData(places, images: placeImages)
+        mapController.getPlace(places, images: placeImages)
+        calendarController.getDate(places, images: placeImages)
+        settingController.getPlaces(places)
     }
     
     // 선택한 장소 보기별로 장소 리스트를 변경해주는 함수
     func getPlaceList(sectionNum: Int, index: IndexPath) -> [Place]{
         switch segmentedIndex {
         case 0:
-            return placeList
+            return places
         case 1:
-            return placeList.filter({$0.group == sectionName[index.section]})
+            return places.filter({$0.group == sectionName[index.section]})
         case 2:
-            return placeList.filter({$0.category == sectionName[index.section]})
+            return places.filter({$0.category == sectionName[index.section]})
         default:
-            return placeList
+            return places
         }
     }
     
@@ -168,8 +159,8 @@ class MainPlaceViewController: UIViewController, ImageDelegate {
             FirestoreManager.shared.deletePlace(removePlace)
             StorageManager.shared.deleteImage(name: removePlace)
      
-            let removeDataIndex = self.placeList.firstIndex(where: {$0.name == cellData[(indexPath as NSIndexPath).row].name})!
-            self.placeList.remove(at: removeDataIndex)
+            let removeDataIndex = self.places.firstIndex(where: {$0.name == cellData[(indexPath as NSIndexPath).row].name})!
+            self.places.remove(at: removeDataIndex)
             
             self.newUapdate = true
             
@@ -188,20 +179,20 @@ class MainPlaceViewController: UIViewController, ImageDelegate {
         let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
 
         alert.addAction(UIAlertAction(title: "별점 높은 순", style: .default) { _ in
-            self.placeList.sort(by: {$0.rate > $1.rate})
+            self.places.sort(by: {$0.rate > $1.rate})
         })
 
         alert.addAction(UIAlertAction(title: "가나다 순", style: .default) { _ in
-            self.placeList.sort(by: {$0.name < $1.name})
+            self.places.sort(by: {$0.name < $1.name})
         })
 
         alert.addAction(UIAlertAction(title: "방문 날짜 순", style: .default) { _ in
-            self.placeList.sort(by: {$0.date > $1.date})
+            self.places.sort(by: {$0.date > $1.date})
         })
         
         alert.addAction(UIAlertAction(title: "즐겨찾기만 보기", style: .default) { _ in
-            let favoritPlalces = self.placeList.filter({$0.isFavorit == true})
-            self.placeList = favoritPlalces
+            let favoritPlalces = self.places.filter({$0.isFavorit == true})
+            self.places = favoritPlalces
         })
         
         alert.addAction(UIAlertAction(title: "취소", style: .destructive))
@@ -279,7 +270,7 @@ class MainPlaceViewController: UIViewController, ImageDelegate {
         }
         if segue.identifier == "sgAddPlace"{
             let addView = segue.destination as! AddPlaceTableViewController
-            addView.nowPlaceData = placeList
+            addView.nowPlaceData = places
         }
     }
 }
@@ -296,7 +287,7 @@ extension MainPlaceViewController: UITableViewDataSource,  UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if segmentedIndex == 0{
-            if placeList.count == 0{
+            if places.count == 0{
                 let emptyLabel = UILabel(frame: CGRect(x: 0, y: 0, width: self.view.bounds.size.width, height: self.view.bounds.size.height))
                 emptyLabel.text = "장소를 추가해보세요!"
                 emptyLabel.textAlignment = NSTextAlignment.center
@@ -306,13 +297,13 @@ extension MainPlaceViewController: UITableViewDataSource,  UITableViewDelegate {
             }else{
                 tableView.separatorStyle = UITableViewCell.SeparatorStyle.singleLine
                 tableView.backgroundView = .none
-                return placeList.count
+                return places.count
             }
         }else if segmentedIndex == 1{
-            let filteredArray = placeList.filter({$0.group == sectionName[section]})
+            let filteredArray = places.filter({$0.group == sectionName[section]})
             return filteredArray.count
         }else{
-            let filteredArray = placeList.filter({$0.category == sectionName[section]})
+            let filteredArray = places.filter({$0.category == sectionName[section]})
             return filteredArray.count
         }
     }
