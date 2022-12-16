@@ -36,9 +36,7 @@ class FirebaseManager {
                 
                 completionHandler(categoryItems, groupItems)
             } else {
-//                docRef.setData(Classification.basic) { err in
-//                    // 기본 분류 저장
-//                }
+                self.setupBasicClassification(completionHandler)
             }
         }
     }
@@ -88,6 +86,16 @@ class FirebaseManager {
                 print("Error updating document: \(err)")
             } else {
                 print("Document successfully updated")
+            }
+        }
+    }
+    
+    private func setupBasicClassification(_ completionHandler: @escaping (_ categoryItems: [String], _ groupItems: [String]) -> Void) {
+        database.collection("category").document(Uid).setData(Classification.basic) { err in
+            if let err = err {
+                print("Error writing document: \(err)")
+            } else {
+                self.loadClassification(completionHandler: completionHandler)
             }
         }
     }
