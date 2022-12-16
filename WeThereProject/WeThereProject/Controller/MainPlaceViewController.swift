@@ -144,6 +144,15 @@ class MainPlaceViewController: UIViewController, ImageDelegate {
         }
     }
     
+    private func setupInitialView() {
+        let emptyLabel = UILabel()
+        emptyLabel.frame = CGRect(x: 0, y: 0, width: view.bounds.width, height: view.bounds.height)
+        emptyLabel.text = "장소를 추가해보세요!"
+        emptyLabel.textAlignment = .center
+        placeTableView.backgroundView = emptyLabel
+        placeTableView.separatorStyle = .none
+    }
+    
     // ImageDelegat 프로토콜
     func didImageDone(newData: Place, image: UIImage) {
         placeImages.updateValue(image, forKey: newData.name) 
@@ -249,30 +258,27 @@ extension MainPlaceViewController: UITableViewDataSource,  UITableViewDelegate {
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         return sectionNames[section]
     }
-
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        guard places.isEmpty == false else {
+            setupInitialView()
+            return 0
+        }
+        
+        tableView.separatorStyle = .singleLine
+        tableView.backgroundView = .none
+        
         switch segmentedControl.selectedSegmentIndex {
         case 0:
-            if places.count == 0 {
-                let emptyLabel = UILabel(frame: CGRect(x: 0, y: 0, width: self.view.bounds.size.width, height: self.view.bounds.size.height))
-                emptyLabel.text = "장소를 추가해보세요!"
-                emptyLabel.textAlignment = NSTextAlignment.center
-                tableView.backgroundView = emptyLabel
-                tableView.separatorStyle = .none
-                return 0
-            } else {
-                tableView.separatorStyle = UITableViewCell.SeparatorStyle.singleLine
-                tableView.backgroundView = .none
-                return places.count
-            }
+            return places.count
         case 1:
-            let filteredArray = places.filter({$0.group == sectionNames[section]})
+            let filteredArray = places.filter { $0.group == sectionNames[section] }
             return filteredArray.count
         case 2:
-            let filteredArray = places.filter({$0.category == sectionNames[section]})
+            let filteredArray = places.filter { $0.category == sectionNames[section] }
             return filteredArray.count
         default:
-            return 0
+            return places.count
         }
     }
 
