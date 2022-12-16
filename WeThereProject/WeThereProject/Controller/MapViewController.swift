@@ -13,8 +13,6 @@ import GoogleMaps
 import GooglePlaces
 
 class MapViewController: UIViewController, CLLocationManagerDelegate , GMSMapViewDelegate, ImageDelegate{
-   
-    let db: Firestore = Firestore.firestore()
     var locationManager: CLLocationManager!
     var mapView: GMSMapView?
     var points = [GeoPoint]()
@@ -65,15 +63,9 @@ class MapViewController: UIViewController, CLLocationManagerDelegate , GMSMapVie
     }
     
     func loadCategory(){
-        let docRef = db.collection("category").document(Uid)
-        docRef.getDocument { (document, error) in
-            if let document = document, document.exists {
-                self.groupList = self.groupList + (document.get("group") as? [String])!
-                self.categoryList = self.categoryList + (document.get("items") as? [String])!
-                print("Document Success!")
-            } else {
-                print("Document does not exist")
-            }
+        FirebaseManager.shared.loadClassification { categoryItems, groupItems in
+            self.groupList = self.groupList + groupItems
+            self.categoryList = self.categoryList + categoryItems
         }
     }
     

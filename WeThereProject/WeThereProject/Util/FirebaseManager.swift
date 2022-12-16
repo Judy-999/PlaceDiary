@@ -29,9 +29,7 @@ class FirebaseManager {
     }
     
     func loadClassification(completionHandler: @escaping (_ categoryItems: [String], _ groupItems: [String]) -> Void) {
-        let docRef = database.collection("category").document(Uid)
-        
-        docRef.getDocument { document, error in
+        database.collection("category").document(Uid).getDocument { document, error in
             if let document = document, document.exists {
                 guard let categoryItems = document.get("items") as? [String],
                       let groupItems = document.get("group") as? [String] else { return }
@@ -43,6 +41,12 @@ class FirebaseManager {
 //                }
             }
         }
+    }
+    
+    func updateClassification(_ classification: String, with items: [String]){
+        database.collection("category").document(Uid).updateData([
+            classification : items
+        ])
     }
     
     func deletePlace(_ name: String) {

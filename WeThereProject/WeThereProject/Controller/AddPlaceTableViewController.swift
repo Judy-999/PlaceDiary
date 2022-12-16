@@ -16,8 +16,6 @@ protocol EditDelegate {
 }
 
 class AddPlaceTableViewController: UITableViewController, UINavigationControllerDelegate, UIImagePickerControllerDelegate, UITextViewDelegate{
-    
-    let db: Firestore = Firestore.firestore()
     let storageRef = Storage.storage().reference()
     let categoryPicker = UIPickerView(), groupPicker = UIPickerView()
     var categoryItem = [String](), groupItem = [String]()
@@ -181,7 +179,6 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
     
     // 새로 추가한 분류나 그룹을 Firebase에 올리는 함수
     func uploadCategory(_ type: String, item: String){
-        let categoryRef = db.collection("category").document(Uid)
         var target: String!
         var array = [String]()
         
@@ -196,9 +193,8 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
             array = groupItem
             groupPicker.reloadAllComponents()
         }
-        categoryRef.updateData([
-            target : array
-        ])
+        
+        FirebaseManager.shared.updateClassification(target, with: array)
     }
 
     

@@ -9,7 +9,6 @@ import UIKit
 import FirebaseFirestore
 
 class CategoryEditController: UITableViewController, UIColorPickerViewControllerDelegate {
-    let db: Firestore = Firestore.firestore()
     var editType = "", typeString = ""
     var places = [Place]()
     var editItems = [String](){
@@ -60,8 +59,8 @@ class CategoryEditController: UITableViewController, UIColorPickerViewController
         let alertOk = UIAlertAction(title: "추가", style: .default) { [self] (alertOk) in
             if let newItem = addAlert.textFields?[0].text{
                 if checkExisted(item: newItem){
-                    uploadCategory(editType, item: newItem, add: true)
-                    loadCategory(editType)
+                    editItems.append(newItem)
+                    updateField(editType, items: editItems)
                     tableView.reloadData()
                 }else{
                     simpleAlert(title: "생성 불가", message: "이미 존재하는 항목입니다.")
@@ -80,47 +79,34 @@ class CategoryEditController: UITableViewController, UIColorPickerViewController
         alert.addAction(UIAlertAction(title: "확인", style: .default, handler: nil))
         self.present(alert, animated: true, completion: nil)
     }
-    
-    func uploadCategory(_ type: String, item: String, add: Bool){
-        let categoryRef = db.collection("category").document(Uid)
-        
-        if add{
-            categoryRef.updateData([
-                type : FieldValue.arrayUnion([item])
-                ])
-        }else{
-            categoryRef.updateData([
-                type : FieldValue.arrayRemove([item])
-            ])
+
+    func updateField(_ type: String, items: [String]) {
+        FirebaseManager.shared.updateClassification(type, with: items)
+    }
+
+    func modifyCategory(oldItem: String, newItem: String) {
+        if editType == "group" {
+            places = places.map {
+                if $0.group == oldItem {
+                    var newPlace = $0
+                    newPlace.group = newItem
+                    return newPlace
+                }
+                return $0
+            }
+        } else {
+            places = places.map {
+                if $0.category == oldItem {
+                    var newPlace = $0
+                    newPlace.category = newItem
+                    return newPlace
+                }
+                return $0
+            }
         }
-    }
-    
-    func updateField(_ type: String, items: [String]){
-        let categoryRef = db.collection("category").document(Uid)
-
-        categoryRef.updateData([
-                type : items
-        ])
-    }
-
-    func modifyCategory(oldItem: String, newItem: String){
         
-        if editType == "group"{
-            for place in places{
-                if place.group == oldItem{
-                    db.collection(Uid).document(place.name).updateData([
-                        "group" : newItem
-                    ])
-                }
-            }
-        }else{
-            for place in places{
-                if place.category == oldItem{
-                    db.collection(Uid).document(place.name).updateData([
-                        "category" : newItem
-                    ])
-                }
-            }
+        places.forEach {
+            FirebaseManager.shared.savePlace($0)
         }
     }
     
@@ -167,10 +153,11 @@ class CategoryEditController: UITableViewController, UIColorPickerViewController
             if checkUsedItem(item: removeItem){
                 let canDeleteAlert = UIAlertController(title: "삭제 확인", message: removeItem + "을(를) 삭제하시겠습니까?", preferredStyle: .alert)
                 let alertOk = UIAlertAction(title: "확인", style: .default) { (alertOk) in
-                    self.uploadCategory(self.editType, item: removeItem, add: false)
                     if let index = self.editItems.firstIndex(of: removeItem) {
                         self.editItems.remove(at: index)
                     }
+                    
+                    self.updateField(self.editType, items: self.editItems)
                     tableView.deleteRows(at: [indexPath], with: .fade)
                 }
                 canDeleteAlert.addAction(UIAlertAction(title: "취소", style: .default))
