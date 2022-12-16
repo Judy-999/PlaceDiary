@@ -24,6 +24,18 @@ class MainPlaceViewController: UIViewController, ImageDelegate {
     @IBOutlet weak var segmentedControl: UISegmentedControl!
     @IBOutlet weak var placeTableView: UITableView!
     
+    override func viewWillAppear(_ animated: Bool) {
+        loadClassification()
+        placeTableView.reloadData()
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        if newUapdate {
+            passData()
+            newUapdate = false
+        }
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -31,7 +43,10 @@ class MainPlaceViewController: UIViewController, ImageDelegate {
         loadClassification()
         configureRefreshControl()
        
-        NotificationCenter.default.addObserver(self, selector: #selector(newUpdate), name: NSNotification.Name(rawValue: "newPlaceUpdate"), object: nil)
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(newUpdate),
+                                               name: NSNotification.Name(rawValue: "newPlaceUpdate"),
+                                               object: nil)
     }
     
     private func configureRefreshControl() {
@@ -87,7 +102,7 @@ class MainPlaceViewController: UIViewController, ImageDelegate {
         }
     }
 
-    private func loadClassification(){
+    private func loadClassification() {
         FirestoreManager.shared.loadClassification { categoryItems, groupItems in
             self.categoryItem = categoryItems
             self.groupItem = groupItems
@@ -95,12 +110,12 @@ class MainPlaceViewController: UIViewController, ImageDelegate {
     }
     
     // 장소 이미지 리스트를 새로운 리스트로 변경하는 함수
-    func updateImage(_ newImageList: [String : UIImage]){
+    func updateImage(_ newImageList: [String : UIImage]) {
         placeImages = newImageList
     }
         
     // 다른 페이지로 장소 정보와 이미지를 넘겨주는 함수
-    private func passData(){
+    private func passData() {
         let searchNav = tabBarController?.viewControllers![1] as! UINavigationController
         let searchController = searchNav.topViewController as! SearchTableViewController
         let calendarNav = tabBarController?.viewControllers![2] as! UINavigationController
@@ -116,15 +131,14 @@ class MainPlaceViewController: UIViewController, ImageDelegate {
         settingController.getPlaces(places)
     }
     
-    // 선택한 장소 보기별로 장소 리스트를 변경해주는 함수
-    private func getPlaceList(index: IndexPath) -> [Place] {
+    private func displayedPlaceList(index: IndexPath) -> [Place] {
         switch segmentedControl.selectedSegmentIndex {
         case 0:
             return places
         case 1:
             return places.filter { $0.group == sectionNames[index.section] }
         case 2:
-                return places.filter { $0.category == sectionNames[index.section] }
+            return places.filter { $0.category == sectionNames[index.section] }
         default:
             return places
         }
@@ -133,28 +147,6 @@ class MainPlaceViewController: UIViewController, ImageDelegate {
     // ImageDelegat 프로토콜
     func didImageDone(newData: Place, image: UIImage) {
         placeImages.updateValue(image, forKey: newData.name) 
-    }
-   
-    // 테이블 뷰를 끌어내려서 로딩
-    @objc private func pullToRefresh(_ refresh: UIRefreshControl){
-        placeTableView.reloadData()
-        refresh.endRefreshing()
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        loadClassification()
-        placeTableView.reloadData()
-    }
-    
-    override func viewDidDisappear(_ animated: Bool) {
-        if newUapdate{
-            passData()
-            newUapdate = false
-        }
-    }
-    
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
     }
 
     private func deletePlace(_ indexPath: IndexPath){
@@ -177,7 +169,7 @@ class MainPlaceViewController: UIViewController, ImageDelegate {
         deletAlert.addAction(UIAlertAction(title: "취소", style: .cancel))
         deletAlert.addAction(okAlert)
        
-        self.present(deletAlert, animated: true)
+        present(deletAlert, animated: true)
     }
     
     @IBAction private func sortButtonTapped(_ sender: UIBarItem) {
@@ -239,7 +231,7 @@ class MainPlaceViewController: UIViewController, ImageDelegate {
             let cell = sender as! UITableViewCell
             let indexPath = self.placeTableView.indexPath(for: cell)! as IndexPath
             let infoView = segue.destination as! PlaceInfoTableViewController
-            let sectionPlaces = getPlaceList(index: indexPath)
+            let sectionPlaces = displayedPlaceList(index: indexPath)
             let selectedData = sectionPlaces[indexPath.row]
             
             infoView.imgDelegate = self
@@ -300,7 +292,7 @@ extension MainPlaceViewController: UITableViewDataSource,  UITableViewDelegate {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "placeCell", for: indexPath) as! PlaceCell
         
-        let cellData = getPlaceList(index: indexPath)
+        let cellData = displayedPlaceList(index: indexPath)
         let cellPlace = cellData[indexPath.row]
   
         let formatter = DateFormatter()
