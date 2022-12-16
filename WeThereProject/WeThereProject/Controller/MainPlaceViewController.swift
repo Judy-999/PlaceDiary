@@ -240,12 +240,7 @@ class MainPlaceViewController: UIViewController, ImageDelegate {
             let indexPath = self.placeTableView.indexPath(for: cell)! as IndexPath
             let infoView = segue.destination as! PlaceInfoTableViewController
             let sectionPlaces = getPlaceList(index: indexPath)
-            let selectedData : Place!
-            if segmentedControl.selectedSegmentIndex == 0 {
-                selectedData = sectionPlaces[indexPath.row]
-            } else {
-                selectedData = sectionPlaces[indexPath.row - 1]
-            }
+            let selectedData = sectionPlaces[indexPath.row]
             
             infoView.imgDelegate = self
             
@@ -306,17 +301,8 @@ extension MainPlaceViewController: UITableViewDataSource,  UITableViewDelegate {
         let cell = tableView.dequeueReusableCell(withIdentifier: "placeCell", for: indexPath) as! PlaceCell
         
         let cellData = getPlaceList(index: indexPath)
-        let cellPlace : Place!
-        if segmentedControl.selectedSegmentIndex == 0 {
-            cellPlace = cellData[indexPath.row]
-        } else {
-            if indexPath.row == 0{
-                cellPlace = cellData[indexPath.row]
-            } else {
-                cellPlace = cellData[indexPath.row - 1]
-            }
-        }
-        
+        let cellPlace = cellData[indexPath.row]
+  
         let formatter = DateFormatter()
         formatter.dateFormat = "yyyy-MM-dd"
         cell.lblPlaceDate.text = formatter.string(from: cellPlace.date)
