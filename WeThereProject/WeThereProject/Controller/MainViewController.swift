@@ -7,7 +7,7 @@
 
 import UIKit
 
-class MainPlaceViewController: UIViewController, ImageDelegate {
+class MainViewController: UIViewController, ImageDelegate {
     @IBOutlet weak var segmentedControl: UISegmentedControl!
     @IBOutlet weak var placeTableView: UITableView!
     
@@ -243,7 +243,7 @@ class MainPlaceViewController: UIViewController, ImageDelegate {
 }
 
 // MARK: - TableViewDataSource & TableViewDelegate
-extension MainPlaceViewController: UITableViewDataSource,  UITableViewDelegate {
+extension MainViewController: UITableViewDataSource,  UITableViewDelegate {
     func numberOfSections(in tableView: UITableView) -> Int {
         return sectionNames.count
     }

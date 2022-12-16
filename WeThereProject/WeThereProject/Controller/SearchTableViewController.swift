@@ -58,7 +58,7 @@ class SearchTableViewController: UITableViewController, ImageDelegate {
     
     func updateImg(){
         let mainNav = self.tabBarController?.viewControllers![0] as! UINavigationController
-        let mainCont = mainNav.topViewController as! MainPlaceViewController
+        let mainCont = mainNav.topViewController as! MainViewController
         let calNav = self.tabBarController?.viewControllers![2] as! UINavigationController
         let calCont = calNav.topViewController as! CalendarController
         let mapNav = self.tabBarController?.viewControllers![3] as! UINavigationController

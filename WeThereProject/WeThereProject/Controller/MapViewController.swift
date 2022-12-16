@@ -99,7 +99,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate , GMSMapVie
 
     func updateImg(){
         let mainNav = self.tabBarController?.viewControllers![0] as! UINavigationController
-        let mainCont = mainNav.topViewController as! MainPlaceViewController
+        let mainCont = mainNav.topViewController as! MainViewController
         let calNav = self.tabBarController?.viewControllers![2] as! UINavigationController
         let calCont = calNav.topViewController as! CalendarController
         let searchNav = self.tabBarController?.viewControllers![1] as! UINavigationController
