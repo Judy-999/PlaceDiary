@@ -30,12 +30,22 @@ class MainPlaceViewController: UIViewController, ImageDelegate {
 
         loadPlaceData()
         loadClassification()
-        
-        placeTableView.refreshControl = UIRefreshControl()
-        placeTableView.refreshControl?.addTarget(self, action: #selector(pullToRefresh(_:)), for: .valueChanged)
-        placeTableView.tableFooterView = UIView(frame: CGRect.zero)
-        
+        configureRefreshControl()
+       
         NotificationCenter.default.addObserver(self, selector: #selector(newUpdate), name: NSNotification.Name(rawValue: "newPlaceUpdate"), object: nil)
+    }
+    
+    private func configureRefreshControl() {
+        placeTableView.refreshControl = UIRefreshControl()
+        placeTableView.refreshControl?.addTarget(self,
+                                                 action: #selector(pullToRefresh),
+                                                 for: .valueChanged)
+    }
+    
+    // 테이블 뷰를 끌어내려서 로딩
+    @objc private func pullToRefresh(_ refresh: UIRefreshControl) {
+        placeTableView.reloadData()
+        refresh.endRefreshing()
     }
 
     @objc private func newUpdate(_ notification: Notification){
