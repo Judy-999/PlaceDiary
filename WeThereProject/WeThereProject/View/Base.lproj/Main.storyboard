@@ -76,7 +76,7 @@
                                                                     <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                                                                     <state key="normal" image="heart" catalog="system"/>
                                                                     <connections>
-                                                                        <action selector="clickHotButton:" destination="cpN-Hq-ZC8" eventType="touchUpInside" id="Bj5-en-x0j"/>
+                                                                        <action selector="favoritButtonTapped:" destination="cpN-Hq-ZC8" eventType="touchUpInside" id="GA4-h0-nkp"/>
                                                                     </connections>
                                                                 </button>
                                                             </subviews>

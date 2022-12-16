@@ -219,17 +219,17 @@ class MainPlaceViewController: UIViewController, ImageDelegate {
         placeTableView.reloadData()
     }
 
-    @IBAction private func clickHotButton(_ sender: UIButton){
-        let selectedData = place[sender.tag]
+    @IBAction private func favoritButtonTapped(_ sender: UIButton) {
+        let placeList = displayedPlaceList(index: [sectionNames.count, sender.tag])
+        let selectedData = placeList[sender.tag]
         
         if selectedData.isFavorit {
             sender.setImage(UIImage(systemName: "heart"), for: .normal)
-        }else{
+        } else {
             sender.setImage(UIImage(systemName: "heart.fill"), for: .normal)
         }
         
         FirestoreManager.shared.updateFavorit(!selectedData.isFavorit, placeName: selectedData.name)
-        placeTableView.reloadData()
     }
 
     // MARK: - Navigation
