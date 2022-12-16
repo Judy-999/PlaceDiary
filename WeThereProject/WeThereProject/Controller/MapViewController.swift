@@ -63,7 +63,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate , GMSMapVie
     }
     
     func loadCategory(){
-        FirebaseManager.shared.loadClassification { categoryItems, groupItems in
+        FirestoreManager.shared.loadClassification { categoryItems, groupItems in
             self.groupList = self.groupList + groupItems
             self.categoryList = self.categoryList + categoryItems
         }

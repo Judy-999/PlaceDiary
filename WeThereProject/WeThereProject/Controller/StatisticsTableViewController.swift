@@ -35,7 +35,7 @@ class StatisticsTableViewController: UITableViewController {
     }
     
     func loadCategory(){
-        FirebaseManager.shared.loadClassification { categoryItems, groupItems in
+        FirestoreManager.shared.loadClassification { categoryItems, groupItems in
             self.categoryList = categoryItems
             self.groupList = groupItems
         }

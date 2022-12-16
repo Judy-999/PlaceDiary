@@ -149,7 +149,7 @@ class PlaceInfoTableViewController: UITableViewController, EditDelegate {
             let isFavorit = editData!.isFavorit
            
             editData?.isFavorit = !isFavorit
-            FirebaseManager.shared.updateFavorit(!isFavorit, placeName: reName)
+            FirestoreManager.shared.updateFavorit(!isFavorit, placeName: reName)
             
             let alert = UIAlertController(title: txtFavorit, message: "즐겨찾기가 변경되었습니다.", preferredStyle: .alert)
             alert.addAction(UIAlertAction(title: "확인", style: .default, handler: nil))

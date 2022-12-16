@@ -194,13 +194,13 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
             groupPicker.reloadAllComponents()
         }
         
-        FirebaseManager.shared.updateClassification(target, with: array)
+        FirestoreManager.shared.updateClassification(target, with: array)
     }
 
     
     // 분류와 그룹 리스트를 Firebase에서 받아오는 함수
     func downloadPickerItem(){
-        FirebaseManager.shared.loadClassification { categoryItems, groupItems in
+        FirestoreManager.shared.loadClassification { categoryItems, groupItems in
             self.categoryItem = categoryItems
             self.groupItem = groupItems
         }
@@ -314,7 +314,7 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
     
      // 장소의 이름을 변경했으면 이전 이름의 장소와 사진을 삭제하는 함수
      func deletePlaceData(name place: String) {
-         FirebaseManager.shared.deletePlace(place)
+         FirestoreManager.shared.deletePlace(place)
 
          storageRef.child(Uid + "/" + place).delete { error in
              if let error = error {
@@ -327,7 +327,7 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
      
      // 장소 정보를 Firebase에 업로드하는 함수
      func uploadData(place data: Place){
-         FirebaseManager.shared.savePlace(data)
+         FirestoreManager.shared.savePlace(data)
     }
     
     // 선택된 이미지를 Storage에 업로드하는 함수

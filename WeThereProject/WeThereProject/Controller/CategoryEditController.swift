@@ -26,7 +26,7 @@ class CategoryEditController: UITableViewController, UIColorPickerViewController
     }
         
     func loadCategory(_ type: String) {
-        FirebaseManager.shared.loadClassification { categoryItems, groupItems in
+        FirestoreManager.shared.loadClassification { categoryItems, groupItems in
             if type == "group" {
                 self.editItems = groupItems
             } else {
@@ -81,7 +81,7 @@ class CategoryEditController: UITableViewController, UIColorPickerViewController
     }
 
     func updateField(_ type: String, items: [String]) {
-        FirebaseManager.shared.updateClassification(type, with: items)
+        FirestoreManager.shared.updateClassification(type, with: items)
     }
 
     func modifyCategory(oldItem: String, newItem: String) {
@@ -106,7 +106,7 @@ class CategoryEditController: UITableViewController, UIColorPickerViewController
         }
         
         places.forEach {
-            FirebaseManager.shared.savePlace($0)
+            FirestoreManager.shared.savePlace($0)
         }
     }
     

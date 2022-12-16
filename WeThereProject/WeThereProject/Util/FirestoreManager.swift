@@ -5,11 +5,10 @@
 //  Created by 김주영 on 2021/06/02.
 //
 
-import Foundation
 import FirebaseFirestore
 
-class FirebaseManager {
-    static let shared = FirebaseManager()
+class FirestoreManager {
+    static let shared = FirestoreManager()
     private let database = Firestore.firestore()
     
     private init() {}

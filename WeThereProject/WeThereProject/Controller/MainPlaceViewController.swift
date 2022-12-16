@@ -31,8 +31,7 @@ class MainPlaceViewController: UIViewController, ImageDelegate {
         }
     }
     
-    private var service: FirebaseManager?
-       private var allPlaces = [Place]() {
+    private var allPlaces = [Place]() {
         didSet {
             DispatchQueue.main.async {
                 self.placeList = self.allPlaces
@@ -41,7 +40,7 @@ class MainPlaceViewController: UIViewController, ImageDelegate {
     }
     
     @IBOutlet var placeTableView: UITableView!
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -89,14 +88,14 @@ class MainPlaceViewController: UIViewController, ImageDelegate {
     }
     
     func loadPlaceData() {
-        FirebaseManager.shared.loadData(collectionID: Uid) { places in
+        FirestoreManager.shared.loadData(collectionID: Uid) { places in
             self.allPlaces = places
         }
     }
 
     // 카테고리와 그룹 정보를 받아오는 함수
     func downloadList(){
-        FirebaseManager.shared.loadClassification { categoryItems, groupItems in
+        FirestoreManager.shared.loadClassification { categoryItems, groupItems in
             self.categoryItem = categoryItems
             self.groupItem = groupItems
         }
@@ -184,7 +183,7 @@ class MainPlaceViewController: UIViewController, ImageDelegate {
         let okAlert = UIAlertAction(title: "삭제", style: .destructive){ UIAlertAction in
             let removePlace = cellData[(indexPath as NSIndexPath).row].name as String
             
-            FirebaseManager.shared.deletePlace(removePlace)
+            FirestoreManager.shared.deletePlace(removePlace)
 
             self.storageRef.child(Uid + "/" + removePlace).delete { error in
                 if let error = error {
@@ -272,7 +271,7 @@ class MainPlaceViewController: UIViewController, ImageDelegate {
             sender.setImage(UIImage(systemName: "heart.fill"), for: .normal)
         }
         
-        FirebaseManager.shared.updateFavorit(!selectedData.isFavorit, placeName: selectedData.name)
+        FirestoreManager.shared.updateFavorit(!selectedData.isFavorit, placeName: selectedData.name)
         placeTableView.reloadData()
     }
 
