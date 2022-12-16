@@ -6,15 +6,24 @@
 //
 
 import FirebaseFirestore
+import UIKit
 
 class FirestoreManager {
     static let shared = FirestoreManager()
     private let database = Firestore.firestore()
+    private let id: String
     
-    private init() {}
+    private init() {
+        guard let collectionID = UIDevice.current.identifierForVendor?.uuidString else {
+            id = ""
+            return
+        }
+        
+        id = collectionID
+    }
     
-    func loadData(collectionID: String, completionHandler: @escaping ([Place]) -> Void) {
-        database.collection(collectionID).order(by: "date", descending: true).addSnapshotListener { querySnapshot, err in
+    func loadData(completionHandler: @escaping ([Place]) -> Void) {
+        database.collection(id).order(by: "date", descending: true).addSnapshotListener { querySnapshot, err in
             if let error = err {
                 print(error)
                 return
@@ -28,7 +37,7 @@ class FirestoreManager {
     }
     
     func loadClassification(completionHandler: @escaping (_ categoryItems: [String], _ groupItems: [String]) -> Void) {
-        database.collection("category").document(Uid).getDocument { document, error in
+        database.collection("category").document(id).getDocument { document, error in
             if let document = document, document.exists {
                 guard let categoryItems = document.get("items") as? [String],
                       let groupItems = document.get("group") as? [String] else { return }
@@ -41,13 +50,13 @@ class FirestoreManager {
     }
     
     func updateClassification(_ classification: String, with items: [String]){
-        database.collection("category").document(Uid).updateData([
+        database.collection("category").document(id).updateData([
             classification : items
         ])
     }
     
     func deletePlace(_ name: String) {
-        database.collection(Uid).document(name).delete() { err in
+        database.collection(id).document(name).delete() { err in
             if let err = err {
                 print("Error removing document: \(err)")
             } else {
@@ -70,7 +79,7 @@ class FirestoreManager {
            "group": place.group
        ]
 
-       database.collection(Uid).document(place.name).setData(saveData) { err in
+       database.collection(id).document(place.name).setData(saveData) { err in
            if let err = err {
                print("Error writing document: \(err)")
            } else {
@@ -80,7 +89,7 @@ class FirestoreManager {
     }
     
     func updateFavorit(_ favorit: Bool, placeName: String) {
-        database.collection(Uid).document(placeName).updateData([ "favorit": favorit ]) { err in
+        database.collection(id).document(placeName).updateData([ "favorit": favorit ]) { err in
             if let err = err {
                 print("Error updating document: \(err)")
             } else {
@@ -90,7 +99,7 @@ class FirestoreManager {
     }
     
     private func setupBasicClassification(_ completionHandler: @escaping (_ categoryItems: [String], _ groupItems: [String]) -> Void) {
-        database.collection("category").document(Uid).setData(Classification.basic) { err in
+        database.collection("category").document(id).setData(Classification.basic) { err in
             if let err = err {
                 print("Error writing document: \(err)")
             } else {

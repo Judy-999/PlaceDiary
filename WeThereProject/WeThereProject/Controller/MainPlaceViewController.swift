@@ -7,8 +7,6 @@
 
 import UIKit
 
-let Uid = UIDevice.current.identifierForVendor!.uuidString
-
 class MainPlaceViewController: UIViewController, ImageDelegate {
     private let loadingView = UIView();
     var newUapdate: Bool = true
@@ -85,7 +83,7 @@ class MainPlaceViewController: UIViewController, ImageDelegate {
     }
     
     func loadPlaceData() {
-        FirestoreManager.shared.loadData(collectionID: Uid) { places in
+        FirestoreManager.shared.loadData() { places in
             self.allPlaces = places
         }
     }
