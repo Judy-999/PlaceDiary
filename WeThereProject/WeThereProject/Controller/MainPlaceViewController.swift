@@ -9,8 +9,7 @@ import UIKit
 
 class MainPlaceViewController: UIViewController, ImageDelegate {
     private var newUapdate: Bool = true
-    private var sectionNum: Int = 1
-    private var sectionName: [String] = [""]
+    private var sectionNames: [String] = [""]
     private var categoryItem = [String]()
     private var groupItem = [String]()
     private var placeImages = [String : UIImage]()
@@ -65,12 +64,12 @@ class MainPlaceViewController: UIViewController, ImageDelegate {
                     sectionIndex = 0
                 case 1:
                     let removePlace = places.first(where: {$0.name == deleteName})
-                    sectionIndex = sectionName.firstIndex(of: removePlace!.group)
+                    sectionIndex = sectionNames.firstIndex(of: removePlace!.group)
                     let cellData = places.filter({$0.group == removePlace!.group})
                     index = cellData.firstIndex(where: {$0.name == deleteName})
                 case 2:
                     let removePlace = places.first(where: {$0.name == deleteName})
-                    sectionIndex = sectionName.firstIndex(of: removePlace!.category)
+                    sectionIndex = sectionNames.firstIndex(of: removePlace!.category)
                     let cellData = places.filter({$0.category == removePlace!.category})
                     index = cellData.firstIndex(where: {$0.name == deleteName})
                 default:
@@ -123,9 +122,9 @@ class MainPlaceViewController: UIViewController, ImageDelegate {
         case 0:
             return places
         case 1:
-            return places.filter({$0.group == sectionName[index.section]})
+            return places.filter { $0.group == sectionNames[index.section] }
         case 2:
-            return places.filter({$0.category == sectionName[index.section]})
+                return places.filter { $0.category == sectionNames[index.section] }
         default:
             return places
         }
@@ -181,24 +180,23 @@ class MainPlaceViewController: UIViewController, ImageDelegate {
         self.present(deletAlert, animated: true)
     }
     
-    
-    @IBAction private func sortBtn(_ sender: UIBarItem){
+    @IBAction private func sortButtonTapped(_ sender: UIBarItem) {
         let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
 
         alert.addAction(UIAlertAction(title: "별점 높은 순", style: .default) { _ in
-            self.places.sort(by: {$0.rate > $1.rate})
+            self.places.sort(by: { $0.rate > $1.rate })
         })
 
         alert.addAction(UIAlertAction(title: "가나다 순", style: .default) { _ in
-            self.places.sort(by: {$0.name < $1.name})
+            self.places.sort(by: { $0.name < $1.name })
         })
 
         alert.addAction(UIAlertAction(title: "방문 날짜 순", style: .default) { _ in
-            self.places.sort(by: {$0.date > $1.date})
+            self.places.sort(by: { $0.date > $1.date })
         })
         
         alert.addAction(UIAlertAction(title: "즐겨찾기만 보기", style: .default) { _ in
-            let favoritPlalces = self.places.filter({$0.isFavorit == true})
+            let favoritPlalces = self.places.filter { $0.isFavorit == true }
             self.places = favoritPlalces
         })
         
@@ -206,33 +204,22 @@ class MainPlaceViewController: UIViewController, ImageDelegate {
         present(alert, animated: true)
     }
 
-    @IBAction private func sgChangeListType(_ sender: UISegmentedControl){
-        switch sender.selectedSegmentIndex{
+    @IBAction private func segmentedControlTapped(_ sender: UISegmentedControl) {
+        switch sender.selectedSegmentIndex {
         case 0:
-            sectionNum = 1
-            sectionName = [""]
-            placeTableView.reloadData()
+            sectionNames = [""]
         case 1:
-            sectionNum = groupItem.count
-            sectionName.removeAll()
-            for group in groupItem{
-                sectionName.append(group)
-            }
-            placeTableView.reloadData()
+            sectionNames = groupItem
         case 2:
-            sectionNum = categoryItem.count
-            sectionName.removeAll()
-            for name in categoryItem{
-                sectionName.append(name)
-            }
-            placeTableView.reloadData()
+            sectionNames = categoryItem
         default:
-            sender.selectedSegmentIndex = 0
+            break
         }
+        
+        placeTableView.reloadData()
     }
 
     @IBAction private func clickHotButton(_ sender: UIButton){
-        let place = getPlaceList(index: [sectionNum, sender.tag])
         let selectedData = place[sender.tag]
         
         if selectedData.isFavorit {
@@ -282,11 +269,11 @@ class MainPlaceViewController: UIViewController, ImageDelegate {
 // MARK: - TableViewDataSource & TableViewDelegate
 extension MainPlaceViewController: UITableViewDataSource,  UITableViewDelegate {
     func numberOfSections(in tableView: UITableView) -> Int {
-        return sectionNum
+        return sectionNames.count
     }
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return sectionName[section]
+        return sectionNames[section]
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -305,10 +292,10 @@ extension MainPlaceViewController: UITableViewDataSource,  UITableViewDelegate {
                 return places.count
             }
         case 1:
-            let filteredArray = places.filter({$0.group == sectionName[section]})
+            let filteredArray = places.filter({$0.group == sectionNames[section]})
             return filteredArray.count
         case 2:
-            let filteredArray = places.filter({$0.category == sectionName[section]})
+            let filteredArray = places.filter({$0.category == sectionNames[section]})
             return filteredArray.count
         default:
             return 0

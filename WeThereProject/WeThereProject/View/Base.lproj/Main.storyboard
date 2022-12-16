@@ -30,7 +30,7 @@
                                     <segment title="분류별"/>
                                 </segments>
                                 <connections>
-                                    <action selector="sgChangeListType:" destination="cpN-Hq-ZC8" eventType="valueChanged" id="4I1-m6-EtP"/>
+                                    <action selector="segmentedControlTapped:" destination="cpN-Hq-ZC8" eventType="valueChanged" id="Its-Hj-7fp"/>
                                 </connections>
                             </segmentedControl>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="90" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="O7v-dG-ASV">
@@ -135,7 +135,7 @@
                         <barButtonItem key="leftBarButtonItem" image="list.bullet" catalog="system" id="suI-DM-AE6">
                             <color key="tintColor" red="0.47843140360000003" green="0.9529411793" blue="0.94901961089999998" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                             <connections>
-                                <action selector="sortBtn:" destination="cpN-Hq-ZC8" id="q0v-55-R1J"/>
+                                <action selector="sortButtonTapped:" destination="cpN-Hq-ZC8" id="Vql-vB-eB7"/>
                             </connections>
                         </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" systemItem="add" id="skL-iA-FMs">
