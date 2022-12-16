@@ -29,7 +29,7 @@ class MainPlaceViewController: UIViewController, ImageDelegate {
         super.viewDidLoad()
 
         loadPlaceData()
-        downloadList()
+        loadClassification()
         
         placeTableView.refreshControl = UIRefreshControl()
         placeTableView.refreshControl?.addTarget(self, action: #selector(pullToRefresh(_:)), for: .valueChanged)
@@ -38,7 +38,7 @@ class MainPlaceViewController: UIViewController, ImageDelegate {
         NotificationCenter.default.addObserver(self, selector: #selector(newUpdate), name: NSNotification.Name(rawValue: "newPlaceUpdate"), object: nil)
     }
 
-    @objc func newUpdate(_ notification: Notification){
+    @objc private func newUpdate(_ notification: Notification){
         newUapdate = true
         if notification.object != nil{
             let data = notification.object as! Place
@@ -78,8 +78,7 @@ class MainPlaceViewController: UIViewController, ImageDelegate {
         }
     }
 
-    // 카테고리와 그룹 정보를 받아오는 함수
-    func downloadList(){
+    private func loadClassification(){
         FirestoreManager.shared.loadClassification { categoryItems, groupItems in
             self.categoryItem = categoryItems
             self.groupItem = groupItems
@@ -92,7 +91,7 @@ class MainPlaceViewController: UIViewController, ImageDelegate {
     }
         
     // 다른 페이지로 장소 정보와 이미지를 넘겨주는 함수
-    func passData(){
+    private func passData(){
         let searchNav = tabBarController?.viewControllers![1] as! UINavigationController
         let searchController = searchNav.topViewController as! SearchTableViewController
         let calendarNav = tabBarController?.viewControllers![2] as! UINavigationController
@@ -109,7 +108,7 @@ class MainPlaceViewController: UIViewController, ImageDelegate {
     }
     
     // 선택한 장소 보기별로 장소 리스트를 변경해주는 함수
-    func getPlaceList(index: IndexPath) -> [Place] {
+    private func getPlaceList(index: IndexPath) -> [Place] {
         switch segmentedControl.selectedSegmentIndex {
         case 0:
             return places
@@ -128,13 +127,13 @@ class MainPlaceViewController: UIViewController, ImageDelegate {
     }
    
     // 테이블 뷰를 끌어내려서 로딩
-    @objc func pullToRefresh(_ refresh: UIRefreshControl){
+    @objc private func pullToRefresh(_ refresh: UIRefreshControl){
         placeTableView.reloadData()
         refresh.endRefreshing()
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        downloadList()
+        loadClassification()
         placeTableView.reloadData()
     }
     
@@ -149,7 +148,7 @@ class MainPlaceViewController: UIViewController, ImageDelegate {
         super.didReceiveMemoryWarning()
     }
 
-    func deleteConfirm(_ indexPath: IndexPath){
+    private func deleteConfirm(_ indexPath: IndexPath){
         let cellData = getPlaceList(index: indexPath)
         let deletAlert = UIAlertController(title: "장소 삭제", message: cellData[indexPath.row].name + "(을)를 삭제하시겠습니까?", preferredStyle: .actionSheet)
         let okAlert = UIAlertAction(title: "삭제", style: .destructive){ UIAlertAction in
@@ -174,7 +173,7 @@ class MainPlaceViewController: UIViewController, ImageDelegate {
     }
     
     
-    @IBAction func sortBtn(_ sender: UIBarItem){
+    @IBAction private func sortBtn(_ sender: UIBarItem){
         let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
 
         alert.addAction(UIAlertAction(title: "별점 높은 순", style: .default) { _ in
@@ -198,7 +197,7 @@ class MainPlaceViewController: UIViewController, ImageDelegate {
         present(alert, animated: true)
     }
 
-    @IBAction func sgChangeListType(_ sender: UISegmentedControl){
+    @IBAction private func sgChangeListType(_ sender: UISegmentedControl){
         switch sender.selectedSegmentIndex{
         case 0:
             sectionNum = 1
@@ -223,7 +222,7 @@ class MainPlaceViewController: UIViewController, ImageDelegate {
         }
     }
 
-    @IBAction func clickHotButton(_ sender: UIButton){
+    @IBAction private func clickHotButton(_ sender: UIButton){
         let place = getPlaceList(index: [sectionNum, sender.tag])
         let selectedData = place[sender.tag]
         
