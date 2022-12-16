@@ -50,12 +50,12 @@
                                                             <rect key="frame" x="0.0" y="0.0" width="259" height="40"/>
                                                             <subviews>
                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="이름" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Rgd-Qo-Sxg">
-                                                                    <rect key="frame" x="0.0" y="0.0" width="150.33333333333334" height="40"/>
+                                                                    <rect key="frame" x="0.0" y="0.0" width="281" height="40"/>
                                                                     <fontDescription key="fontDescription" type="boldSystem" pointSize="18"/>
                                                                     <nil key="highlightedColor"/>
                                                                 </label>
                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="날짜" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="fkZ-9L-vdD">
-                                                                    <rect key="frame" x="150.33333333333334" y="0.0" width="108.66666666666666" height="40"/>
+                                                                    <rect key="frame" x="281" y="0.0" width="203" height="40"/>
                                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                                     <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                                                     <nil key="highlightedColor"/>
@@ -76,7 +76,7 @@
                                                                     <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                                                                     <state key="normal" image="heart" catalog="system"/>
                                                                     <connections>
-                                                                        <action selector="favoritButtonTapped:" destination="cpN-Hq-ZC8" eventType="touchUpInside" id="GA4-h0-nkp"/>
+                                                                        <action selector="favoritButtonTapped:" destination="i88-ZH-u3w" eventType="touchUpInside" id="OhC-CK-C9i"/>
                                                                     </connections>
                                                                 </button>
                                                             </subviews>
@@ -103,11 +103,11 @@
                                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                         <color key="tintColor" systemColor="systemBackgroundColor"/>
                                         <connections>
-                                            <outlet property="btnFavorit" destination="ct7-1W-6Zb" id="nok-Bl-bnw"/>
-                                            <outlet property="imgPlace" destination="LHp-4f-X6C" id="auy-Xf-yLq"/>
-                                            <outlet property="lblPlaceDate" destination="fkZ-9L-vdD" id="pZN-Ee-QtK"/>
-                                            <outlet property="lblPlaceInfo" destination="aD6-vK-5OY" id="yQI-VY-X6G"/>
-                                            <outlet property="lblPlaceName" destination="Rgd-Qo-Sxg" id="M6K-jN-BfI"/>
+                                            <outlet property="dateLabel" destination="fkZ-9L-vdD" id="pZN-Ee-QtK"/>
+                                            <outlet property="favoritButton" destination="ct7-1W-6Zb" id="nok-Bl-bnw"/>
+                                            <outlet property="infoLabel" destination="aD6-vK-5OY" id="yQI-VY-X6G"/>
+                                            <outlet property="nameLabel" destination="Rgd-Qo-Sxg" id="M6K-jN-BfI"/>
+                                            <outlet property="placeImageView" destination="LHp-4f-X6C" id="auy-Xf-yLq"/>
                                             <segue destination="E07-mG-Yqk" kind="show" identifier="sgPlaceInfo" id="I6j-V1-nTt"/>
                                         </connections>
                                     </tableViewCell>
@@ -286,7 +286,7 @@
                                                                             <state key="normal" image="star.fill" catalog="system"/>
                                                                         </button>
                                                                         <button opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="PJU-9g-9sd">
-                                                                            <rect key="frame" x="63.666666666666664" y="0.0" width="21.333333333333321" height="32.666666666666664"/>
+                                                                            <rect key="frame" x="63.666666666666664" y="0.0" width="21.333333333333336" height="32.666666666666664"/>
                                                                             <color key="tintColor" systemColor="systemYellowColor"/>
                                                                             <state key="normal" image="star" catalog="system"/>
                                                                         </button>

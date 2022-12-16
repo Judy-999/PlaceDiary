@@ -211,19 +211,6 @@ class MainPlaceViewController: UIViewController, ImageDelegate {
         placeTableView.reloadData()
     }
 
-    @IBAction private func favoritButtonTapped(_ sender: UIButton) {
-        let placeList = displayedPlaceList(index: [sectionNames.count, sender.tag])
-        let selectedData = placeList[sender.tag]
-        
-        if selectedData.isFavorit {
-            sender.setImage(UIImage(systemName: "heart"), for: .normal)
-        } else {
-            sender.setImage(UIImage(systemName: "heart.fill"), for: .normal)
-        }
-        
-        FirestoreManager.shared.updateFavorit(!selectedData.isFavorit, placeName: selectedData.name)
-    }
-
     // MARK: - Navigation
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -290,40 +277,11 @@ extension MainPlaceViewController: UITableViewDataSource,  UITableViewDelegate {
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "placeCell", for: indexPath) as! PlaceCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: "placeCell", for: indexPath) as? PlaceCell ?? PlaceCell()
+        let placeList = displayedPlaceList(index: indexPath)
+ 
+        cell.configure(with: placeList[indexPath.row])
         
-        let cellData = displayedPlaceList(index: indexPath)
-        let cellPlace = cellData[indexPath.row]
-  
-        let formatter = DateFormatter()
-        formatter.dateFormat = "yyyy-MM-dd"
-        cell.lblPlaceDate.text = formatter.string(from: cellPlace.date)
-        cell.lblPlaceName.text = cellPlace.name
-        
-        cell.lblPlaceInfo.text = cellPlace.group + " ∙ " + cellPlace.category + " ∙ " + cellPlace.rate + " 점"
-        cell.imgPlace.image = UIImage(named: "pdicon")
-    
-        cell.btnFavorit.tag = indexPath.row
-        
-        cellPlace.isFavorit ? cell.btnFavorit.setImage(UIImage(systemName: "heart.fill"), for: .normal) :
-        cell.btnFavorit.setImage(UIImage(systemName: "heart"), for: .normal)
-        
-        if cellPlace.hasImage{
-            if let placeImage = placeImages[cellPlace.name] {
-                cell.imgPlace.image = placeImage
-            } else {
-                DispatchQueue.main.async { [self] in
-                    if let updateCell = tableView.cellForRow(at: indexPath) as? PlaceCell {
-                        StorageManager.shared.getImage(name: cellPlace.name) { photo in
-                            if let photo = photo {
-                                updateCell.imgPlace.image = photo
-                                self.placeImages.updateValue(photo, forKey: cellPlace.name)
-                            }
-                        }
-                    }
-                }
-            }
-        }
         return cell
     }
     
