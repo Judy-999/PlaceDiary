@@ -8,11 +8,8 @@
 import UIKit
 
 class MainPlaceViewController: UIViewController, ImageDelegate {
-    private let loadingView = UIView()
     private var newUapdate: Bool = true
-    private var loadingCount: Int = 0
     private var sectionNum: Int = 1
-    private var segmentedIndex: Int = 0
     private var sectionName: [String] = [""]
     private var categoryItem = [String]()
     private var groupItem = [String]()
@@ -25,7 +22,8 @@ class MainPlaceViewController: UIViewController, ImageDelegate {
         }
     }
     
-    @IBOutlet var placeTableView: UITableView!
+    @IBOutlet weak var segmentedControl: UISegmentedControl!
+    @IBOutlet weak var placeTableView: UITableView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -50,7 +48,8 @@ class MainPlaceViewController: UIViewController, ImageDelegate {
                 let deleteName = data.name
                 var index: Int!
                 var sectionIndex: Int!
-                switch segmentedIndex {
+                
+                switch segmentedControl.selectedSegmentIndex {
                 case 0:
                     index = places.firstIndex(where: {$0.name == deleteName})
                     sectionIndex = 0
@@ -73,7 +72,7 @@ class MainPlaceViewController: UIViewController, ImageDelegate {
         }
     }
     
-    func loadPlaceData() {
+    private func loadPlaceData() {
         FirestoreManager.shared.loadData() { places in
             self.places = places
         }
@@ -110,8 +109,8 @@ class MainPlaceViewController: UIViewController, ImageDelegate {
     }
     
     // 선택한 장소 보기별로 장소 리스트를 변경해주는 함수
-    func getPlaceList(sectionNum: Int, index: IndexPath) -> [Place]{
-        switch segmentedIndex {
+    func getPlaceList(index: IndexPath) -> [Place] {
+        switch segmentedControl.selectedSegmentIndex {
         case 0:
             return places
         case 1:
@@ -151,7 +150,7 @@ class MainPlaceViewController: UIViewController, ImageDelegate {
     }
 
     func deleteConfirm(_ indexPath: IndexPath){
-        let cellData = getPlaceList(sectionNum: segmentedIndex, index: indexPath)
+        let cellData = getPlaceList(index: indexPath)
         let deletAlert = UIAlertController(title: "장소 삭제", message: cellData[indexPath.row].name + "(을)를 삭제하시겠습니까?", preferredStyle: .actionSheet)
         let okAlert = UIAlertAction(title: "삭제", style: .destructive){ UIAlertAction in
             let removePlace = cellData[indexPath.row].name
@@ -203,12 +202,10 @@ class MainPlaceViewController: UIViewController, ImageDelegate {
         switch sender.selectedSegmentIndex{
         case 0:
             sectionNum = 1
-            segmentedIndex = 0
             sectionName = [""]
             placeTableView.reloadData()
         case 1:
             sectionNum = groupItem.count
-            segmentedIndex = 1
             sectionName.removeAll()
             for group in groupItem{
                 sectionName.append(group)
@@ -216,7 +213,6 @@ class MainPlaceViewController: UIViewController, ImageDelegate {
             placeTableView.reloadData()
         case 2:
             sectionNum = categoryItem.count
-            segmentedIndex = 2
             sectionName.removeAll()
             for name in categoryItem{
                 sectionName.append(name)
@@ -228,7 +224,7 @@ class MainPlaceViewController: UIViewController, ImageDelegate {
     }
 
     @IBAction func clickHotButton(_ sender: UIButton){
-        let place = getPlaceList(sectionNum: segmentedIndex, index: [sectionNum, sender.tag])
+        let place = getPlaceList(index: [sectionNum, sender.tag])
         let selectedData = place[sender.tag]
         
         if selectedData.isFavorit {
@@ -246,14 +242,14 @@ class MainPlaceViewController: UIViewController, ImageDelegate {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "sgPlaceInfo"{
             let cell = sender as! UITableViewCell
-            let indexPath = self.placeTableView.indexPath(for: cell)
+            let indexPath = self.placeTableView.indexPath(for: cell)! as IndexPath
             let infoView = segue.destination as! PlaceInfoTableViewController
-            let sectionPlaces = getPlaceList(sectionNum: segmentedIndex, index: indexPath!)
+            let sectionPlaces = getPlaceList(index: indexPath)
             let selectedData : Place!
-            if segmentedIndex == 0{
-                selectedData = sectionPlaces[(indexPath! as NSIndexPath).row]
-            }else{
-                selectedData = sectionPlaces[(indexPath! as NSIndexPath).row - 1]
+            if segmentedControl.selectedSegmentIndex == 0 {
+                selectedData = sectionPlaces[indexPath.row]
+            } else {
+                selectedData = sectionPlaces[indexPath.row - 1]
             }
             
             infoView.imgDelegate = self
@@ -286,39 +282,42 @@ extension MainPlaceViewController: UITableViewDataSource,  UITableViewDelegate {
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if segmentedIndex == 0{
-            if places.count == 0{
+        switch segmentedControl.selectedSegmentIndex {
+        case 0:
+            if places.count == 0 {
                 let emptyLabel = UILabel(frame: CGRect(x: 0, y: 0, width: self.view.bounds.size.width, height: self.view.bounds.size.height))
                 emptyLabel.text = "장소를 추가해보세요!"
                 emptyLabel.textAlignment = NSTextAlignment.center
                 tableView.backgroundView = emptyLabel
                 tableView.separatorStyle = .none
                 return 0
-            }else{
+            } else {
                 tableView.separatorStyle = UITableViewCell.SeparatorStyle.singleLine
                 tableView.backgroundView = .none
                 return places.count
             }
-        }else if segmentedIndex == 1{
+        case 1:
             let filteredArray = places.filter({$0.group == sectionName[section]})
             return filteredArray.count
-        }else{
+        case 2:
             let filteredArray = places.filter({$0.category == sectionName[section]})
             return filteredArray.count
+        default:
+            return 0
         }
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "placeCell", for: indexPath) as! PlaceCell
         
-        let cellData = getPlaceList(sectionNum: segmentedIndex, index: indexPath)
+        let cellData = getPlaceList(index: indexPath)
         let cellPlace : Place!
-        if segmentedIndex == 0{
+        if segmentedControl.selectedSegmentIndex == 0 {
             cellPlace = cellData[indexPath.row]
-        }else{
+        } else {
             if indexPath.row == 0{
                 cellPlace = cellData[indexPath.row]
-            }else{
+            } else {
                 cellPlace = cellData[indexPath.row - 1]
             }
         }
