@@ -158,28 +158,27 @@ class MainPlaceViewController: UIViewController, ImageDelegate {
         super.didReceiveMemoryWarning()
     }
 
-    private func deleteConfirm(_ indexPath: IndexPath){
-        let cellData = getPlaceList(index: indexPath)
-        let deletAlert = UIAlertController(title: "장소 삭제", message: cellData[indexPath.row].name + "(을)를 삭제하시겠습니까?", preferredStyle: .actionSheet)
-        let okAlert = UIAlertAction(title: "삭제", style: .destructive){ UIAlertAction in
-            let removePlace = cellData[indexPath.row].name
-            
-            FirestoreManager.shared.deletePlace(removePlace)
-            StorageManager.shared.deleteImage(name: removePlace)
+    private func deletePlace(_ indexPath: IndexPath){
+        let placeList = displayedPlaceList(index: indexPath)
+        let placeName = placeList[indexPath.row].name
+        let deletAlert = UIAlertController(title: "장소 삭제",
+                                           message: "\(placeName)(을)를 삭제하시겠습니까?",
+                                           preferredStyle: .actionSheet)
+        let okAlert = UIAlertAction(title: "삭제", style: .destructive) { _ in
+            FirestoreManager.shared.deletePlace(placeName)
+            StorageManager.shared.deleteImage(name: placeName)
      
-            let removeDataIndex = self.places.firstIndex(where: {$0.name == cellData[(indexPath as NSIndexPath).row].name})!
-            self.places.remove(at: removeDataIndex)
+            guard let removedIndex = self.places.firstIndex(where: { $0.name == placeName }) else { return }
             
-            self.newUapdate = true
-            
+            self.places.remove(at: removedIndex)
             self.placeTableView.deleteRows(at: [indexPath], with: .fade)
-            self.placeTableView.reloadData()
+            self.newUapdate = true
         }
                                     
-        deletAlert.addAction(UIAlertAction(title: "취소", style: .cancel, handler: nil))
+        deletAlert.addAction(UIAlertAction(title: "취소", style: .cancel))
         deletAlert.addAction(okAlert)
        
-        self.present(deletAlert, animated: true, completion: nil)
+        self.present(deletAlert, animated: true)
     }
     
     
@@ -374,7 +373,7 @@ extension MainPlaceViewController: UITableViewDataSource,  UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
-            deleteConfirm(indexPath)
+            deletePlace(indexPath)
         }
     }
 }
