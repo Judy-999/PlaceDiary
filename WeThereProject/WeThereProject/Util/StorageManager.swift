@@ -27,4 +27,14 @@ class StorageManager {
             }
         }
     }
+    
+    func deleteImage(name: String) {
+        storage.child(Uid + "/" + name).delete { error in
+            if let error = error {
+                print("Error removing image: \(error)")
+            } else {
+                print("Image successfully removed!")
+            }
+        }
+    }
 }

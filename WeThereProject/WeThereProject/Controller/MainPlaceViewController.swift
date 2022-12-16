@@ -12,7 +12,6 @@ import FirebaseStorage
 let Uid = UIDevice.current.identifierForVendor!.uuidString
 
 class MainPlaceViewController: UIViewController, ImageDelegate {
-    let storageRef = Storage.storage().reference()
     private let loadingView = UIView();
     var newUapdate: Bool = true
     var loadingCount: Int = 0
@@ -168,17 +167,10 @@ class MainPlaceViewController: UIViewController, ImageDelegate {
         let cellData = getPlaceList(sectionNum: segmentedIndex, index: indexPath)
         let deletAlert = UIAlertController(title: "장소 삭제", message: cellData[indexPath.row].name + "(을)를 삭제하시겠습니까?", preferredStyle: .actionSheet)
         let okAlert = UIAlertAction(title: "삭제", style: .destructive){ UIAlertAction in
-            let removePlace = cellData[(indexPath as NSIndexPath).row].name as String
+            let removePlace = cellData[indexPath.row].name
             
             FirestoreManager.shared.deletePlace(removePlace)
-
-            self.storageRef.child(Uid + "/" + removePlace).delete { error in
-                if let error = error {
-                    print("Error removing image: \(error)")
-                } else {
-                    print("Image successfully removed!")
-                }
-              }
+            StorageManager.shared.deleteImage(name: removePlace)
      
             let removeDataIndex = self.placeList.firstIndex(where: {$0.name == cellData[(indexPath as NSIndexPath).row].name})!
             self.placeList.remove(at: removeDataIndex)
