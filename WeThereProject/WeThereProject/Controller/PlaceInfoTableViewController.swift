@@ -15,7 +15,6 @@ protocol ImageDelegate {
 
 class PlaceInfoTableViewController: UITableViewController, EditDelegate {
     let storage = Storage.storage()
-    let db: Firestore = Firestore.firestore()
     var receiveImage: UIImage?
     var reName = "", rePositon = "", reDate = "", reCategory = "", reComent = "", reRate = "", reGroup = ""
     var rateButtons = [UIButton]()
@@ -147,16 +146,11 @@ class PlaceInfoTableViewController: UITableViewController, EditDelegate {
         })
         
         alert.addAction(UIAlertAction(title: txtFavorit, style: .default){ [self] _ in
-            let placeRef = db.collection(Uid).document(reName)
             let isFavorit = editData!.isFavorit
+           
             editData?.isFavorit = !isFavorit
-            placeRef.updateData([ "favorit": !isFavorit ]) { err in
-                if let err = err {
-                    print("Error updating document: \(err)")
-                } else {
-                    print("Document successfully updated")
-                }
-            }
+            FirebaseManager.shared.updateFavorit(!isFavorit, placeName: reName)
+            
             let alert = UIAlertController(title: txtFavorit, message: "즐겨찾기가 변경되었습니다.", preferredStyle: .alert)
             alert.addAction(UIAlertAction(title: "확인", style: .default, handler: nil))
             present(alert, animated: true, completion: nil)
@@ -174,12 +168,10 @@ class PlaceInfoTableViewController: UITableViewController, EditDelegate {
     // MARK: - Table view data source
 
     override func numberOfSections(in tableView: UITableView) -> Int {
-        // #warning Incomplete implementation, return the number of sections
         return 1
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // #warning Incomplete implementation, return the number of rows
         return 4
     }
 

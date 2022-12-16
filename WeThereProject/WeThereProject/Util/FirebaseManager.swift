@@ -77,6 +77,16 @@ class FirebaseManager {
            }
        }
     }
+    
+    func updateFavorit(_ favorit: Bool, placeName: String) {
+        database.collection(Uid).document(placeName).updateData([ "favorit": favorit ]) { err in
+            if let err = err {
+                print("Error updating document: \(err)")
+            } else {
+                print("Document successfully updated")
+            }
+        }
+    }
 }
 
 enum Classification {

@@ -12,7 +12,6 @@ import FirebaseStorage
 let Uid = UIDevice.current.identifierForVendor!.uuidString
 
 class MainPlaceViewController: UIViewController, ImageDelegate {
-    let db: Firestore = Firestore.firestore()
     let storageRef = Storage.storage().reference()
     private let loadingView = UIView();
     var newUapdate: Bool = true
@@ -266,19 +265,14 @@ class MainPlaceViewController: UIViewController, ImageDelegate {
     @IBAction func clickHotButton(_ sender: UIButton){
         let place = getPlaceList(sectionNum: segmentedIndex, index: [sectionNum, sender.tag])
         let selectedData = place[sender.tag]
-        let placeRef = db.collection(Uid).document(selectedData.name)
+        
         if selectedData.isFavorit {
             sender.setImage(UIImage(systemName: "heart"), for: .normal)
         }else{
             sender.setImage(UIImage(systemName: "heart.fill"), for: .normal)
         }
-        placeRef.updateData([ "favorit": !(selectedData.isFavorit) ]) { err in
-            if let err = err {
-                print("Error updating document: \(err)")
-            } else {
-                print("Document successfully updated")
-            }
-        }
+        
+        FirebaseManager.shared.updateFavorit(!selectedData.isFavorit, placeName: selectedData.name)
         placeTableView.reloadData()
     }
 
