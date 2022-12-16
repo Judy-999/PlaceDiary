@@ -163,20 +163,7 @@ class MainPlaceViewController: UIViewController, ImageDelegate {
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }
-    
-    func getImage(place: Place, completion: @escaping (UIImage?) -> ()) {
-        let fileName = place.name
-        let islandRef = storageRef.child(Uid + "/" + fileName)
-        islandRef.getData(maxSize: 1 * 1024 * 1024) { data, error in
-            let downloadImg = UIImage(data: data! as Data)
-                if error == nil {
-                    completion(downloadImg)
-                } else {
-                completion(nil)
-            }
-         }
-      }
-    
+
     func deleteConfirm(_ indexPath: IndexPath){
         let cellData = getPlaceList(sectionNum: segmentedIndex, index: indexPath)
         let deletAlert = UIAlertController(title: "장소 삭제", message: cellData[indexPath.row].name + "(을)를 삭제하시겠습니까?", preferredStyle: .actionSheet)
@@ -375,11 +362,11 @@ extension MainPlaceViewController: UITableViewDataSource,  UITableViewDelegate {
                 cell.imgPlace.image = placeImage
             } else {
                 DispatchQueue.main.async { [self] in
-                    if let updateCell = tableView.cellForRow(at: indexPath) as? PlaceCell{
-                        getImage(place: cellPlace){ photo in
-                            if photo != nil {
+                    if let updateCell = tableView.cellForRow(at: indexPath) as? PlaceCell {
+                        StorageManager.shared.getImage(name: cellPlace.name) { photo in
+                            if let photo = photo {
                                 updateCell.imgPlace.image = photo
-                                self.placeImages.updateValue(photo!, forKey: cellPlace.name)
+                                self.placeImages.updateValue(photo, forKey: cellPlace.name)
                             }
                         }
                     }

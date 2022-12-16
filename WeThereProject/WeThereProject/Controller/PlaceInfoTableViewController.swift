@@ -14,7 +14,6 @@ protocol ImageDelegate {
 }
 
 class PlaceInfoTableViewController: UITableViewController, EditDelegate {
-    let storage = Storage.storage()
     var receiveImage: UIImage?
     var reName = "", rePositon = "", reDate = "", reCategory = "", reComent = "", reRate = "", reGroup = ""
     var rateButtons = [UIButton]()
@@ -64,22 +63,15 @@ class PlaceInfoTableViewController: UITableViewController, EditDelegate {
     }
     
     // 메인 페이지에서 이미지가 다운되지 못했을 경우 정보 상세 페이지에서 이미지를 받아오는 함수
-    func downloadImgInfo(_ place: Place){
-        let fileName = place.name
-        let islandRef = storage.reference().child(Uid + "/" + fileName)
+    func downloadImgInfo(_ place: Place) {
         isLoading = true
-        islandRef.getData(maxSize: 1 * 1024 * 1024) { [self] data, error in
-            let downloadImg = UIImage(data: data! as Data)
-            if error == nil {
-                getPlaceInfo(place, image: downloadImg!)
-                setPlaceInfo()
-                print("image download!!!" + fileName)
-                if imgDelegate != nil{
-                    imgDelegate?.didImageDone(newData: place, image: downloadImg!)
-                }
-                loadingView.removeFromSuperview()
-            }else {
-                print(error as Any)
+        
+        StorageManager.shared.getImage(name: place.name) { image in
+            if let image = image {
+                self.getPlaceInfo(place, image: image)
+                self.setPlaceInfo()
+                self.imgDelegate?.didImageDone(newData: place, image: image)
+                self.loadingView.removeFromSuperview()
             }
         }
     }
