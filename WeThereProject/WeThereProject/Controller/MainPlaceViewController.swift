@@ -8,6 +8,9 @@
 import UIKit
 
 class MainPlaceViewController: UIViewController, ImageDelegate {
+    @IBOutlet weak var segmentedControl: UISegmentedControl!
+    @IBOutlet weak var placeTableView: UITableView!
+    
     private var newUapdate: Bool = true
     private var sectionNames: [String] = [""]
     private var categoryItem = [String]()
@@ -20,9 +23,6 @@ class MainPlaceViewController: UIViewController, ImageDelegate {
             }
         }
     }
-    
-    @IBOutlet weak var segmentedControl: UISegmentedControl!
-    @IBOutlet weak var placeTableView: UITableView!
     
     override func viewWillAppear(_ animated: Bool) {
         loadClassification()
@@ -131,16 +131,18 @@ class MainPlaceViewController: UIViewController, ImageDelegate {
         settingController.getPlaces(places)
     }
     
-    private func displayedPlaceList(index: IndexPath) -> [Place] {
+    private func findCurrentPlace(index: IndexPath) -> Place {
         switch segmentedControl.selectedSegmentIndex {
         case 0:
-            return places
+            return places[index.row]
         case 1:
-            return places.filter { $0.group == sectionNames[index.section] }
+            let placeList = places.filter { $0.group == sectionNames[index.section] }
+            return placeList[index.row]
         case 2:
-            return places.filter { $0.category == sectionNames[index.section] }
+            let placeList = places.filter { $0.category == sectionNames[index.section] }
+            return placeList[index.row]
         default:
-            return places
+            return places[index.row]
         }
     }
     
@@ -159,8 +161,8 @@ class MainPlaceViewController: UIViewController, ImageDelegate {
     }
 
     private func deletePlace(_ indexPath: IndexPath){
-        let placeList = displayedPlaceList(index: indexPath)
-        let placeName = placeList[indexPath.row].name
+        let place = findCurrentPlace(index: indexPath)
+        let placeName = place.name
         let deletAlert = UIAlertController(title: "장소 삭제",
                                            message: "\(placeName)(을)를 삭제하시겠습니까?",
                                            preferredStyle: .actionSheet)
@@ -223,28 +225,19 @@ class MainPlaceViewController: UIViewController, ImageDelegate {
     // MARK: - Navigation
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == "sgPlaceInfo"{
-            let cell = sender as! UITableViewCell
-            let indexPath = self.placeTableView.indexPath(for: cell)! as IndexPath
-            let infoView = segue.destination as! PlaceInfoTableViewController
-            let sectionPlaces = displayedPlaceList(index: indexPath)
-            let selectedData = sectionPlaces[indexPath.row]
+        if segue.identifier == "sgPlaceInfo" {
+            guard let infoViewContorller = segue.destination as? PlaceInfoTableViewController,
+                  let cell = sender as? UITableViewCell,
+                  let indexPath = placeTableView.indexPath(for: cell) else { return }
+
+            let selectedPlace = findCurrentPlace(index: indexPath)
             
-            infoView.imgDelegate = self
-            
-            if let placeImage = placeImages[selectedData.name] {
-                infoView.getPlaceInfo(selectedData, image: placeImage)
-            }else{
-                if selectedData.hasImage{
-                    infoView.downloadImgInfo(selectedData)
-                }else{
-                    infoView.getPlaceInfo(selectedData, image: UIImage(named: "pdicon")!)
-                }
-            }
+            infoViewContorller.imgDelegate = self
         }
-        if segue.identifier == "sgAddPlace"{
-            let addView = segue.destination as! AddPlaceTableViewController
-            addView.nowPlaceData = places
+        
+        if segue.identifier == "sgAddPlace" {
+            guard let addViewController = segue.destination as? AddPlaceTableViewController else { return }
+            addViewController.nowPlaceData = places
         }
     }
 }
@@ -284,16 +277,18 @@ extension MainPlaceViewController: UITableViewDataSource,  UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "placeCell", for: indexPath) as? PlaceCell ?? PlaceCell()
-        let placeList = displayedPlaceList(index: indexPath)
+        let place = findCurrentPlace(index: indexPath)
  
-        cell.configure(with: placeList[indexPath.row])
+        cell.configure(with: place)
         
         return cell
     }
     
     func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
-        (view as! UITableViewHeaderFooterView).contentView.backgroundColor = #colorLiteral(red: 0.4745098054, green: 0.8392156959, blue: 0.9764705896, alpha: 1)
-        (view as! UITableViewHeaderFooterView).textLabel?.textColor = UIColor.white
+        guard let headerView = view as? UITableViewHeaderFooterView else { return }
+        
+        headerView.contentView.backgroundColor = #colorLiteral(red: 0.4745098054, green: 0.8392156959, blue: 0.9764705896, alpha: 1)
+        headerView.textLabel?.textColor = UIColor.white
     }
     
     func tableView(_ tableView: UITableView, titleForDeleteConfirmationButtonForRowAt indexPath: IndexPath) -> String? {
