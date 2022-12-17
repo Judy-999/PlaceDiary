@@ -50,12 +50,12 @@
                                                             <rect key="frame" x="0.0" y="0.0" width="259" height="40"/>
                                                             <subviews>
                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="이름" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Rgd-Qo-Sxg">
-                                                                    <rect key="frame" x="0.0" y="0.0" width="150.33333333333334" height="40"/>
+                                                                    <rect key="frame" x="0.0" y="0.0" width="281" height="40"/>
                                                                     <fontDescription key="fontDescription" type="boldSystem" pointSize="18"/>
                                                                     <nil key="highlightedColor"/>
                                                                 </label>
                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="날짜" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="fkZ-9L-vdD">
-                                                                    <rect key="frame" x="150.33333333333334" y="0.0" width="108.66666666666666" height="40"/>
+                                                                    <rect key="frame" x="281" y="0.0" width="203" height="40"/>
                                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                                     <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                                                     <nil key="highlightedColor"/>
@@ -833,7 +833,7 @@
                         <barButtonItem key="rightBarButtonItem" title="완료" id="nVQ-HH-anL">
                             <color key="tintColor" red="0.47843140360000003" green="0.9529411793" blue="0.94901961089999998" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                             <connections>
-                                <action selector="btnAddDone:" destination="Lcc-Ir-Tux" id="Zwj-LG-Muz"/>
+                                <action selector="doneButtonTapped:" destination="Lcc-Ir-Tux" id="oyc-W7-ThU"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>

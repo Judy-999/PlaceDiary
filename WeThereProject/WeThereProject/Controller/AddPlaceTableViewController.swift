@@ -15,12 +15,16 @@ protocol EditDelegate {
 }
 
 class AddPlaceTableViewController: UITableViewController, UINavigationControllerDelegate, UIImagePickerControllerDelegate, UITextViewDelegate{
+    private enum ViewMode {
+        case add, edit
+    }
+    
     let categoryPicker = UIPickerView(), groupPicker = UIPickerView()
     var categoryItem = [String](), groupItem = [String]()
     var starButtons = [UIButton]()
     var hasImage: Bool = true
     var dataFromInfo: Bool = false
-    var selectedImage: UIImage!
+    var selectedImage: UIImage?
     var receiveImage: UIImage?, receiveName: String = "", receiveFavofit: Bool = false
     var placeHasImg: Bool = false
     var visitCount = "0"
@@ -28,6 +32,7 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
     var editData: Place?
     var editDelegate: EditDelegate?
     var nowPlaceData = [Place]()
+    private var viewMode: ViewMode = .add
     
     @IBOutlet var btnGallery: UIButton!
     @IBOutlet var placeImageView: UIImageView!
@@ -255,11 +260,19 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
               let rate = lblRate.text,
               let coment = txvComent.text else { return nil }
         
+        var hasImage = true
+        
+        if placeImageView.image == UIImage(named: "pdicon") ||
+            placeImageView.image == nil {
+            hasImage = false
+        }
+            
+        
         return Place(name: name,
                      location: location,
                      date: pkDate.date,
                      isFavorit: false,
-                     hasImage: placeHasImg,
+                     hasImage: hasImage,
                      category: category,
                      rate: rate,
                      coment: coment,
@@ -267,7 +280,7 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
                      group: group)
     }
 
-    @IBAction func btnAddDone(_ sender: UIButton) {
+    @IBAction func doneButtonTapped(_ sender: UIButton) {
         guard places.first(where: { $0.name == tfPlaceName.text }) == nil else {
             myAlert("중복된 장소 이름", message: "같은 이름의 장소가 존재합니다.")
            return
@@ -282,54 +295,28 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
             return
         }
 
-        guard var newPlace = createPlace() else { return }
+        guard let newPlace = createPlace() else { return }
         
-        if editDelegate != nil{ // 장소를 편집하는 중이라면
-            if placeHasImg == false{ // 원래 사진이 없을 때
-                if selectedImage != UIImage(named: "pdicon"){    // 새로 사진을 선택했을 때
-                    newPlace.hasImage = true
-                    uploadImage(newPlace.name, image: selectedImage.resize(newWidth: 300))
-                    newPlace.newImg = selectedImage
-                    NotificationCenter.default.post(name: NSNotification.Name(rawValue: "newPlaceUpdate"), object: newPlace)
-                }else{  // 새로 사진이 없을 때
-                    newPlace.hasImage = false
-                    NotificationCenter.default.post(name: NSNotification.Name(rawValue: "newPlaceUpdate"), object: nil)
-                }
-                uploadData(place: newPlace)
-            }else{  // 원래 사진이 있을 때
-                newPlace.hasImage = true
-                uploadData(place: newPlace)
-                if receiveImage != selectedImage{   // 새로운 사진으로 변경했을 때
-                    uploadImage(newPlace.name, image: selectedImage.resize(newWidth: 300))
-                    if receiveName != newPlace.name{    // 이름을 변경했을 때
-                        deletePlaceData(name: receiveName)
-                    }
-                    newPlace.newImg = selectedImage
-                    NotificationCenter.default.post(name: NSNotification.Name(rawValue: "newPlaceUpdate"), object: newPlace)
-                }else{  // 사진이 변경되지 않았을 때
-                    if receiveName != newPlace.name{    // 이름을 변경했을 때
-                        uploadImage(newPlace.name, image: selectedImage.resize(newWidth: 300))
-                        deletePlaceData(name: receiveName)
-                        newPlace.newImg = receiveImage
-                        NotificationCenter.default.post(name: NSNotification.Name(rawValue: "newPlaceUpdate"), object: newPlace)
-                    }else{  // 이름을 변경하지 않았을 때
-                        NotificationCenter.default.post(name: NSNotification.Name(rawValue: "newPlaceUpdate"), object: nil)
-                    }
-                }
+        switch viewMode {
+        case .add:
+            if let image = placeImageView.image {
+                uploadImage(newPlace.name, image: image.resize(newWidth: 300))
             }
-            editDelegate?.didEditPlace(self, data: newPlace, image: selectedImage)  // 장소 정보 페이지로 변경된 장소 정보 보내주기
-        }else{  // 새로운 장소 추가
-            if selectedImage == nil{    // 선택한 이미지 없음
-                newPlace.hasImage = false
-                NotificationCenter.default.post(name: NSNotification.Name(rawValue: "newPlaceUpdate"), object: nil)
-            }else{  // 선택한 이미지 있음
-                newPlace.hasImage = true
-                uploadImage(newPlace.name, image: selectedImage.resize(newWidth: 300))
-                newPlace.newImg = selectedImage
-                NotificationCenter.default.post(name: NSNotification.Name(rawValue: "newPlaceUpdate"), object: newPlace)
+            
+            uploadData(place: newPlace)
+        case .edit:
+            if let image = placeImageView.image, newPlace.hasImage == true {
+                uploadImage(newPlace.name, image: image.resize(newWidth: 300))
             }
+            
+            if receiveName != newPlace.name {
+                FirestoreManager.shared.deletePlace(receiveName)
+//                deletePlaceData(name: receiveName)
+            }
+            
             uploadData(place: newPlace)
         }
+        
         _ = navigationController?.popViewController(animated: true)
     }
     
