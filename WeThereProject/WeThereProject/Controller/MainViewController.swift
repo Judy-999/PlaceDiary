@@ -237,7 +237,7 @@ class MainViewController: UIViewController, ImageDelegate {
         
         if segue.identifier == "sgAddPlace" {
             guard let addViewController = segue.destination as? AddPlaceTableViewController else { return }
-            addViewController.nowPlaceData = places
+            addViewController.places = places
         }
     }
 }

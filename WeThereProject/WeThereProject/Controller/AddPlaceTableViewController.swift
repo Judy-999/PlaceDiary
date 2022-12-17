@@ -18,19 +18,7 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
     private enum ViewMode {
         case add, edit
     }
-    
-    let categoryPicker = UIPickerView(), groupPicker = UIPickerView()
-    var categoryItem = [String](), groupItem = [String]()
-    var dataFromInfo: Bool = false
-    var selectedImage: UIImage?
-    var receiveImage: UIImage?, receiveName: String = "", receiveFavofit: Bool = false
-    var placeHasImg: Bool = false
-    var placeGeoPoint: GeoPoint?
-    var editData: Place?
-    var editDelegate: EditDelegate?
-    var nowPlaceData = [Place]()
-    private var viewMode: ViewMode = .add
-    
+
     @IBOutlet weak var addImageButton: UIButton!
     @IBOutlet weak var placeImageView: UIImageView!
     @IBOutlet weak var nameTextField: UITextField!
@@ -43,10 +31,23 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
     @IBOutlet weak var starSlider: StarRatingUISlider!
     @IBOutlet var starButtons: [UIButton]!
     
+    private let categoryPicker = UIPickerView(), groupPicker = UIPickerView()
+    private var categoryItem = [String](), groupItem = [String]()
+    private var dataFromInfo: Bool = false
+    private var selectedImage: UIImage?
+    private var receiveImage: UIImage?, receiveName: String = "", receiveFavofit: Bool = false
+    private var placeHasImg: Bool = false
+    private var placeGeoPoint: GeoPoint?
+    private var editData: Place?
+    var editDelegate: EditDelegate?
+    var places = [Place]()
+    private var viewMode: ViewMode = .add
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
     
-        downloadPickerItem()
+        loadClassification()
         setPicker(categoryPicker)
         setPicker(groupPicker)
         
@@ -71,7 +72,7 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
     }
     
     // Picker 설정
-    func setPicker(_ picker: UIPickerView){
+    private func setPicker(_ picker: UIPickerView) {
         let pickerToolbar = UIToolbar()
         let btnPickerDone = UIBarButtonItem()
         let btnAdd = UIBarButtonItem()
@@ -110,7 +111,7 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
     }
     
     // 그룹 선택 완료
-    @objc func groupPickerDone(){
+    @objc private func groupPickerDone() {
         if groupTextField.text == "그룹 선택"{
             groupTextField.text = groupItem[0]
         }
@@ -118,23 +119,23 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
     }
     
     // 문류 선택 완료
-    @objc func categoryPickerDone(){
+    @objc private func categoryPickerDone() {
         if categoryTextField.text == "분류 선택"{
             categoryTextField.text = categoryItem[0]
         }
         self.view.endEditing(true)
     }
     
-    @objc func editCategory(){
+    @objc private func editCategory() {
         addNewCategory("분류")
     }
     
-    @objc func editGroup(){
+    @objc private func editGroup() {
         addNewCategory("그룹")
     }
     
     // 새로운 분류 or 그룹을 바로 추가하는 함수
-    func addNewCategory(_ type: String){
+    private func addNewCategory(_ type: String) {
         let addAlert = UIAlertController(title: type + " 추가", message: "새로운 항목을 입력하세요.", preferredStyle: .alert)
         addAlert.addTextField()
         let alertOk = UIAlertAction(title: "추가", style: .default) { [self] (alertOk) in
@@ -154,21 +155,21 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
     }
     
     // 새로 추가하려는 분류나 그룹이 이미 존재하는지 확인하는 함수
-    func checkExisted(item: String, type: String) -> Bool{
+    private func checkExisted(item: String, type: String) -> Bool {
         var checkList = [String]()
         type == "그룹" ? (checkList = groupItem) : (checkList = categoryItem)
         let sameName = checkList.filter({$0 == item})
         return sameName.count == 0 ? true : false
     }
     
-    func simpleAlert(title: String, message: String){
+    private func simpleAlert(title: String, message: String) {
         let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "확인", style: .default, handler: nil))
         self.present(alert, animated: true, completion: nil)
     }
     
     // 새로 추가한 분류나 그룹을 Firebase에 올리는 함수
-    func uploadCategory(_ type: String, item: String){
+    private func uploadCategory(_ type: String, item: String) {
         var target: String!
         var array = [String]()
         
@@ -187,9 +188,7 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
         FirestoreManager.shared.updateClassification(target, with: array)
     }
 
-    
-    // 분류와 그룹 리스트를 Firebase에서 받아오는 함수
-    func downloadPickerItem(){
+    private func loadClassification() {
         FirestoreManager.shared.loadClassification { categoryItems, groupItems in
             self.categoryItem = categoryItems
             self.groupItem = groupItems
@@ -197,7 +196,7 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
     }
     
     // 편집하는 장소 데이터를 받아오는 함수
-    func setPlaceDataFromInfo(data: Place, image: UIImage){
+    func setPlaceDataFromInfo(data: Place, image: UIImage) {
         editData = data
         receiveImage = image
         selectedImage = image
@@ -209,7 +208,7 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
     }
     
     // 편집할 장소 데이터로 정보창을 설정하는 함수
-    func setPlaceInfo(){
+    private func setPlaceInfo() {
         let addRate = AddRate()
         
         placeImageView.image = receiveImage
@@ -225,7 +224,6 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
     }
 
     // MARK: - Table view data source
-
     override func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
@@ -267,7 +265,7 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
                      group: group)
     }
 
-    @IBAction func doneButtonTapped(_ sender: UIButton) {
+    @IBAction private func doneButtonTapped(_ sender: UIButton) {
         guard places.first(where: { $0.name == nameTextField.text }) == nil else {
             myAlert("중복된 장소 이름", message: "같은 이름의 장소가 존재합니다.")
            return
@@ -308,18 +306,18 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
     }
     
      // 장소의 이름을 변경했으면 이전 이름의 장소와 사진을 삭제하는 함수
-     func deletePlaceData(name place: String) {
+    private func deletePlaceData(name place: String) {
          FirestoreManager.shared.deletePlace(place)
          StorageManager.shared.deleteImage(name: place)
      }
      
      // 장소 정보를 Firebase에 업로드하는 함수
-     func uploadData(place data: Place){
+    private func uploadData(place data: Place) {
          FirestoreManager.shared.savePlace(data)
     }
     
     // 선택된 이미지를 Storage에 업로드하는 함수
-    func uploadImage(_ placeName: String, image: UIImage){
+    private func uploadImage(_ placeName: String, image: UIImage) {
         StorageManager.shared.saveImage(image, name: placeName)
     }
     
@@ -348,14 +346,14 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
     }
     
     
-    func myAlert(_ title: String, message: String){
+    private func myAlert(_ title: String, message: String) {
         let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
         let action = UIAlertAction(title: "확인", style: .default, handler: nil)
         alert.addAction(action)
         present(alert, animated: true, completion: nil)
     }
     
-    @IBAction func sliderChanged(_ sender: Any) {
+    @IBAction private func sliderChanged(_ sender: Any) {
         let addRate = AddRate()
         let starVal = starSlider.value
         addRate.sliderStar(buttons: starButtons, rate: starVal)
@@ -371,7 +369,7 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
         }
     }
     
-    @IBAction func btnAddPhoto(_ sender: UIButton){
+    @IBAction private func btnAddPhoto(_ sender: UIButton) {
         let imagePicker = UIImagePickerController()
         imagePicker.allowsEditing = true
         if(UIImagePickerController.isSourceTypeAvailable(.photoLibrary)){
@@ -386,14 +384,14 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
     }
     
 
-    @IBAction func searchPosition(_ sender: UIButton){
+    @IBAction private func searchPosition(_ sender: UIButton) {
         //구글 자동완성 뷰컨트롤러 생성
         let searchController = GMSAutocompleteViewController()
         searchController.delegate = self
         present(searchController, animated: true, completion: nil)
     }
 
-    @IBAction func datePick(_ sender: UIDatePicker){
+    @IBAction private func datePick(_ sender: UIDatePicker) {
         presentedViewController?.dismiss(animated: true, completion: nil)
     }
 }
@@ -418,7 +416,7 @@ extension AddPlaceTableViewController: GMSAutocompleteViewControllerDelegate { /
     } //캔슬버튼 눌렀을 때 화면 꺼지게
 }
 
-extension UIImage {
+fileprivate extension UIImage {
     func resize(newWidth: CGFloat) -> UIImage {
         let scale = newWidth / self.size.width
         let newHeight = self.size.height * scale
