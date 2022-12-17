@@ -241,71 +241,94 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return 7
     }
+    
+    private func createPlace() -> Place? {
+        if txvComent.text == "코멘트를 입력하세요." {
+            txvComent.text = ""
+        }
+        
+        guard let name = tfPlaceName.text,
+              let location = tvPlacePosition.text,
+              let category = tfCategory.text,
+              let group = tfGroup.text,
+              let geoPoint = placeGeoPoint,
+              let rate = lblRate.text,
+              let coment = txvComent.text else { return nil }
+        
+        return Place(name: name,
+                     location: location,
+                     date: pkDate.date,
+                     isFavorit: false,
+                     hasImage: placeHasImg,
+                     category: category,
+                     rate: rate,
+                     coment: coment,
+                     geopoint: geoPoint,
+                     group: group)
+    }
 
-    @IBAction func btnAddDone(_ sender: UIButton){
-        guard nowPlaceData.first(where: {$0.name == tfPlaceName.text}) == nil else {
-            myAlert("장소 이름 중복", message: "같은 이름의 장소가 존재합니다.")
+    @IBAction func btnAddDone(_ sender: UIButton) {
+        guard places.first(where: { $0.name == tfPlaceName.text }) == nil else {
+            myAlert("중복된 장소 이름", message: "같은 이름의 장소가 존재합니다.")
            return
         }
         
-        guard tfPlaceName.text != "", tvPlacePosition.text != "위치를 입력하세요.", tfCategory.text != "", tfGroup.text != "", placeGeoPoint != nil else {
+        guard tfPlaceName.text?.isEmpty == false,
+              tvPlacePosition.text != "위치를 입력하세요.",
+              tfCategory.text?.isEmpty == false,
+              tfGroup.text?.isEmpty == false,
+              placeGeoPoint != nil else {
             myAlert("필수 입력 미기재", message: "모든 항목을 입력해주세요.")
             return
         }
-                    
-        // 코멘트를 입력하지 않은 상태면 코멘트는 빈칸으로 저장
-        if txvComent.text == "코멘트를 입력하세요."{
-            txvComent.text = "내용 없음"
-        }
 
-        var newPlaceInfo: Place = Place(name: tfPlaceName.text!, location: tvPlacePosition.text, date: pkDate.date, isFavorit: receiveFavofit, hasImage: placeHasImg, category: tfCategory.text!, rate: lblRate.text!, coment: txvComent.text, geopoint: placeGeoPoint!, group: tfGroup.text!, newImg: nil)
+        guard var newPlace = createPlace() else { return }
         
         if editDelegate != nil{ // 장소를 편집하는 중이라면
             if placeHasImg == false{ // 원래 사진이 없을 때
-                print("저한테 듷어오긴 하나요>>>>")
                 if selectedImage != UIImage(named: "pdicon"){    // 새로 사진을 선택했을 때
-                    newPlaceInfo.hasImage = true
-                    uploadImage(newPlaceInfo.name, image: selectedImage.resize(newWidth: 300))
-                    newPlaceInfo.newImg = selectedImage
-                    NotificationCenter.default.post(name: NSNotification.Name(rawValue: "newPlaceUpdate"), object: newPlaceInfo)
+                    newPlace.hasImage = true
+                    uploadImage(newPlace.name, image: selectedImage.resize(newWidth: 300))
+                    newPlace.newImg = selectedImage
+                    NotificationCenter.default.post(name: NSNotification.Name(rawValue: "newPlaceUpdate"), object: newPlace)
                 }else{  // 새로 사진이 없을 때
-                    newPlaceInfo.hasImage = false
+                    newPlace.hasImage = false
                     NotificationCenter.default.post(name: NSNotification.Name(rawValue: "newPlaceUpdate"), object: nil)
                 }
-                uploadData(place: newPlaceInfo)
+                uploadData(place: newPlace)
             }else{  // 원래 사진이 있을 때
-                newPlaceInfo.hasImage = true
-                uploadData(place: newPlaceInfo)
+                newPlace.hasImage = true
+                uploadData(place: newPlace)
                 if receiveImage != selectedImage{   // 새로운 사진으로 변경했을 때
-                    uploadImage(newPlaceInfo.name, image: selectedImage.resize(newWidth: 300))
-                    if receiveName != newPlaceInfo.name{    // 이름을 변경했을 때
+                    uploadImage(newPlace.name, image: selectedImage.resize(newWidth: 300))
+                    if receiveName != newPlace.name{    // 이름을 변경했을 때
                         deletePlaceData(name: receiveName)
                     }
-                    newPlaceInfo.newImg = selectedImage
-                    NotificationCenter.default.post(name: NSNotification.Name(rawValue: "newPlaceUpdate"), object: newPlaceInfo)
+                    newPlace.newImg = selectedImage
+                    NotificationCenter.default.post(name: NSNotification.Name(rawValue: "newPlaceUpdate"), object: newPlace)
                 }else{  // 사진이 변경되지 않았을 때
-                    if receiveName != newPlaceInfo.name{    // 이름을 변경했을 때
-                        uploadImage(newPlaceInfo.name, image: selectedImage.resize(newWidth: 300))
+                    if receiveName != newPlace.name{    // 이름을 변경했을 때
+                        uploadImage(newPlace.name, image: selectedImage.resize(newWidth: 300))
                         deletePlaceData(name: receiveName)
-                        newPlaceInfo.newImg = receiveImage
-                        NotificationCenter.default.post(name: NSNotification.Name(rawValue: "newPlaceUpdate"), object: newPlaceInfo)
+                        newPlace.newImg = receiveImage
+                        NotificationCenter.default.post(name: NSNotification.Name(rawValue: "newPlaceUpdate"), object: newPlace)
                     }else{  // 이름을 변경하지 않았을 때
                         NotificationCenter.default.post(name: NSNotification.Name(rawValue: "newPlaceUpdate"), object: nil)
                     }
                 }
             }
-            editDelegate?.didEditPlace(self, data: newPlaceInfo, image: selectedImage)  // 장소 정보 페이지로 변경된 장소 정보 보내주기
+            editDelegate?.didEditPlace(self, data: newPlace, image: selectedImage)  // 장소 정보 페이지로 변경된 장소 정보 보내주기
         }else{  // 새로운 장소 추가
             if selectedImage == nil{    // 선택한 이미지 없음
-                newPlaceInfo.hasImage = false
+                newPlace.hasImage = false
                 NotificationCenter.default.post(name: NSNotification.Name(rawValue: "newPlaceUpdate"), object: nil)
             }else{  // 선택한 이미지 있음
-                newPlaceInfo.hasImage = true
-                uploadImage(newPlaceInfo.name, image: selectedImage.resize(newWidth: 300))
-                newPlaceInfo.newImg = selectedImage
-                NotificationCenter.default.post(name: NSNotification.Name(rawValue: "newPlaceUpdate"), object: newPlaceInfo)
+                newPlace.hasImage = true
+                uploadImage(newPlace.name, image: selectedImage.resize(newWidth: 300))
+                newPlace.newImg = selectedImage
+                NotificationCenter.default.post(name: NSNotification.Name(rawValue: "newPlaceUpdate"), object: newPlace)
             }
-            uploadData(place: newPlaceInfo)
+            uploadData(place: newPlace)
         }
         _ = navigationController?.popViewController(animated: true)
     }
