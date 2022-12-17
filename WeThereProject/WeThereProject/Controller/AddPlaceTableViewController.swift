@@ -21,34 +21,27 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
     
     let categoryPicker = UIPickerView(), groupPicker = UIPickerView()
     var categoryItem = [String](), groupItem = [String]()
-    var starButtons = [UIButton]()
-    var hasImage: Bool = true
     var dataFromInfo: Bool = false
     var selectedImage: UIImage?
     var receiveImage: UIImage?, receiveName: String = "", receiveFavofit: Bool = false
     var placeHasImg: Bool = false
-    var visitCount = "0"
     var placeGeoPoint: GeoPoint?
     var editData: Place?
     var editDelegate: EditDelegate?
     var nowPlaceData = [Place]()
     private var viewMode: ViewMode = .add
     
-    @IBOutlet var btnGallery: UIButton!
-    @IBOutlet var placeImageView: UIImageView!
-    @IBOutlet var tfPlaceName: UITextField!
-    @IBOutlet var tvPlacePosition: UITextView!
-    @IBOutlet var tfCategory: UITextField!
-    @IBOutlet var pkDate: UIDatePicker!
-    @IBOutlet var txvComent: UITextView!
-    @IBOutlet var lblRate: UILabel!
-    @IBOutlet var btnRate1: UIButton!
-    @IBOutlet var btnRate2: UIButton!
-    @IBOutlet var btnRate3: UIButton!
-    @IBOutlet var btnRate4: UIButton!
-    @IBOutlet var btnRate5: UIButton!
-    @IBOutlet weak var tfGroup: UITextField!
+    @IBOutlet weak var addImageButton: UIButton!
+    @IBOutlet weak var placeImageView: UIImageView!
+    @IBOutlet weak var nameTextField: UITextField!
+    @IBOutlet weak var locationTextView: UITextView!
+    @IBOutlet weak var categoryTextField: UITextField!
+    @IBOutlet weak var datePicker: UIDatePicker!
+    @IBOutlet weak var comentTextView: UITextView!
+    @IBOutlet weak var rateLabel: UILabel!
+    @IBOutlet weak var groupTextField: UITextField!
     @IBOutlet weak var starSlider: StarRatingUISlider!
+    @IBOutlet var starButtons: [UIButton]!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -57,29 +50,23 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
         setPicker(categoryPicker)
         setPicker(groupPicker)
         
-        txvComent.delegate = self
-        tvPlacePosition.delegate = self
-        txvComent.text = "코멘트를 입력하세요."
-        tvPlacePosition.text = "이름 또는 주소로 위치를 검색하세요."
-        tvPlacePosition.textColor = #colorLiteral(red: 0.768627286, green: 0.7686277032, blue: 0.7772355676, alpha: 1)
-        txvComent.textColor = #colorLiteral(red: 0.768627286, green: 0.7686277032, blue: 0.7772355676, alpha: 1)
+        comentTextView.delegate = self
+        locationTextView.delegate = self
+        comentTextView.text = "코멘트를 입력하세요."
+        locationTextView.text = "이름 또는 주소로 위치를 검색하세요."
+        locationTextView.textColor = #colorLiteral(red: 0.768627286, green: 0.7686277032, blue: 0.7772355676, alpha: 1)
+        comentTextView.textColor = #colorLiteral(red: 0.768627286, green: 0.7686277032, blue: 0.7772355676, alpha: 1)
         
-        btnGallery.layer.borderWidth = 1
-        btnGallery.layer.borderColor = UIColor.lightGray.cgColor
-        
-        starButtons.append(btnRate1)
-        starButtons.append(btnRate2)
-        starButtons.append(btnRate3)
-        starButtons.append(btnRate4)
-        starButtons.append(btnRate5)
+        addImageButton.layer.borderWidth = 1
+        addImageButton.layer.borderColor = UIColor.lightGray.cgColor
 
         tableView.tableFooterView = UIView(frame: CGRect.zero)
       
         if dataFromInfo {
             setPlaceInfo()
-            txvComent.textColor = UIColor.label
-            tvPlacePosition.textColor = UIColor.label
-            tvPlacePosition.isEditable = true
+            comentTextView.textColor = UIColor.label
+            locationTextView.textColor = UIColor.label
+            locationTextView.isEditable = true
         }
     }
     
@@ -108,32 +95,32 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
         picker.delegate = self
         
         if picker == categoryPicker{
-            self.tfCategory.inputAccessoryView = pickerToolbar
+            self.categoryTextField.inputAccessoryView = pickerToolbar
             btnPickerDone.action = #selector(categoryPickerDone)
             btnAdd.action = #selector(editCategory)
             picker.tag = 0
-            self.tfCategory.inputView = picker
+            self.categoryTextField.inputView = picker
         }else{
-            self.tfGroup.inputAccessoryView = pickerToolbar
+            self.groupTextField.inputAccessoryView = pickerToolbar
             btnPickerDone.action = #selector(groupPickerDone)
             btnAdd.action = #selector(editGroup)
             picker.tag = 1
-            self.tfGroup.inputView = picker
+            self.groupTextField.inputView = picker
         }
     }
     
     // 그룹 선택 완료
     @objc func groupPickerDone(){
-        if tfGroup.text == "그룹 선택"{
-            tfGroup.text = groupItem[0]
+        if groupTextField.text == "그룹 선택"{
+            groupTextField.text = groupItem[0]
         }
         self.view.endEditing(true)
     }
     
     // 문류 선택 완료
     @objc func categoryPickerDone(){
-        if tfCategory.text == "분류 선택"{
-            tfCategory.text = categoryItem[0]
+        if categoryTextField.text == "분류 선택"{
+            categoryTextField.text = categoryItem[0]
         }
         self.view.endEditing(true)
     }
@@ -226,13 +213,13 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
         let addRate = AddRate()
         
         placeImageView.image = receiveImage
-        tfPlaceName.text = editData?.name
-        tvPlacePosition.text = editData?.location
-        tfCategory.text = editData?.category
-        pkDate.date = editData!.date
-        txvComent.text = editData?.coment
-        lblRate.text = editData?.rate
-        tfGroup.text = editData?.group
+        nameTextField.text = editData?.name
+        locationTextView.text = editData?.location
+        categoryTextField.text = editData?.category
+        datePicker.date = editData!.date
+        comentTextView.text = editData?.coment
+        rateLabel.text = editData?.rate
+        groupTextField.text = editData?.group
         
         addRate.fill(buttons: starButtons, rate: NSString(string: editData!.rate).floatValue)
     }
@@ -248,17 +235,17 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
     }
     
     private func createPlace() -> Place? {
-        if txvComent.text == "코멘트를 입력하세요." {
-            txvComent.text = ""
+        if comentTextView.text == "코멘트를 입력하세요." {
+            comentTextView.text = ""
         }
         
-        guard let name = tfPlaceName.text,
-              let location = tvPlacePosition.text,
-              let category = tfCategory.text,
-              let group = tfGroup.text,
+        guard let name = nameTextField.text,
+              let location = locationTextView.text,
+              let category = categoryTextField.text,
+              let group = groupTextField.text,
               let geoPoint = placeGeoPoint,
-              let rate = lblRate.text,
-              let coment = txvComent.text else { return nil }
+              let rate = rateLabel.text,
+              let coment = comentTextView.text else { return nil }
         
         var hasImage = true
         
@@ -270,7 +257,7 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
         
         return Place(name: name,
                      location: location,
-                     date: pkDate.date,
+                     date: datePicker.date,
                      isFavorit: false,
                      hasImage: hasImage,
                      category: category,
@@ -281,15 +268,15 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
     }
 
     @IBAction func doneButtonTapped(_ sender: UIButton) {
-        guard places.first(where: { $0.name == tfPlaceName.text }) == nil else {
+        guard places.first(where: { $0.name == nameTextField.text }) == nil else {
             myAlert("중복된 장소 이름", message: "같은 이름의 장소가 존재합니다.")
            return
         }
         
-        guard tfPlaceName.text?.isEmpty == false,
-              tvPlacePosition.text != "위치를 입력하세요.",
-              tfCategory.text?.isEmpty == false,
-              tfGroup.text?.isEmpty == false,
+        guard nameTextField.text?.isEmpty == false,
+              locationTextView.text != "위치를 입력하세요.",
+              categoryTextField.text?.isEmpty == false,
+              groupTextField.text?.isEmpty == false,
               placeGeoPoint != nil else {
             myAlert("필수 입력 미기재", message: "모든 항목을 입력해주세요.")
             return
@@ -378,9 +365,9 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
         let rateInt = Int(rateDown)
         
         if half >= 0.5{
-            lblRate.text = String(rateInt) + ".5"
+            rateLabel.text = String(rateInt) + ".5"
         }else{
-            lblRate.text = String(rateInt) + ".0"
+            rateLabel.text = String(rateInt) + ".0"
         }
     }
     
@@ -415,9 +402,9 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
 extension AddPlaceTableViewController: GMSAutocompleteViewControllerDelegate { //해당 뷰컨트롤러를 익스텐션으로 딜리게이트를 달아준다.
     func viewController(_ viewController: GMSAutocompleteViewController, didAutocompleteWith place: GMSPlace) {
         let address = place.formattedAddress?.replacingOccurrences(of: "대한민국 ", with: "")
-        self.tvPlacePosition.text = address
-        self.tvPlacePosition.textColor = UIColor.label
-        self.tvPlacePosition.isEditable = true
+        self.locationTextView.text = address
+        self.locationTextView.textColor = UIColor.label
+        self.locationTextView.isEditable = true
         self.placeGeoPoint = GeoPoint(latitude: place.coordinate.latitude, longitude: place.coordinate.longitude)
         dismiss(animated: true, completion: nil)
     } //원하는 셀 탭했을 때 꺼지게
@@ -466,9 +453,9 @@ extension AddPlaceTableViewController :  UIPickerViewDelegate, UIPickerViewDataS
     
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         if pickerView.tag == 0{
-            tfCategory.text = categoryItem[row]
+            categoryTextField.text = categoryItem[row]
         }else{
-            return tfGroup.text = groupItem[row]
+            return groupTextField.text = groupItem[row]
         }
     }
 }

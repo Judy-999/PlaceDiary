@@ -839,21 +839,21 @@
                     </navigationItem>
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
-                        <outlet property="btnGallery" destination="HRk-ch-1jU" id="R3B-87-5rf"/>
-                        <outlet property="btnRate1" destination="FLk-Zw-a42" id="og5-Mo-QTs"/>
-                        <outlet property="btnRate2" destination="TaO-mO-7nL" id="EEd-dt-pbc"/>
-                        <outlet property="btnRate3" destination="i2c-K6-WR9" id="i7c-w3-GP1"/>
-                        <outlet property="btnRate4" destination="hWH-sY-Adf" id="wvt-rd-Zad"/>
-                        <outlet property="btnRate5" destination="8bZ-nQ-ZfL" id="1hX-4h-fUu"/>
-                        <outlet property="lblRate" destination="ndn-dQ-qaw" id="hrb-xx-j8W"/>
-                        <outlet property="pkDate" destination="Wa5-Fi-Nt9" id="rOD-pr-OW6"/>
+                        <outlet property="addImageButton" destination="HRk-ch-1jU" id="R3B-87-5rf"/>
+                        <outlet property="categoryTextField" destination="4uj-uR-9gu" id="ya2-QT-Pxs"/>
+                        <outlet property="comentTextView" destination="3uy-7r-74O" id="dNd-OW-Bvc"/>
+                        <outlet property="datePicker" destination="Wa5-Fi-Nt9" id="rOD-pr-OW6"/>
+                        <outlet property="groupTextField" destination="4uj-uR-9gu" id="ahp-Ww-EJP"/>
+                        <outlet property="locationTextView" destination="ZKh-GB-vwf" id="MKp-On-tHB"/>
+                        <outlet property="nameTextField" destination="8vk-uv-TXM" id="CZL-dp-ju2"/>
                         <outlet property="placeImageView" destination="vVH-t3-yer" id="IqP-4v-Edf"/>
+                        <outlet property="rateLabel" destination="ndn-dQ-qaw" id="hrb-xx-j8W"/>
                         <outlet property="starSlider" destination="5ox-EM-RVE" id="a40-6H-Nek"/>
-                        <outlet property="tfCategory" destination="NZB-nx-NwL" id="oJ0-HH-LEc"/>
-                        <outlet property="tfGroup" destination="4uj-uR-9gu" id="ahp-Ww-EJP"/>
-                        <outlet property="tfPlaceName" destination="8vk-uv-TXM" id="CZL-dp-ju2"/>
-                        <outlet property="tvPlacePosition" destination="ZKh-GB-vwf" id="MKp-On-tHB"/>
-                        <outlet property="txvComent" destination="3uy-7r-74O" id="dNd-OW-Bvc"/>
+                        <outletCollection property="starButtons" destination="FLk-Zw-a42" collectionClass="NSMutableArray" id="p7N-z7-31a"/>
+                        <outletCollection property="starButtons" destination="TaO-mO-7nL" collectionClass="NSMutableArray" id="YAE-TX-vgv"/>
+                        <outletCollection property="starButtons" destination="i2c-K6-WR9" collectionClass="NSMutableArray" id="U3Z-vg-JgS"/>
+                        <outletCollection property="starButtons" destination="hWH-sY-Adf" collectionClass="NSMutableArray" id="dGq-68-6T1"/>
+                        <outletCollection property="starButtons" destination="8bZ-nQ-ZfL" collectionClass="NSMutableArray" id="qmN-nW-h0P"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Yta-u5-Lu3" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
