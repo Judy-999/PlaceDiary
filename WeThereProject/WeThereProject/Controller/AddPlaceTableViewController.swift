@@ -33,7 +33,6 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
     
     private let categoryPicker = UIPickerView(), groupPicker = UIPickerView()
     private var categoryItem = [String](), groupItem = [String]()
-    private var dataFromInfo: Bool = false
     private var selectedImage: UIImage?
     private var receiveImage: UIImage?, receiveName: String = "", receiveFavofit: Bool = false
     private var placeHasImg: Bool = false
@@ -46,14 +45,13 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        configureTextView()
         configurePickerView()
-        
-        if dataFromInfo {
-            setPlaceInfo()
-            comentTextView.textColor = UIColor.label
-            locationTextView.textColor = UIColor.label
-            locationTextView.isEditable = true
+
+        switch viewMode {
+        case .add:
+            configureTextView()
+        case .edit:
+            configureEditView()
         }
     }
     
@@ -200,28 +198,23 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
     func setPlaceDataFromInfo(data: Place, image: UIImage) {
         editData = data
         receiveImage = image
-        selectedImage = image
-        dataFromInfo = true
-        receiveName = data.name
-        receiveFavofit = data.isFavorit
-        placeHasImg = data.hasImage
-        placeGeoPoint = data.geopoint
     }
     
-    // 편집할 장소 데이터로 정보창을 설정하는 함수
-    private func setPlaceInfo() {
+    private func configureEditView() {
+        guard let place = editData else { return }
         let addRate = AddRate()
         
         placeImageView.image = receiveImage
-        nameTextField.text = editData?.name
-        locationTextView.text = editData?.location
-        categoryTextField.text = editData?.category
-        datePicker.date = editData!.date
-        comentTextView.text = editData?.coment
-        rateLabel.text = editData?.rate
-        groupTextField.text = editData?.group
+        nameTextField.text = place.name
+        locationTextView.text = place.location
+        categoryTextField.text = place.category
+        datePicker.date = place.date
+        comentTextView.text = place.coment
+        rateLabel.text = place.rate
+        groupTextField.text = place.group
         
-        addRate.fill(buttons: starButtons, rate: NSString(string: editData!.rate).floatValue)
+        addRate.fill(buttons: starButtons,
+                     rate: NSString(string: place.rate).floatValue)
     }
 
     // MARK: - Table view data source
@@ -252,7 +245,6 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
             placeImageView.image == nil {
             hasImage = false
         }
-            
         
         return Place(name: name,
                      location: location,
