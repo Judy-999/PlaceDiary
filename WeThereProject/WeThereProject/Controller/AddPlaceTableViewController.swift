@@ -14,7 +14,7 @@ protocol EditDelegate {
     func didEditPlace(_ controller: AddPlaceTableViewController, data: Place, image: UIImage)
 }
 
-class AddPlaceTableViewController: UITableViewController, UINavigationControllerDelegate, UIImagePickerControllerDelegate, UITextViewDelegate{
+class AddPlaceTableViewController: UITableViewController, UITextViewDelegate{
     private enum ViewMode {
         case add, edit
     }
@@ -33,9 +33,7 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
     
     private let categoryPicker = UIPickerView(), groupPicker = UIPickerView()
     private var categoryItem = [String](), groupItem = [String]()
-    private var selectedImage: UIImage?
     private var receiveImage: UIImage?, receiveName: String = "", receiveFavofit: Bool = false
-    private var placeHasImg: Bool = false
     private var placeGeoPoint: GeoPoint?
     private var editData: Place?
     var editDelegate: EditDelegate?
@@ -321,23 +319,6 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
             textView.textColor = UIColor.label
         }
     }
-
-    // 이미지 선택하는 함수
-    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
-        if let img = info[UIImagePickerController.InfoKey.editedImage] as? UIImage{
-            selectedImage = img
-        }else if let img = info[UIImagePickerController.InfoKey.originalImage] as? UIImage{
-            selectedImage = img //사진을 가져와 라이브러리에 저장
-        }
-        placeImageView.image = selectedImage
-        self.dismiss(animated: true, completion: nil)   //현재 뷰 컨트롤러 제거
-    }
-        
-    //사용자가 사진이나 비디오를 찍지 않고 취소했을 때
-    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
-        self.dismiss(animated: true, completion: nil)   //이미지 피커를 제거하고 초기 뷰를 보여줌
-    }
-    
     
     private func myAlert(_ title: String, message: String) {
         let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
@@ -362,20 +343,14 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
         }
     }
     
-    @IBAction private func btnAddPhoto(_ sender: UIButton) {
+    @IBAction private func AddPhotoButtonTapped(_ sender: UIButton) {
         let imagePicker = UIImagePickerController()
+        imagePicker.sourceType = .photoLibrary
         imagePicker.allowsEditing = true
-        if(UIImagePickerController.isSourceTypeAvailable(.photoLibrary)){
-            imagePicker.delegate = self
-            imagePicker.sourceType = .photoLibrary
-            imagePicker.mediaTypes = [kUTTypeImage as String]
-            imagePicker.allowsEditing = true
-            present(imagePicker, animated: true, completion: nil)
-        }else{
-            myAlert("갤러리 접근 불가", message: "갤러리에 접근 할 수 없습니다.")
-        }
+        imagePicker.delegate = self
+        
+        present(imagePicker, animated: true)
     }
-    
 
     @IBAction private func searchPosition(_ sender: UIButton) {
         //구글 자동완성 뷰컨트롤러 생성
@@ -389,6 +364,24 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
     }
 }
 
+extension AddPlaceTableViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        var selectedImage: UIImage? = nil
+        
+        if let image = info[UIImagePickerController.InfoKey.editedImage] as? UIImage {
+            selectedImage = image
+        } else if let image = info[UIImagePickerController.InfoKey.originalImage] as? UIImage {
+            selectedImage = image
+        }
+        
+        placeImageView.image = selectedImage
+        self.dismiss(animated: true, completion: nil)
+    }
+    
+    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+        self.dismiss(animated: true, completion: nil)  
+    }
+}
 
 extension AddPlaceTableViewController: GMSAutocompleteViewControllerDelegate { //해당 뷰컨트롤러를 익스텐션으로 딜리게이트를 달아준다.
     func viewController(_ viewController: GMSAutocompleteViewController, didAutocompleteWith place: GMSPlace) {
@@ -409,7 +402,7 @@ extension AddPlaceTableViewController: GMSAutocompleteViewControllerDelegate { /
     } //캔슬버튼 눌렀을 때 화면 꺼지게
 }
 
-extension AddPlaceTableViewController :  UIPickerViewDelegate, UIPickerViewDataSource{
+extension AddPlaceTableViewController :  UIPickerViewDelegate, UIPickerViewDataSource {
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
         return 1
     }

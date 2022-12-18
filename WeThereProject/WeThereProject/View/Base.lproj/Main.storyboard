@@ -502,7 +502,7 @@
                                                                 <imageReference key="image" image="camera.fill" catalog="system" symbolScale="large"/>
                                                             </state>
                                                             <connections>
-                                                                <action selector="btnAddPhoto:" destination="Lcc-Ir-Tux" eventType="touchUpInside" id="DdI-81-AR0"/>
+                                                                <action selector="AddPhotoButtonTapped:" destination="Lcc-Ir-Tux" eventType="touchUpInside" id="auM-Fo-PeC"/>
                                                             </connections>
                                                         </button>
                                                         <imageView clipsSubviews="YES" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="vVH-t3-yer">
