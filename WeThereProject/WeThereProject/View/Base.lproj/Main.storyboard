@@ -491,6 +491,7 @@
                                                     <subviews>
                                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="HRk-ch-1jU">
                                                             <rect key="frame" x="0.0" y="0.0" width="91" height="88"/>
+                                                            <color key="backgroundColor" systemColor="systemGray5Color"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="width" constant="50" id="2fM-l1-DJP"/>
                                                                 <constraint firstAttribute="height" constant="50" id="S3j-OB-QH5"/>
@@ -500,9 +501,6 @@
                                                             <state key="normal">
                                                                 <imageReference key="image" image="camera.fill" catalog="system" symbolScale="large"/>
                                                             </state>
-                                                            <buttonConfiguration key="configuration" style="gray">
-                                                                <imageReference key="image" image="camera.fill" catalog="system" symbolScale="large"/>
-                                                            </buttonConfiguration>
                                                             <connections>
                                                                 <action selector="btnAddPhoto:" destination="Lcc-Ir-Tux" eventType="touchUpInside" id="DdI-81-AR0"/>
                                                             </connections>
@@ -1388,6 +1386,9 @@
         </systemColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+        <systemColor name="systemGray5Color">
+            <color red="0.89803921568627454" green="0.89803921568627454" blue="0.91764705882352937" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="systemYellowColor">
             <color red="1" green="0.80000000000000004" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
