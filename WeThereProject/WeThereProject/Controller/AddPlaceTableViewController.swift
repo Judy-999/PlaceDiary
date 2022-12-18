@@ -14,7 +14,7 @@ protocol EditDelegate {
     func didEditPlace(_ controller: AddPlaceTableViewController, data: Place, image: UIImage)
 }
 
-class AddPlaceTableViewController: UITableViewController, UITextViewDelegate{
+class AddPlaceTableViewController: UITableViewController {
     private enum ViewMode {
         case add, edit
     }
@@ -197,14 +197,6 @@ class AddPlaceTableViewController: UITableViewController, UITextViewDelegate{
         StorageManager.shared.saveImage(image, name: placeName)
     }
     
-    // TextView 편집을 시작하면 글자 색상을 변경하는 함수
-    func textViewDidBeginEditing(_ textView: UITextView) {
-        if textView.textColor == #colorLiteral(red: 0.768627286, green: 0.7686277032, blue: 0.7772355676, alpha: 1){
-            textView.text = nil
-            textView.textColor = UIColor.label
-        }
-    }
-    
     private func myAlert(_ title: String, message: String) {
         let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
         let action = UIAlertAction(title: "확인", style: .default, handler: nil)
@@ -246,6 +238,15 @@ class AddPlaceTableViewController: UITableViewController, UITextViewDelegate{
 
     @IBAction private func datePick(_ sender: UIDatePicker) {
         presentedViewController?.dismiss(animated: true, completion: nil)
+    }
+}
+
+extension AddPlaceTableViewController: UITextViewDelegate {
+    func textViewDidBeginEditing(_ textView: UITextView) {
+        if textView.textColor == #colorLiteral(red: 0.768627286, green: 0.7686277032, blue: 0.7772355676, alpha: 1) {
+            textView.text = nil
+            textView.textColor = UIColor.label
+        }
     }
 }
 
