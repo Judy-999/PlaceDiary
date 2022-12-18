@@ -19,20 +19,19 @@ class AddPlaceTableViewController: UITableViewController, UITextViewDelegate{
         case add, edit
     }
 
+    @IBOutlet weak var groupPickerView: UIPickerView!
+    @IBOutlet weak var categoryPickerView: UIPickerView!
     @IBOutlet weak var addImageButton: UIButton!
     @IBOutlet weak var placeImageView: UIImageView!
     @IBOutlet weak var nameTextField: UITextField!
     @IBOutlet weak var locationTextView: UITextView!
-    @IBOutlet weak var categoryTextField: UITextField!
     @IBOutlet weak var datePicker: UIDatePicker!
     @IBOutlet weak var comentTextView: UITextView!
     @IBOutlet weak var rateLabel: UILabel!
-    @IBOutlet weak var groupTextField: UITextField!
     @IBOutlet weak var starSlider: StarRatingUISlider!
     @IBOutlet var starButtons: [UIButton]!
     
-    private let categoryPicker = UIPickerView(), groupPicker = UIPickerView()
-    private var categoryItem = [String](), groupItem = [String]()
+    private var categoryItems = [String](), groupItems = [String]()
     private var receiveImage: UIImage?, receiveName: String = "", receiveFavofit: Bool = false
     private var placeGeoPoint: GeoPoint?
     private var editData: Place?
@@ -43,8 +42,8 @@ class AddPlaceTableViewController: UITableViewController, UITextViewDelegate{
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        configurePickerView()
-
+        loadClassification()
+        
         switch viewMode {
         case .add:
             configureTextView()
@@ -63,133 +62,23 @@ class AddPlaceTableViewController: UITableViewController, UITextViewDelegate{
         comentTextView.textColor = #colorLiteral(red: 0.768627286, green: 0.7686277032, blue: 0.7772355676, alpha: 1)
     }
     
-    private func configurePickerView() {
-        loadClassification()
-        setupPickerView(categoryPicker)
-        setupPickerView(groupPicker)
-    }
-    
-    private func setupPickerView(_ picker: UIPickerView) {
-        let pickerToolbar = UIToolbar()
-        let btnPickerDone = UIBarButtonItem()
-        let btnAdd = UIBarButtonItem()
-        let flexSpace = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
-        let picker = picker
-        
-        picker.backgroundColor = UIColor.clear
-        picker.frame = CGRect(x: 0, y: 0, width: 0, height: 200)
-        pickerToolbar.frame = CGRect(x: 0, y: 0, width: 0, height: 40)
-        pickerToolbar.barTintColor = UIColor.white
-        
-        btnPickerDone.title = "선택"
-        btnPickerDone.tintColor = #colorLiteral(red: 0.2113277912, green: 0.9666495919, blue: 0.9550952315, alpha: 1)
-        btnPickerDone.target = self
-        
-        btnAdd.title = "추가"
-        btnAdd.tintColor = #colorLiteral(red: 0.2113277912, green: 0.9666495919, blue: 0.9550952315, alpha: 1)
-        btnAdd.target = self
-        
-        pickerToolbar.setItems([btnAdd, flexSpace, btnPickerDone], animated: true)
-        picker.delegate = self
-        
-        if picker == categoryPicker{
-            self.categoryTextField.inputAccessoryView = pickerToolbar
-            btnPickerDone.action = #selector(categoryPickerDone)
-            btnAdd.action = #selector(editCategory)
-            picker.tag = 0
-            self.categoryTextField.inputView = picker
-        }else{
-            self.groupTextField.inputAccessoryView = pickerToolbar
-            btnPickerDone.action = #selector(groupPickerDone)
-            btnAdd.action = #selector(editGroup)
-            picker.tag = 1
-            self.groupTextField.inputView = picker
+    private func loadClassification() {
+        FirestoreManager.shared.loadClassification { categoryItems, groupItems in
+            self.categoryItems = categoryItems
+            self.groupItems = groupItems
+            self.setupPickerView()
         }
     }
     
-    // 그룹 선택 완료
-    @objc private func groupPickerDone() {
-        if groupTextField.text == "그룹 선택"{
-            groupTextField.text = groupItem[0]
-        }
-        self.view.endEditing(true)
+    private func setupPickerView() {
+        categoryPickerView.delegate = self
+        groupPickerView.delegate = self
     }
-    
-    // 문류 선택 완료
-    @objc private func categoryPickerDone() {
-        if categoryTextField.text == "분류 선택"{
-            categoryTextField.text = categoryItem[0]
-        }
-        self.view.endEditing(true)
-    }
-    
-    @objc private func editCategory() {
-        addNewCategory("분류")
-    }
-    
-    @objc private func editGroup() {
-        addNewCategory("그룹")
-    }
-    
-    // 새로운 분류 or 그룹을 바로 추가하는 함수
-    private func addNewCategory(_ type: String) {
-        let addAlert = UIAlertController(title: type + " 추가", message: "새로운 항목을 입력하세요.", preferredStyle: .alert)
-        addAlert.addTextField()
-        let alertOk = UIAlertAction(title: "추가", style: .default) { [self] (alertOk) in
-            if let newItem = addAlert.textFields?[0].text{
-                if checkExisted(item: newItem, type: type){
-                    uploadCategory(type, item: newItem)
-                }else{
-                    simpleAlert(title: "생성 불가", message: "이미 존재하는 항목입니다.")
-                }
-            }else{
-                simpleAlert(title: "생성 불가", message: "생성할 이름을 입력해주세요")
-            }
-        }
-        addAlert.addAction(UIAlertAction(title: "취소", style: .default, handler: nil))
-        addAlert.addAction(alertOk)
-        self.present(addAlert, animated: true, completion: nil)
-    }
-    
-    // 새로 추가하려는 분류나 그룹이 이미 존재하는지 확인하는 함수
-    private func checkExisted(item: String, type: String) -> Bool {
-        var checkList = [String]()
-        type == "그룹" ? (checkList = groupItem) : (checkList = categoryItem)
-        let sameName = checkList.filter({$0 == item})
-        return sameName.count == 0 ? true : false
-    }
-    
+
     private func simpleAlert(title: String, message: String) {
         let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "확인", style: .default, handler: nil))
         self.present(alert, animated: true, completion: nil)
-    }
-    
-    // 새로 추가한 분류나 그룹을 Firebase에 올리는 함수
-    private func uploadCategory(_ type: String, item: String) {
-        var target: String!
-        var array = [String]()
-        
-        if type == "분류"{
-            target = "items"
-            categoryItem.append(item)
-            array = categoryItem
-            categoryPicker.reloadAllComponents()
-        }else{
-            target = "group"
-            groupItem.append(item)
-            array = groupItem
-            groupPicker.reloadAllComponents()
-        }
-        
-        FirestoreManager.shared.updateClassification(target, with: array)
-    }
-
-    private func loadClassification() {
-        FirestoreManager.shared.loadClassification { categoryItems, groupItems in
-            self.categoryItem = categoryItems
-            self.groupItem = groupItems
-        }
     }
     
     // 편집하는 장소 데이터를 받아오는 함수
@@ -205,23 +94,20 @@ class AddPlaceTableViewController: UITableViewController, UITextViewDelegate{
         placeImageView.image = receiveImage
         nameTextField.text = place.name
         locationTextView.text = place.location
-        categoryTextField.text = place.category
         datePicker.date = place.date
         comentTextView.text = place.coment
         rateLabel.text = place.rate
-        groupTextField.text = place.group
         
+        if let index = categoryItems.firstIndex(of: place.category) {
+            categoryPickerView.selectRow(index, inComponent: 0, animated: false)
+        }
+        
+        if let index = groupItems.firstIndex(of: place.group) {
+            categoryPickerView.selectRow(index, inComponent: 0, animated: false)
+        }
+       
         addRate.fill(buttons: starButtons,
                      rate: NSString(string: place.rate).floatValue)
-    }
-
-    // MARK: - Table view data source
-    override func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
-    }
-
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 7
     }
     
     private func createPlace() -> Place? {
@@ -231,12 +117,13 @@ class AddPlaceTableViewController: UITableViewController, UITextViewDelegate{
         
         guard let name = nameTextField.text,
               let location = locationTextView.text,
-              let category = categoryTextField.text,
-              let group = groupTextField.text,
               let geoPoint = placeGeoPoint,
               let rate = rateLabel.text,
               let coment = comentTextView.text else { return nil }
         
+        let categoryIndex = categoryPickerView.selectedRow(inComponent: 0)
+        let groupIndex = groupPickerView.selectedRow(inComponent: 0)
+        let isFavorit = editData?.isFavorit ?? false
         var hasImage = true
         
         if placeImageView.image == UIImage(named: "pdicon") ||
@@ -247,13 +134,13 @@ class AddPlaceTableViewController: UITableViewController, UITextViewDelegate{
         return Place(name: name,
                      location: location,
                      date: datePicker.date,
-                     isFavorit: false,
+                     isFavorit: isFavorit,
                      hasImage: hasImage,
-                     category: category,
+                     category: categoryItems[categoryIndex],
                      rate: rate,
                      coment: coment,
                      geopoint: geoPoint,
-                     group: group)
+                     group: groupItems[groupIndex])
     }
 
     @IBAction private func doneButtonTapped(_ sender: UIButton) {
@@ -264,8 +151,6 @@ class AddPlaceTableViewController: UITableViewController, UITextViewDelegate{
         
         guard nameTextField.text?.isEmpty == false,
               locationTextView.text != "위치를 입력하세요.",
-              categoryTextField.text?.isEmpty == false,
-              groupTextField.text?.isEmpty == false,
               placeGeoPoint != nil else {
             myAlert("필수 입력 미기재", message: "모든 항목을 입력해주세요.")
             return
@@ -408,26 +293,18 @@ extension AddPlaceTableViewController :  UIPickerViewDelegate, UIPickerViewDataS
     }
     
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        if pickerView.tag == 0{
-            return categoryItem.count
-        }else{
-            return groupItem.count
+        if pickerView == categoryPickerView {
+            return categoryItems.count
+        } else {
+            return groupItems.count
         }
     }
     
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-        if pickerView.tag == 0{
-            return categoryItem[row]
-        }else{
-            return groupItem[row]
-        }
-    }
-    
-    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-        if pickerView.tag == 0{
-            categoryTextField.text = categoryItem[row]
-        }else{
-            return groupTextField.text = groupItem[row]
+        if pickerView == categoryPickerView {
+            return categoryItems[row]
+        } else {
+            return groupItems[row]
         }
     }
 }

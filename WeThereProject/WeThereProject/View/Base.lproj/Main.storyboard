@@ -643,41 +643,35 @@
                                             </constraints>
                                         </tableViewCellContentView>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" rowHeight="55" id="gsq-aT-BY7">
-                                        <rect key="frame" x="0.0" y="335" width="375" height="55"/>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" rowHeight="65" id="Zyb-LO-87x">
+                                        <rect key="frame" x="0.0" y="335" width="375" height="65"/>
                                         <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="gsq-aT-BY7" id="969-OV-WPf">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="55"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Zyb-LO-87x" id="COj-yV-mEM">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="65"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="vmd-ga-kMf">
-                                                    <rect key="frame" x="16" y="7.6666666666666679" width="343" height="40"/>
+                                                <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="F1t-TG-xKR">
+                                                    <rect key="frame" x="16" y="0.0" width="343" height="65"/>
                                                     <subviews>
-                                                        <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="분류 선택" borderStyle="roundedRect" placeholder="분류를 선택하세요. " textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="NZB-nx-NwL">
-                                                            <rect key="frame" x="0.0" y="0.0" width="166.66666666666666" height="40"/>
-                                                            <fontDescription key="fontDescription" type="system" pointSize="16"/>
-                                                            <textInputTraits key="textInputTraits"/>
-                                                        </textField>
-                                                        <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="그룹 선택" borderStyle="roundedRect" placeholder="그룹을 선택하세요." textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="4uj-uR-9gu">
-                                                            <rect key="frame" x="176.66666666666663" y="0.0" width="166.33333333333337" height="40"/>
-                                                            <fontDescription key="fontDescription" type="system" pointSize="16"/>
-                                                            <textInputTraits key="textInputTraits"/>
-                                                        </textField>
+                                                        <pickerView contentMode="scaleAspectFit" semanticContentAttribute="spatial" translatesAutoresizingMaskIntoConstraints="NO" id="y8P-05-23W">
+                                                            <rect key="frame" x="0.0" y="0.0" width="167" height="65"/>
+                                                        </pickerView>
+                                                        <pickerView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1TP-oP-z99">
+                                                            <rect key="frame" x="177" y="0.0" width="166" height="65"/>
+                                                        </pickerView>
                                                     </subviews>
-                                                    <constraints>
-                                                        <constraint firstAttribute="height" constant="40" id="GAG-Dc-mUp"/>
-                                                    </constraints>
                                                 </stackView>
                                             </subviews>
                                             <constraints>
-                                                <constraint firstAttribute="trailing" secondItem="vmd-ga-kMf" secondAttribute="trailing" constant="16" id="Lor-uH-A1A"/>
-                                                <constraint firstItem="vmd-ga-kMf" firstAttribute="leading" secondItem="969-OV-WPf" secondAttribute="leading" constant="16" id="Vde-ck-N34"/>
-                                                <constraint firstItem="vmd-ga-kMf" firstAttribute="centerY" secondItem="969-OV-WPf" secondAttribute="centerY" id="kQG-Ti-cdw"/>
+                                                <constraint firstAttribute="bottom" secondItem="F1t-TG-xKR" secondAttribute="bottom" id="NFk-N2-Lsq"/>
+                                                <constraint firstItem="F1t-TG-xKR" firstAttribute="leading" secondItem="COj-yV-mEM" secondAttribute="leading" constant="16" id="SuF-nf-e79"/>
+                                                <constraint firstItem="F1t-TG-xKR" firstAttribute="top" secondItem="COj-yV-mEM" secondAttribute="top" id="Yel-rq-bx5"/>
+                                                <constraint firstAttribute="trailing" secondItem="F1t-TG-xKR" secondAttribute="trailing" constant="16" id="qi2-iZ-rnQ"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" rowHeight="55" id="kIO-1b-dMe">
-                                        <rect key="frame" x="0.0" y="390" width="375" height="55"/>
+                                        <rect key="frame" x="0.0" y="400" width="375" height="55"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="kIO-1b-dMe" id="tjE-6q-ejV">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="55"/>
@@ -790,7 +784,7 @@
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" rowHeight="200" id="ehA-Ka-qZl">
-                                        <rect key="frame" x="0.0" y="445" width="375" height="200"/>
+                                        <rect key="frame" x="0.0" y="455" width="375" height="200"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="ehA-Ka-qZl" id="z35-Ho-xUw">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="200"/>
@@ -840,11 +834,11 @@
                     </navigationItem>
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
-                        <outlet property="addImageButton" destination="HRk-ch-1jU" id="R3B-87-5rf"/>
-                        <outlet property="categoryTextField" destination="4uj-uR-9gu" id="ya2-QT-Pxs"/>
+                        <outlet property="addImageButton" destination="Pqo-nu-bxz" id="NLh-wv-ZNB"/>
+                        <outlet property="categoryPickerView" destination="y8P-05-23W" id="kCI-vF-sVI"/>
                         <outlet property="comentTextView" destination="3uy-7r-74O" id="dNd-OW-Bvc"/>
                         <outlet property="datePicker" destination="Wa5-Fi-Nt9" id="rOD-pr-OW6"/>
-                        <outlet property="groupTextField" destination="4uj-uR-9gu" id="ahp-Ww-EJP"/>
+                        <outlet property="groupPickerView" destination="1TP-oP-z99" id="4I6-KE-gW3"/>
                         <outlet property="locationTextView" destination="ZKh-GB-vwf" id="MKp-On-tHB"/>
                         <outlet property="nameTextField" destination="8vk-uv-TXM" id="CZL-dp-ju2"/>
                         <outlet property="placeImageView" destination="vVH-t3-yer" id="IqP-4v-Edf"/>
