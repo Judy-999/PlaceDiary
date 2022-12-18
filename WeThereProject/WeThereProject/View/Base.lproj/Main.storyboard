@@ -50,12 +50,12 @@
                                                             <rect key="frame" x="0.0" y="0.0" width="259" height="40"/>
                                                             <subviews>
                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="이름" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Rgd-Qo-Sxg">
-                                                                    <rect key="frame" x="0.0" y="0.0" width="281" height="40"/>
+                                                                    <rect key="frame" x="0.0" y="0.0" width="150.33333333333334" height="40"/>
                                                                     <fontDescription key="fontDescription" type="boldSystem" pointSize="18"/>
                                                                     <nil key="highlightedColor"/>
                                                                 </label>
                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="날짜" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="fkZ-9L-vdD">
-                                                                    <rect key="frame" x="281" y="0.0" width="203" height="40"/>
+                                                                    <rect key="frame" x="150.33333333333334" y="0.0" width="108.66666666666666" height="40"/>
                                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                                     <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                                                     <nil key="highlightedColor"/>
@@ -286,7 +286,7 @@
                                                                             <state key="normal" image="star.fill" catalog="system"/>
                                                                         </button>
                                                                         <button opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="PJU-9g-9sd">
-                                                                            <rect key="frame" x="63.666666666666664" y="0.0" width="21.333333333333336" height="32.666666666666664"/>
+                                                                            <rect key="frame" x="63.666666666666664" y="0.0" width="21.333333333333321" height="32.666666666666664"/>
                                                                             <color key="tintColor" systemColor="systemYellowColor"/>
                                                                             <state key="normal" image="star" catalog="system"/>
                                                                         </button>
@@ -500,6 +500,9 @@
                                                             <state key="normal">
                                                                 <imageReference key="image" image="camera.fill" catalog="system" symbolScale="large"/>
                                                             </state>
+                                                            <buttonConfiguration key="configuration" style="gray">
+                                                                <imageReference key="image" image="camera.fill" catalog="system" symbolScale="large"/>
+                                                            </buttonConfiguration>
                                                             <connections>
                                                                 <action selector="btnAddPhoto:" destination="Lcc-Ir-Tux" eventType="touchUpInside" id="DdI-81-AR0"/>
                                                             </connections>

@@ -43,26 +43,12 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
     var places = [Place]()
     private var viewMode: ViewMode = .add
     
-    
     override func viewDidLoad() {
         super.viewDidLoad()
-    
-        loadClassification()
-        setPicker(categoryPicker)
-        setPicker(groupPicker)
         
-        comentTextView.delegate = self
-        locationTextView.delegate = self
-        comentTextView.text = "코멘트를 입력하세요."
-        locationTextView.text = "이름 또는 주소로 위치를 검색하세요."
-        locationTextView.textColor = #colorLiteral(red: 0.768627286, green: 0.7686277032, blue: 0.7772355676, alpha: 1)
-        comentTextView.textColor = #colorLiteral(red: 0.768627286, green: 0.7686277032, blue: 0.7772355676, alpha: 1)
+        configureTextView()
+        configurePickerView()
         
-        addImageButton.layer.borderWidth = 1
-        addImageButton.layer.borderColor = UIColor.lightGray.cgColor
-
-        tableView.tableFooterView = UIView(frame: CGRect.zero)
-      
         if dataFromInfo {
             setPlaceInfo()
             comentTextView.textColor = UIColor.label
@@ -71,8 +57,23 @@ class AddPlaceTableViewController: UITableViewController, UINavigationController
         }
     }
     
-    // Picker 설정
-    private func setPicker(_ picker: UIPickerView) {
+    private func configureTextView() {
+        locationTextView.delegate = self
+        locationTextView.text = "이름 또는 주소로 위치를 검색하세요."
+        locationTextView.textColor = #colorLiteral(red: 0.768627286, green: 0.7686277032, blue: 0.7772355676, alpha: 1)
+        
+        comentTextView.delegate = self
+        comentTextView.text = "코멘트를 입력하세요."
+        comentTextView.textColor = #colorLiteral(red: 0.768627286, green: 0.7686277032, blue: 0.7772355676, alpha: 1)
+    }
+    
+    private func configurePickerView() {
+        loadClassification()
+        setupPickerView(categoryPicker)
+        setupPickerView(groupPicker)
+    }
+    
+    private func setupPickerView(_ picker: UIPickerView) {
         let pickerToolbar = UIToolbar()
         let btnPickerDone = UIBarButtonItem()
         let btnAdd = UIBarButtonItem()
