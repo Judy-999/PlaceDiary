@@ -192,17 +192,6 @@ class AddPlaceTableViewController: UITableViewController {
         StorageManager.shared.saveImage(image, name: placeName)
     }
     
-    private func showAlert(_ alertCase: PlaceInfo.Message) {
-        let alert = UIAlertController(title: alertCase.title,
-                                      message: alertCase.message,
-                                      preferredStyle: .alert)
-
-        alert.addAction(UIAlertAction(title: "확인",
-                                      style: .default,
-                                      handler: nil))
-        present(alert, animated: true, completion: nil)
-    }
-    
     @IBAction private func starSliderChanged(_ sender: Any) {
         let rating = RatingManager().sliderStar(starButtons, rating: starSlider.value)
         rateLabel.text = rating
