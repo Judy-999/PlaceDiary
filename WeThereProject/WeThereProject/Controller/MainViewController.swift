@@ -38,7 +38,6 @@ class MainViewController: UIViewController, ImageDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
         loadPlaceData()
         loadClassification()
         configureRefreshControl()

@@ -20,6 +20,7 @@
 		208382A526DB8C5000CC5FEE /* TagTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2044A8342671E989002ABBD8 /* TagTextView.swift */; };
 		2088D238294E96C9009415C1 /* UIImage+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2088D237294E96C9009415C1 /* UIImage+.swift */; };
 		208D9FE9266DFD4A00FC2067 /* RatingManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 208D9FE8266DFD4A00FC2067 /* RatingManager.swift */; };
+		20AD213429BF053100A92B1E /* DiaryImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20AD213329BF053100A92B1E /* DiaryImage.swift */; };
 		20B113832689BBC200A6A0FD /* PlaceCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20B113822689BBC200A6A0FD /* PlaceCell.swift */; };
 		20B80BC8294AEF0600CA0F2B /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 20B80BC7294AEF0600CA0F2B /* FirebaseAuth */; };
 		20B80BCA294AEF0600CA0F2B /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 20B80BC9294AEF0600CA0F2B /* FirebaseFirestore */; };
@@ -54,6 +55,7 @@
 		207E4F852660985D00AC0A6E /* AddPlaceTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddPlaceTableViewController.swift; sourceTree = "<group>"; };
 		2088D237294E96C9009415C1 /* UIImage+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+.swift"; sourceTree = "<group>"; };
 		208D9FE8266DFD4A00FC2067 /* RatingManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RatingManager.swift; sourceTree = "<group>"; };
+		20AD213329BF053100A92B1E /* DiaryImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiaryImage.swift; sourceTree = "<group>"; };
 		20B113822689BBC200A6A0FD /* PlaceCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceCell.swift; sourceTree = "<group>"; };
 		20CB7C9B269F28130057EAF0 /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
 		20D7B4AE26EDEF5100DF954E /* StatisticsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatisticsTableViewController.swift; sourceTree = "<group>"; };
@@ -104,6 +106,14 @@
 				2088D237294E96C9009415C1 /* UIImage+.swift */,
 			);
 			path = Extension;
+			sourceTree = "<group>";
+		};
+		20AD213229BF051F00A92B1E /* Common */ = {
+			isa = PBXGroup;
+			children = (
+				20AD213329BF053100A92B1E /* DiaryImage.swift */,
+			);
+			path = Common;
 			sourceTree = "<group>";
 		};
 		20B80BD2294AF41C00CA0F2B /* Controller */ = {
@@ -188,6 +198,7 @@
 				20105EFA2664DA35007AA233 /* GoogleService-Info.plist */,
 				2067AA1B266B82C200F7B891 /* Resources */,
 				20B80BD4294AF45B00CA0F2B /* Application */,
+				20AD213229BF051F00A92B1E /* Common */,
 				20B80BD5294AF46C00CA0F2B /* Util */,
 				20B80BD6294AF4A800CA0F2B /* Model */,
 				20B80BD3294AF43C00CA0F2B /* View */,
@@ -359,6 +370,7 @@
 				2020E4E32667BE600091D569 /* Place.swift in Sources */,
 				208D9FE9266DFD4A00FC2067 /* RatingManager.swift in Sources */,
 				20544EFB268AFBD700D780E4 /* CalendarController.swift in Sources */,
+				20AD213429BF053100A92B1E /* DiaryImage.swift in Sources */,
 				208382A526DB8C5000CC5FEE /* TagTextView.swift in Sources */,
 				207E4F862660985D00AC0A6E /* AddPlaceTableViewController.swift in Sources */,
 			);

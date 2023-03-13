@@ -50,12 +50,12 @@
                                                             <rect key="frame" x="0.0" y="0.0" width="259" height="40"/>
                                                             <subviews>
                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="이름" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Rgd-Qo-Sxg">
-                                                                    <rect key="frame" x="0.0" y="0.0" width="150.33333333333334" height="40"/>
+                                                                    <rect key="frame" x="0.0" y="0.0" width="281" height="40"/>
                                                                     <fontDescription key="fontDescription" type="boldSystem" pointSize="18"/>
                                                                     <nil key="highlightedColor"/>
                                                                 </label>
                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="날짜" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="fkZ-9L-vdD">
-                                                                    <rect key="frame" x="150.33333333333334" y="0.0" width="108.66666666666666" height="40"/>
+                                                                    <rect key="frame" x="281" y="0.0" width="203" height="40"/>
                                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                                     <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                                                     <nil key="highlightedColor"/>
@@ -489,20 +489,16 @@
                                                 <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="35" translatesAutoresizingMaskIntoConstraints="NO" id="Y6f-JK-eQh">
                                                     <rect key="frame" x="16" y="16" width="343" height="88"/>
                                                     <subviews>
-                                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="HRk-ch-1jU">
+                                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="HRk-ch-1jU" userLabel="addImageButton">
                                                             <rect key="frame" x="0.0" y="0.0" width="91" height="88"/>
                                                             <color key="backgroundColor" systemColor="systemGray5Color"/>
-                                                            <constraints>
-                                                                <constraint firstAttribute="width" constant="50" id="2fM-l1-DJP"/>
-                                                                <constraint firstAttribute="height" constant="50" id="S3j-OB-QH5"/>
-                                                            </constraints>
                                                             <color key="tintColor" systemColor="labelColor"/>
                                                             <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                                                             <state key="normal">
                                                                 <imageReference key="image" image="camera.fill" catalog="system" symbolScale="large"/>
                                                             </state>
                                                             <connections>
-                                                                <action selector="AddPhotoButtonTapped:" destination="Lcc-Ir-Tux" eventType="touchUpInside" id="auM-Fo-PeC"/>
+                                                                <action selector="addPhotoButtonTapped:" destination="Lcc-Ir-Tux" eventType="touchUpInside" id="QAt-dx-vtq"/>
                                                             </connections>
                                                         </button>
                                                         <imageView clipsSubviews="YES" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="vVH-t3-yer">
@@ -568,7 +564,7 @@
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="85B-rM-Soh">
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="85B-rM-Soh" userLabel="searchLocationButton">
                                                     <rect key="frame" x="332.66666666666669" y="15" width="26.333333333333314" height="25"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="25" id="AFb-pH-X2A"/>
@@ -580,7 +576,7 @@
                                                         <preferredSymbolConfiguration key="preferredSymbolConfiguration" scale="large" weight="bold"/>
                                                     </state>
                                                     <connections>
-                                                        <action selector="searchPosition:" destination="Lcc-Ir-Tux" eventType="touchUpInside" id="aHL-3w-QF1"/>
+                                                        <action selector="searchPositionButtonTapped:" destination="Lcc-Ir-Tux" eventType="touchUpInside" id="HAg-Lz-93Q"/>
                                                     </connections>
                                                 </button>
                                                 <textView clipsSubviews="YES" contentMode="scaleToFill" editable="NO" textAlignment="right" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZKh-GB-vwf">
@@ -654,10 +650,10 @@
                                                     <rect key="frame" x="16" y="0.0" width="343" height="65"/>
                                                     <subviews>
                                                         <pickerView contentMode="scaleAspectFit" semanticContentAttribute="spatial" translatesAutoresizingMaskIntoConstraints="NO" id="y8P-05-23W">
-                                                            <rect key="frame" x="0.0" y="0.0" width="167" height="65"/>
+                                                            <rect key="frame" x="0.0" y="0.0" width="166.66666666666666" height="65"/>
                                                         </pickerView>
                                                         <pickerView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1TP-oP-z99">
-                                                            <rect key="frame" x="177" y="0.0" width="166" height="65"/>
+                                                            <rect key="frame" x="176.66666666666663" y="0.0" width="166.33333333333337" height="65"/>
                                                         </pickerView>
                                                     </subviews>
                                                 </stackView>
@@ -770,7 +766,7 @@
                                                     <color key="maximumTrackTintColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     <color key="thumbTintColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     <connections>
-                                                        <action selector="sliderChanged:" destination="Lcc-Ir-Tux" eventType="valueChanged" id="nb9-39-LkO"/>
+                                                        <action selector="starSliderChanged:" destination="Lcc-Ir-Tux" eventType="valueChanged" id="VOf-Qb-N07"/>
                                                     </connections>
                                                 </slider>
                                             </subviews>
@@ -1355,7 +1351,7 @@
     <inferredMetricsTieBreakers>
         <segue reference="LEn-q7-1yn"/>
         <segue reference="F5n-pi-x46"/>
-        <segue reference="qPa-7u-WXO"/>
+        <segue reference="R1O-xY-QdV"/>
         <segue reference="I6j-V1-nTt"/>
     </inferredMetricsTieBreakers>
     <resources>

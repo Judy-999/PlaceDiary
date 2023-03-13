@@ -35,13 +35,12 @@ class AddPlaceTableViewController: UITableViewController {
     private var receiveImage: UIImage?, receiveName: String = "", receiveFavofit: Bool = false
     private var placeGeoPoint: GeoPoint?
     private var editData: Place?
+    private var viewMode: ViewMode = .add
     var editDelegate: EditDelegate?
     var places = [Place]()
-    private var viewMode: ViewMode = .add
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         loadClassification()
         
         switch viewMode {
@@ -54,12 +53,12 @@ class AddPlaceTableViewController: UITableViewController {
     
     private func configureTextView() {
         locationTextView.delegate = self
-        locationTextView.text = "이름 또는 주소로 위치를 검색하세요."
-        locationTextView.textColor = #colorLiteral(red: 0.768627286, green: 0.7686277032, blue: 0.7772355676, alpha: 1)
+        locationTextView.text = PlaceInfo.locationPlaceHoler
+        locationTextView.textColor = PlaceInfo.placeHolderColor
         
         comentTextView.delegate = self
-        comentTextView.text = "코멘트를 입력하세요."
-        comentTextView.textColor = #colorLiteral(red: 0.768627286, green: 0.7686277032, blue: 0.7772355676, alpha: 1)
+        comentTextView.text = PlaceInfo.comentPlaceHoler
+        comentTextView.textColor = PlaceInfo.placeHolderColor
     }
     
     private func loadClassification() {
@@ -109,8 +108,8 @@ class AddPlaceTableViewController: UITableViewController {
     }
     
     private func createPlace() -> Place? {
-        if comentTextView.text == "코멘트를 입력하세요." {
-            comentTextView.text = ""
+        if comentTextView.text == PlaceInfo.comentPlaceHoler {
+            comentTextView.text = nil
         }
         
         guard let name = nameTextField.text,
@@ -124,7 +123,7 @@ class AddPlaceTableViewController: UITableViewController {
         let isFavorit = editData?.isFavorit ?? false
         var hasImage = true
         
-        if placeImageView.image == UIImage(named: "pdicon") ||
+        if placeImageView.image == DiaryImage.placeholer ||
             placeImageView.image == nil {
             hasImage = false
         }
@@ -143,29 +142,30 @@ class AddPlaceTableViewController: UITableViewController {
 
     @IBAction private func doneButtonTapped(_ sender: UIButton) {
         guard places.first(where: { $0.name == nameTextField.text }) == nil else {
-            myAlert("중복된 장소 이름", message: "같은 이름의 장소가 존재합니다.")
+            showAlert(.duplicatePlace)
            return
         }
         
         guard nameTextField.text?.isEmpty == false,
-              locationTextView.text != "위치를 입력하세요.",
-              placeGeoPoint != nil else {
-            myAlert("필수 입력 미기재", message: "모든 항목을 입력해주세요.")
+              locationTextView.text != PlaceInfo.locationPlaceHoler,
+              placeGeoPoint != nil,
+              let newPlace = createPlace() else {
+            showAlert(.insufficientInput)
             return
         }
-
-        guard let newPlace = createPlace() else { return }
         
         switch viewMode {
         case .add:
             if let image = placeImageView.image {
-                uploadImage(newPlace.name, image: image.resize(newWidth: 300))
+                uploadImage(newPlace.name,
+                            image: image.resize(newWidth: 300))
             }
             
             uploadData(place: newPlace)
         case .edit:
             if let image = placeImageView.image, newPlace.hasImage == true {
-                uploadImage(newPlace.name, image: image.resize(newWidth: 300))
+                uploadImage(newPlace.name,
+                            image: image.resize(newWidth: 300))
             }
             
             if receiveName != newPlace.name {
@@ -179,35 +179,36 @@ class AddPlaceTableViewController: UITableViewController {
         _ = navigationController?.popViewController(animated: true)
     }
     
-     // 장소의 이름을 변경했으면 이전 이름의 장소와 사진을 삭제하는 함수
     private func deletePlaceData(name place: String) {
          FirestoreManager.shared.deletePlace(place)
          StorageManager.shared.deleteImage(name: place)
      }
-     
-     // 장소 정보를 Firebase에 업로드하는 함수
+
     private func uploadData(place data: Place) {
          FirestoreManager.shared.savePlace(data)
     }
     
-    // 선택된 이미지를 Storage에 업로드하는 함수
     private func uploadImage(_ placeName: String, image: UIImage) {
         StorageManager.shared.saveImage(image, name: placeName)
     }
     
-    private func myAlert(_ title: String, message: String) {
-        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
-        let action = UIAlertAction(title: "확인", style: .default, handler: nil)
-        alert.addAction(action)
+    private func showAlert(_ alertCase: PlaceInfo.Message) {
+        let alert = UIAlertController(title: alertCase.title,
+                                      message: alertCase.message,
+                                      preferredStyle: .alert)
+
+        alert.addAction(UIAlertAction(title: "확인",
+                                      style: .default,
+                                      handler: nil))
         present(alert, animated: true, completion: nil)
     }
     
-    @IBAction private func sliderChanged(_ sender: Any) {
+    @IBAction private func starSliderChanged(_ sender: Any) {
         let rating = RatingManager().sliderStar(starButtons, rating: starSlider.value)
         rateLabel.text = rating
     }
     
-    @IBAction private func AddPhotoButtonTapped(_ sender: UIButton) {
+    @IBAction private func addPhotoButtonTapped(_ sender: UIButton) {
         let imagePicker = UIImagePickerController()
         imagePicker.sourceType = .photoLibrary
         imagePicker.allowsEditing = true
@@ -216,8 +217,7 @@ class AddPlaceTableViewController: UITableViewController {
         present(imagePicker, animated: true)
     }
 
-    @IBAction private func searchPosition(_ sender: UIButton) {
-        //구글 자동완성 뷰컨트롤러 생성
+    @IBAction private func searchPositionButtonTapped(_ sender: UIButton) {
         let searchController = GMSAutocompleteViewController()
         searchController.delegate = self
         present(searchController, animated: true, completion: nil)
@@ -230,7 +230,7 @@ class AddPlaceTableViewController: UITableViewController {
 
 extension AddPlaceTableViewController: UITextViewDelegate {
     func textViewDidBeginEditing(_ textView: UITextView) {
-        if textView.textColor == #colorLiteral(red: 0.768627286, green: 0.7686277032, blue: 0.7772355676, alpha: 1) {
+        if textView.textColor == PlaceInfo.placeHolderColor {
             textView.text = nil
             textView.textColor = UIColor.label
         }
@@ -256,23 +256,24 @@ extension AddPlaceTableViewController: UIImagePickerControllerDelegate, UINaviga
     }
 }
 
-extension AddPlaceTableViewController: GMSAutocompleteViewControllerDelegate { //해당 뷰컨트롤러를 익스텐션으로 딜리게이트를 달아준다.
+extension AddPlaceTableViewController: GMSAutocompleteViewControllerDelegate {
     func viewController(_ viewController: GMSAutocompleteViewController, didAutocompleteWith place: GMSPlace) {
         let address = place.formattedAddress?.replacingOccurrences(of: "대한민국 ", with: "")
         self.locationTextView.text = address
         self.locationTextView.textColor = UIColor.label
         self.locationTextView.isEditable = true
-        self.placeGeoPoint = GeoPoint(latitude: place.coordinate.latitude, longitude: place.coordinate.longitude)
+        self.placeGeoPoint = GeoPoint(latitude: place.coordinate.latitude,
+                                      longitude: place.coordinate.longitude)
         dismiss(animated: true, completion: nil)
-    } //원하는 셀 탭했을 때 꺼지게
+    }
     
     func viewController(_ viewController: GMSAutocompleteViewController, didFailAutocompleteWithError error: Error) {
-        print(error.localizedDescription) //에러났을 때 출력
-    } //실패했을 때
+        print(error.localizedDescription)
+    }
     
     func wasCancelled(_ viewController: GMSAutocompleteViewController) {
         dismiss(animated: true, completion: nil)
-    } //캔슬버튼 눌렀을 때 화면 꺼지게
+    }
 }
 
 extension AddPlaceTableViewController :  UIPickerViewDelegate, UIPickerViewDataSource {
