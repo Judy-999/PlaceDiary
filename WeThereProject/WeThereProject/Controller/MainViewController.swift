@@ -231,6 +231,7 @@ class MainViewController: UIViewController, ImageDelegate {
 
             let selectedPlace = findCurrentPlace(index: indexPath)
             
+            infoViewContorller.getPlaceInfo(selectedPlace)
             infoViewContorller.imgDelegate = self
         }
         

@@ -164,17 +164,7 @@ class SearchTableViewController: UITableViewController, ImageDelegate {
                 selectedPlace = places.first(where: {$0.name == places[(indexPath! as NSIndexPath).row].name})
             }
             
-            if let placeImage = placeImages[(selectedPlace.name)]{
-                infoView.getPlaceInfo(selectedPlace, image: placeImage)
-            }else{
-                if selectedPlace.hasImage{
-                    infoView.downloadImgInfo(selectedPlace)
-                }else{
-                    //infoView.hasimage = false
-                    infoView.getPlaceInfo(selectedPlace, image: UIImage(named: "pdicon")!)
-                }
-            }
-          
+            infoView.getPlaceInfo(selectedPlace)
         }
     }
 }

@@ -159,16 +159,7 @@ extension CalendarController: UITableViewDelegate, UITableViewDataSource{
             let selectedPlace = places.first(where: {$0.name == selectedName[(indexPath! as NSIndexPath).row]})
             
             infoView.imgDelegate = self
-            
-            if let placeImage = placeImages[(selectedPlace?.name)!]{
-                infoView.getPlaceInfo(selectedPlace!, image: placeImage)
-            }else{
-                if selectedPlace!.hasImage{
-                    infoView.downloadImgInfo(selectedPlace!)
-                }else{
-                    infoView.getPlaceInfo(selectedPlace!, image: UIImage(named: "pdicon")!)
-                }
-            }
+            infoView.getPlaceInfo(selectedPlace!)
         }
     }
 }

@@ -203,17 +203,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate , GMSMapVie
 
             infoView.imgDelegate = self
             infoView.modalPresentationStyle = .fullScreen
-            
-            if let placeImage = placeImages[(selectedPlace?.name)!]{
-                infoView.getPlaceInfo(selectedPlace!, image: placeImage)
-            }else{
-                if selectedPlace!.hasImage{
-                    infoView.downloadImgInfo(selectedPlace!)
-                }else{
-                    //infoView.hasimage = false
-                    infoView.getPlaceInfo(selectedPlace!, image: UIImage(named: "pdicon")!)
-                }
-            }
+            infoView.getPlaceInfo(selectedPlace!)
         }
     }
 }

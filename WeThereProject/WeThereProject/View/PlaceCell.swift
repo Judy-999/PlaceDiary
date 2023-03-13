@@ -37,21 +37,13 @@ class PlaceCell: UITableViewCell {
     }
     
     private func configureImage(with place: Place) {
-        placeImageView.image = UIImage(named: "pdicon")
-        guard place.hasImage == true else { return }
-        let cachedKey = NSString(string: place.name)
+//        placeImageView.image = UIImage(named: "pdicon")
+//        guard place.hasImage == true else { return }
         
-        if let placeImage = ImageCacheManager.shared.object(forKey: cachedKey) {
-            placeImageView.image = placeImage
-        } else {
-            StorageManager.shared.getImage(name: place.name) { image in
-                if let image = image {
-                    DispatchQueue.main.async {
-                        self.placeImageView.image = image
-                    }
-                    
-                    ImageCacheManager.shared.setObject(image, forKey: cachedKey)
-                }
+        
+        ImageCacheManager.shared.setupImage(with: place.name) { placeImage in
+            DispatchQueue.main.async {
+                self.placeImageView.image = placeImage
             }
         }
     }
