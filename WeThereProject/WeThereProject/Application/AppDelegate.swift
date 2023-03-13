@@ -14,8 +14,8 @@ import GooglePlaces
 class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         FirebaseApp.configure()
-        GMSServices.provideAPIKey("AIzaSyCKaNwQ-mrvM3rezwCFgoac9H1NO7-5f2s")
-        GMSPlacesClient.provideAPIKey("AIzaSyCKaNwQ-mrvM3rezwCFgoac9H1NO7-5f2s")
+        GMSServices.provideAPIKey("AIzaSyBMiQ08kcBL64U8SIvbUKnUddHtX0iZwF4")
+        GMSPlacesClient.provideAPIKey("AIzaSyBMiQ08kcBL64U8SIvbUKnUddHtX0iZwF4")
         Thread.sleep(forTimeInterval: 0.1)
         return true
     }
