@@ -12,183 +12,146 @@ protocol ImageDelegate {
 }
 
 class PlaceInfoTableViewController: UITableViewController, EditDelegate {
-    var receiveImage: UIImage?
-    var reName = "", rePositon = "", reDate = "", reCategory = "", reComent = "", reRate = "", reGroup = ""
-    var rateButtons = [UIButton]()
-    var editData : Place?
+    private var receiveImage: UIImage?
+    private var place: Place?
     var imgDelegate : ImageDelegate?
-    let loadingView = UIActivityIndicatorView(style: .large)
-    var isLoading = false
     
+    @IBOutlet private weak var placeImage: UIImageView!
+    @IBOutlet private weak var placeNameLabel: UILabel!
+    @IBOutlet private weak var locationButton: UIButton!
+    @IBOutlet private weak var dateLabel: UILabel!
+    @IBOutlet private weak var categoryLabel: UILabel!
+    @IBOutlet private weak var groupLabel: UILabel!
+    @IBOutlet private weak var ratingLabel: UILabel!
+    @IBOutlet private weak var comentTextView: UITextView!
+    @IBOutlet private var rateButtons: [UIButton]!
     
-    @IBOutlet weak var placeImg: UIImageView!
-    @IBOutlet weak var lblPlacename: UILabel!
-    @IBOutlet weak var btnPosition: UIButton!
-    @IBOutlet weak var lblDate: UILabel!
-    @IBOutlet weak var lblCategory: UILabel!
-    @IBOutlet weak var lblGroup: UILabel!
-    @IBOutlet weak var lblRate: UILabel!
-    @IBOutlet weak var txvComent: UITextView!
-    @IBOutlet weak var btnRate1: UIButton!
-    @IBOutlet weak var btnRate2: UIButton!
-    @IBOutlet weak var btnRate3: UIButton!
-    @IBOutlet weak var btnRate4: UIButton!
-    @IBOutlet weak var btnRate5: UIButton!
- 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        rateButtons.append(btnRate1)
-        rateButtons.append(btnRate2)
-        rateButtons.append(btnRate3)
-        rateButtons.append(btnRate4)
-        rateButtons.append(btnRate5)
-        
-        setPlaceInfo()
-        
-        let tap = UITapGestureRecognizer(target: self, action: #selector(imageTapped))
-        placeImg.isUserInteractionEnabled = true
-        placeImg.addGestureRecognizer(tap)
-                
-        if isLoading{
-            loadingView.frame = CGRect(x: 0, y: 0, width: placeImg.frame.width, height: placeImg.frame.height)
-            loadingView.color = .systemGray
-            self.view.addSubview(loadingView)
-            loadingView.startAnimating()
-        }
-        
-        tableView.tableFooterView = UIView(frame: CGRect.zero)
+        setupPlaceInfo()
+        configureGesture()
     }
     
-    // 메인 페이지에서 이미지가 다운되지 못했을 경우 정보 상세 페이지에서 이미지를 받아오는 함수
-    func downloadImgInfo(_ place: Place) {
-        isLoading = true
-        
-        StorageManager.shared.getImage(name: place.name) { image in
-            if let image = image {
-                self.getPlaceInfo(place, image: image)
-                self.setPlaceInfo()
-                self.imgDelegate?.didImageDone(newData: place, image: image)
-                self.loadingView.removeFromSuperview()
-            }
-        }
-    }
-   
-    func getPlaceInfo(_ data: Place, image: UIImage){
-        editData = data
-        receiveImage = image
-        reName = data.name
-        rePositon = data.location
-        reCategory = data.category
-        reComent = data.coment
-        reRate = data.rate
-        reGroup = data.group
-        let formatter = DateFormatter()
-        formatter.dateFormat = "yyyy-MM-dd"
-        reDate = formatter.string(from: data.date)
-    }
-    
-    func setPlaceInfo(){
-        lblPlacename.text = reName
-        lblCategory.text = reCategory
-        txvComent.text = reComent
-        lblRate.text = "  " + reRate + " 점"
-        lblGroup.text = reGroup
-        placeImg.image = receiveImage
-        if rePositon != ""{
-            let locationArray = rePositon.components(separatedBy: " ")
-            var location: String = ""
-            if locationArray.count >= 3{
-                for i in 0...2{
-                    location += locationArray[i]
-                    location += " "
-                }
-                btnPosition.setTitle(" " + location + "  〉 ", for: .normal)
-            }else{
-                btnPosition.setTitle(" " + rePositon + "  〉 ", for: .normal)
-            }
-
-            btnPosition.contentHorizontalAlignment = .left
-        }
-
-        RatingManager().sliderStar(rateButtons,
-                            rating: NSString(string: reRate).floatValue)
-        lblDate.text = reDate
+    func getPlaceInfo(_ data: Place) {
+        place = data
     }
     
     func didEditPlace(_ controller: AddPlaceTableViewController, data: Place, image: UIImage) {
-         getPlaceInfo(data, image: image)
-         setPlaceInfo()
+        getPlaceInfo(data)
+        setupPlaceInfo()
         tableView.reloadData()
     }
     
-    @IBAction func editBtn(_ sender: UIButton){
-        let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
-        let txtFavorit: String
-        editData!.isFavorit ? (txtFavorit = "즐겨찾기 해제") : (txtFavorit = "즐겨찾기 추가")
+    private func setupPlaceInfo() {
+        guard let place = place else { return }
         
-        alert.addAction(UIAlertAction(title: "장소 편집", style: .default) { [self] _ in
-            performSegue(withIdentifier: "editPlace", sender: self)
-        })
-
-        alert.addAction(UIAlertAction(title: "장소 삭제", style: .default) { [self] _ in
-            _ = navigationController?.popViewController(animated: true)
-            NotificationCenter.default.post(name: NSNotification.Name(rawValue: "newPlaceUpdate"), object: editData)
-        })
-        
-        alert.addAction(UIAlertAction(title: txtFavorit, style: .default){ [self] _ in
-            let isFavorit = editData!.isFavorit
-           
-            editData?.isFavorit = !isFavorit
-            FirestoreManager.shared.updateFavorit(!isFavorit, placeName: reName)
+        ImageCacheManager.shared.setupImage(with: place.name) { [weak self] image in
+            DispatchQueue.main.async {
+                self?.placeImage.image = image
+            }
             
-            let alert = UIAlertController(title: txtFavorit, message: "즐겨찾기가 변경되었습니다.", preferredStyle: .alert)
-            alert.addAction(UIAlertAction(title: "확인", style: .default, handler: nil))
-            present(alert, animated: true, completion: nil)
-        })
-                        
-        alert.addAction(UIAlertAction(title: "취소", style: .destructive))
-        present(alert, animated: true)
-    }
-    
-    @objc func imageTapped(_ sender: UITapGestureRecognizer) {
-        self.performSegue(withIdentifier: "sgShowImage", sender: self)
-    }
-    
-
-    // MARK: - Table view data source
-
-    override func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
-    }
-
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 4
-    }
-
-    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        if indexPath.row == 0 && editData?.hasImage == false{
-            return 0
+            self?.receiveImage = image
         }
-        return super.tableView(tableView, heightForRowAt: indexPath)
+        
+        placeNameLabel.text = place.name
+        categoryLabel.text = place.category
+        comentTextView.text = place.coment
+        ratingLabel.text = place.rate + " 점"
+        groupLabel.text = place.group
+        locationButton.contentHorizontalAlignment = .left
+        locationButton.setTitle(place.location, for: .normal)
+        
+        RatingManager().sliderStar(rateButtons,
+                                   rating: NSString(string: place.rate).floatValue)
+        
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd"
+        dateLabel.text = formatter.string(from: place.date)
     }
     
+    private func configureGesture() {
+        let tap = UITapGestureRecognizer(target: self,
+                                         action: #selector(imageTapped))
+        placeImage.isUserInteractionEnabled = true
+        placeImage.addGestureRecognizer(tap)
+    }
+    
+    @IBAction private func editButtonTapped(_ sender: UIButton) {
+        guard var place = place else { return }
+        let changeFavorit = place.isFavorit ? PlaceInfo.Edit.unfavorite :  PlaceInfo.Edit.addFavorite
+        let editAlert = UIAlertController(title: nil,
+                                          message: nil,
+                                          preferredStyle: .actionSheet)
+        
+        
+        let edit = UIAlertAction(title: PlaceInfo.Edit.editPlace,
+                                 style: .default) { [weak self] _ in
+            self?.performSegue(withIdentifier: Segue.edit.identifier, sender: self)
+        }
+        
+        let delete = UIAlertAction(title: PlaceInfo.Edit.deletePlace,
+                                   style: .default) { [weak self] _ in
+            self?.navigationController?.popViewController(animated: true)
+            
+            NotificationCenter.default.post(name: NSNotification.Name(rawValue: "newPlaceUpdate"),
+                                            object: place)
+        }
+        
+        let favorit = UIAlertAction(title: changeFavorit, style: .default){ [weak self] _ in
+            let changedFavorit = !(place.isFavorit)
+            
+            place.isFavorit = changedFavorit
+            FirestoreManager.shared.updateFavorit(changedFavorit, placeName: place.name)
+            
+            self?.showAlert(changeFavorit, PlaceInfo.Edit.changeFavorit)
+            
+        }
+        
+        let cancel = UIAlertAction(title: PlaceInfo.Edit.cancel,
+                                   style: .destructive)
+        [edit, delete, favorit, cancel].forEach { editAlert.addAction($0) }
+        
+        present(editAlert, animated: true)
+    }
+    
+    @objc private func imageTapped(_ sender: UITapGestureRecognizer) {
+        self.performSegue(withIdentifier: Segue.detailImage.identifier, sender: self)
+    }
     
     // MARK: - Navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        switch segue.identifier{
-        case "editPlace":
-            let addPlaceViewController = segue.destination as! AddPlaceTableViewController
-            addPlaceViewController.setPlaceDataFromInfo(data: editData!, image: receiveImage!)
+        switch segue.identifier {
+        case Segue.edit.identifier:
+            let addPlaceViewController = segue.destination as? AddPlaceTableViewController ?? AddPlaceTableViewController()
             addPlaceViewController.editDelegate = self
-        case "sgShowImage":
-            let imageView = segue.destination as! ImageViewController
-            imageView.fullImage = placeImg.image
-        case "showMap":
-            let addressController = segue.destination  as! MapViewController
-            addressController.onePlace = editData!
+            addPlaceViewController.setPlaceDataFromInfo(data: place!,
+                                                        image: receiveImage!)
+        case Segue.detailImage.identifier:
+            let imageView = segue.destination as? ImageViewController ?? ImageViewController()
+            imageView.fullImage = placeImage.image
+        case Segue.map.identifier:
+            let addressController = segue.destination as? MapViewController ?? MapViewController()
+            addressController.onePlace = place
         default:
-            print("잘못된 segue")
+            break
         }
+    }
+}
+
+// MARK: - Table view data source
+extension PlaceInfoTableViewController {
+    override func numberOfSections(in tableView: UITableView) -> Int {
+        return 1
+    }
+    
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return 4
+    }
+    
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        if indexPath.row == 0 && place?.hasImage == false {
+            return 0
+        }
+        return super.tableView(tableView, heightForRowAt: indexPath)
     }
 }

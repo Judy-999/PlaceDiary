@@ -17,6 +17,15 @@ enum PlaceInfo {
     
     static let placeHolderColor = #colorLiteral(red: 0.768627286, green: 0.7686277032, blue: 0.7772355676, alpha: 1)
     
+    enum Edit {
+        static let unfavorite = "즐겨찾기 해제"
+        static let addFavorite = "즐겨찾기 추가"
+        static let changeFavorit = "즐겨찾기가 변경되었습니다."
+        static let editPlace = "장소 편집"
+        static let deletePlace = "장소 삭제"
+        static let cancel = "취소"
+    }
+    
     enum Message {
         case duplicatePlace
         case insufficientInput
@@ -37,6 +46,23 @@ enum PlaceInfo {
             case .insufficientInput:
                 return "모든 항목을 입력해주세요."
             }
+        }
+    }
+}
+
+enum Segue {
+    case edit
+    case detailImage
+    case map
+    
+    var identifier: String {
+        switch self {
+        case .edit:
+            return "editPlace"
+        case .detailImage:
+            return "sgShowImage"
+        case .map:
+            return "showMap"
         }
     }
 }
