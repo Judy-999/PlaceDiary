@@ -89,7 +89,7 @@ class AddPlaceTableViewController: UITableViewController {
     
     private func configureEditView() {
         guard let place = editData else { return }
-        let addRate = AddRate()
+        let addRate = RatingManager()
         
         placeImageView.image = receiveImage
         nameTextField.text = place.name
@@ -98,16 +98,14 @@ class AddPlaceTableViewController: UITableViewController {
         comentTextView.text = place.coment
         rateLabel.text = place.rate
         
-        if let index = categoryItems.firstIndex(of: place.category) {
-            categoryPickerView.selectRow(index, inComponent: 0, animated: false)
-        }
+        addRate.sliderStar(starButtons,
+                           rating: NSString(string: place.rate).floatValue)
         
-        if let index = groupItems.firstIndex(of: place.group) {
-            categoryPickerView.selectRow(index, inComponent: 0, animated: false)
-        }
-       
-        addRate.fill(buttons: starButtons,
-                     rate: NSString(string: place.rate).floatValue)
+        guard let categoryIndex = categoryItems.firstIndex(of: place.category),
+              let groupIndex = groupItems.firstIndex(of: place.group) else { return }
+        
+        categoryPickerView.selectRow(categoryIndex, inComponent: 0, animated: false)
+        groupPickerView.selectRow(groupIndex, inComponent: 0, animated: false)
     }
     
     private func createPlace() -> Place? {
@@ -205,19 +203,8 @@ class AddPlaceTableViewController: UITableViewController {
     }
     
     @IBAction private func sliderChanged(_ sender: Any) {
-        let addRate = AddRate()
-        let starVal = starSlider.value
-        addRate.sliderStar(buttons: starButtons, rate: starVal)
-        
-        let rateDown = starVal.rounded(.down)
-        let half = starVal - rateDown
-        let rateInt = Int(rateDown)
-        
-        if half >= 0.5{
-            rateLabel.text = String(rateInt) + ".5"
-        }else{
-            rateLabel.text = String(rateInt) + ".0"
-        }
+        let rating = RatingManager().sliderStar(starButtons, rating: starSlider.value)
+        rateLabel.text = rating
     }
     
     @IBAction private func AddPhotoButtonTapped(_ sender: UIButton) {
@@ -310,15 +297,17 @@ extension AddPlaceTableViewController :  UIPickerViewDelegate, UIPickerViewDataS
     }
 }
 
-class StarRatingUISlider: UISlider {
+final class StarRatingUISlider: UISlider {
     override func beginTracking(_ touch: UITouch, with event: UIEvent?) -> Bool {
         let width = self.frame.size.width
         let tapPoint = touch.location(in: self)
-        let fPercent = tapPoint.x/width
-        let nNewValue = self.maximumValue * Float(fPercent)
-        if nNewValue != self.value {
-            self.value = nNewValue
+        let tapPercent = tapPoint.x / width
+        let newValue = self.maximumValue * Float(tapPercent)
+        
+        if newValue != self.value {
+            self.value = newValue
         }
+        
         return true
     }
 }

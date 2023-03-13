@@ -110,8 +110,9 @@ class PlaceInfoTableViewController: UITableViewController, EditDelegate {
 
             btnPosition.contentHorizontalAlignment = .left
         }
-        let fillRate = AddRate()
-        fillRate.fill(buttons: rateButtons, rate: NSString(string: reRate).floatValue)
+
+        RatingManager().sliderStar(rateButtons,
+                            rating: NSString(string: reRate).floatValue)
         lblDate.text = reDate
     }
     

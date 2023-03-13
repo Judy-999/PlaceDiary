@@ -19,7 +19,7 @@
 		207E4F862660985D00AC0A6E /* AddPlaceTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 207E4F852660985D00AC0A6E /* AddPlaceTableViewController.swift */; };
 		208382A526DB8C5000CC5FEE /* TagTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2044A8342671E989002ABBD8 /* TagTextView.swift */; };
 		2088D238294E96C9009415C1 /* UIImage+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2088D237294E96C9009415C1 /* UIImage+.swift */; };
-		208D9FE9266DFD4A00FC2067 /* AddRate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 208D9FE8266DFD4A00FC2067 /* AddRate.swift */; };
+		208D9FE9266DFD4A00FC2067 /* RatingManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 208D9FE8266DFD4A00FC2067 /* RatingManager.swift */; };
 		20B113832689BBC200A6A0FD /* PlaceCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20B113822689BBC200A6A0FD /* PlaceCell.swift */; };
 		20B80BC8294AEF0600CA0F2B /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 20B80BC7294AEF0600CA0F2B /* FirebaseAuth */; };
 		20B80BCA294AEF0600CA0F2B /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 20B80BC9294AEF0600CA0F2B /* FirebaseFirestore */; };
@@ -53,7 +53,7 @@
 		20544EFA268AFBD700D780E4 /* CalendarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarController.swift; sourceTree = "<group>"; };
 		207E4F852660985D00AC0A6E /* AddPlaceTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddPlaceTableViewController.swift; sourceTree = "<group>"; };
 		2088D237294E96C9009415C1 /* UIImage+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+.swift"; sourceTree = "<group>"; };
-		208D9FE8266DFD4A00FC2067 /* AddRate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddRate.swift; sourceTree = "<group>"; };
+		208D9FE8266DFD4A00FC2067 /* RatingManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RatingManager.swift; sourceTree = "<group>"; };
 		20B113822689BBC200A6A0FD /* PlaceCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceCell.swift; sourceTree = "<group>"; };
 		20CB7C9B269F28130057EAF0 /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
 		20D7B4AE26EDEF5100DF954E /* StatisticsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatisticsTableViewController.swift; sourceTree = "<group>"; };
@@ -149,7 +149,7 @@
 			children = (
 				202D7B05294C13990093D80A /* FirestoreManager.swift */,
 				20451D4C294C355B00186A35 /* StorageManager.swift */,
-				208D9FE8266DFD4A00FC2067 /* AddRate.swift */,
+				208D9FE8266DFD4A00FC2067 /* RatingManager.swift */,
 				20F553F2294C90F2001F69AD /* ImageCacheManager.swift */,
 			);
 			path = Util;
@@ -357,7 +357,7 @@
 				204CEEB9267F0BD1000D395F /* SettingTableController.swift in Sources */,
 				2088D238294E96C9009415C1 /* UIImage+.swift in Sources */,
 				2020E4E32667BE600091D569 /* Place.swift in Sources */,
-				208D9FE9266DFD4A00FC2067 /* AddRate.swift in Sources */,
+				208D9FE9266DFD4A00FC2067 /* RatingManager.swift in Sources */,
 				20544EFB268AFBD700D780E4 /* CalendarController.swift in Sources */,
 				208382A526DB8C5000CC5FEE /* TagTextView.swift in Sources */,
 				207E4F862660985D00AC0A6E /* AddPlaceTableViewController.swift in Sources */,
