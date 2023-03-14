@@ -54,11 +54,11 @@ class AddPlaceTableViewController: UITableViewController {
     private func configureTextView() {
         locationTextView.delegate = self
         locationTextView.text = PlaceInfo.locationPlaceHoler
-        locationTextView.textColor = PlaceInfo.placeHolderColor
+        locationTextView.textColor = Color.placeHolder
         
         comentTextView.delegate = self
         comentTextView.text = PlaceInfo.comentPlaceHoler
-        comentTextView.textColor = PlaceInfo.placeHolderColor
+        comentTextView.textColor = Color.placeHolder
     }
     
     private func loadClassification() {
@@ -74,12 +74,6 @@ class AddPlaceTableViewController: UITableViewController {
         groupPickerView.delegate = self
     }
 
-    private func simpleAlert(title: String, message: String) {
-        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "확인", style: .default, handler: nil))
-        self.present(alert, animated: true, completion: nil)
-    }
-    
     // 편집하는 장소 데이터를 받아오는 함수
     func setPlaceDataFromInfo(data: Place, image: UIImage) {
         editData = data
@@ -176,7 +170,7 @@ class AddPlaceTableViewController: UITableViewController {
             uploadData(place: newPlace)
         }
         
-        _ = navigationController?.popViewController(animated: true)
+        navigationController?.popViewController(animated: true)
     }
     
     private func deletePlaceData(name place: String) {
@@ -219,7 +213,7 @@ class AddPlaceTableViewController: UITableViewController {
 
 extension AddPlaceTableViewController: UITextViewDelegate {
     func textViewDidBeginEditing(_ textView: UITextView) {
-        if textView.textColor == PlaceInfo.placeHolderColor {
+        if textView.textColor == Color.placeHolder {
             textView.text = nil
             textView.textColor = UIColor.label
         }

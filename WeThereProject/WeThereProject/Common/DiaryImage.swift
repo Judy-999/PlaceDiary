@@ -15,7 +15,12 @@ enum PlaceInfo {
     static let locationPlaceHoler = "이름 또는 주소로 위치를 검색하세요."
     static let comentPlaceHoler = "코멘트를 입력하세요."
     
-    static let placeHolderColor = #colorLiteral(red: 0.768627286, green: 0.7686277032, blue: 0.7772355676, alpha: 1)
+    enum Search {
+        static let noSearch = "검색된 장소가 없습니다."
+        static let emptySearch = "검색할 장소가 없습니다."
+        static let placeHolder = "키워드 검색 ex. 이름, 내용..."
+        static let title = "검색"
+    }
     
     enum Edit {
         static let unfavorite = "즐겨찾기 해제"
@@ -50,10 +55,16 @@ enum PlaceInfo {
     }
 }
 
+enum Color {
+    static let highlight = #colorLiteral(red: 0, green: 0.8924261928, blue: 0.8863361478, alpha: 1)
+    static let placeHolder = #colorLiteral(red: 0.768627286, green: 0.7686277032, blue: 0.7772355676, alpha: 1)
+}
+
 enum Segue {
     case edit
     case detailImage
     case map
+    case serach
     
     var identifier: String {
         switch self {
@@ -63,6 +74,8 @@ enum Segue {
             return "sgShowImage"
         case .map:
             return "showMap"
+        case .serach:
+            return "sgSearchInfo"
         }
     }
 }

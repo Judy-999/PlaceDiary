@@ -10,12 +10,9 @@ import UIKit
 class SearchTableViewController: UITableViewController, ImageDelegate {
     @IBOutlet var searchTableView: UITableView!
     
-    var newUpdate = false
-    var places = [Place]()
-    var placeImages = [String : UIImage]()
-    var filterArray = [Place]()
-    var txtSearch : String?
-    var placeName = [String](){
+    private var filteredPlaces = [Place]()
+    private var searchText = String()
+    private var places = [Place]() {
         didSet {
             DispatchQueue.main.async {
                 self.tableView.reloadData()
@@ -23,159 +20,146 @@ class SearchTableViewController: UITableViewController, ImageDelegate {
         }
     }
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-
-        self.setSearchController()
-        self.tableView.delegate = self
-        self.tableView.dataSource = self
+    private var isSearching: Bool {
+        let searchController = self.navigationItem.searchController
+        let isActive = searchController?.isActive == true
+        let isSearchBarHasText = searchController?.searchBar.text?.isEmpty == false
+        return isActive && isSearchBarHasText
     }
 
-    func setSearchController(){
-        let searchController = UISearchController(searchResultsController: nil)
-        searchController.searchBar.placeholder = "키워드 검색 ex. 이름, 내용..."
-        searchController.hidesNavigationBarDuringPresentation = false
-        searchController.obscuresBackgroundDuringPresentation = false
-        
-        searchController.searchResultsUpdater = self
-        
-        self.navigationItem.searchController = searchController
-        self.navigationItem.title = "검색"
-        self.navigationItem.hidesSearchBarWhenScrolling = false
-    }
-
-    func didImageDone(newData: Place, image: UIImage) {
-        placeImages.updateValue(image, forKey: newData.name)
-        newUpdate = true
-    }
-    
-    override func viewDidDisappear(_ animated: Bool) {
-        if newUpdate == true{
-            updateImg()
-            newUpdate = false
-        }
-    }
-    
-    func updateImg(){
-        let mainNav = self.tabBarController?.viewControllers![0] as! UINavigationController
-        let mainCont = mainNav.topViewController as! MainViewController
-        let calNav = self.tabBarController?.viewControllers![2] as! UINavigationController
-        let calCont = calNav.topViewController as! CalendarController
-        let mapNav = self.tabBarController?.viewControllers![3] as! UINavigationController
-        let mapCont = mapNav.topViewController as! MapViewController
-            
-        calCont.getDate(places, images: placeImages)
-        mapCont.getPlace(places, images: placeImages)
-        mainCont.updateImage(placeImages)
-    }
-    
     override func viewWillAppear(_ animated: Bool) {
         tableView.reloadData()
     }
     
-    // MARK: - Table view data source
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        setupSearchController()
+        setupTableView()
+    }
+    
+    func setData(_ data: [Place], images: [String : UIImage]) {
+        places = data
+//        placeImages = images
+    }
+    
+    func didImageDone(newData: Place, image: UIImage) {
+//        placeImages.updateValue(image, forKey: newData.name)
+        //        newUpdate = true
+    }
+    
+    private func setupTableView() {
+        tableView.delegate = self
+        tableView.dataSource = self
+    }
+    
+    private func setupSearchController() {
+        let searchController = UISearchController(searchResultsController: nil)
+        searchController.searchBar.placeholder = PlaceInfo.Search.placeHolder
+        searchController.hidesNavigationBarDuringPresentation = false
+        searchController.obscuresBackgroundDuringPresentation = false
+        searchController.searchResultsUpdater = self
+        
+        setupNavigationItem(searchController)
+    }
+    
+    private func setupNavigationItem(_ searchController: UISearchController) {
+        self.navigationItem.searchController = searchController
+        self.navigationItem.title = PlaceInfo.Search.title
+        self.navigationItem.hidesSearchBarWhenScrolling = false
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == Segue.serach.identifier {
+            guard let infoView = segue.destination as? PlaceInfoTableViewController,
+                  let cell = sender as? UITableViewCell,
+                  let indexPath = searchTableView.indexPath(for: cell) else { return }
+            
+            let selectedPlaces: [Place] = isSearching ? filteredPlaces : places
+            
+            infoView.imgDelegate = self
+            
+            if let place = places.first(where: { $0.name == selectedPlaces[indexPath.row].name }) {
+                infoView.getPlaceInfo(place)
+            }
+        }
+    }
+}
 
+// MARK: - Table view data source
+extension SearchTableViewController {
+    private func initializeTableView(with coment: String) {
+        let emptyLabel = UILabel(frame: CGRect(x: .zero,
+                                               y: .zero,
+                                               width: view.bounds.size.width,
+                                               height: view.bounds.size.height))
+        emptyLabel.text = coment
+        emptyLabel.textAlignment = NSTextAlignment.center
+        searchTableView.backgroundView = emptyLabel
+        searchTableView.separatorStyle = .none
+    }
+    
     override func numberOfSections(in tableView: UITableView) -> Int {
-        // #warning Incomplete implementation, return the number of sections
         return 1
     }
-
+    
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if isSearching{
-            if filterArray.count == 0{
-                let emptyLabel = UILabel(frame: CGRect(x: 0, y: 0, width: self.view.bounds.size.width, height: self.view.bounds.size.height))
-                emptyLabel.text = "검색된 장소가 없습니다."
-                emptyLabel.textAlignment = NSTextAlignment.center
-                tableView.backgroundView = emptyLabel
-                tableView.separatorStyle = .none
-                return 0
-            }else{
-                tableView.separatorStyle = UITableViewCell.SeparatorStyle.singleLine
-                tableView.backgroundView = .none
-                return filterArray.count
+        tableView.separatorStyle = .singleLine
+        tableView.backgroundView = .none
+        
+        if isSearching {
+            if filteredPlaces.isEmpty {
+                initializeTableView(with: PlaceInfo.Search.noSearch)
             }
-        }else{
-            if placeName.count == 0{
-                let emptyLabel = UILabel(frame: CGRect(x: 0, y: 0, width: self.view.bounds.size.width, height: self.view.bounds.size.height))
-                emptyLabel.text = "검색할 장소가 없습니다."
-                emptyLabel.textAlignment = NSTextAlignment.center
-                tableView.backgroundView = emptyLabel
-                tableView.separatorStyle = .none
-                return 0
-            }else{
-                tableView.separatorStyle = UITableViewCell.SeparatorStyle.singleLine
-                tableView.backgroundView = .none
-                return placeName.count
+            
+            return filteredPlaces.count
+        } else {
+            if places.isEmpty {
+                initializeTableView(with: PlaceInfo.Search.emptySearch)
             }
+            
+            return places.count
         }
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "searchCell", for: indexPath) as! SearchResultCell
-
-        if self.isSearching{
-            let name = NSMutableAttributedString(string: filterArray[(indexPath as NSIndexPath).row].name)
-            name.addAttribute(NSAttributedString.Key.foregroundColor,
-                              value: #colorLiteral(red: 0, green: 0.8924261928, blue: 0.8863361478, alpha: 1), range: (filterArray[(indexPath as NSIndexPath).row].name as NSString).range(of: self.txtSearch!))
-            let address = NSMutableAttributedString(string: filterArray[(indexPath as NSIndexPath).row].location)
-            address.addAttribute(NSAttributedString.Key.foregroundColor,
-                              value: #colorLiteral(red: 0, green: 0.8924261928, blue: 0.8863361478, alpha: 1), range: (filterArray[(indexPath as NSIndexPath).row].location as NSString).range(of: self.txtSearch!))
+        let cell = tableView.dequeueReusableCell(withIdentifier: "searchCell",
+                                                 for: indexPath) as? SearchResultCell ?? SearchResultCell()
+        
+        if isSearching {
+            let searchPlace = filteredPlaces[indexPath.row]
+            let name = NSMutableAttributedString(string: searchPlace.name)
+            name.addAttribute(.foregroundColor,
+                              value: Color.highlight,
+                              range: (searchPlace.name as NSString).range(of: searchText))
+            
+            let address = NSMutableAttributedString(string: searchPlace.location)
+            address.addAttribute(.foregroundColor,
+                                 value: Color.highlight,
+                                 range: (searchPlace.location as NSString).range(of: searchText))
             
             cell.lblName.attributedText = name
             cell.lblLocation.attributedText = address
-
-        }else{
-            cell.lblName.text = places[(indexPath as NSIndexPath).row].name
-            cell.lblLocation.text = places[(indexPath as NSIndexPath).row].location
+            
+        } else {
+            let place = places[indexPath.row]
+            cell.lblName.text = place.name
+            cell.lblLocation.text = place.location
         }
+        
         return cell
-    }
-    
-
-    func setData(_ data: [Place], images: [String : UIImage]){
-        places = data
-        placeName.removeAll()
-        for place in data{
-            placeName.append(place.name)
-        }
-        placeImages = images
-    }
-    
-    var isSearching: Bool {
-        let searchController = self.navigationItem.searchController
-        let isActive = searchController?.isActive ?? false
-        let isSearchBarHasText = searchController?.searchBar.text?.isEmpty == false
-        return isActive && isSearchBarHasText
-    }
-    
-    // MARK: - Navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == "sgSearchInfo"{
-            let cell = sender as! UITableViewCell
-            let indexPath = self.searchTableView.indexPath(for: cell)
-            let infoView = segue.destination as! PlaceInfoTableViewController
-            var selectedPlace: Place!
-            
-            infoView.imgDelegate = self
-            
-            if isSearching{
-                selectedPlace = places.first(where: {$0.name == filterArray[(indexPath! as NSIndexPath).row].name})
-            }else{
-                selectedPlace = places.first(where: {$0.name == places[(indexPath! as NSIndexPath).row].name})
-            }
-            
-            infoView.getPlaceInfo(selectedPlace)
-        }
     }
 }
 
 extension SearchTableViewController: UISearchResultsUpdating {
     func updateSearchResults(for searchController: UISearchController) {
-        guard let searchText = searchController.searchBar.text?.lowercased() else { return }
+        guard let text = searchController.searchBar.text?.lowercased() else { return }
         
-        self.txtSearch = searchText
-        self.filterArray =  self.places.filter {$0.name.localizedCaseInsensitiveContains(searchText) || $0.location.localizedCaseInsensitiveContains(searchText) || $0.coment.localizedCaseInsensitiveContains(searchText)}
-          
-        self.tableView.reloadData()
+        searchText = text
+        filteredPlaces = places.filter {
+            $0.name.localizedCaseInsensitiveContains(searchText) ||
+            $0.location.localizedCaseInsensitiveContains(searchText) ||
+            $0.coment.localizedCaseInsensitiveContains(searchText)
+        }
+        tableView.reloadData()
     }
 }
