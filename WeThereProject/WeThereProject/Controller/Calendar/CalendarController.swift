@@ -8,158 +8,102 @@
 import UIKit
 import FSCalendar
 
-struct PlaceDate{
-    var date: Date
-    var name: [String]
-}
-
-class CalendarController: UIViewController, FSCalendarDelegate, FSCalendarDataSource, ImageDelegate {
-
-    var newUpdate = false
-    var placeDay = [Date]()
-    var places = [Place]()
-    var placeImages = [String : UIImage]()
-    var selectedDate = ""
-    var nameDate = [Date : String]()
-    var selectedName = [String]()
-    var dates = [PlaceDate]()
+class CalendarController: UIViewController, ImageDelegate {
+    private var places = [Place]()
+    private var eventPlaces = [Place]() {
+        didSet {
+            tableView.reloadData()
+            calendar.reloadData()
+        }
+    }
     
-    @IBOutlet weak var calendar: FSCalendar!
-    @IBOutlet weak var tableView: UITableView!
+    @IBOutlet private weak var calendar: FSCalendar!
+    @IBOutlet private weak var tableView: UITableView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        setCalendar()
+        setupCalendar()
         calendar.reloadData()
     }
 
-    func getDate(_ data: [Place], images: [String : UIImage]){
-        dates.removeAll()
+    func getDate(_ data: [Place], images: [String : UIImage]) {
         places = data
-        for place in places{
-            let placeDay = transDate(place.date)
-            let placeName = place.name
-            var sameDay = dates.first(where: {$0.date == placeDay})
-            if sameDay == nil{
-                let placeDate: PlaceDate = PlaceDate(date: placeDay, name: [placeName])
-                dates.append(placeDate)
-            }else{
-                let index = dates.firstIndex(where: {$0.date == placeDay})!
-                dates.remove(at: index)
-                sameDay?.name.append(placeName)
-                dates.append(sameDay!)
-            }
-        }
-        placeImages = images
-    }
-
-    
-    func setCalendar(){
-        calendar.appearance.headerDateFormat = "YYYY년 M월"
-        calendar.appearance.weekdayTextColor = UIColor.black
-        calendar.appearance.headerTitleColor = UIColor.black
-        calendar.appearance.selectionColor = #colorLiteral(red: 0, green: 0.8924261928, blue: 0.8863361478, alpha: 1)
-        calendar.appearance.todayColor = #colorLiteral(red: 0.4745098054, green: 0.8392156959, blue: 0.9764705896, alpha: 1)
-        calendar.appearance.todaySelectionColor = #colorLiteral(red: 0, green: 0.8924261928, blue: 0.8863361478, alpha: 1)
-        calendar.appearance.titleWeekendColor = UIColor.blue
-        calendar.appearance.headerMinimumDissolvedAlpha = 0.0
-        calendar.appearance.eventDefaultColor = #colorLiteral(red: 0, green: 0.8924261928, blue: 0.8863361478, alpha: 1)
-        calendar.appearance.eventSelectionColor = .red
-        calendar.backgroundColor = UIColor.white
-        calendar.locale = Locale(identifier: "ko_KR")
-    }
-    
-    func transDate(_ day: Date) -> Date {
-        let formatter = DateFormatter()
-        formatter.locale = Locale(identifier: "ko_KR")
-        formatter.dateFormat = "yyyy-MM-dd"
-        
-        let dateString = formatter.string(from: day)
-        let date = formatter.date(from: dateString)
-
-        return date!
+//        placeImages = images
     }
 
     func didImageDone(newData: Place, image: UIImage) {
-        placeImages.updateValue(image, forKey: newData.name)
-        newUpdate = true
+//        placeImages.updateValue(image, forKey: newData.name)
+//        newUpdate = true
     }
     
-    override func viewDidDisappear(_ animated: Bool) {
-        if newUpdate == true{
-            updateImg()
-            newUpdate = false
-        }
+    private func setupCalendar() {
+        calendar.appearance.headerDateFormat = PlaceInfo.Calendar.headerFormat
+        calendar.appearance.todayColor = Color.partialHighlight
+        calendar.appearance.todaySelectionColor = Color.highlight
+        calendar.appearance.selectionColor = Color.highlight
+        calendar.appearance.eventDefaultColor = Color.highlight
+        calendar.appearance.weekdayTextColor = .label
+        calendar.appearance.headerTitleColor = .label
+        calendar.appearance.titleDefaultColor = .label
+        calendar.appearance.titleWeekendColor = .systemBlue
+        calendar.appearance.eventSelectionColor = .systemRed
+        calendar.backgroundColor = .systemBackground
     }
     
-    func updateImg(){
-        let mainNav = self.tabBarController?.viewControllers![0] as! UINavigationController
-        let mainCont = mainNav.topViewController as! MainViewController
-        let searchNav = self.tabBarController?.viewControllers![1] as! UINavigationController
-        let searchCont = searchNav.topViewController as! SearchTableViewController
-        let mapNav = self.tabBarController?.viewControllers![3] as! UINavigationController
-        let mapCont = mapNav.topViewController as! MapViewController
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == Segue.calendar.identifier {
+            guard let infoView = segue.destination as? PlaceInfoTableViewController,
+                  let cell = sender as? UITableViewCell,
+                  let indexPath = self.tableView.indexPath(for: cell) else { return }
             
-        searchCont.setData(places, images: placeImages)
-        mapCont.getPlace(places, images: placeImages)
-        mainCont.updateImage(placeImages)
-    }
-    
-    func calendar(_ calendar: FSCalendar, numberOfEventsFor date: Date) -> Int {
-        let eventDay = dates.first(where: {$0.date == date})
-        if eventDay == nil{
-            return 0
-        }else if (eventDay?.name.count)! < 3{
-            return (eventDay?.name.count)!
-        }else{
-            return 3
-        }
-    }
-    
-    func calendar(_ calendar: FSCalendar, didSelect date: Date, at monthPosition: FSCalendarMonthPosition) {
-        if let eventDay = dates.first(where: {$0.date == date}){
-            selectedName = eventDay.name
-            tableView.reloadData()
-        }else{
-            selectedName.removeAll()
-            tableView.reloadData()
+            infoView.imgDelegate = self
+            infoView.getPlaceInfo(eventPlaces[indexPath.row])
         }
     }
 }
 
-extension CalendarController: UITableViewDelegate, UITableViewDataSource{
+extension CalendarController: FSCalendarDelegate, FSCalendarDataSource {
+    func calendar(_ calendar: FSCalendar, numberOfEventsFor date: Date) -> Int {
+        let eventDay = places.filter { $0.date.toRegular == date }
+        return eventDay.count > PlaceInfo.Calendar.eventCount ?
+        PlaceInfo.Calendar.eventCount : eventDay.count
+    }
+    
+    func calendar(_ calendar: FSCalendar,
+                  didSelect date: Date,
+                  at monthPosition: FSCalendarMonthPosition) {
+        
+        eventPlaces = places.filter { $0.date.toRegular == date }
+    }
+}
+
+extension CalendarController: UITableViewDelegate, UITableViewDataSource {
+    private func initializeTableView(with coment: String) {
+        let emptyLabel = UILabel(frame: CGRect(x: .zero,
+                                               y: .zero,
+                                               width: view.bounds.size.width,
+                                               height: view.bounds.size.height))
+        emptyLabel.text = coment
+        emptyLabel.textAlignment = NSTextAlignment.center
+        tableView.backgroundView = emptyLabel
+        tableView.separatorStyle = .none
+    }
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if selectedName.count == 0{
-            let emptyLabel = UILabel(frame: CGRect(x: 0, y: 0, width: self.view.bounds.size.width, height: self.view.bounds.size.height))
-            emptyLabel.text = "장소가 없습니다."
-            emptyLabel.textAlignment = NSTextAlignment.center
-            tableView.backgroundView = emptyLabel
-            tableView.separatorStyle = .none
-            return 0
-        }else{
-            tableView.backgroundView = .none
-            return selectedName.count
+        tableView.backgroundView = .none
+        tableView.separatorStyle = .singleLine
+        
+        if eventPlaces.isEmpty {
+            initializeTableView(with: PlaceInfo.Calendar.emptyDate)
         }
+        
+        return eventPlaces.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "calCell", for: indexPath)
-        cell.textLabel?.font = UIFont.boldSystemFont(ofSize: 20)
-        cell.textLabel?.font = UIFont.systemFont(ofSize: 18)
-        cell.textLabel?.text = selectedName[(indexPath as NSIndexPath).row]
+        cell.textLabel?.font = .preferredFont(forTextStyle: .title3)
+        cell.textLabel?.text = eventPlaces[indexPath.row].name
         return cell
-    }
-    
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == "sgCalendarInfo"{
-            let cell = sender as! UITableViewCell
-            let indexPath = self.tableView.indexPath(for: cell)
-            let infoView = segue.destination as! PlaceInfoTableViewController
-            
-            let selectedPlace = places.first(where: {$0.name == selectedName[(indexPath! as NSIndexPath).row]})
-            
-            infoView.imgDelegate = self
-            infoView.getPlaceInfo(selectedPlace!)
-        }
     }
 }
