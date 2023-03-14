@@ -1,5 +1,5 @@
 //
-//  SearchTableViewController.swift
+//  SearchViewController.swift
 //  WeThereProject
 //
 //  Created by 김주영 on 2021/06/23. --> Refacted on 2022/12/15
@@ -7,18 +7,12 @@
 
 import UIKit
 
-class SearchTableViewController: UITableViewController, ImageDelegate {
-    @IBOutlet var searchTableView: UITableView!
+class SearchViewController: UIViewController, ImageDelegate {
+    @IBOutlet private var searchTableView: UITableView!
     
     private var filteredPlaces = [Place]()
     private var searchText = String()
-    private var places = [Place]() {
-        didSet {
-            DispatchQueue.main.async {
-                self.tableView.reloadData()
-            }
-        }
-    }
+    private var places = [Place]()
     
     private var isSearching: Bool {
         let searchController = self.navigationItem.searchController
@@ -28,7 +22,7 @@ class SearchTableViewController: UITableViewController, ImageDelegate {
     }
 
     override func viewWillAppear(_ animated: Bool) {
-        tableView.reloadData()
+        searchTableView.reloadData()
     }
     
     override func viewDidLoad() {
@@ -48,8 +42,8 @@ class SearchTableViewController: UITableViewController, ImageDelegate {
     }
     
     private func setupTableView() {
-        tableView.delegate = self
-        tableView.dataSource = self
+        searchTableView.dataSource = self
+        searchTableView.delegate = self
     }
     
     private func setupSearchController() {
@@ -86,7 +80,7 @@ class SearchTableViewController: UITableViewController, ImageDelegate {
 }
 
 // MARK: - Table view data source
-extension SearchTableViewController {
+extension SearchViewController: UITableViewDataSource, UITableViewDelegate {
     private func initializeTableView(with coment: String) {
         let emptyLabel = UILabel(frame: CGRect(x: .zero,
                                                y: .zero,
@@ -98,11 +92,11 @@ extension SearchTableViewController {
         searchTableView.separatorStyle = .none
     }
     
-    override func numberOfSections(in tableView: UITableView) -> Int {
+    func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
     
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         tableView.separatorStyle = .singleLine
         tableView.backgroundView = .none
         
@@ -121,7 +115,7 @@ extension SearchTableViewController {
         }
     }
     
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "searchCell",
                                                  for: indexPath) as? SearchResultCell ?? SearchResultCell()
         
@@ -150,7 +144,7 @@ extension SearchTableViewController {
     }
 }
 
-extension SearchTableViewController: UISearchResultsUpdating {
+extension SearchViewController: UISearchResultsUpdating {
     func updateSearchResults(for searchController: UISearchController) {
         guard let text = searchController.searchBar.text?.lowercased() else { return }
         
@@ -160,6 +154,6 @@ extension SearchTableViewController: UISearchResultsUpdating {
             $0.location.localizedCaseInsensitiveContains(searchText) ||
             $0.coment.localizedCaseInsensitiveContains(searchText)
         }
-        tableView.reloadData()
+        searchTableView.reloadData()
     }
 }

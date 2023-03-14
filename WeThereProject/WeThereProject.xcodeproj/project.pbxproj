@@ -8,7 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		20105EFB2664DA35007AA233 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 20105EFA2664DA35007AA233 /* GoogleService-Info.plist */; };
-		20166C2F26830F55002AF187 /* SearchTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20166C2E26830F55002AF187 /* SearchTableViewController.swift */; };
+		20166C2F26830F55002AF187 /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20166C2E26830F55002AF187 /* SearchViewController.swift */; };
 		2020E4E32667BE600091D569 /* Place.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2020E4E22667BE600091D569 /* Place.swift */; };
 		202C3E0B2686F97D00E3881D /* ImageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 202C3E0A2686F97D00E3881D /* ImageViewController.swift */; };
 		202D7B06294C13990093D80A /* FirestoreManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 202D7B05294C13990093D80A /* FirestoreManager.swift */; };
@@ -45,7 +45,7 @@
 
 /* Begin PBXFileReference section */
 		20105EFA2664DA35007AA233 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
-		20166C2E26830F55002AF187 /* SearchTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchTableViewController.swift; sourceTree = "<group>"; };
+		20166C2E26830F55002AF187 /* SearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
 		2020E4E22667BE600091D569 /* Place.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Place.swift; sourceTree = "<group>"; };
 		202C3E0A2686F97D00E3881D /* ImageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageViewController.swift; sourceTree = "<group>"; };
 		202D7B05294C13990093D80A /* FirestoreManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FirestoreManager.swift; sourceTree = "<group>"; };
@@ -187,7 +187,7 @@
 		20D4EAA029C0424B007B493B /* Search */ = {
 			isa = PBXGroup;
 			children = (
-				20166C2E26830F55002AF187 /* SearchTableViewController.swift */,
+				20166C2E26830F55002AF187 /* SearchViewController.swift */,
 			);
 			path = Search;
 			sourceTree = "<group>";
@@ -410,7 +410,7 @@
 				20D7B4AF26EDEF5100DF954E /* StatisticsTableViewController.swift in Sources */,
 				20E3E2D1265E2639004BDFF6 /* AppDelegate.swift in Sources */,
 				204CEEB7267F0A3F000D395F /* CategoryEditController.swift in Sources */,
-				20166C2F26830F55002AF187 /* SearchTableViewController.swift in Sources */,
+				20166C2F26830F55002AF187 /* SearchViewController.swift in Sources */,
 				202C3E0B2686F97D00E3881D /* ImageViewController.swift in Sources */,
 				20CB7C9C269F28130057EAF0 /* MainViewController.swift in Sources */,
 				20FE6BCE26982C0F0007DC5C /* SearchResultCell.swift in Sources */,

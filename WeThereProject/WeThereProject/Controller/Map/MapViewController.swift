@@ -103,7 +103,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate , GMSMapVie
         let calNav = self.tabBarController?.viewControllers![2] as! UINavigationController
         let calCont = calNav.topViewController as! CalendarController
         let searchNav = self.tabBarController?.viewControllers![1] as! UINavigationController
-        let searchCont = searchNav.topViewController as! SearchTableViewController
+        let searchCont = searchNav.topViewController as! SearchViewController
             
         calCont.getDate(places, images: placeImages)
         searchCont.setData(places, images: placeImages)

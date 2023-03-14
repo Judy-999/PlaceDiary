@@ -116,7 +116,7 @@ class MainViewController: UIViewController, ImageDelegate {
     // 다른 페이지로 장소 정보와 이미지를 넘겨주는 함수
     private func passData() {
         let searchNav = tabBarController?.viewControllers![1] as! UINavigationController
-        let searchController = searchNav.topViewController as! SearchTableViewController
+        let searchController = searchNav.topViewController as! SearchViewController
         let calendarNav = tabBarController?.viewControllers![2] as! UINavigationController
         let calendarController = calendarNav.topViewController as! CalendarController
         let mapNav = tabBarController?.viewControllers![3] as! UINavigationController
