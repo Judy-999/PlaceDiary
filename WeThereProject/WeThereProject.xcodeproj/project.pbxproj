@@ -125,16 +125,11 @@
 		20B80BD2294AF41C00CA0F2B /* Controller */ = {
 			isa = PBXGroup;
 			children = (
-				20CB7C9B269F28130057EAF0 /* MainViewController.swift */,
-				207E4F852660985D00AC0A6E /* AddPlaceTableViewController.swift */,
-				20F88AC6266CD8820015B42E /* PlaceInfoTableViewController.swift */,
-				20166C2E26830F55002AF187 /* SearchTableViewController.swift */,
-				20D7B4AE26EDEF5100DF954E /* StatisticsTableViewController.swift */,
-				204CEEB6267F0A3F000D395F /* CategoryEditController.swift */,
-				202C3E0A2686F97D00E3881D /* ImageViewController.swift */,
-				20544EFA268AFBD700D780E4 /* CalendarController.swift */,
-				20E3E2E4265E355D004BDFF6 /* MapViewController.swift */,
-				204CEEB8267F0BD1000D395F /* SettingTableController.swift */,
+				20D4EA9F29C0421F007B493B /* Main */,
+				20D4EAA029C0424B007B493B /* Search */,
+				20D4EAA129C0425B007B493B /* Calendar */,
+				20D4EAA429C042B2007B493B /* Map */,
+				20D4EAA329C042A8007B493B /* Setting */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -177,6 +172,59 @@
 				2020E4E22667BE600091D569 /* Place.swift */,
 			);
 			path = Model;
+			sourceTree = "<group>";
+		};
+		20D4EA9F29C0421F007B493B /* Main */ = {
+			isa = PBXGroup;
+			children = (
+				207E4F852660985D00AC0A6E /* AddPlaceTableViewController.swift */,
+				20CB7C9B269F28130057EAF0 /* MainViewController.swift */,
+				20D4EAA229C0428C007B493B /* Detail */,
+			);
+			path = Main;
+			sourceTree = "<group>";
+		};
+		20D4EAA029C0424B007B493B /* Search */ = {
+			isa = PBXGroup;
+			children = (
+				20166C2E26830F55002AF187 /* SearchTableViewController.swift */,
+			);
+			path = Search;
+			sourceTree = "<group>";
+		};
+		20D4EAA129C0425B007B493B /* Calendar */ = {
+			isa = PBXGroup;
+			children = (
+				20544EFA268AFBD700D780E4 /* CalendarController.swift */,
+			);
+			path = Calendar;
+			sourceTree = "<group>";
+		};
+		20D4EAA229C0428C007B493B /* Detail */ = {
+			isa = PBXGroup;
+			children = (
+				20F88AC6266CD8820015B42E /* PlaceInfoTableViewController.swift */,
+				202C3E0A2686F97D00E3881D /* ImageViewController.swift */,
+			);
+			path = Detail;
+			sourceTree = "<group>";
+		};
+		20D4EAA329C042A8007B493B /* Setting */ = {
+			isa = PBXGroup;
+			children = (
+				20D7B4AE26EDEF5100DF954E /* StatisticsTableViewController.swift */,
+				204CEEB6267F0A3F000D395F /* CategoryEditController.swift */,
+				204CEEB8267F0BD1000D395F /* SettingTableController.swift */,
+			);
+			path = Setting;
+			sourceTree = "<group>";
+		};
+		20D4EAA429C042B2007B493B /* Map */ = {
+			isa = PBXGroup;
+			children = (
+				20E3E2E4265E355D004BDFF6 /* MapViewController.swift */,
+			);
+			path = Map;
 			sourceTree = "<group>";
 		};
 		20E3E2C4265E2639004BDFF6 = {
