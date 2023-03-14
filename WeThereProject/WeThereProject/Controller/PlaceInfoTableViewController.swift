@@ -58,15 +58,12 @@ class PlaceInfoTableViewController: UITableViewController, EditDelegate {
         comentTextView.text = place.coment
         ratingLabel.text = place.rate + " 점"
         groupLabel.text = place.group
+        dateLabel.text = place.date.toString
         locationButton.contentHorizontalAlignment = .left
         locationButton.setTitle(place.location, for: .normal)
         
         RatingManager().sliderStar(rateButtons,
                                    rating: NSString(string: place.rate).floatValue)
-        
-        let formatter = DateFormatter()
-        formatter.dateFormat = "yyyy-MM-dd"
-        dateLabel.text = formatter.string(from: place.date)
     }
     
     private func configureGesture() {

@@ -9,6 +9,11 @@ import UIKit
 
 enum DiaryImage {
     static let placeholer = UIImage(named: "pdicon")
+    
+    enum Favorit {
+        static let isFavorit = UIImage(systemName: "heart.fill")
+        static let isNotFavorit = UIImage(systemName: "heart")
+    }
 }
 
 enum PlaceInfo {

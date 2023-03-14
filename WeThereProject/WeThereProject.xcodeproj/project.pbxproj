@@ -29,6 +29,7 @@
 		20B80BCE294AEF0600CA0F2B /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = 20B80BCD294AEF0600CA0F2B /* FirebaseStorage */; };
 		20B80BD1294AEF6100CA0F2B /* FSCalendar in Frameworks */ = {isa = PBXBuildFile; productRef = 20B80BD0294AEF6100CA0F2B /* FSCalendar */; };
 		20CB7C9C269F28130057EAF0 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20CB7C9B269F28130057EAF0 /* MainViewController.swift */; };
+		20D4EA9E29C01412007B493B /* Date+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20D4EA9D29C01412007B493B /* Date+.swift */; };
 		20D7B4AF26EDEF5100DF954E /* StatisticsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20D7B4AE26EDEF5100DF954E /* StatisticsTableViewController.swift */; };
 		20E3E2D1265E2639004BDFF6 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20E3E2D0265E2639004BDFF6 /* AppDelegate.swift */; };
 		20E3E2D3265E2639004BDFF6 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20E3E2D2265E2639004BDFF6 /* SceneDelegate.swift */; };
@@ -60,6 +61,7 @@
 		20AD213529BF16E100A92B1E /* UIViewController+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+.swift"; sourceTree = "<group>"; };
 		20B113822689BBC200A6A0FD /* PlaceCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceCell.swift; sourceTree = "<group>"; };
 		20CB7C9B269F28130057EAF0 /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
+		20D4EA9D29C01412007B493B /* Date+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+.swift"; sourceTree = "<group>"; };
 		20D7B4AE26EDEF5100DF954E /* StatisticsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatisticsTableViewController.swift; sourceTree = "<group>"; };
 		20E3E2CD265E2639004BDFF6 /* WeThereProject.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WeThereProject.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		20E3E2D0265E2639004BDFF6 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -107,6 +109,7 @@
 			children = (
 				2088D237294E96C9009415C1 /* UIImage+.swift */,
 				20AD213529BF16E100A92B1E /* UIViewController+.swift */,
+				20D4EA9D29C01412007B493B /* Date+.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -369,6 +372,7 @@
 				20F553F3294C90F2001F69AD /* ImageCacheManager.swift in Sources */,
 				20E3E2E5265E355D004BDFF6 /* MapViewController.swift in Sources */,
 				20AD213629BF16E100A92B1E /* UIViewController+.swift in Sources */,
+				20D4EA9E29C01412007B493B /* Date+.swift in Sources */,
 				204CEEB9267F0BD1000D395F /* SettingTableController.swift in Sources */,
 				2088D238294E96C9009415C1 /* UIImage+.swift in Sources */,
 				2020E4E32667BE600091D569 /* Place.swift in Sources */,

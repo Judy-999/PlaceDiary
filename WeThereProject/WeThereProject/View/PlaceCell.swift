@@ -18,29 +18,16 @@ class PlaceCell: UITableViewCell {
     private var placeName = ""
     
     func configure(with place: Place) {
+        let favoritImage = place.isFavorit ? DiaryImage.Favorit.isFavorit : DiaryImage.Favorit.isNotFavorit
+        favoritButton.setImage(favoritImage, for: .normal)
+        placeName = place.name
         nameLabel.text = place.name
         infoLabel.text = "\(place.group) ∙ \(place.category) ∙ \(place.rate) 점"
-        
-        if place.isFavorit {
-            favoritButton.setImage(UIImage(systemName: "heart.fill"), for: .normal)
-        } else {
-            favoritButton.setImage(UIImage(systemName: "heart"), for: .normal)
-        }
-        
-        placeName = place.name
-        
-        let formatter = DateFormatter()
-        formatter.dateFormat = "yyyy-MM-dd"
-        dateLabel.text = formatter.string(from: place.date)
-        
+        dateLabel.text = place.date.toString
         configureImage(with: place)
     }
     
     private func configureImage(with place: Place) {
-//        placeImageView.image = UIImage(named: "pdicon")
-//        guard place.hasImage == true else { return }
-        
-        
         ImageCacheManager.shared.setupImage(with: place.name) { placeImage in
             DispatchQueue.main.async {
                 self.placeImageView.image = placeImage
@@ -50,18 +37,18 @@ class PlaceCell: UITableViewCell {
     
     override func prepareForReuse() {
         super.prepareForReuse()
-        placeImageView.image = UIImage(named: "pdicon")
+        placeImageView.image = DiaryImage.placeholer
         placeName = ""
     }
     
     @IBAction private func favoritButtonTapped(_ sender: UIButton) {
         let isFavorit: Bool
         
-        if sender.currentImage == UIImage(systemName: "heart") {
-            sender.setImage(UIImage(systemName: "heart.fill"), for: .normal)
+        if sender.currentImage == DiaryImage.Favorit.isNotFavorit {
+            sender.setImage(DiaryImage.Favorit.isNotFavorit, for: .normal)
             isFavorit = true
         } else {
-            sender.setImage(UIImage(systemName: "heart"), for: .normal)
+            sender.setImage(DiaryImage.Favorit.isFavorit, for: .normal)
             isFavorit = false
         }
         
