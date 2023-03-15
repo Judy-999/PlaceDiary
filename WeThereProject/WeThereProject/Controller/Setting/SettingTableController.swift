@@ -8,44 +8,46 @@
 import UIKit
 
 class SettingTableController: UITableViewController {
-    var places = [Place]()
+    private var places = [Place]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
     }
-
-    // MARK: - Table view data source
-
-    override func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
-    }
-
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 4
-    }
     
-    func getPlaces(_ data: [Place]){
+    func getPlaces(_ data: [Place]) {
         places = data
     }
     
     // MARK: - Navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == "sgCategory"{
+        if segue.identifier == Segue.category.identifier {
             let setting = segue.destination as! CategoryEditController
             setting.editType = "items"
             setting.typeString = "분류"
             setting.places = places
         }
-        if segue.identifier == "sgGroup"{
+        
+        if segue.identifier == Segue.group.identifier {
             let setting = segue.destination as! CategoryEditController
             setting.editType = "group"
             setting.typeString = "그룹"
             setting.places = places
         }
         
-        if segue.identifier == "sgStatistics"{
+        if segue.identifier == Segue.statistics.identifier {
             let statistics = segue.destination as! StatisticsTableViewController
             statistics.places = places
         }
+    }
+}
+
+// MARK: - Table view data source
+extension SettingTableController {
+    override func numberOfSections(in tableView: UITableView) -> Int {
+        return 1
+    }
+    
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return 4
     }
 }

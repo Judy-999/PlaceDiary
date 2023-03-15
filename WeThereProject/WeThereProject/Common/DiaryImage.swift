@@ -91,6 +91,9 @@ enum Segue {
     case mapInfo
     case serach
     case calendar
+    case category
+    case group
+    case statistics
     
     var identifier: String {
         switch self {
@@ -106,6 +109,12 @@ enum Segue {
             return "sgSearchInfo"
         case .calendar:
             return "sgCalendarInfo"
+        case .category:
+            return "sgCategory"
+        case .group:
+            return "sgGroup"
+        case .statistics:
+            return "sgStatistics"
         }
     }
 }
