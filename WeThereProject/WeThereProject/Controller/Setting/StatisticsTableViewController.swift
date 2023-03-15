@@ -8,83 +8,72 @@
 import UIKit
 
 class StatisticsTableViewController: UITableViewController {
-    let sectionName = ["분류", "그룹"]
     var places = [Place]()
-    var dicCategory = [String : Int]()
-    var dicGroup = [String : Int]()
-    var categoryList = [String](){
+    private var categoryList = [String]() {
         didSet {
             DispatchQueue.main.async {
                 self.tableView.reloadData()
             }
         }
     }
-    var groupList = [String](){
+    private var groupList = [String]() {
         didSet {
             DispatchQueue.main.async {
                 self.tableView.reloadData()
             }
         }
     }
-      
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
         loadCategory()
     }
     
-    func loadCategory(){
-        FirestoreManager.shared.loadClassification { categoryItems, groupItems in
-            self.categoryList = categoryItems
-            self.groupList = groupItems
+    private func loadCategory() {
+        FirestoreManager.shared.loadClassification { [weak self] categoryItems, groupItems in
+            self?.categoryList = categoryItems
+            self?.groupList = groupItems
         }
     }
     
-    func calculate(name: String) -> String{
-        var count = 0
-        for place in places{
-            if place.category == name || place.group == name{
-                count = count + 1
-            }
-        }
-        return String(count)
-    }
-
-    // MARK: - Table view data source
     override func numberOfSections(in tableView: UITableView) -> Int {
-        // #warning Incomplete implementation, return the number of sections
         return 2
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if section == 0{
+        if section == 0 {
             return categoryList.count
-        }else{
-            return groupList.count
         }
+        return groupList.count
     }
-
+    
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return sectionName[section]
+        if section == 0 {
+            return "분류"
+        }
+        return "그룹"
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        
         let cell = tableView.dequeueReusableCell(withIdentifier: "statisticsCell", for: indexPath)
         
-        cell.textLabel?.font = UIFont.boldSystemFont(ofSize: 17)
-        cell.detailTextLabel?.font = UIFont .systemFont(ofSize: 17)
+        cell.textLabel?.font = .boldSystemFont(ofSize: 17)
+        cell.detailTextLabel?.font = .preferredFont(forTextStyle: .body)
+      
+        let title: String
+        let count: Int
         
-        let index = (indexPath as NSIndexPath).row
-        
-        if indexPath.section == 0{
-            cell.textLabel?.text = categoryList[index]
-            cell.detailTextLabel?.text = calculate(name: categoryList[index]) + " 곳"
-        }else{
-            cell.textLabel?.text = groupList[index]
-            cell.detailTextLabel?.text = calculate(name: groupList[index]) + " 곳"
+        if indexPath.section == 0 {
+            title = categoryList[indexPath.row]
+            count = places.filter { $0.category == title }.count
+        } else {
+            title = groupList[indexPath.row]
+            count = places.filter { $0.group == title }.count
         }
-
+        
+        cell.textLabel?.text = title
+        cell.detailTextLabel?.text = "\(count) 곳"
+        
         return cell
     }
 }
