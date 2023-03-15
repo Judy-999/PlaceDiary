@@ -14,6 +14,12 @@ enum DiaryImage {
         static let isFavorit = UIImage(systemName: "heart.fill")
         static let isNotFavorit = UIImage(systemName: "heart")
     }
+    
+    enum Marker {
+        static let select = UIImage(named: "marker_select")
+        static let favorit = UIImage(named: "marker_basic")
+        static let notFavorit = UIImage(named: "marker_novisit")
+    }
 }
 
 enum PlaceInfo {
@@ -32,6 +38,11 @@ enum PlaceInfo {
         static let emptySearch = "검색할 장소가 없습니다."
         static let placeHolder = "키워드 검색 ex. 이름, 내용..."
         static let title = "검색"
+    }
+    
+    enum Map {
+        static let makerSize = CGSize(width: 30, height: 40)
+        static let allType = "전체"
     }
     
     enum Edit {
@@ -77,6 +88,7 @@ enum Segue {
     case edit
     case detailImage
     case map
+    case mapInfo
     case serach
     case calendar
     
@@ -88,6 +100,8 @@ enum Segue {
             return "sgShowImage"
         case .map:
             return "showMap"
+        case .mapInfo:
+            return "sgMapInfo"
         case .serach:
             return "sgSearchInfo"
         case .calendar:

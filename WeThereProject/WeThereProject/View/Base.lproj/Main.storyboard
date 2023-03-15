@@ -121,12 +121,12 @@
                                                             <rect key="frame" x="0.0" y="0.0" width="259" height="40"/>
                                                             <subviews>
                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="이름" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Rgd-Qo-Sxg">
-                                                                    <rect key="frame" x="0.0" y="0.0" width="150.33333333333334" height="40"/>
+                                                                    <rect key="frame" x="0.0" y="0.0" width="281" height="40"/>
                                                                     <fontDescription key="fontDescription" type="boldSystem" pointSize="18"/>
                                                                     <nil key="highlightedColor"/>
                                                                 </label>
                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="날짜" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="fkZ-9L-vdD">
-                                                                    <rect key="frame" x="150.33333333333334" y="0.0" width="108.66666666666666" height="40"/>
+                                                                    <rect key="frame" x="281" y="0.0" width="203" height="40"/>
                                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                                     <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                                                     <nil key="highlightedColor"/>
@@ -950,33 +950,21 @@
                     <view key="view" contentMode="scaleToFill" id="Ud7-UE-MAc">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="DAk-CE-tQ3">
-                                <rect key="frame" x="0.0" y="91" width="375" height="589"/>
-                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                            </view>
-                        </subviews>
                         <viewLayoutGuide key="safeArea" id="Smg-fS-7zD"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                        <constraints>
-                            <constraint firstItem="DAk-CE-tQ3" firstAttribute="leading" secondItem="Smg-fS-7zD" secondAttribute="leading" id="IUY-Xj-XBT"/>
-                            <constraint firstItem="DAk-CE-tQ3" firstAttribute="top" secondItem="Smg-fS-7zD" secondAttribute="top" id="S6A-xP-Oto"/>
-                            <constraint firstItem="Smg-fS-7zD" firstAttribute="bottom" secondItem="DAk-CE-tQ3" secondAttribute="bottom" id="sOS-dG-Key"/>
-                            <constraint firstItem="Smg-fS-7zD" firstAttribute="trailing" secondItem="DAk-CE-tQ3" secondAttribute="trailing" id="zy5-My-vSn"/>
-                        </constraints>
                     </view>
                     <toolbarItems/>
                     <navigationItem key="navigationItem" title="지도" id="5i3-RW-JXb">
                         <barButtonItem key="rightBarButtonItem" image="slider.horizontal.3" catalog="system" id="EN5-Gf-Ixd">
                             <color key="tintColor" red="0.47843140360000003" green="0.9529411793" blue="0.94901961089999998" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                             <connections>
-                                <action selector="addFilter:" destination="uTe-NZ-0Gm" id="Y24-k4-NkQ"/>
+                                <action selector="filterButtonTapped:" destination="uTe-NZ-0Gm" id="564-ki-xkq"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
-                        <outlet property="viewMap" destination="DAk-CE-tQ3" id="tRO-Hw-Lel"/>
+                        <outlet property="filterButton" destination="EN5-Gf-Ixd" id="iTj-eB-9iO"/>
                         <segue destination="E07-mG-Yqk" kind="show" identifier="sgMapInfo" id="ngF-ER-ywh"/>
                     </connections>
                 </viewController>
@@ -1364,7 +1352,7 @@
         <segue reference="LEn-q7-1yn"/>
         <segue reference="F5n-pi-x46"/>
         <segue reference="qPa-7u-WXO"/>
-        <segue reference="1cJ-Xl-0QN"/>
+        <segue reference="ngF-ER-ywh"/>
     </inferredMetricsTieBreakers>
     <resources>
         <image name="calendar" catalog="system" width="128" height="107"/>
