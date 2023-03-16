@@ -533,7 +533,7 @@
                     </view>
                     <navigationItem key="navigationItem" id="xX2-cs-moN"/>
                     <connections>
-                        <outlet property="imgView" destination="haJ-F3-ge0" id="J30-1U-jbj"/>
+                        <outlet property="placeImageView" destination="haJ-F3-ge0" id="J30-1U-jbj"/>
                         <outlet property="scrollView" destination="JE7-LL-P7b" id="aIY-Eg-LAR"/>
                     </connections>
                 </viewController>

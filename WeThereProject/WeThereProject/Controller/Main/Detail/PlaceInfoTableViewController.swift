@@ -120,7 +120,7 @@ final class PlaceInfoTableViewController: UITableViewController, EditDelegate {
                                                         image: receiveImage!)
         case Segue.detailImage.identifier:
             let imageView = segue.destination as? ImageViewController ?? ImageViewController()
-            imageView.fullImage = placeImage.image
+            imageView.setupImage(with: placeImage.image)
         case Segue.map.identifier:
             let addressController = segue.destination as? MapViewController ?? MapViewController()
             addressController.onePlace = place

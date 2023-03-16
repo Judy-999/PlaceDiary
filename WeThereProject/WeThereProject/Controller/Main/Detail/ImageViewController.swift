@@ -8,25 +8,23 @@
 import UIKit
 
 final class ImageViewController: UIViewController, UIScrollViewDelegate {
-    @IBOutlet weak var imgView: UIImageView!
+    @IBOutlet weak var placeImageView: UIImageView!
     @IBOutlet weak var scrollView: UIScrollView!
-    
-    var initImgWidth: CGFloat!, initImgHeight: CGFloat!
-    var initImgOrigin: CGPoint!
-    var fullImage: UIImage?
+
+    private var fullImage: UIImage?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         scrollView.delegate = self
-        setImage()
+        placeImageView.image = fullImage
     }
     
-    func setImage() {
-        imgView.image = fullImage
+    func setupImage(with image: UIImage?) {
+        fullImage = image
     }
     
     func viewForZooming(in scrollView: UIScrollView) -> UIView? {
-        return self.imgView
+        return self.placeImageView
     }
 }
