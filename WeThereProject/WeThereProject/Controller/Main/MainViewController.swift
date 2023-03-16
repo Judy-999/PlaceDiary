@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class MainViewController: UIViewController, ImageDelegate {
+final class MainViewController: UIViewController {
     @IBOutlet weak var segmentedControl: UISegmentedControl!
     @IBOutlet weak var placeTableView: UITableView!
     
@@ -41,11 +41,6 @@ final class MainViewController: UIViewController, ImageDelegate {
         loadPlaceData()
         loadClassification()
         configureRefreshControl()
-       
-        NotificationCenter.default.addObserver(self,
-                                               selector: #selector(newUpdate),
-                                               name: NSNotification.Name(rawValue: "newPlaceUpdate"),
-                                               object: nil)
     }
     
     private func configureRefreshControl() {
@@ -54,47 +49,12 @@ final class MainViewController: UIViewController, ImageDelegate {
                                                  action: #selector(pullToRefresh),
                                                  for: .valueChanged)
     }
-    
-    // 테이블 뷰를 끌어내려서 로딩
+
     @objc private func pullToRefresh(_ refresh: UIRefreshControl) {
         placeTableView.reloadData()
         refresh.endRefreshing()
     }
 
-    @objc private func newUpdate(_ notification: Notification){
-        newUapdate = true
-        if notification.object != nil{
-            let data = notification.object as! Place
-            if data.newImg != nil{ // 새로운 이미지 추가
-                placeImages.updateValue(data.newImg!, forKey: data.name)
-            }else{  // 장소 삭제 
-                let deleteName = data.name
-                var index: Int!
-                var sectionIndex: Int!
-                
-                switch segmentedControl.selectedSegmentIndex {
-                case 0:
-                    index = places.firstIndex(where: {$0.name == deleteName})
-                    sectionIndex = 0
-                case 1:
-                    let removePlace = places.first(where: {$0.name == deleteName})
-                    sectionIndex = sectionNames.firstIndex(of: removePlace!.group)
-                    let cellData = places.filter({$0.group == removePlace!.group})
-                    index = cellData.firstIndex(where: {$0.name == deleteName})
-                case 2:
-                    let removePlace = places.first(where: {$0.name == deleteName})
-                    sectionIndex = sectionNames.firstIndex(of: removePlace!.category)
-                    let cellData = places.filter({$0.category == removePlace!.category})
-                    index = cellData.firstIndex(where: {$0.name == deleteName})
-                default:
-                    index = places.firstIndex(where: {$0.name == deleteName})
-                    sectionIndex = 0
-                }
-                tableView(placeTableView, commit: .delete, forRowAt: [sectionIndex, index])
-            }
-        }
-    }
-    
     private func loadPlaceData() {
         FirestoreManager.shared.loadData() { places in
             self.places = places
@@ -107,13 +67,7 @@ final class MainViewController: UIViewController, ImageDelegate {
             self.groupItem = groupItems
         }
     }
-    
-    // 장소 이미지 리스트를 새로운 리스트로 변경하는 함수
-    func updateImage(_ newImageList: [String : UIImage]) {
-        placeImages = newImageList
-    }
-        
-    // 다른 페이지로 장소 정보와 이미지를 넘겨주는 함수
+
     private func passData() {
         let searchNav = tabBarController?.viewControllers![1] as! UINavigationController
         let searchController = searchNav.topViewController as! SearchViewController
@@ -147,14 +101,16 @@ final class MainViewController: UIViewController, ImageDelegate {
     
     private func setupInitialView() {
         let emptyLabel = UILabel()
-        emptyLabel.frame = CGRect(x: 0, y: 0, width: view.bounds.width, height: view.bounds.height)
+        emptyLabel.frame = CGRect(x: .zero,
+                                  y: .zero,
+                                  width: view.bounds.width,
+                                  height: view.bounds.height)
         emptyLabel.text = "장소를 추가해보세요!"
         emptyLabel.textAlignment = .center
         placeTableView.backgroundView = emptyLabel
         placeTableView.separatorStyle = .none
     }
     
-    // ImageDelegat 프로토콜
     func didImageDone(newData: Place, image: UIImage) {
         placeImages.updateValue(image, forKey: newData.name) 
     }
@@ -230,9 +186,7 @@ final class MainViewController: UIViewController, ImageDelegate {
                   let indexPath = placeTableView.indexPath(for: cell) else { return }
 
             let selectedPlace = findCurrentPlace(index: indexPath)
-            
             infoViewContorller.getPlaceInfo(selectedPlace)
-            infoViewContorller.imgDelegate = self
         }
         
         if segue.identifier == "sgAddPlace" {
@@ -276,9 +230,9 @@ extension MainViewController: UITableViewDataSource,  UITableViewDelegate {
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "placeCell", for: indexPath) as? PlaceCell ?? PlaceCell()
+        let cell = tableView.dequeueReusableCell(withIdentifier: "placeCell",
+                                                 for: indexPath) as? PlaceCell ?? PlaceCell()
         let place = findCurrentPlace(index: indexPath)
- 
         cell.configure(with: place)
         
         return cell
@@ -291,11 +245,14 @@ extension MainViewController: UITableViewDataSource,  UITableViewDelegate {
         headerView.textLabel?.textColor = UIColor.white
     }
     
-    func tableView(_ tableView: UITableView, titleForDeleteConfirmationButtonForRowAt indexPath: IndexPath) -> String? {
+    func tableView(_ tableView: UITableView,
+                   titleForDeleteConfirmationButtonForRowAt indexPath: IndexPath) -> String? {
         return "삭제"
     }
     
-    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+    func tableView(_ tableView: UITableView,
+                   commit editingStyle: UITableViewCell.EditingStyle,
+                   forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
             deletePlace(indexPath)
         }

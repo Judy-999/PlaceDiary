@@ -7,14 +7,9 @@
 
 import UIKit
 
-protocol ImageDelegate {
-    func didImageDone(newData: Place, image: UIImage)
-}
-
 final class PlaceInfoTableViewController: UITableViewController, EditDelegate {
     private var receiveImage: UIImage?
     private var place: Place?
-    var imgDelegate : ImageDelegate?
     
     @IBOutlet private weak var placeImage: UIImageView!
     @IBOutlet private weak var placeNameLabel: UILabel!
@@ -135,7 +130,7 @@ final class PlaceInfoTableViewController: UITableViewController, EditDelegate {
     }
 }
 
-// MARK: - Table view data source
+// MARK: TableViewDataSource
 extension PlaceInfoTableViewController {
     override func numberOfSections(in tableView: UITableView) -> Int {
         return 1

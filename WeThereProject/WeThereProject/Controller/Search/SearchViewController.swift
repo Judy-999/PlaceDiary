@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class SearchViewController: UIViewController, ImageDelegate {
+final class SearchViewController: UIViewController {
     @IBOutlet private var searchTableView: UITableView!
     
     private var filteredPlaces = [Place]()
@@ -31,15 +31,14 @@ final class SearchViewController: UIViewController, ImageDelegate {
         setupTableView()
     }
     
-    func setData(_ data: [Place], images: [String : UIImage]) {
+    func setData(_ data: [Place]) {
         places = data
-//        placeImages = images
     }
     
-    func didImageDone(newData: Place, image: UIImage) {
+//    func didImageDone(newData: Place, image: UIImage) {
 //        placeImages.updateValue(image, forKey: newData.name)
         //        newUpdate = true
-    }
+//    }
     
     private func setupTableView() {
         searchTableView.dataSource = self
@@ -69,9 +68,7 @@ final class SearchViewController: UIViewController, ImageDelegate {
                   let indexPath = searchTableView.indexPath(for: cell) else { return }
             
             let selectedPlaces: [Place] = isSearching ? filteredPlaces : places
-            
-            infoView.imgDelegate = self
-            
+
             if let place = places.first(where: { $0.name == selectedPlaces[indexPath.row].name }) {
                 infoView.getPlaceInfo(place)
             }

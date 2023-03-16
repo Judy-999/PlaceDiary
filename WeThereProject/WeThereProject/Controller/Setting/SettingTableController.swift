@@ -39,7 +39,7 @@ final class SettingTableController: UITableViewController {
     }
 }
 
-// MARK: - Table view data source
+// MARK: TableViewDataSource
 extension SettingTableController {
     override func numberOfSections(in tableView: UITableView) -> Int {
         return 1

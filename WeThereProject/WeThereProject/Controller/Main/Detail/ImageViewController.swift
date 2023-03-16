@@ -22,7 +22,7 @@ final class ImageViewController: UIViewController, UIScrollViewDelegate {
         setImage()
     }
     
-    func setImage(){
+    func setImage() {
         imgView.image = fullImage
     }
     

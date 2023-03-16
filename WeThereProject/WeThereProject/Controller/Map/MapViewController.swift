@@ -9,7 +9,7 @@ import UIKit
 import GoogleMaps
 import GooglePlaces
 
-final class MapViewController: UIViewController, ImageDelegate {
+final class MapViewController: UIViewController {
     private let locationManager = CLLocationManager()
     private var mapView: GMSMapView?
     private var places = [Place]()
@@ -34,9 +34,9 @@ final class MapViewController: UIViewController, ImageDelegate {
         }
     }
     
-    func didImageDone(newData: Place, image: UIImage) {
-        //        placeImages.updateValue(image, forKey: newData.name)
-        //        newUpdate = true
+    func getPlace(_ data: [Place]) {
+        places = data
+        drawMarkers(with: places)
     }
     
     private func setupLocationManager() {
@@ -102,12 +102,6 @@ final class MapViewController: UIViewController, ImageDelegate {
         }
     }
     
-    func getPlace(_ data: [Place], images: [String : UIImage]) {
-        places = data
-        drawMarkers(with: places)
-        //        placeImages = images
-    }
-    
     @IBAction func filterButtonTapped(_ sender: UIButton) {
         sender.isHidden = onePlace == nil ? false : true
         
@@ -132,19 +126,18 @@ final class MapViewController: UIViewController, ImageDelegate {
         present(filterAlert, animated: true, completion: nil)
     }
     
-    // MARK: - Navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == Segue.mapInfo.identifier {
             guard let infoView = segue.destination as? PlaceInfoTableViewController,
                   let selectedPlace = places.first(where: { $0.name == selectedPlaceName }) else { return }
-            
-            infoView.imgDelegate = self
+
             infoView.modalPresentationStyle = .fullScreen
             infoView.getPlaceInfo(selectedPlace)
         }
     }
 }
 
+// MARK: GMSMapView
 extension MapViewController: CLLocationManagerDelegate, GMSMapViewDelegate {
     func mapView(_ mapView: GMSMapView, didTapInfoWindowOf marker: GMSMarker) {
         if onePlace == nil {
@@ -168,6 +161,7 @@ extension MapViewController: CLLocationManagerDelegate, GMSMapViewDelegate {
     }
 }
 
+// MARK: PickerView
 extension MapViewController: UIPickerViewDelegate, UIPickerViewDataSource {
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
         return 2

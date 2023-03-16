@@ -106,7 +106,7 @@ final class EditClassificationController: UITableViewController {
     }
 }
 
-// MARK: - TableView Delegate
+// MARK: - TableViewDelegate
 extension EditClassificationController {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
@@ -181,7 +181,7 @@ extension EditClassificationController {
     }
 }
 
-// MARK: - TableView DataSource
+// MARK: - TableViewDataSource
 extension EditClassificationController {
     override func numberOfSections(in tableView: UITableView) -> Int {
         return 1

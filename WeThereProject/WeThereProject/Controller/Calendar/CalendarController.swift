@@ -8,7 +8,7 @@
 import UIKit
 import FSCalendar
 
-final class CalendarController: UIViewController, ImageDelegate {
+final class CalendarController: UIViewController {
     private var places = [Place]()
     private var eventPlaces = [Place]() {
         didSet {
@@ -26,16 +26,10 @@ final class CalendarController: UIViewController, ImageDelegate {
         calendar.reloadData()
     }
 
-    func getDate(_ data: [Place], images: [String : UIImage]) {
+    func getDate(_ data: [Place]) {
         places = data
-//        placeImages = images
     }
 
-    func didImageDone(newData: Place, image: UIImage) {
-//        placeImages.updateValue(image, forKey: newData.name)
-//        newUpdate = true
-    }
-    
     private func setupCalendar() {
         calendar.appearance.headerDateFormat = PlaceInfo.Calendar.headerFormat
         calendar.appearance.todayColor = Color.partialHighlight
@@ -55,13 +49,13 @@ final class CalendarController: UIViewController, ImageDelegate {
             guard let infoView = segue.destination as? PlaceInfoTableViewController,
                   let cell = sender as? UITableViewCell,
                   let indexPath = self.tableView.indexPath(for: cell) else { return }
-            
-            infoView.imgDelegate = self
+
             infoView.getPlaceInfo(eventPlaces[indexPath.row])
         }
     }
 }
 
+// MARK: FSCalendar
 extension CalendarController: FSCalendarDelegate, FSCalendarDataSource {
     func calendar(_ calendar: FSCalendar, numberOfEventsFor date: Date) -> Int {
         let eventDay = places.filter { $0.date.toRegular == date }
@@ -77,6 +71,7 @@ extension CalendarController: FSCalendarDelegate, FSCalendarDataSource {
     }
 }
 
+// MARK: - TableViewDataSource & TableViewDelegate
 extension CalendarController: UITableViewDelegate, UITableViewDataSource {
     private func initializeTableView(with coment: String) {
         let emptyLabel = UILabel(frame: CGRect(x: .zero,
