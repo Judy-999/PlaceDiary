@@ -1201,10 +1201,10 @@
             </objects>
             <point key="canvasLocation" x="1991" y="986"/>
         </scene>
-        <!--Category Edit Controller-->
+        <!--Edit Classification Controller-->
         <scene sceneID="RQW-7m-vic">
             <objects>
-                <tableViewController id="3Xb-jd-xhg" customClass="CategoryEditController" customModule="WeThereProject" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController id="3Xb-jd-xhg" customClass="EditClassificationController" customModule="WeThereProject" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="IhK-H0-yoC">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -1228,7 +1228,7 @@
                         <barButtonItem key="rightBarButtonItem" systemItem="add" id="yxH-9L-E2h">
                             <color key="tintColor" red="0.47843140360000003" green="0.9529411793" blue="0.94901961089999998" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                             <connections>
-                                <action selector="addCategory:" destination="3Xb-jd-xhg" id="GW0-kZ-q2K"/>
+                                <action selector="addClassificationButtonTapped:" destination="3Xb-jd-xhg" id="Wgn-9P-49C"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>

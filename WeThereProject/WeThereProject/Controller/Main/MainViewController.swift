@@ -176,7 +176,7 @@ final class MainViewController: UIViewController, ImageDelegate {
             self.newUapdate = true
         }
                                     
-        deletAlert.addAction(UIAlertAction(title: "취소", style: .cancel))
+        deletAlert.addAction(PlaceInfo.Message.cancel)
         deletAlert.addAction(okAlert)
        
         present(deletAlert, animated: true)
@@ -202,7 +202,7 @@ final class MainViewController: UIViewController, ImageDelegate {
             self.places = favoritPlalces
         })
         
-        alert.addAction(UIAlertAction(title: "취소", style: .destructive))
+        alert.addAction(PlaceInfo.Message.cancel)
         present(alert, animated: true)
     }
 
@@ -287,7 +287,7 @@ extension MainViewController: UITableViewDataSource,  UITableViewDelegate {
     func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
         guard let headerView = view as? UITableViewHeaderFooterView else { return }
         
-        headerView.contentView.backgroundColor = #colorLiteral(red: 0.4745098054, green: 0.8392156959, blue: 0.9764705896, alpha: 1)
+        headerView.contentView.backgroundColor = Color.highlight
         headerView.textLabel?.textColor = UIColor.white
     }
     

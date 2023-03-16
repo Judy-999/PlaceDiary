@@ -21,21 +21,19 @@ final class SettingTableController: UITableViewController {
     // MARK: - Navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == Segue.category.identifier {
-            let setting = segue.destination as! CategoryEditController
-            setting.editType = "items"
-            setting.typeString = "분류"
+            guard let setting = segue.destination as? EditClassificationController else { return }
+            setting.editType = .category
             setting.places = places
         }
         
         if segue.identifier == Segue.group.identifier {
-            let setting = segue.destination as! CategoryEditController
-            setting.editType = "group"
-            setting.typeString = "그룹"
+            guard let setting = segue.destination as? EditClassificationController else { return }
+            setting.editType = .category
             setting.places = places
         }
         
         if segue.identifier == Segue.statistics.identifier {
-            let statistics = segue.destination as! StatisticsTableViewController
+            guard let statistics = segue.destination as? StatisticsTableViewController else { return }
             statistics.places = places
         }
     }
@@ -51,3 +49,5 @@ extension SettingTableController {
         return 4
     }
 }
+
+

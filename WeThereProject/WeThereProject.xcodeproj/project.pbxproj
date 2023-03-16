@@ -13,7 +13,7 @@
 		202C3E0B2686F97D00E3881D /* ImageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 202C3E0A2686F97D00E3881D /* ImageViewController.swift */; };
 		202D7B06294C13990093D80A /* FirestoreManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 202D7B05294C13990093D80A /* FirestoreManager.swift */; };
 		20451D4D294C355B00186A35 /* StorageManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20451D4C294C355B00186A35 /* StorageManager.swift */; };
-		204CEEB7267F0A3F000D395F /* CategoryEditController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 204CEEB6267F0A3F000D395F /* CategoryEditController.swift */; };
+		204CEEB7267F0A3F000D395F /* EditClassificationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 204CEEB6267F0A3F000D395F /* EditClassificationController.swift */; };
 		204CEEB9267F0BD1000D395F /* SettingTableController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 204CEEB8267F0BD1000D395F /* SettingTableController.swift */; };
 		20544EFB268AFBD700D780E4 /* CalendarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20544EFA268AFBD700D780E4 /* CalendarController.swift */; };
 		207E4F862660985D00AC0A6E /* AddPlaceTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 207E4F852660985D00AC0A6E /* AddPlaceTableViewController.swift */; };
@@ -49,7 +49,7 @@
 		202C3E0A2686F97D00E3881D /* ImageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageViewController.swift; sourceTree = "<group>"; };
 		202D7B05294C13990093D80A /* FirestoreManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FirestoreManager.swift; sourceTree = "<group>"; };
 		20451D4C294C355B00186A35 /* StorageManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorageManager.swift; sourceTree = "<group>"; };
-		204CEEB6267F0A3F000D395F /* CategoryEditController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryEditController.swift; sourceTree = "<group>"; };
+		204CEEB6267F0A3F000D395F /* EditClassificationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditClassificationController.swift; sourceTree = "<group>"; };
 		204CEEB8267F0BD1000D395F /* SettingTableController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingTableController.swift; sourceTree = "<group>"; };
 		20544EFA268AFBD700D780E4 /* CalendarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarController.swift; sourceTree = "<group>"; };
 		207E4F852660985D00AC0A6E /* AddPlaceTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddPlaceTableViewController.swift; sourceTree = "<group>"; };
@@ -210,7 +210,7 @@
 			isa = PBXGroup;
 			children = (
 				20D7B4AE26EDEF5100DF954E /* StatisticsTableViewController.swift */,
-				204CEEB6267F0A3F000D395F /* CategoryEditController.swift */,
+				204CEEB6267F0A3F000D395F /* EditClassificationController.swift */,
 				204CEEB8267F0BD1000D395F /* SettingTableController.swift */,
 			);
 			path = Setting;
@@ -406,7 +406,7 @@
 				20B113832689BBC200A6A0FD /* PlaceCell.swift in Sources */,
 				20D7B4AF26EDEF5100DF954E /* StatisticsTableViewController.swift in Sources */,
 				20E3E2D1265E2639004BDFF6 /* AppDelegate.swift in Sources */,
-				204CEEB7267F0A3F000D395F /* CategoryEditController.swift in Sources */,
+				204CEEB7267F0A3F000D395F /* EditClassificationController.swift in Sources */,
 				20166C2F26830F55002AF187 /* SearchViewController.swift in Sources */,
 				202C3E0B2686F97D00E3881D /* ImageViewController.swift in Sources */,
 				20CB7C9C269F28130057EAF0 /* MainViewController.swift in Sources */,

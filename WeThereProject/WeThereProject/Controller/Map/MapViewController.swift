@@ -125,7 +125,7 @@ final class MapViewController: UIViewController, ImageDelegate {
                                             preferredStyle: .alert)
         
         filterAlert.view.addSubview(optionPicker)
-        filterAlert.addAction(UIAlertAction(title: "취소", style: .cancel))
+        filterAlert.addAction(PlaceInfo.Message.cancel)
         filterAlert.addAction(UIAlertAction(title: "확인", style: .default,
                                             handler: { [self] _ in drawMarkers(with: optionedPlaces) }))
         
