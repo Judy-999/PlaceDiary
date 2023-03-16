@@ -11,6 +11,12 @@ enum PlaceInfo {
     static let locationPlaceHoler = "이름 또는 주소로 위치를 검색하세요."
     static let comentPlaceHoler = "코멘트를 입력하세요."
     
+    enum Main {
+        static let empty = "장소를 추가해보세요!"
+        static let delete = "장소 삭제"
+        static let confirmDelete = "(을)를 삭제하시겠습니까?"
+    }
+    
     enum Calendar {
         static let emptyDate = "장소가 없습니다."
         static let eventCount = 3

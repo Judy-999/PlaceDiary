@@ -8,14 +8,15 @@
 import UIKit
 
 final class MainViewController: UIViewController {
-    @IBOutlet weak var segmentedControl: UISegmentedControl!
-    @IBOutlet weak var placeTableView: UITableView!
+    private enum Section: Int {
+        case all
+        case group
+        case category
+    }
     
-    private var newUapdate: Bool = true
-    private var sectionNames: [String] = [""]
     private var categoryItem = [String]()
     private var groupItem = [String]()
-    private var placeImages = [String : UIImage]()
+    private var sectionType = [Section: [String]]()
     private var places = [Place]() {
         didSet {
             DispatchQueue.main.async {
@@ -24,20 +25,17 @@ final class MainViewController: UIViewController {
         }
     }
     
+    @IBOutlet weak var segmentedControl: UISegmentedControl!
+    @IBOutlet weak var placeTableView: UITableView!
+    
     override func viewWillAppear(_ animated: Bool) {
         loadClassification()
         placeTableView.reloadData()
     }
     
-    override func viewDidDisappear(_ animated: Bool) {
-        if newUapdate {
-            passData()
-            newUapdate = false
-        }
-    }
-    
     override func viewDidLoad() {
         super.viewDidLoad()
+        sectionType = [.all: [""], .category: categoryItem, .group: groupItem]
         loadPlaceData()
         loadClassification()
         configureRefreshControl()
@@ -56,15 +54,15 @@ final class MainViewController: UIViewController {
     }
 
     private func loadPlaceData() {
-        FirestoreManager.shared.loadData() { places in
-            self.places = places
+        FirestoreManager.shared.loadData() { [weak self] places in
+            self?.places = places
         }
     }
 
     private func loadClassification() {
-        FirestoreManager.shared.loadClassification { categoryItems, groupItems in
-            self.categoryItem = categoryItems
-            self.groupItem = groupItems
+        FirestoreManager.shared.loadClassification { [weak self] categoryItems, groupItems in
+            self?.categoryItem = categoryItems
+            self?.groupItem = groupItems
         }
     }
 
@@ -84,18 +82,17 @@ final class MainViewController: UIViewController {
         settingController.getPlaces(places)
     }
     
-    private func findCurrentPlace(index: IndexPath) -> Place {
-        switch segmentedControl.selectedSegmentIndex {
-        case 0:
-            return places[index.row]
-        case 1:
-            let placeList = places.filter { $0.group == sectionNames[index.section] }
-            return placeList[index.row]
-        case 2:
-            let placeList = places.filter { $0.category == sectionNames[index.section] }
-            return placeList[index.row]
-        default:
-            return places[index.row]
+    private func filteredPlaces(at section: Int) -> [Place] {
+        guard let type = Section(rawValue: section),
+              let sectionNames = sectionType[type] else { return places }
+        
+        switch type {
+        case .all:
+            return places
+        case .group:
+            return places.filter { $0.group == sectionNames[section] }
+        case .category:
+            return places.filter { $0.category == sectionNames[section] }
         }
     }
     
@@ -105,31 +102,26 @@ final class MainViewController: UIViewController {
                                   y: .zero,
                                   width: view.bounds.width,
                                   height: view.bounds.height)
-        emptyLabel.text = "장소를 추가해보세요!"
+        emptyLabel.text = PlaceInfo.Main.empty
         emptyLabel.textAlignment = .center
         placeTableView.backgroundView = emptyLabel
         placeTableView.separatorStyle = .none
     }
-    
-    func didImageDone(newData: Place, image: UIImage) {
-        placeImages.updateValue(image, forKey: newData.name) 
-    }
 
-    private func deletePlace(_ indexPath: IndexPath){
-        let place = findCurrentPlace(index: indexPath)
-        let placeName = place.name
-        let deletAlert = UIAlertController(title: "장소 삭제",
-                                           message: "\(placeName)(을)를 삭제하시겠습니까?",
+    private func deletePlace(_ indexPath: IndexPath) {
+        let places = filteredPlaces(at: indexPath.section)
+        let placeName = places[indexPath.row].name
+        let deletAlert = UIAlertController(title: PlaceInfo.Main.delete,
+                                           message: placeName + PlaceInfo.Main.confirmDelete,
                                            preferredStyle: .actionSheet)
-        let okAlert = UIAlertAction(title: "삭제", style: .destructive) { _ in
+        let okAlert = UIAlertAction(title: "삭제", style: .destructive) { [weak self] _ in
             FirestoreManager.shared.deletePlace(placeName)
             StorageManager.shared.deleteImage(name: placeName)
      
-            guard let removedIndex = self.places.firstIndex(where: { $0.name == placeName }) else { return }
+            guard let removedIndex = self?.places.firstIndex(where: { $0.name == placeName }) else { return }
             
-            self.places.remove(at: removedIndex)
-            self.placeTableView.deleteRows(at: [indexPath], with: .fade)
-            self.newUapdate = true
+            self?.places.remove(at: removedIndex)
+            self?.placeTableView.deleteRows(at: [indexPath], with: .fade)
         }
                                     
         deletAlert.addAction(Alert.cancel)
@@ -141,19 +133,19 @@ final class MainViewController: UIViewController {
     @IBAction private func sortButtonTapped(_ sender: UIBarItem) {
         let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
 
-        alert.addAction(UIAlertAction(title: "별점 높은 순", style: .default) { _ in
+        alert.addAction(UIAlertAction(title: Sort.rating, style: .default) { _ in
             self.places.sort(by: { $0.rate > $1.rate })
         })
 
-        alert.addAction(UIAlertAction(title: "가나다 순", style: .default) { _ in
+        alert.addAction(UIAlertAction(title: Sort.alphabetical, style: .default) { _ in
             self.places.sort(by: { $0.name < $1.name })
         })
 
-        alert.addAction(UIAlertAction(title: "방문 날짜 순", style: .default) { _ in
+        alert.addAction(UIAlertAction(title: Sort.latestDate, style: .default) { _ in
             self.places.sort(by: { $0.date > $1.date })
         })
         
-        alert.addAction(UIAlertAction(title: "즐겨찾기만 보기", style: .default) { _ in
+        alert.addAction(UIAlertAction(title: Sort.favorit, style: .default) { _ in
             let favoritPlalces = self.places.filter { $0.isFavorit == true }
             self.places = favoritPlalces
         })
@@ -162,31 +154,14 @@ final class MainViewController: UIViewController {
         present(alert, animated: true)
     }
 
-    @IBAction private func segmentedControlTapped(_ sender: UISegmentedControl) {
-        switch sender.selectedSegmentIndex {
-        case 0:
-            sectionNames = [""]
-        case 1:
-            sectionNames = groupItem
-        case 2:
-            sectionNames = categoryItem
-        default:
-            break
-        }
-        
-        placeTableView.reloadData()
-    }
-
-    // MARK: - Navigation
-
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == Segue.info.identifier {
             guard let infoViewContorller = segue.destination as? PlaceInfoTableViewController,
                   let cell = sender as? UITableViewCell,
                   let indexPath = placeTableView.indexPath(for: cell) else { return }
 
-            let selectedPlace = findCurrentPlace(index: indexPath)
-            infoViewContorller.getPlaceInfo(selectedPlace)
+            let places = filteredPlaces(at: indexPath.section)
+            infoViewContorller.getPlaceInfo(places[indexPath.row])
         }
         
         if segue.identifier == Segue.add.identifier {
@@ -199,50 +174,49 @@ final class MainViewController: UIViewController {
 // MARK: - TableViewDataSource & TableViewDelegate
 extension MainViewController: UITableViewDataSource,  UITableViewDelegate {
     func numberOfSections(in tableView: UITableView) -> Int {
+        let select = segmentedControl.selectedSegmentIndex
+        guard let type = Section(rawValue: select),
+              let sectionNames = sectionType[type] else { return .zero }
+        
         return sectionNames.count
     }
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        guard let type = Section(rawValue: section),
+              let sectionNames = sectionType[type] else { return nil }
+        
         return sectionNames[section]
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         guard places.isEmpty == false else {
             setupInitialView()
-            return 0
+            return .zero
         }
         
         tableView.separatorStyle = .singleLine
         tableView.backgroundView = .none
         
-        switch segmentedControl.selectedSegmentIndex {
-        case 0:
-            return places.count
-        case 1:
-            let filteredArray = places.filter { $0.group == sectionNames[section] }
-            return filteredArray.count
-        case 2:
-            let filteredArray = places.filter { $0.category == sectionNames[section] }
-            return filteredArray.count
-        default:
-            return places.count
-        }
+        return filteredPlaces(at: section).count
     }
 
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    func tableView(_ tableView: UITableView,
+                   cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "placeCell",
                                                  for: indexPath) as? PlaceCell ?? PlaceCell()
-        let place = findCurrentPlace(index: indexPath)
-        cell.configure(with: place)
+        let places = filteredPlaces(at: indexPath.section)
+        cell.configure(with: places[indexPath.row])
         
         return cell
     }
     
-    func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
+    func tableView(_ tableView: UITableView,
+                   willDisplayHeaderView view: UIView,
+                   forSection section: Int) {
         guard let headerView = view as? UITableViewHeaderFooterView else { return }
         
         headerView.contentView.backgroundColor = Color.highlight
-        headerView.textLabel?.textColor = UIColor.white
+        headerView.textLabel?.textColor = .white
     }
     
     func tableView(_ tableView: UITableView,
@@ -258,3 +232,12 @@ extension MainViewController: UITableViewDataSource,  UITableViewDelegate {
         }
     }
 }
+
+
+fileprivate enum Sort {
+    static let rating = "별점 높은 순"
+    static let alphabetical = "가나다 순"
+    static let latestDate = "방문 날짜 순"
+    static let favorit = "즐겨찾기만 보기"
+}
+
