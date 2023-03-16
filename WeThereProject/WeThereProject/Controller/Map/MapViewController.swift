@@ -9,7 +9,7 @@ import UIKit
 import GoogleMaps
 import GooglePlaces
 
-class MapViewController: UIViewController, ImageDelegate {
+final class MapViewController: UIViewController, ImageDelegate {
     private let locationManager = CLLocationManager()
     private var mapView: GMSMapView?
     private var places = [Place]()

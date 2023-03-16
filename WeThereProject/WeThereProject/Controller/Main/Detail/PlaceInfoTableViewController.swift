@@ -11,7 +11,7 @@ protocol ImageDelegate {
     func didImageDone(newData: Place, image: UIImage)
 }
 
-class PlaceInfoTableViewController: UITableViewController, EditDelegate {
+final class PlaceInfoTableViewController: UITableViewController, EditDelegate {
     private var receiveImage: UIImage?
     private var place: Place?
     var imgDelegate : ImageDelegate?

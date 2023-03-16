@@ -7,7 +7,7 @@
 
 import UIKit
 
-class SearchViewController: UIViewController, ImageDelegate {
+final class SearchViewController: UIViewController, ImageDelegate {
     @IBOutlet private var searchTableView: UITableView!
     
     private var filteredPlaces = [Place]()

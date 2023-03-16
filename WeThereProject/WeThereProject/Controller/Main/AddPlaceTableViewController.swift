@@ -14,7 +14,7 @@ protocol EditDelegate {
     func didEditPlace(_ controller: AddPlaceTableViewController, data: Place, image: UIImage)
 }
 
-class AddPlaceTableViewController: UITableViewController {
+final class AddPlaceTableViewController: UITableViewController {
     private enum ViewMode {
         case add, edit
     }

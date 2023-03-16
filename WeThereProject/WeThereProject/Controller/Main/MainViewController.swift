@@ -7,7 +7,7 @@
 
 import UIKit
 
-class MainViewController: UIViewController, ImageDelegate {
+final class MainViewController: UIViewController, ImageDelegate {
     @IBOutlet weak var segmentedControl: UISegmentedControl!
     @IBOutlet weak var placeTableView: UITableView!
     

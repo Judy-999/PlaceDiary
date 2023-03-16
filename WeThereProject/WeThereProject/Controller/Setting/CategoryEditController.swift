@@ -7,7 +7,7 @@
 
 import UIKit
 
-class CategoryEditController: UITableViewController, UIColorPickerViewControllerDelegate {
+final class CategoryEditController: UITableViewController {
     var editType = "", typeString = ""
     var places = [Place]()
     var editItems = [String](){

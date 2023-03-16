@@ -8,7 +8,7 @@
 import FirebaseFirestore
 import UIKit
 
-class FirestoreManager {
+final class FirestoreManager {
     static let shared = FirestoreManager()
     private let database = Firestore.firestore()
     private let id: String

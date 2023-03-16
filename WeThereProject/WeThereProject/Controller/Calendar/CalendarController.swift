@@ -8,7 +8,7 @@
 import UIKit
 import FSCalendar
 
-class CalendarController: UIViewController, ImageDelegate {
+final class CalendarController: UIViewController, ImageDelegate {
     private var places = [Place]()
     private var eventPlaces = [Place]() {
         didSet {

@@ -7,7 +7,7 @@
 
 import UIKit
 
-class SettingTableController: UITableViewController {
+final class SettingTableController: UITableViewController {
     private var places = [Place]()
     
     override func viewDidLoad() {

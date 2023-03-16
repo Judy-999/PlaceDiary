@@ -6,9 +6,8 @@
 //
 
 import UIKit
-import FirebaseStorage
 
-class PlaceCell: UITableViewCell {
+final class PlaceCell: UITableViewCell {
     @IBOutlet weak var placeImageView: UIImageView!
     @IBOutlet weak var nameLabel: UILabel!
     @IBOutlet weak var dateLabel: UILabel!

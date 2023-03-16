@@ -7,7 +7,7 @@
 
 import UIKit
 
-class StatisticsTableViewController: UITableViewController {
+final class StatisticsTableViewController: UITableViewController {
     var places = [Place]()
     private var categoryList = [String]() {
         didSet {
