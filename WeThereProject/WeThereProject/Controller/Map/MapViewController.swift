@@ -119,7 +119,7 @@ final class MapViewController: UIViewController {
                                             preferredStyle: .alert)
         
         filterAlert.view.addSubview(optionPicker)
-        filterAlert.addAction(PlaceInfo.Message.cancel)
+        filterAlert.addAction(Alert.cancel)
         filterAlert.addAction(UIAlertAction(title: "확인", style: .default,
                                             handler: { [self] _ in drawMarkers(with: optionedPlaces) }))
         

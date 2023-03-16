@@ -100,7 +100,7 @@ final class EditClassificationController: UITableViewController {
             }
         }
         
-        addAlert.addAction(PlaceInfo.Message.cancel)
+        addAlert.addAction(Alert.cancel)
         addAlert.addAction(creation)
         present(addAlert, animated: true)
     }
@@ -135,7 +135,7 @@ extension EditClassificationController {
         }
     
         editAlert.addAction(save)
-        editAlert.addAction(PlaceInfo.Message.cancel)
+        editAlert.addAction(Alert.cancel)
       
         let editConfirmAlert = UIAlertController(title: nil,
                                                  message: nil,
@@ -145,7 +145,7 @@ extension EditClassificationController {
         }
         
         editConfirmAlert.addAction(edit)
-        editConfirmAlert.addAction(PlaceInfo.Message.cancel)
+        editConfirmAlert.addAction(Alert.cancel)
         present(editConfirmAlert, animated: true)
     }
     
@@ -171,7 +171,7 @@ extension EditClassificationController {
                     tableView.deleteRows(at: [indexPath], with: .fade)
                 }
                 
-                canDeleteAlert.addAction(PlaceInfo.Message.cancel)
+                canDeleteAlert.addAction(Alert.cancel)
                 canDeleteAlert.addAction(confirm)
                 present(canDeleteAlert, animated: true)
             } else {

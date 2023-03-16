@@ -8,7 +8,7 @@
 import UIKit
 
 extension UIViewController {
-    func showAlert(_ alertCase: PlaceInfo.Message) {
+    func showAlert(_ alertCase: Alert) {
         let alert = UIAlertController(title: alertCase.title,
                                       message: alertCase.message,
                                       preferredStyle: .alert)

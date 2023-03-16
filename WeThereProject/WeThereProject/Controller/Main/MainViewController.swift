@@ -78,9 +78,9 @@ final class MainViewController: UIViewController {
         let settingNav = tabBarController?.viewControllers![4] as! UINavigationController
         let settingController = settingNav.topViewController as! SettingTableController
         
-        searchController.setData(places, images: placeImages)
-        mapController.getPlace(places, images: placeImages)
-        calendarController.getDate(places, images: placeImages)
+        searchController.setData(places)
+        mapController.getPlace(places)
+        calendarController.getDate(places)
         settingController.getPlaces(places)
     }
     
@@ -132,7 +132,7 @@ final class MainViewController: UIViewController {
             self.newUapdate = true
         }
                                     
-        deletAlert.addAction(PlaceInfo.Message.cancel)
+        deletAlert.addAction(Alert.cancel)
         deletAlert.addAction(okAlert)
        
         present(deletAlert, animated: true)
@@ -158,7 +158,7 @@ final class MainViewController: UIViewController {
             self.places = favoritPlalces
         })
         
-        alert.addAction(PlaceInfo.Message.cancel)
+        alert.addAction(Alert.cancel)
         present(alert, animated: true)
     }
 
@@ -180,7 +180,7 @@ final class MainViewController: UIViewController {
     // MARK: - Navigation
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == "sgPlaceInfo" {
+        if segue.identifier == Segue.info.identifier {
             guard let infoViewContorller = segue.destination as? PlaceInfoTableViewController,
                   let cell = sender as? UITableViewCell,
                   let indexPath = placeTableView.indexPath(for: cell) else { return }
@@ -189,7 +189,7 @@ final class MainViewController: UIViewController {
             infoViewContorller.getPlaceInfo(selectedPlace)
         }
         
-        if segue.identifier == "sgAddPlace" {
+        if segue.identifier == Segue.add.identifier {
             guard let addViewController = segue.destination as? AddPlaceTableViewController else { return }
             addViewController.places = places
         }
