@@ -11,11 +11,11 @@ import FirebaseFirestore
 import GooglePlaces
 
 protocol EditDelegate {
-    func didEditPlace(_ controller: AddPlaceTableViewController, data: Place, image: UIImage)
+    func didEditPlace(data: Place)
 }
 
 final class AddPlaceTableViewController: UITableViewController {
-    private enum ViewMode {
+    enum ViewMode {
         case add, edit
     }
 
@@ -35,7 +35,7 @@ final class AddPlaceTableViewController: UITableViewController {
     private var receiveImage: UIImage?, receiveName: String = "", receiveFavofit: Bool = false
     private var placeGeoPoint: GeoPoint?
     private var editData: Place?
-    private var viewMode: ViewMode = .add
+    var viewMode: ViewMode = .add
     var editDelegate: EditDelegate?
     var places = [Place]()
     
@@ -49,6 +49,11 @@ final class AddPlaceTableViewController: UITableViewController {
         case .edit:
             configureEditView()
         }
+    }
+    
+    func setPlaceDataFromInfo(data: Place, image: UIImage) {
+        editData = data
+        receiveImage = image
     }
     
     private func configureTextView() {
@@ -73,12 +78,6 @@ final class AddPlaceTableViewController: UITableViewController {
         categoryPickerView.delegate = self
         groupPickerView.delegate = self
     }
-
-    // 편집하는 장소 데이터를 받아오는 함수
-    func setPlaceDataFromInfo(data: Place, image: UIImage) {
-        editData = data
-        receiveImage = image
-    }
     
     private func configureEditView() {
         guard let place = editData else { return }
@@ -90,6 +89,8 @@ final class AddPlaceTableViewController: UITableViewController {
         datePicker.date = place.date
         comentTextView.text = place.coment
         rateLabel.text = place.rate
+        placeGeoPoint = place.geopoint
+        receiveName = place.name
         
         addRate.sliderStar(starButtons,
                            rating: NSString(string: place.rate).floatValue)
@@ -142,7 +143,7 @@ final class AddPlaceTableViewController: UITableViewController {
         
         guard nameTextField.text?.isEmpty == false,
               locationTextView.text != PlaceInfo.locationPlaceHoler,
-              placeGeoPoint != nil,
+              let placeImage = placeImageView.image,
               let newPlace = createPlace() else {
             showAlert(.insufficientInput)
             return
@@ -150,33 +151,34 @@ final class AddPlaceTableViewController: UITableViewController {
         
         switch viewMode {
         case .add:
-            if let image = placeImageView.image {
-                uploadImage(newPlace.name,
-                            image: image.resize(newWidth: 300))
-            }
-            
             uploadData(place: newPlace)
+            uploadImage(newPlace.name,
+                        image: placeImage.resize(newWidth: 300))
         case .edit:
-            if let image = placeImageView.image, newPlace.hasImage == true {
-                uploadImage(newPlace.name,
-                            image: image.resize(newWidth: 300))
+            if receiveName != newPlace.name {
+                deletePlaceData(name: receiveName)
+                ImageCacheManager.shared.updateImage(with: receiveName,
+                                                     new: newPlace.name, placeImage)
             }
             
-            if receiveName != newPlace.name {
-                FirestoreManager.shared.deletePlace(receiveName)
-//                deletePlaceData(name: receiveName)
+            if placeImage != receiveImage || receiveName != newPlace.name {
+                ImageCacheManager.shared.updateImage(with: receiveName,
+                                                     new: newPlace.name, placeImage)
+                uploadImage(newPlace.name,
+                            image: placeImage.resize(newWidth: 300))
             }
             
             uploadData(place: newPlace)
+            editDelegate?.didEditPlace(data: newPlace)
         }
         
         navigationController?.popViewController(animated: true)
     }
     
     private func deletePlaceData(name place: String) {
-         FirestoreManager.shared.deletePlace(place)
-         StorageManager.shared.deleteImage(name: place)
-     }
+        FirestoreManager.shared.deletePlace(place)
+        StorageManager.shared.deleteImage(name: place)
+    }
 
     private func uploadData(place data: Place) {
          FirestoreManager.shared.savePlace(data)
@@ -220,6 +222,7 @@ extension AddPlaceTableViewController: UITextViewDelegate {
     }
 }
 
+// MARK: ImagePicker
 extension AddPlaceTableViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         var selectedImage: UIImage? = nil
@@ -239,6 +242,7 @@ extension AddPlaceTableViewController: UIImagePickerControllerDelegate, UINaviga
     }
 }
 
+// MARK: GMSAutocomplete
 extension AddPlaceTableViewController: GMSAutocompleteViewControllerDelegate {
     func viewController(_ viewController: GMSAutocompleteViewController, didAutocompleteWith place: GMSPlace) {
         let address = place.formattedAddress?.replacingOccurrences(of: "대한민국 ", with: "")
@@ -259,7 +263,8 @@ extension AddPlaceTableViewController: GMSAutocompleteViewControllerDelegate {
     }
 }
 
-extension AddPlaceTableViewController :  UIPickerViewDelegate, UIPickerViewDataSource {
+// MARK: PickerView
+extension AddPlaceTableViewController: UIPickerViewDelegate, UIPickerViewDataSource {
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
         return 1
     }

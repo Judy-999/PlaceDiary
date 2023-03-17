@@ -18,6 +18,7 @@ final class ImageCacheManager {
         
         if let image = cache.object(forKey: cachedKey) {
             completion(image)
+            return
         }
     
         StorageManager.shared.getImage(name: name) { image in
@@ -28,5 +29,12 @@ final class ImageCacheManager {
                 completion(DiaryImage.placeholer)
             }
         }
+    }
+    
+    func updateImage(with name: String, new: String, _ image: UIImage) {
+        let oldCachedKey = NSString(string: name)
+        let newCachedKey = NSString(string: new)
+        cache.removeObject(forKey: oldCachedKey)
+        cache.setObject(image, forKey: newCachedKey)
     }
 }
