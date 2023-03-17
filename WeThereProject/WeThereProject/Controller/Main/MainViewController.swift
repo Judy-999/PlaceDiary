@@ -16,7 +16,7 @@ final class MainViewController: UIViewController {
     
     private var categoryItem = [String]()
     private var groupItem = [String]()
-    private var sectionType = [Section: [String]]()
+    private var sectionType: [Section: [String]] = [.all: [""]]
     private var places = [Place]() {
         didSet {
             DispatchQueue.main.async {
@@ -35,7 +35,6 @@ final class MainViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        sectionType = [.all: [""], .category: categoryItem, .group: groupItem]
         loadPlaceData()
         loadClassification()
         configureRefreshControl()
@@ -63,6 +62,8 @@ final class MainViewController: UIViewController {
         FirestoreManager.shared.loadClassification { [weak self] categoryItems, groupItems in
             self?.categoryItem = categoryItems
             self?.groupItem = groupItems
+            self?.sectionType[.category] = categoryItems
+            self?.sectionType[.group] = groupItems
         }
     }
 
@@ -114,6 +115,10 @@ final class MainViewController: UIViewController {
         present(deletAlert, animated: true)
     }
     
+    @IBAction private func segmentedControlChanged(_ sender: UISegmentedControl) {
+        placeTableView.reloadData()
+    }
+    
     @IBAction private func sortButtonTapped(_ sender: UIBarItem) {
         let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
 
@@ -161,7 +166,8 @@ extension MainViewController: UITableViewDataSource,  UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        guard let type = Section(rawValue: section),
+        let select = segmentedControl.selectedSegmentIndex
+        guard let type = Section(rawValue: select),
               let sectionNames = sectionType[type] else { return nil }
         
         return sectionNames[section]
@@ -194,7 +200,7 @@ extension MainViewController: UITableViewDataSource,  UITableViewDelegate {
                    forSection section: Int) {
         guard let headerView = view as? UITableViewHeaderFooterView else { return }
         
-        headerView.contentView.backgroundColor = Color.highlight
+        headerView.contentView.backgroundColor = Color.partialHighlight
         headerView.textLabel?.textColor = .white
     }
     

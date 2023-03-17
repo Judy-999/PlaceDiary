@@ -101,7 +101,7 @@
                                     <segment title="분류별"/>
                                 </segments>
                                 <connections>
-                                    <action selector="segmentedControlTapped:" destination="cpN-Hq-ZC8" eventType="valueChanged" id="Its-Hj-7fp"/>
+                                    <action selector="segmentedControlChanged:" destination="cpN-Hq-ZC8" eventType="valueChanged" id="qHO-9l-7cM"/>
                                 </connections>
                             </segmentedControl>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="90" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="O7v-dG-ASV">
@@ -121,12 +121,12 @@
                                                             <rect key="frame" x="0.0" y="0.0" width="259" height="40"/>
                                                             <subviews>
                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="이름" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Rgd-Qo-Sxg">
-                                                                    <rect key="frame" x="0.0" y="0.0" width="281" height="40"/>
+                                                                    <rect key="frame" x="0.0" y="0.0" width="150.33333333333334" height="40"/>
                                                                     <fontDescription key="fontDescription" type="boldSystem" pointSize="18"/>
                                                                     <nil key="highlightedColor"/>
                                                                 </label>
                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="날짜" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="fkZ-9L-vdD">
-                                                                    <rect key="frame" x="281" y="0.0" width="203" height="40"/>
+                                                                    <rect key="frame" x="150.33333333333334" y="0.0" width="108.66666666666666" height="40"/>
                                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                                     <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                                                     <nil key="highlightedColor"/>
@@ -1352,7 +1352,7 @@
         <segue reference="LEn-q7-1yn"/>
         <segue reference="F5n-pi-x46"/>
         <segue reference="qPa-7u-WXO"/>
-        <segue reference="ngF-ER-ywh"/>
+        <segue reference="I6j-V1-nTt"/>
     </inferredMetricsTieBreakers>
     <resources>
         <image name="calendar" catalog="system" width="128" height="107"/>
