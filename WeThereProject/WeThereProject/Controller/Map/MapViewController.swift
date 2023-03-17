@@ -23,6 +23,7 @@ final class MapViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        places = PlaceDataManager.shared.getPlaces()
         loadCategory()
         setupLocationManager()
         setupMapView()
@@ -32,11 +33,6 @@ final class MapViewController: UIViewController {
         if let place = onePlace {
             selectMarker(at: place)
         }
-    }
-    
-    func getPlace(_ data: [Place]) {
-        places = data
-        drawMarkers(with: places)
     }
     
     private func setupLocationManager() {

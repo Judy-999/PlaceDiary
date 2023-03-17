@@ -24,10 +24,7 @@ final class CalendarController: UIViewController {
         super.viewDidLoad()
         setupCalendar()
         calendar.reloadData()
-    }
-
-    func getDate(_ data: [Place]) {
-        places = data
+        places = PlaceDataManager.shared.getPlaces()
     }
 
     private func setupCalendar() {

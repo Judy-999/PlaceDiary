@@ -32,12 +32,11 @@ final class AddPlaceTableViewController: UITableViewController {
     @IBOutlet var starButtons: [UIButton]!
     
     private var categoryItems = [String](), groupItems = [String]()
-    private var receiveImage: UIImage?, receiveName: String = "", receiveFavofit: Bool = false
+    private var receiveImage: UIImage?, receiveName: String = ""
     private var placeGeoPoint: GeoPoint?
     private var editData: Place?
     var viewMode: ViewMode = .add
     var editDelegate: EditDelegate?
-    var places = [Place]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -136,6 +135,7 @@ final class AddPlaceTableViewController: UITableViewController {
     }
 
     @IBAction private func doneButtonTapped(_ sender: UIButton) {
+        let places = PlaceDataManager.shared.getPlaces()
         guard places.first(where: { $0.name == nameTextField.text }) == nil else {
             showAlert(.duplicatePlace)
            return

@@ -21,6 +21,7 @@
 		207E4F862660985D00AC0A6E /* AddPlaceTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 207E4F852660985D00AC0A6E /* AddPlaceTableViewController.swift */; };
 		2088D238294E96C9009415C1 /* UIImage+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2088D237294E96C9009415C1 /* UIImage+.swift */; };
 		208D9FE9266DFD4A00FC2067 /* RatingManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 208D9FE8266DFD4A00FC2067 /* RatingManager.swift */; };
+		20978BFE29C45F4E00D845AD /* PlaceDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20978BFD29C45F4E00D845AD /* PlaceDataManager.swift */; };
 		20AD213429BF053100A92B1E /* PlaceInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20AD213329BF053100A92B1E /* PlaceInfo.swift */; };
 		20AD213629BF16E100A92B1E /* UIViewController+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20AD213529BF16E100A92B1E /* UIViewController+.swift */; };
 		20B113832689BBC200A6A0FD /* PlaceCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20B113822689BBC200A6A0FD /* PlaceCell.swift */; };
@@ -59,6 +60,7 @@
 		207E4F852660985D00AC0A6E /* AddPlaceTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddPlaceTableViewController.swift; sourceTree = "<group>"; };
 		2088D237294E96C9009415C1 /* UIImage+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+.swift"; sourceTree = "<group>"; };
 		208D9FE8266DFD4A00FC2067 /* RatingManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RatingManager.swift; sourceTree = "<group>"; };
+		20978BFD29C45F4E00D845AD /* PlaceDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceDataManager.swift; sourceTree = "<group>"; };
 		20AD213329BF053100A92B1E /* PlaceInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceInfo.swift; sourceTree = "<group>"; };
 		20AD213529BF16E100A92B1E /* UIViewController+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+.swift"; sourceTree = "<group>"; };
 		20B113822689BBC200A6A0FD /* PlaceCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceCell.swift; sourceTree = "<group>"; };
@@ -173,6 +175,7 @@
 				20451D4C294C355B00186A35 /* StorageManager.swift */,
 				208D9FE8266DFD4A00FC2067 /* RatingManager.swift */,
 				20F553F2294C90F2001F69AD /* ImageCacheManager.swift */,
+				20978BFD29C45F4E00D845AD /* PlaceDataManager.swift */,
 			);
 			path = Util;
 			sourceTree = "<group>";
@@ -417,6 +420,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				20F88AC7266CD8820015B42E /* PlaceInfoTableViewController.swift in Sources */,
+				20978BFE29C45F4E00D845AD /* PlaceDataManager.swift in Sources */,
 				20B113832689BBC200A6A0FD /* PlaceCell.swift in Sources */,
 				20D7B4AF26EDEF5100DF954E /* StatisticsTableViewController.swift in Sources */,
 				206BCDE629C2F5FB009F5BFB /* Segue.swift in Sources */,

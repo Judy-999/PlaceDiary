@@ -29,16 +29,8 @@ final class SearchViewController: UIViewController {
         super.viewDidLoad()
         setupSearchController()
         setupTableView()
+        places = PlaceDataManager.shared.getPlaces()
     }
-    
-    func setData(_ data: [Place]) {
-        places = data
-    }
-    
-//    func didImageDone(newData: Place, image: UIImage) {
-//        placeImages.updateValue(image, forKey: newData.name)
-        //        newUpdate = true
-//    }
     
     private func setupTableView() {
         searchTableView.dataSource = self

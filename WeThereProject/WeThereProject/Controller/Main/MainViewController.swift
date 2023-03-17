@@ -54,7 +54,7 @@ final class MainViewController: UIViewController {
     }
 
     private func loadPlaceData() {
-        FirestoreManager.shared.loadData() { [weak self] places in
+        PlaceDataManager.shared.load() { [weak self] places in
             self?.places = places
         }
     }
@@ -66,22 +66,6 @@ final class MainViewController: UIViewController {
         }
     }
 
-    private func passData() {
-        let searchNav = tabBarController?.viewControllers![1] as! UINavigationController
-        let searchController = searchNav.topViewController as! SearchViewController
-        let calendarNav = tabBarController?.viewControllers![2] as! UINavigationController
-        let calendarController = calendarNav.topViewController as! CalendarController
-        let mapNav = tabBarController?.viewControllers![3] as! UINavigationController
-        let mapController = mapNav.topViewController as! MapViewController
-        let settingNav = tabBarController?.viewControllers![4] as! UINavigationController
-        let settingController = settingNav.topViewController as! SettingTableController
-        
-        searchController.setData(places)
-        mapController.getPlace(places)
-        calendarController.getDate(places)
-        settingController.getPlaces(places)
-    }
-    
     private func filteredPlaces(at section: Int) -> [Place] {
         guard let type = Section(rawValue: section),
               let sectionNames = sectionType[type] else { return places }
@@ -162,11 +146,6 @@ final class MainViewController: UIViewController {
 
             let places = filteredPlaces(at: indexPath.section)
             infoViewContorller.getPlaceInfo(places[indexPath.row])
-        }
-        
-        if segue.identifier == Segue.add.identifier {
-            guard let addViewController = segue.destination as? AddPlaceTableViewController else { return }
-            addViewController.places = places
         }
     }
 }

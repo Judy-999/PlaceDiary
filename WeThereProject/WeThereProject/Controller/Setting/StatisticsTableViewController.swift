@@ -8,7 +8,7 @@
 import UIKit
 
 final class StatisticsTableViewController: UITableViewController {
-    var places = [Place]()
+    private var places = [Place]()
     private var categoryList = [String]() {
         didSet {
             DispatchQueue.main.async {
@@ -26,6 +26,7 @@ final class StatisticsTableViewController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        places = PlaceDataManager.shared.getPlaces()
         loadCategory()
     }
     

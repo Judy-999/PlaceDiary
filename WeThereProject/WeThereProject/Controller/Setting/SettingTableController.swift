@@ -8,33 +8,19 @@
 import UIKit
 
 final class SettingTableController: UITableViewController {
-    private var places = [Place]()
-    
     override func viewDidLoad() {
         super.viewDidLoad()
     }
     
-    func getPlaces(_ data: [Place]) {
-        places = data
-    }
-    
-    // MARK: - Navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == Segue.category.identifier {
             guard let setting = segue.destination as? EditClassificationController else { return }
             setting.editType = .category
-            setting.places = places
         }
         
         if segue.identifier == Segue.group.identifier {
             guard let setting = segue.destination as? EditClassificationController else { return }
-            setting.editType = .category
-            setting.places = places
-        }
-        
-        if segue.identifier == Segue.statistics.identifier {
-            guard let statistics = segue.destination as? StatisticsTableViewController else { return }
-            statistics.places = places
+            setting.editType = .group
         }
     }
 }
