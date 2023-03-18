@@ -950,8 +950,20 @@
                     <view key="view" contentMode="scaleToFill" id="Ud7-UE-MAc">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="SFI-v3-uRl">
+                                <rect key="frame" x="0.0" y="91" width="375" height="589"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                            </view>
+                        </subviews>
                         <viewLayoutGuide key="safeArea" id="Smg-fS-7zD"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="Smg-fS-7zD" firstAttribute="trailing" secondItem="SFI-v3-uRl" secondAttribute="trailing" id="3IM-Zh-nT2"/>
+                            <constraint firstItem="SFI-v3-uRl" firstAttribute="top" secondItem="Smg-fS-7zD" secondAttribute="top" id="Wbv-ax-lct"/>
+                            <constraint firstItem="SFI-v3-uRl" firstAttribute="leading" secondItem="Smg-fS-7zD" secondAttribute="leading" id="aiy-6Z-oiG"/>
+                            <constraint firstItem="Smg-fS-7zD" firstAttribute="bottom" secondItem="SFI-v3-uRl" secondAttribute="bottom" id="zDp-PH-Qdb"/>
+                        </constraints>
                     </view>
                     <toolbarItems/>
                     <navigationItem key="navigationItem" title="지도" id="5i3-RW-JXb">
@@ -964,6 +976,7 @@
                     </navigationItem>
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
+                        <outlet property="entireView" destination="SFI-v3-uRl" id="430-OP-ApU"/>
                         <outlet property="filterButton" destination="EN5-Gf-Ixd" id="iTj-eB-9iO"/>
                         <segue destination="E07-mG-Yqk" kind="show" identifier="sgMapInfo" id="ngF-ER-ywh"/>
                     </connections>
@@ -1350,9 +1363,9 @@
     </scenes>
     <inferredMetricsTieBreakers>
         <segue reference="LEn-q7-1yn"/>
-        <segue reference="F5n-pi-x46"/>
+        <segue reference="2Kc-dU-Vel"/>
         <segue reference="qPa-7u-WXO"/>
-        <segue reference="I6j-V1-nTt"/>
+        <segue reference="ngF-ER-ywh"/>
     </inferredMetricsTieBreakers>
     <resources>
         <image name="calendar" catalog="system" width="128" height="107"/>

@@ -19,6 +19,7 @@ final class MapViewController: UIViewController {
     private var optionedPlaces = [Place]()
     var onePlace: Place?
     
+    @IBOutlet private weak var entireView: UIView!
     @IBOutlet private weak var filterButton: UIBarButtonItem!
     
     override func viewDidLoad() {
@@ -55,7 +56,7 @@ final class MapViewController: UIViewController {
         mapView?.isMyLocationEnabled = true
         mapView?.delegate = self
         
-        view.addSubview(mapView!)
+        entireView.addSubview(mapView!)
     }
     
     private func loadCategory() {
