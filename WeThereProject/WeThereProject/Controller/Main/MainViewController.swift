@@ -8,7 +8,7 @@
 import UIKit
 
 final class MainViewController: UIViewController {
-    private enum Section: Int {
+    private enum ViewMode: Int {
         case all
         case group
         case category
@@ -16,7 +16,7 @@ final class MainViewController: UIViewController {
     
     private var categoryItem = [String]()
     private var groupItem = [String]()
-    private var sectionType: [Section: [String]] = [.all: [""]]
+    private var placeType: [ViewMode: [String]] = [.all: [""]]
     private var places = [Place]() {
         didSet {
             DispatchQueue.main.async {
@@ -62,22 +62,23 @@ final class MainViewController: UIViewController {
         FirestoreManager.shared.loadClassification { [weak self] categoryItems, groupItems in
             self?.categoryItem = categoryItems
             self?.groupItem = groupItems
-            self?.sectionType[.category] = categoryItems
-            self?.sectionType[.group] = groupItems
+            self?.placeType[.category] = categoryItems
+            self?.placeType[.group] = groupItems
         }
     }
 
     private func filteredPlaces(at section: Int) -> [Place] {
-        guard let type = Section(rawValue: section),
-              let sectionNames = sectionType[type] else { return places }
+        let select = segmentedControl.selectedSegmentIndex
+        guard let mode = ViewMode(rawValue: select),
+              let placeList = placeType[mode] else { return places }
         
-        switch type {
+        switch mode {
         case .all:
             return places
         case .group:
-            return places.filter { $0.group == sectionNames[section] }
+            return places.filter { $0.group == placeList[section] }
         case .category:
-            return places.filter { $0.category == sectionNames[section] }
+            return places.filter { $0.category == placeList[section] }
         }
     }
     
@@ -159,18 +160,18 @@ final class MainViewController: UIViewController {
 extension MainViewController: UITableViewDataSource,  UITableViewDelegate {
     func numberOfSections(in tableView: UITableView) -> Int {
         let select = segmentedControl.selectedSegmentIndex
-        guard let type = Section(rawValue: select),
-              let sectionNames = sectionType[type] else { return .zero }
+        guard let mode = ViewMode(rawValue: select),
+              let placeList = placeType[mode] else { return .zero }
         
-        return sectionNames.count
+        return placeList.count
     }
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         let select = segmentedControl.selectedSegmentIndex
-        guard let type = Section(rawValue: select),
-              let sectionNames = sectionType[type] else { return nil }
+        guard let mode = ViewMode(rawValue: select),
+              let placeList = placeType[mode] else { return nil }
         
-        return sectionNames[section]
+        return placeList[section]
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
