@@ -21,7 +21,7 @@ final class PlaceCell: UITableViewCell {
         favoritButton.setImage(favoritImage, for: .normal)
         placeName = place.name
         nameLabel.text = place.name
-        infoLabel.text = "\(place.group) ∙ \(place.category) ∙ \(place.rate) 점"
+        infoLabel.text = "\(place.group) ∙ \(place.category) ∙ \(place.rating) 점"
         dateLabel.text = place.date.toString
         configureImage(with: place)
     }

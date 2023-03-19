@@ -51,14 +51,14 @@ final class PlaceInfoTableViewController: UITableViewController, EditDelegate {
         placeNameLabel.text = place.name
         categoryLabel.text = place.category
         comentTextView.text = place.coment
-        ratingLabel.text = place.rate + " 점"
+        ratingLabel.text = place.rating + " 점"
         groupLabel.text = place.group
         dateLabel.text = place.date.toString
         locationButton.contentHorizontalAlignment = .left
         locationButton.setTitle(place.location, for: .normal)
         
         RatingManager().sliderStar(rateButtons,
-                                   rating: NSString(string: place.rate).floatValue)
+                                   rating: NSString(string: place.rating).floatValue)
     }
     
     private func configureGesture() {
@@ -98,7 +98,7 @@ final class PlaceInfoTableViewController: UITableViewController, EditDelegate {
             
         }
         
-        let cancel = UIAlertAction(title: PlaceInfo.Edit.cancel, style: .destructive)
+        let cancel = Alert.cancel
         [edit, delete, favorit, cancel].forEach { editAlert.addAction($0) }
         
         present(editAlert, animated: true)
@@ -140,12 +140,5 @@ extension PlaceInfoTableViewController {
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return 4
-    }
-    
-    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        if indexPath.row == 0 && place?.hasImage == false {
-            return 0
-        }
-        return super.tableView(tableView, heightForRowAt: indexPath)
     }
 }

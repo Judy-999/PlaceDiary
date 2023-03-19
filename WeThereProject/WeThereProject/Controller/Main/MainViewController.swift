@@ -124,7 +124,7 @@ final class MainViewController: UIViewController {
         let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
 
         alert.addAction(UIAlertAction(title: Sort.rating, style: .default) { _ in
-            self.places.sort(by: { $0.rate > $1.rate })
+            self.places.sort(by: { $0.rating > $1.rating })
         })
 
         alert.addAction(UIAlertAction(title: Sort.alphabetical, style: .default) { _ in

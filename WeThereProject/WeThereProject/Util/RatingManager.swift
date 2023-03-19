@@ -39,7 +39,7 @@ final class RatingManager {
 }
 
 
-enum Rating {
+fileprivate enum Rating {
     static let halfStarImage = UIImage(systemName: "star.leadinghalf.fill")
     static let emptyStarImage = UIImage(systemName: "star")
     static let fillStarImage = UIImage(systemName: "star.fill")

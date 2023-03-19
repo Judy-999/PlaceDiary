@@ -13,13 +13,11 @@ struct Place {
     var location: String
     var date: Date
     var isFavorit: Bool
-    var hasImage: Bool
     var category : String
-    var rate: String
+    var rating: String
     var coment: String
     var geopoint: GeoPoint
     var group: String
-    var newImg: UIImage?
 }
 
 extension Place {
@@ -28,7 +26,6 @@ extension Place {
               let location = document["position"] as? String,
               let date = document["date"] as? Timestamp,
               let isFavorit = document["favorit"] as? Bool,
-              let hasImage = document["image"] as? Bool,
               let category = document["category"] as? String,
               let rate = document["rate"] as? String,
               let coment = document["coment"] as? String,
@@ -39,9 +36,8 @@ extension Place {
         self.location = location
         self.date = date.dateValue()
         self.isFavorit = isFavorit
-        self.hasImage = hasImage
         self.category = category
-        self.rate = rate
+        self.rating = rate
         self.coment = coment
         self.geopoint = geopoint
         self.group = group

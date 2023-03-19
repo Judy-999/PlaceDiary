@@ -87,12 +87,12 @@ final class AddPlaceTableViewController: UITableViewController {
         locationTextView.text = place.location
         datePicker.date = place.date
         comentTextView.text = place.coment
-        rateLabel.text = place.rate
+        rateLabel.text = place.rating
         placeGeoPoint = place.geopoint
         receiveName = place.name
         
         addRate.sliderStar(starButtons,
-                           rating: NSString(string: place.rate).floatValue)
+                           rating: NSString(string: place.rating).floatValue)
         
         guard let categoryIndex = categoryItems.firstIndex(of: place.category),
               let groupIndex = groupItems.firstIndex(of: place.group) else { return }
@@ -115,20 +115,13 @@ final class AddPlaceTableViewController: UITableViewController {
         let categoryIndex = categoryPickerView.selectedRow(inComponent: 0)
         let groupIndex = groupPickerView.selectedRow(inComponent: 0)
         let isFavorit = editData?.isFavorit ?? false
-        var hasImage = true
-        
-        if placeImageView.image == DiaryImage.placeholer ||
-            placeImageView.image == nil {
-            hasImage = false
-        }
-        
+
         return Place(name: name,
                      location: location,
                      date: datePicker.date,
                      isFavorit: isFavorit,
-                     hasImage: hasImage,
                      category: categoryItems[categoryIndex],
-                     rate: rate,
+                     rating: rate,
                      coment: coment,
                      geopoint: geoPoint,
                      group: groupItems[groupIndex])

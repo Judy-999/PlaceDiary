@@ -14,12 +14,7 @@ final class FirestoreManager {
     private let id: String
     
     private init() {
-        guard let collectionID = UIDevice.current.identifierForVendor?.uuidString else {
-            id = ""
-            return
-        }
-        
-        id = collectionID
+        id = UIDevice.current.identifierForVendor!.uuidString
     }
     
     func loadData(completionHandler: @escaping ([Place]) -> Void) {
@@ -109,7 +104,22 @@ final class FirestoreManager {
     }
 }
 
-enum Classification {
-    static let basic: [String: [String]] = ["items": ["카페", "음식점", "디저트", "전시회", "액티비티", "야외"],
-                                            "group": ["친구", "가족", "애인", "혼자"]]
+private extension FirestoreManager {
+    enum Classification {
+        static let collection = "classification"
+        static let basic: [String: [String]] = [PlaceData.category: ["카페", "음식점", "디저트", "전시회", "액티비티", "야외"],
+                                                PlaceData.group: ["친구", "가족", "애인", "혼자"]]
+    }
+    
+    enum PlaceData {
+        static let name = "name"
+        static let location = "position"
+        static let date = "date"
+        static let favorit = "favorit"
+        static let rating = "rate"
+        static let coment = "coment"
+        static let category = "category"
+        static let geopoint = "geopoint"
+        static let group = "group"
+    }
 }
