@@ -22,40 +22,45 @@ final class StorageManager {
         id = collectionID
     }
     
-    func saveImage(_ image: UIImage, name: String) {
+    func saveImage(_ image: UIImage, name: String,
+                   completion: @escaping (Result<Void, FirebaseError>) -> Void) {
         guard let imageData = image.jpegData(compressionQuality: 0.8) else { return }
         let metaData = StorageMetadata()
         metaData.contentType = "image/jpeg"
         
-        storage.child(id + "/" + name).putData(imageData, metadata: metaData) { (metaData, error) in
-            if let error = error {
-                print(error.localizedDescription)
-            } else {
-                print("Image successfully upload!")
+        storage.child(id + "/" + name).putData(imageData, metadata: metaData) { _ , error in
+            if error != nil {
+                completion(.failure(.save))
+                return
             }
+            
+            completion(.success(()))
         }
     }
     
-    func getImage(name: String, completion: @escaping (UIImage?) -> ()) {
+    func getImage(name: String,
+                  completion: @escaping (Result<UIImage, FirebaseError>) -> Void) {
         let size: Int64 = 1024 * 1024
         storage.child(id + "/" + name).getData(maxSize: size) { data, error in
             if error != nil {
-                completion(nil)
+                completion(.failure(.fetch))
             }
             
-            if let data = data {
-                completion(UIImage(data: data))
+            if let data = data, let image = UIImage(data: data) {
+                completion(.success(image))
             }
         }
     }
     
-    func deleteImage(name: String) {
+    func deleteImage(name: String,
+                     completion: @escaping (Result<Void, FirebaseError>) -> Void) {
         storage.child(id + "/" + name).delete { error in
-            if let error = error {
-                print("Error removing image: \(error)")
-            } else {
-                print("Image successfully removed!")
+            if error != nil {
+                completion(.failure(.delete))
+                return
             }
+            
+            completion(.success(()))
         }
     }
 }

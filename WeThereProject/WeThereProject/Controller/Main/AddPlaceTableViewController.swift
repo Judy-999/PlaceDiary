@@ -170,7 +170,14 @@ final class AddPlaceTableViewController: UITableViewController {
     
     private func deletePlaceData(name place: String) {
         FirestoreManager.shared.deletePlace(place)
-        StorageManager.shared.deleteImage(name: place)
+        StorageManager.shared.deleteImage(name: place) { [weak self] result in
+            switch result {
+            case .success(_):
+                break
+            case .failure(let failure):
+                self?.showAlert("실패", failure.errorDescription)
+            }
+        }
     }
 
     private func uploadData(place data: Place) {
@@ -178,7 +185,14 @@ final class AddPlaceTableViewController: UITableViewController {
     }
     
     private func uploadImage(_ placeName: String, image: UIImage) {
-        StorageManager.shared.saveImage(image, name: placeName)
+        StorageManager.shared.saveImage(image, name: placeName) { [weak self] result in
+            switch result {
+            case .success(_):
+                break
+            case .failure(let failure):
+                self?.showAlert("실패", failure.errorDescription)
+            }
+        }
     }
     
     @IBAction private func starSliderChanged(_ sender: Any) {

@@ -21,11 +21,12 @@ final class ImageCacheManager {
             return
         }
     
-        StorageManager.shared.getImage(name: name) { image in
-            if let image = image {
-                self.cache.setObject(image, forKey: cachedKey)
+        StorageManager.shared.getImage(name: name) { [weak self] result in
+            switch result {
+            case .success(let image):
+                self?.cache.setObject(image, forKey: cachedKey)
                 completion(image)
-            } else {
+            case .failure(_):
                 completion(DiaryImage.placeholer)
             }
         }

@@ -102,7 +102,14 @@ final class MainViewController: UIViewController {
                                            preferredStyle: .actionSheet)
         let okAlert = UIAlertAction(title: "삭제", style: .destructive) { [weak self] _ in
             FirestoreManager.shared.deletePlace(placeName)
-            StorageManager.shared.deleteImage(name: placeName)
+            StorageManager.shared.deleteImage(name: placeName) { [weak self] result in
+                switch result {
+                case .success(_):
+                    break
+                case .failure(let failure):
+                    self?.showAlert("실패", failure.errorDescription) 
+                }
+            }
      
             guard let removedIndex = self?.places.firstIndex(where: { $0.name == placeName }) else { return }
             
