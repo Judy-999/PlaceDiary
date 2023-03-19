@@ -60,9 +60,14 @@ final class MapViewController: UIViewController {
     }
     
     private func loadCategory() {
-        FirestoreManager.shared.loadClassification { [weak self] categoryItems, groupItems in
-            self?.groupList += groupItems
-            self?.categoryList += categoryItems
+        FirestoreManager.shared.loadClassification { [weak self] result in
+            switch result {
+            case .success((let categoryItems, let groupItems)):
+                self?.groupList += groupItems
+                self?.categoryList += categoryItems
+            case .failure(let error):
+                self?.showAlert("실패", error.localizedDescription)
+            }
         }
     }
     

@@ -51,6 +51,13 @@ final class PlaceCell: UITableViewCell {
             isFavorit = false
         }
         
-        FirestoreManager.shared.updateFavorit(isFavorit, placeName: placeName)
+        FirestoreManager.shared.updateFavorit(isFavorit, placeName: placeName) { result in
+            switch result {
+            case .success(_):
+                break
+            case .failure(let failure):
+                print(failure.errorDescription)
+            }
+        }
     }
 }

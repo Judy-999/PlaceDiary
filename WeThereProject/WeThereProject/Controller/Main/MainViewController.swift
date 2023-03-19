@@ -59,11 +59,16 @@ final class MainViewController: UIViewController {
     }
 
     private func loadClassification() {
-        FirestoreManager.shared.loadClassification { [weak self] categoryItems, groupItems in
-            self?.categoryItem = categoryItems
-            self?.groupItem = groupItems
-            self?.placeType[.category] = categoryItems
-            self?.placeType[.group] = groupItems
+        FirestoreManager.shared.loadClassification { [weak self] result in
+            switch result {
+            case .success((let categoryItems, let groupItems)):
+                self?.categoryItem = categoryItems
+                self?.groupItem = groupItems
+                self?.placeType[.category] = categoryItems
+                self?.placeType[.group] = groupItems
+            case .failure(let error):
+                self?.showAlert("실패", error.localizedDescription)
+            }
         }
     }
 
@@ -101,7 +106,15 @@ final class MainViewController: UIViewController {
                                            message: placeName + PlaceInfo.Main.confirmDelete,
                                            preferredStyle: .actionSheet)
         let okAlert = UIAlertAction(title: "삭제", style: .destructive) { [weak self] _ in
-            FirestoreManager.shared.deletePlace(placeName)
+            FirestoreManager.shared.deletePlace(placeName) { [weak self] result in
+                switch result {
+                case .success(_):
+                    break
+                case .failure(let failure):
+                    self?.showAlert("실패", failure.errorDescription)
+                }
+            }
+            
             StorageManager.shared.deleteImage(name: placeName) { [weak self] result in
                 switch result {
                 case .success(_):

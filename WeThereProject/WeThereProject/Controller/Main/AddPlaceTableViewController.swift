@@ -66,10 +66,15 @@ final class AddPlaceTableViewController: UITableViewController {
     }
     
     private func loadClassification() {
-        FirestoreManager.shared.loadClassification { categoryItems, groupItems in
-            self.categoryItems = categoryItems
-            self.groupItems = groupItems
-            self.setupPickerView()
+        FirestoreManager.shared.loadClassification { [weak self] result in
+            switch result {
+            case .success((let categoryItems, let groupItems)):
+                self?.categoryItems = categoryItems
+                self?.groupItems = groupItems
+                self?.setupPickerView()
+            case .failure(let error):
+                self?.showAlert("실패", error.localizedDescription)
+            }
         }
     }
     
@@ -169,7 +174,15 @@ final class AddPlaceTableViewController: UITableViewController {
     }
     
     private func deletePlaceData(name place: String) {
-        FirestoreManager.shared.deletePlace(place)
+        FirestoreManager.shared.deletePlace(place) { [weak self] result in
+            switch result {
+            case .success(_):
+                break
+            case .failure(let failure):
+                self?.showAlert("실패", failure.errorDescription)
+            }
+        }
+        
         StorageManager.shared.deleteImage(name: place) { [weak self] result in
             switch result {
             case .success(_):
@@ -181,7 +194,14 @@ final class AddPlaceTableViewController: UITableViewController {
     }
 
     private func uploadData(place data: Place) {
-         FirestoreManager.shared.savePlace(data)
+        FirestoreManager.shared.savePlace(data){ [weak self] result in
+            switch result {
+            case .success(_):
+                break
+            case .failure(let failure):
+                self?.showAlert("실패", failure.errorDescription)
+            }
+        }
     }
     
     private func uploadImage(_ placeName: String, image: UIImage) {

@@ -31,9 +31,14 @@ final class StatisticsTableViewController: UITableViewController {
     }
     
     private func loadCategory() {
-        FirestoreManager.shared.loadClassification { [weak self] categoryItems, groupItems in
-            self?.categoryList = categoryItems
-            self?.groupList = groupItems
+        FirestoreManager.shared.loadClassification { [weak self] result in
+            switch result {
+            case .success((let categoryItems, let groupItems)):
+                self?.categoryList = categoryItems
+                self?.groupList = groupItems
+            case .failure(let error):
+                self?.showAlert("실패", error.localizedDescription)
+            }
         }
     }
     

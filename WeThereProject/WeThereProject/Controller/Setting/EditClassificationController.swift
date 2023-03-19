@@ -25,12 +25,19 @@ final class EditClassificationController: UITableViewController {
     }
     
     private func loadCategory() {
-        FirestoreManager.shared.loadClassification { [self] categoryItems, groupItems in
-            switch editType {
-            case .category:
-                editItems = categoryItems
-            case .group:
-                editItems = groupItems
+        FirestoreManager.shared.loadClassification { [weak self] result in
+            switch result {
+            case .success((let categoryItems, let groupItems)):
+                switch self?.editType {
+                case .category:
+                    self?.editItems = categoryItems
+                case .group:
+                    self?.editItems = groupItems
+                case .none:
+                    break
+                }
+            case .failure(let error):
+                self?.showAlert("실패", error.localizedDescription)
             }
         }
     }
@@ -41,6 +48,8 @@ final class EditClassificationController: UITableViewController {
     }
     
     private func modifyCategory(_ oldItem: String, to newItem: String) {
+        let filteredPlaces: [Place]
+        
         switch editType {
         case .category:
             places = places.map {
@@ -52,9 +61,7 @@ final class EditClassificationController: UITableViewController {
                 return $0
             }
             
-            places.filter { $0.category == newItem }.forEach {
-                FirestoreManager.shared.savePlace($0)
-            }
+            filteredPlaces = places.filter { $0.category == newItem }
         case .group:
             places = places.map {
                 if $0.group == oldItem {
@@ -65,9 +72,17 @@ final class EditClassificationController: UITableViewController {
                 return $0
             }
             
-            places.filter { $0.group == newItem }.forEach {
-                FirestoreManager.shared.savePlace($0)
-                
+            filteredPlaces = places.filter { $0.group == newItem }
+        }
+        
+        filteredPlaces.forEach {
+            FirestoreManager.shared.savePlace($0) { [weak self] result in
+                switch result {
+                case .success(_):
+                    break
+                case .failure(let failure):
+                    self?.showAlert("실패", failure.errorDescription)
+                }
             }
         }
     }

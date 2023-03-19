@@ -17,90 +17,101 @@ final class FirestoreManager {
         id = UIDevice.current.identifierForVendor!.uuidString
     }
     
-    func loadData(completionHandler: @escaping ([Place]) -> Void) {
-        database.collection(id).order(by: "date", descending: true).addSnapshotListener { querySnapshot, err in
-            if let error = err {
-                print(error)
-                return
-            }
-            
-            if let documents = querySnapshot?.documents {
-                let places = documents.compactMap{ Place(from: $0) }
-                completionHandler(places)
-            }
-        }
-    }
-    
-    func loadClassification(completionHandler: @escaping (_ categoryItems: [String], _ groupItems: [String]) -> Void) {
-        database.collection("category").document(id).getDocument { document, error in
-            if let document = document, document.exists {
-                guard let categoryItems = document.get("items") as? [String],
-                      let groupItems = document.get("group") as? [String] else { return }
+    func loadData(_ completion: @escaping (Result<[Place], FirebaseError>) -> Void) {
+        database.collection(id).order(by: PlaceData.date, descending: true)
+            .addSnapshotListener { querySnapshot, error in
+                if error != nil {
+                    completion(.failure(.fetch))
+                    return
+                }
                 
-                completionHandler(categoryItems, groupItems)
-            } else {
-                self.setupBasicClassification(completionHandler)
+                if let documents = querySnapshot?.documents {
+                    let places = documents.compactMap { Place(from: $0) }
+                    completion(.success(places))
+                }
             }
-        }
     }
     
-    func updateClassification(_ classification: String, with items: [String]){
-        database.collection("category").document(id).updateData([
+    func loadClassification(_ completion: @escaping (Result<([String], [String]), FirebaseError>) -> Void) {
+        database.collection(Classification.collection).document(id)
+            .getDocument { [weak self] document, error in
+                if let document = document, document.exists {
+                    guard let categories = document.get(PlaceData.category) as? [String],
+                          let groups = document.get(PlaceData.group) as? [String] else { return }
+                    
+                    completion(.success((categories, groups)))
+                    return
+                }
+                
+                self?.setupBasicClassification(completion)
+            }
+    }
+    
+    func updateClassification(_ classification: String, with items: [String]) {
+        database.collection(Classification.collection).document(id).updateData([
             classification : items
         ])
     }
     
-    func deletePlace(_ name: String) {
-        database.collection(id).document(name).delete() { err in
-            if let err = err {
-                print("Error removing document: \(err)")
-            } else {
-                print("Document successfully removed!")
+    func deletePlace(_ name: String,
+                     _ completion: @escaping (Result<Void, FirebaseError>) -> Void) {
+        database.collection(id).document(name).delete() { error in
+            if error != nil {
+                completion(.failure(.delete))
+                return
             }
+            
+            completion(.success(()))
         }
     }
     
-    func savePlace(_ place: Place) {
+    func savePlace(_ place: Place,
+                   _ completion: @escaping (Result<Void, FirebaseError>) -> Void) {
         let saveData: [String: Any] = [
-           "name": place.name,
-           "position": place.location,
-           "date": place.date,
-           "favorit": place.isFavorit,
-           "rate": place.rate,
-           "coment": place.coment,
-           "category": place.category,
-           "geopoint": place.geopoint,
-           "image": place.hasImage,
-           "group": place.group
-       ]
-
-       database.collection(id).document(place.name).setData(saveData) { err in
-           if let err = err {
-               print("Error writing document: \(err)")
-           } else {
-               print("Document successfully written!")
-           }
-       }
+            PlaceData.name: place.name,
+            PlaceData.location: place.location,
+            PlaceData.date: place.date,
+            PlaceData.favorit: place.isFavorit,
+            PlaceData.rating: place.rating,
+            PlaceData.coment: place.coment,
+            PlaceData.category: place.category,
+            PlaceData.geopoint: place.geopoint,
+            PlaceData.group: place.group
+        ]
+        
+        database.collection(id).document(place.name)
+            .setData(saveData) { error in
+                if error != nil {
+                    completion(.failure(.save))
+                    return
+                }
+                
+                completion(.success(()))
+            }
     }
     
-    func updateFavorit(_ favorit: Bool, placeName: String) {
-        database.collection(id).document(placeName).updateData([ "favorit": favorit ]) { err in
-            if let err = err {
-                print("Error updating document: \(err)")
-            } else {
-                print("Document successfully updated")
+    func updateFavorit(_ favorit: Bool, placeName: String,
+                       _ completion: @escaping (Result<Void, FirebaseError>) -> Void) {
+        database.collection(id).document(placeName)
+            .updateData([PlaceData.favorit: favorit]) { error in
+                if error != nil {
+                    completion(.failure(.save))
+                    return
+                }
+                
+                completion(.success(()))
             }
-        }
     }
     
-    private func setupBasicClassification(_ completionHandler: @escaping (_ categoryItems: [String], _ groupItems: [String]) -> Void) {
-        database.collection("category").document(id).setData(Classification.basic) { err in
-            if let err = err {
-                print("Error writing document: \(err)")
-            } else {
-                self.loadClassification(completionHandler: completionHandler)
+    private func setupBasicClassification(_ completion: @escaping (Result<([String], [String]), FirebaseError>) -> Void) {
+        database.collection(Classification.collection).document(id)
+            .setData(Classification.basic) { error in
+                if error != nil {
+                    completion(.success(([], [])))
+                }
+                
+                self.loadClassification(completion)
             }
-        }
     }
 }
 

@@ -12,9 +12,14 @@ final class PlaceDataManager {
     private init() { }
     
     func load(completion: @escaping ([Place]) -> ()) {
-        FirestoreManager.shared.loadData() { [weak self] places in
-            self?.places = places
-            completion(places)
+        FirestoreManager.shared.loadData() { [weak self] result in
+            switch result {
+            case .success(let places):
+                self?.places = places
+                completion(places)
+            case .failure(_):
+                completion([])
+            }
         }
     }
     

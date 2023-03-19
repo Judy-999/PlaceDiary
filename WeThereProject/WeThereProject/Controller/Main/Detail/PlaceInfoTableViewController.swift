@@ -92,7 +92,15 @@ final class PlaceInfoTableViewController: UITableViewController, EditDelegate {
             let changedFavorit = !(place.isFavorit)
             
             place.isFavorit = changedFavorit
-            FirestoreManager.shared.updateFavorit(changedFavorit, placeName: place.name)
+            FirestoreManager.shared.updateFavorit(changedFavorit,
+                                                  placeName: place.name)  { [weak self] result in
+                switch result {
+                case .success(_):
+                    break
+                case .failure(let failure):
+                    self?.showAlert("실패", failure.errorDescription)
+                }
+            }
             
             self?.showAlert(changeFavorit, PlaceInfo.Edit.changeFavorit)
             
