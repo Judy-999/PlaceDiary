@@ -134,7 +134,8 @@ final class AddPlaceTableViewController: UITableViewController {
 
     @IBAction private func doneButtonTapped(_ sender: UIButton) {
         let places = PlaceDataManager.shared.getPlaces()
-        guard places.first(where: { $0.name == nameTextField.text }) == nil else {
+        guard (places.first(where: { $0.name == nameTextField.text }) == nil ||
+            receiveName == nameTextField.text) == true else {
             showAlert(.duplicatePlace)
            return
         }

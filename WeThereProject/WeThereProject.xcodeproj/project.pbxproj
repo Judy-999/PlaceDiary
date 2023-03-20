@@ -130,6 +130,14 @@
 			path = Extension;
 			sourceTree = "<group>";
 		};
+		20ABBE8929C81DAA00F6AAFD /* Add */ = {
+			isa = PBXGroup;
+			children = (
+				207E4F852660985D00AC0A6E /* AddPlaceTableViewController.swift */,
+			);
+			path = Add;
+			sourceTree = "<group>";
+		};
 		20AD213229BF051F00A92B1E /* Common */ = {
 			isa = PBXGroup;
 			children = (
@@ -194,8 +202,8 @@
 		20D4EA9F29C0421F007B493B /* Main */ = {
 			isa = PBXGroup;
 			children = (
-				207E4F852660985D00AC0A6E /* AddPlaceTableViewController.swift */,
 				20CB7C9B269F28130057EAF0 /* MainViewController.swift */,
+				20ABBE8929C81DAA00F6AAFD /* Add */,
 				20D4EAA229C0428C007B493B /* Detail */,
 			);
 			path = Main;
