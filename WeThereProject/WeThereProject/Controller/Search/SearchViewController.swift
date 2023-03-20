@@ -13,7 +13,6 @@ final class SearchViewController: UIViewController {
     private var filteredPlaces = [Place]()
     private var searchText = String()
     private var places = [Place]()
-    
     private var isSearching: Bool {
         let searchController = self.navigationItem.searchController
         let isActive = searchController?.isActive == true
@@ -22,13 +21,18 @@ final class SearchViewController: UIViewController {
     }
 
     override func viewWillAppear(_ animated: Bool) {
+        setupPlaces()
         searchTableView.reloadData()
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        setupPlaces()
         setupSearchController()
         setupTableView()
+    }
+    
+    private func setupPlaces() {
         places = PlaceDataManager.shared.getPlaces()
     }
     

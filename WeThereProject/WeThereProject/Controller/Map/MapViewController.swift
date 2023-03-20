@@ -14,18 +14,24 @@ final class MapViewController: UIViewController {
     private var mapView: GMSMapView?
     private var places = [Place]()
     private var selectedPlaceName = String()
-    private var groupList = [PlaceInfo.Map.allType]
-    private var categoryList = [PlaceInfo.Map.allType]
+    private var groupList = [String]()
+    private var categoryList = [String]()
     private var optionedPlaces = [Place]()
     var onePlace: Place?
     
     @IBOutlet private weak var entireView: UIView!
     @IBOutlet private weak var filterButton: UIBarButtonItem!
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        setupPlaces()
+        loadClassification()
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        places = PlaceDataManager.shared.getPlaces()
-        loadCategory()
+        setupPlaces()
+        loadClassification()
         setupLocationManager()
         setupMapView()
         drawMarkers(with: places)
@@ -34,6 +40,10 @@ final class MapViewController: UIViewController {
         if let place = onePlace {
             selectMarker(at: place)
         }
+    }
+    
+    private func setupPlaces() {
+        places = PlaceDataManager.shared.getPlaces()
     }
     
     private func setupLocationManager() {
@@ -59,16 +69,11 @@ final class MapViewController: UIViewController {
         entireView.addSubview(mapView!)
     }
     
-    private func loadCategory() {
-        FirestoreManager.shared.loadClassification { [weak self] result in
-            switch result {
-            case .success((let categoryItems, let groupItems)):
-                self?.groupList += groupItems
-                self?.categoryList += categoryItems
-            case .failure(let error):
-                self?.showAlert("실패", error.localizedDescription)
-            }
-        }
+    private func loadClassification() {
+        let calssification: (categoryItems: [String], groupItems: [String])
+        = PlaceDataManager.shared.getClassification()
+        groupList = [PlaceInfo.Map.allType] + calssification.groupItems
+        categoryList = [PlaceInfo.Map.allType] + calssification.categoryItems
     }
     
     private func selectMarker(at place: Place) {

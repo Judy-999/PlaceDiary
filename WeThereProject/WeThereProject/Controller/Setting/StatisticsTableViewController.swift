@@ -24,22 +24,27 @@ final class StatisticsTableViewController: UITableViewController {
         }
     }
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        places = PlaceDataManager.shared.getPlaces()
-        loadCategory()
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        setupPlaces()
+        loadClassification()
     }
     
-    private func loadCategory() {
-        FirestoreManager.shared.loadClassification { [weak self] result in
-            switch result {
-            case .success((let categoryItems, let groupItems)):
-                self?.categoryList = categoryItems
-                self?.groupList = groupItems
-            case .failure(let error):
-                self?.showAlert("실패", error.localizedDescription)
-            }
-        }
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        setupPlaces()
+        loadClassification()
+    }
+    
+    private func setupPlaces() {
+        places = PlaceDataManager.shared.getPlaces()
+    }
+    
+    private func loadClassification() {
+        let calssification: (categoryItems: [String], groupItems: [String])
+        = PlaceDataManager.shared.getClassification()
+        groupList = calssification.groupItems
+        categoryList = calssification.categoryItems
     }
     
     override func numberOfSections(in tableView: UITableView) -> Int {

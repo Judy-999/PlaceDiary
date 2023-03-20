@@ -103,12 +103,9 @@ final class PlaceInfoTableViewController: UITableViewController, EditDelegate {
             }
             
             self?.showAlert(changeFavorit, PlaceInfo.Edit.changeFavorit)
-            
         }
-        
-        let cancel = Alert.cancel
-        [edit, delete, favorit, cancel].forEach { editAlert.addAction($0) }
-        
+
+        [edit, delete, favorit, Alert.cancel].forEach { editAlert.addAction($0) }
         present(editAlert, animated: true)
     }
     
@@ -116,7 +113,6 @@ final class PlaceInfoTableViewController: UITableViewController, EditDelegate {
         self.performSegue(withIdentifier: Segue.detailImage.identifier, sender: self)
     }
     
-    // MARK: - Navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         switch segue.identifier {
         case Segue.edit.identifier:

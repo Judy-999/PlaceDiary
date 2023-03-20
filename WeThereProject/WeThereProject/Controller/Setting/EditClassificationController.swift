@@ -18,33 +18,39 @@ final class EditClassificationController: UITableViewController {
         }
     }
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        places = PlaceDataManager.shared.getPlaces()
-        loadCategory()
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        setupPlaces()
+        loadClassification()
     }
     
-    private func loadCategory() {
-        FirestoreManager.shared.loadClassification { [weak self] result in
-            switch result {
-            case .success((let categoryItems, let groupItems)):
-                switch self?.editType {
-                case .category:
-                    self?.editItems = categoryItems
-                case .group:
-                    self?.editItems = groupItems
-                case .none:
-                    break
-                }
-            case .failure(let error):
-                self?.showAlert("실패", error.localizedDescription)
-            }
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        setupPlaces()
+        loadClassification()
+    }
+    
+    private func setupPlaces() {
+        places = PlaceDataManager.shared.getPlaces()
+    }
+    
+    private func loadClassification() {
+        let calssification: (categoryItems: [String], groupItems: [String])
+        = PlaceDataManager.shared.getClassification()
+
+        switch editType {
+        case .category:
+            editItems = calssification.categoryItems
+        case .group:
+            editItems = calssification.groupItems
         }
     }
     
     private func updateClassification() {
         FirestoreManager.shared.updateClassification(editType.rawValue,
                                                      with: editItems)
+        
+        PlaceDataManager.shared.setupClassification(with: editItems, type: editType)
     }
     
     private func modifyCategory(_ oldItem: String, to newItem: String) {
@@ -85,6 +91,8 @@ final class EditClassificationController: UITableViewController {
                 }
             }
         }
+        
+        PlaceDataManager.shared.setupPlaces(with: places)
     }
     
     private func checkNotUsed(item: String) -> Bool {

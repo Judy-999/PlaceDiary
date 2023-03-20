@@ -14,8 +14,8 @@ final class MainViewController: UIViewController {
         case category
     }
     
-    private var categoryItem = [String]()
-    private var groupItem = [String]()
+    private var categoryItems = [String]()
+    private var groupItems = [String]()
     private var placeType: [ViewMode: [String]] = [.all: [""]]
     private var places = [Place]() {
         didSet {
@@ -29,7 +29,8 @@ final class MainViewController: UIViewController {
     @IBOutlet weak var placeTableView: UITableView!
     
     override func viewWillAppear(_ animated: Bool) {
-        loadClassification()
+        setupClassification()
+        setupPlaces()
         placeTableView.reloadData()
     }
     
@@ -38,6 +39,10 @@ final class MainViewController: UIViewController {
         loadPlaceData()
         loadClassification()
         configureRefreshControl()
+    }
+    
+    private func setupPlaces() {
+        places = PlaceDataManager.shared.getPlaces()
     }
     
     private func configureRefreshControl() {
@@ -53,23 +58,37 @@ final class MainViewController: UIViewController {
     }
 
     private func loadPlaceData() {
-        PlaceDataManager.shared.load() { [weak self] places in
-            self?.places = places
+        PlaceDataManager.shared.loadPlaces() { [weak self] result in
+            switch result {
+            case .success(let places):
+                self?.places = places
+            case .failure(let failure):
+                self?.showAlert("실패", failure.localizedDescription)
+            }
         }
     }
 
     private func loadClassification() {
-        FirestoreManager.shared.loadClassification { [weak self] result in
+        PlaceDataManager.shared.loadClassification { [weak self] result in
             switch result {
             case .success((let categoryItems, let groupItems)):
-                self?.categoryItem = categoryItems
-                self?.groupItem = groupItems
+                self?.categoryItems = categoryItems
+                self?.groupItems = groupItems
                 self?.placeType[.category] = categoryItems
                 self?.placeType[.group] = groupItems
             case .failure(let error):
                 self?.showAlert("실패", error.localizedDescription)
             }
         }
+    }
+    
+    private func setupClassification() {
+        let calssification: (categoryItems: [String], groupItems: [String])
+        = PlaceDataManager.shared.getClassification()
+        categoryItems = calssification.categoryItems
+        groupItems = calssification.groupItems
+        placeType[.category] = calssification.categoryItems
+        placeType[.group] = calssification.groupItems
     }
 
     private func filteredPlaces(at section: Int) -> [Place] {

@@ -38,6 +38,11 @@ final class AddPlaceTableViewController: UITableViewController {
     var viewMode: ViewMode = .add
     var editDelegate: EditDelegate?
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        loadClassification()
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         loadClassification()
@@ -67,16 +72,12 @@ final class AddPlaceTableViewController: UITableViewController {
     }
     
     private func loadClassification() {
-        FirestoreManager.shared.loadClassification { [weak self] result in
-            switch result {
-            case .success((let categoryItems, let groupItems)):
-                self?.categoryItems = categoryItems
-                self?.groupItems = groupItems
-                self?.setupPickerView()
-            case .failure(let error):
-                self?.showAlert("실패", error.localizedDescription)
-            }
-        }
+        let calssification: (categoryItems: [String], groupItems: [String])
+        = PlaceDataManager.shared.getClassification()
+        
+        categoryItems = calssification.categoryItems
+        groupItems = calssification.groupItems
+        setupPickerView()
     }
     
     private func setupPickerView() {
@@ -86,7 +87,6 @@ final class AddPlaceTableViewController: UITableViewController {
     
     private func configureEditView() {
         guard let place = editData else { return }
-        let addRate = RatingManager()
         
         placeImageView.image = receiveImage
         nameTextField.text = place.name
@@ -97,7 +97,7 @@ final class AddPlaceTableViewController: UITableViewController {
         placeGeoPoint = place.geopoint
         receiveName = place.name
         
-        addRate.sliderStar(starImageViews,
+        RatingManager().sliderStar(starImageViews,
                            rating: NSString(string: place.rating).floatValue)
         
         guard let categoryIndex = categoryItems.firstIndex(of: place.category),
@@ -305,9 +305,8 @@ extension AddPlaceTableViewController: UIPickerViewDelegate, UIPickerViewDataSou
                     numberOfRowsInComponent component: Int) -> Int {
         if pickerView == categoryPickerView {
             return categoryItems.count
-        } else {
-            return groupItems.count
         }
+        return groupItems.count
     }
     
     func pickerView(_ pickerView: UIPickerView,
@@ -315,9 +314,8 @@ extension AddPlaceTableViewController: UIPickerViewDelegate, UIPickerViewDataSou
                     forComponent component: Int) -> String? {
         if pickerView == categoryPickerView {
             return categoryItems[row]
-        } else {
-            return groupItems[row]
         }
+        return groupItems[row]
     }
 }
 

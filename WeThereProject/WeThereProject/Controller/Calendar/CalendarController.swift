@@ -20,10 +20,19 @@ final class CalendarController: UIViewController {
     @IBOutlet private weak var calendar: FSCalendar!
     @IBOutlet private weak var tableView: UITableView!
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        setupPlaces()
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setupCalendar()
+        setupPlaces()
         calendar.reloadData()
+    }
+    
+    private func setupPlaces() {
         places = PlaceDataManager.shared.getPlaces()
     }
 
