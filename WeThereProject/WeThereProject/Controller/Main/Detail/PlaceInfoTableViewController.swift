@@ -19,7 +19,7 @@ final class PlaceInfoTableViewController: UITableViewController, EditDelegate {
     @IBOutlet private weak var groupLabel: UILabel!
     @IBOutlet private weak var ratingLabel: UILabel!
     @IBOutlet private weak var comentTextView: UITextView!
-    @IBOutlet private var rateButtons: [UIButton]!
+    @IBOutlet private var starImageView: [UIImageView]!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -57,7 +57,7 @@ final class PlaceInfoTableViewController: UITableViewController, EditDelegate {
         locationButton.contentHorizontalAlignment = .left
         locationButton.setTitle(place.location, for: .normal)
         
-        RatingManager().sliderStar(rateButtons,
+        RatingManager().sliderStar(starImageView,
                                    rating: NSString(string: place.rating).floatValue)
     }
     

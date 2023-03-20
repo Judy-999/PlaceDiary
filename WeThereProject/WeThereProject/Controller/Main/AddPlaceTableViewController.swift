@@ -29,7 +29,7 @@ final class AddPlaceTableViewController: UITableViewController {
     @IBOutlet weak var comentTextView: UITextView!
     @IBOutlet weak var rateLabel: UILabel!
     @IBOutlet weak var starSlider: StarRatingUISlider!
-    @IBOutlet var starButtons: [UIButton]!
+    @IBOutlet var starImageViews: [UIImageView]!
     
     private var categoryItems = [String](), groupItems = [String]()
     private var receiveImage: UIImage?, receiveName: String = ""
@@ -96,7 +96,7 @@ final class AddPlaceTableViewController: UITableViewController {
         placeGeoPoint = place.geopoint
         receiveName = place.name
         
-        addRate.sliderStar(starButtons,
+        addRate.sliderStar(starImageViews,
                            rating: NSString(string: place.rating).floatValue)
         
         guard let categoryIndex = categoryItems.firstIndex(of: place.category),
@@ -216,7 +216,7 @@ final class AddPlaceTableViewController: UITableViewController {
     }
     
     @IBAction private func starSliderChanged(_ sender: Any) {
-        let rating = RatingManager().sliderStar(starButtons, rating: starSlider.value)
+        let rating = RatingManager().sliderStar(starImageViews, rating: starSlider.value)
         rateLabel.text = rating
     }
     

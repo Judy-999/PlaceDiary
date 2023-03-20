@@ -9,31 +9,31 @@ import UIKit
 
 final class RatingManager {
     @discardableResult
-    func sliderStar(_ buttons: [UIButton], rating: Float) -> String {
+    func sliderStar(_ imageView: [UIImageView], rating: Float) -> String {
         var ratingValue = rating.rounded(.down)
         let halfRating = rating - ratingValue
         let rateIndex = Int(ratingValue)
 
-        clearStar(buttons)
-        fillStar(buttons, to: rateIndex)
+        clearStar(imageView)
+        fillStar(imageView, to: rateIndex)
 
         if halfRating >= Rating.halfValue {
-            buttons[rateIndex].setImage(Rating.halfStarImage, for: .normal)
+            imageView[rateIndex].image = Rating.halfStarImage
             ratingValue += Rating.halfValue
         }
         
         return String(format: "%.1f", ratingValue)
     }
     
-    private func fillStar(_ buttons: [UIButton], to index: Int) {
+    private func fillStar(_ imageVeiws: [UIImageView], to index: Int) {
         for fillIndex in Int.zero..<index {
-            buttons[fillIndex].setImage(Rating.fillStarImage, for: .normal)
+            imageVeiws[fillIndex].image = Rating.fillStarImage
         }
     }
     
-    private func clearStar(_ buttons: [UIButton]) {
-        buttons.forEach {
-            $0.setImage(Rating.emptyStarImage, for: .normal)
+    private func clearStar(_ imageVeiws: [UIImageView]) {
+        imageVeiws.forEach {
+            $0.image = Rating.emptyStarImage
         }
     }
 }
