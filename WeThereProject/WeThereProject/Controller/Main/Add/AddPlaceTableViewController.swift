@@ -41,6 +41,7 @@ final class AddPlaceTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         loadClassification()
+        setupTouchevent()
         
         switch viewMode {
         case .add:
@@ -252,7 +253,8 @@ extension AddPlaceTableViewController: UITextViewDelegate {
 
 // MARK: ImagePicker
 extension AddPlaceTableViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
-    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+    func imagePickerController(_ picker: UIImagePickerController,
+                               didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         var selectedImage: UIImage? = nil
         
         if let image = info[UIImagePickerController.InfoKey.editedImage] as? UIImage {
@@ -262,27 +264,29 @@ extension AddPlaceTableViewController: UIImagePickerControllerDelegate, UINaviga
         }
         
         placeImageView.image = selectedImage
-        self.dismiss(animated: true, completion: nil)
+        dismiss(animated: true, completion: nil)
     }
     
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
-        self.dismiss(animated: true, completion: nil)  
+        dismiss(animated: true, completion: nil)
     }
 }
 
 // MARK: GMSAutocomplete
 extension AddPlaceTableViewController: GMSAutocompleteViewControllerDelegate {
-    func viewController(_ viewController: GMSAutocompleteViewController, didAutocompleteWith place: GMSPlace) {
+    func viewController(_ viewController: GMSAutocompleteViewController,
+                        didAutocompleteWith place: GMSPlace) {
         let address = place.formattedAddress?.replacingOccurrences(of: "대한민국 ", with: "")
-        self.locationTextView.text = address
-        self.locationTextView.textColor = UIColor.label
-        self.locationTextView.isEditable = true
-        self.placeGeoPoint = GeoPoint(latitude: place.coordinate.latitude,
+        locationTextView.text = address
+        locationTextView.textColor = .label
+        locationTextView.isEditable = true
+        placeGeoPoint = GeoPoint(latitude: place.coordinate.latitude,
                                       longitude: place.coordinate.longitude)
         dismiss(animated: true, completion: nil)
     }
     
-    func viewController(_ viewController: GMSAutocompleteViewController, didFailAutocompleteWithError error: Error) {
+    func viewController(_ viewController: GMSAutocompleteViewController,
+                        didFailAutocompleteWithError error: Error) {
         print(error.localizedDescription)
     }
     
@@ -297,7 +301,8 @@ extension AddPlaceTableViewController: UIPickerViewDelegate, UIPickerViewDataSou
         return 1
     }
     
-    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+    func pickerView(_ pickerView: UIPickerView,
+                    numberOfRowsInComponent component: Int) -> Int {
         if pickerView == categoryPickerView {
             return categoryItems.count
         } else {
@@ -305,7 +310,9 @@ extension AddPlaceTableViewController: UIPickerViewDelegate, UIPickerViewDataSou
         }
     }
     
-    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+    func pickerView(_ pickerView: UIPickerView,
+                    titleForRow row: Int,
+                    forComponent component: Int) -> String? {
         if pickerView == categoryPickerView {
             return categoryItems[row]
         } else {
@@ -314,17 +321,15 @@ extension AddPlaceTableViewController: UIPickerViewDelegate, UIPickerViewDataSou
     }
 }
 
-final class StarRatingUISlider: UISlider {
-    override func beginTracking(_ touch: UITouch, with event: UIEvent?) -> Bool {
-        let width = self.frame.size.width
-        let tapPoint = touch.location(in: self)
-        let tapPercent = tapPoint.x / width
-        let newValue = self.maximumValue * Float(tapPercent)
-        
-        if newValue != self.value {
-            self.value = newValue
-        }
-        
-        return true
+// MARK: Hide Keyboard
+extension AddPlaceTableViewController {
+    private func setupTouchevent() {
+        tableView.addGestureRecognizer(UITapGestureRecognizer(target: self,
+                                                              action: #selector(hideKeyboard)))
+    }
+    
+    @objc private func hideKeyboard() {
+        view.endEditing(true)
     }
 }
+
