@@ -130,6 +130,16 @@
 			path = Extension;
 			sourceTree = "<group>";
 		};
+		2090EC1E29C82F2B009E8215 /* Firebase */ = {
+			isa = PBXGroup;
+			children = (
+				202D7B05294C13990093D80A /* FirestoreManager.swift */,
+				20451D4C294C355B00186A35 /* StorageManager.swift */,
+				2022249D29C73619008F4A2C /* FirebaseError.swift */,
+			);
+			path = Firebase;
+			sourceTree = "<group>";
+		};
 		20ABBE8929C81DAA00F6AAFD /* Add */ = {
 			isa = PBXGroup;
 			children = (
@@ -181,12 +191,10 @@
 		20B80BD5294AF46C00CA0F2B /* Util */ = {
 			isa = PBXGroup;
 			children = (
-				202D7B05294C13990093D80A /* FirestoreManager.swift */,
-				20451D4C294C355B00186A35 /* StorageManager.swift */,
+				2090EC1E29C82F2B009E8215 /* Firebase */,
 				208D9FE8266DFD4A00FC2067 /* RatingManager.swift */,
 				20F553F2294C90F2001F69AD /* ImageCacheManager.swift */,
 				20978BFD29C45F4E00D845AD /* PlaceDataManager.swift */,
-				2022249D29C73619008F4A2C /* FirebaseError.swift */,
 			);
 			path = Util;
 			sourceTree = "<group>";
