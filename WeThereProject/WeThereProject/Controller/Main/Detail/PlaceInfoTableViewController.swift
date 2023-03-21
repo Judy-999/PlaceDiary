@@ -68,6 +68,43 @@ final class PlaceInfoTableViewController: UITableViewController, EditDelegate {
         placeImage.addGestureRecognizer(tap)
     }
     
+    private func deletePlace(_ place: Place) {
+        let deleteAlert = UIAlertController(title: PlaceInfo.Main.delete,
+                                            message: place.name + PlaceInfo.Main.confirmDelete,
+                                            preferredStyle: .alert)
+        let okAction = UIAlertAction(title: "삭제", style: .destructive) { [weak self] _ in
+            FirestoreManager.shared.deletePlace(place.name) { [weak self] result in
+                switch result {
+                case .success(_):
+                    break
+                case .failure(let failure):
+                    self?.showAlert("실패", failure.errorDescription)
+                }
+            }
+            
+            StorageManager.shared.deleteImage(name: place.name) { [weak self] result in
+                switch result {
+                case .success(_):
+                    break
+                case .failure(let failure):
+                    self?.showAlert("실패", failure.errorDescription)
+                }
+            }
+            
+            var places = PlaceDataManager.shared.getPlaces()
+            if let index = places.firstIndex(where: { $0.name == place.name }) {
+                places.remove(at: index)
+            }
+            PlaceDataManager.shared.setupPlaces(with: places)
+            
+            self?.navigationController?.popViewController(animated: true)
+        }
+        
+        deleteAlert.addAction(Alert.cancel)
+        deleteAlert.addAction(okAction)
+        present(deleteAlert, animated: true)
+    }
+    
     @IBAction private func editButtonTapped(_ sender: UIButton) {
         guard var place = place else { return }
         let changeFavorit = place.isFavorit ? PlaceInfo.Edit.unfavorite :  PlaceInfo.Edit.addFavorite
@@ -75,17 +112,9 @@ final class PlaceInfoTableViewController: UITableViewController, EditDelegate {
                                           message: nil,
                                           preferredStyle: .actionSheet)
         
-        
         let edit = UIAlertAction(title: PlaceInfo.Edit.editPlace,
                                  style: .default) { [weak self] _ in
             self?.performSegue(withIdentifier: Segue.edit.identifier, sender: self)
-        }
-        
-        let delete = UIAlertAction(title: PlaceInfo.Edit.deletePlace,
-                                   style: .default) { [weak self] _ in
-            
-            
-            self?.navigationController?.popViewController(animated: true)
         }
         
         let favorit = UIAlertAction(title: changeFavorit, style: .default){ [weak self] _ in
@@ -105,7 +134,12 @@ final class PlaceInfoTableViewController: UITableViewController, EditDelegate {
             self?.showAlert(changeFavorit, PlaceInfo.Edit.changeFavorit)
         }
 
-        [edit, delete, favorit, Alert.cancel].forEach { editAlert.addAction($0) }
+        let delete = UIAlertAction(title: PlaceInfo.Edit.deletePlace,
+                                   style: .destructive) { [weak self] _ in
+            self?.deletePlace(place)
+        }
+        
+        [edit, favorit, delete, Alert.cancel].forEach { editAlert.addAction($0) }
         present(editAlert, animated: true)
     }
     
