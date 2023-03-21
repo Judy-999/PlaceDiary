@@ -13,7 +13,6 @@ final class CalendarController: UIViewController {
     private var eventPlaces = [Place]() {
         didSet {
             tableView.reloadData()
-            calendar.reloadData()
         }
     }
     
