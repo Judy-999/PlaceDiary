@@ -10,7 +10,7 @@ import MobileCoreServices
 import FirebaseFirestore
 import GooglePlaces
 
-protocol EditDelegate {
+protocol EditDelegate: AnyObject {
     func didEditPlace(data: Place)
 }
 
@@ -35,8 +35,8 @@ final class AddPlaceTableViewController: UITableViewController {
     private var receiveImage: UIImage?, receiveName: String = ""
     private var placeGeoPoint: GeoPoint?
     private var editData: Place?
+    weak var editDelegate: EditDelegate?
     var viewMode: ViewMode = .add
-    var editDelegate: EditDelegate?
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
