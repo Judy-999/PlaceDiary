@@ -126,6 +126,9 @@ fastlane/test_output
 
 iOSInjectionProject/
 
+## APIKEY
+GMSInfo.plist
+
 ### SwiftPackageManager ###
 Packages
 xcuserdata

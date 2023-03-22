@@ -17,6 +17,7 @@
 		204CEEB7267F0A3F000D395F /* EditClassificationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 204CEEB6267F0A3F000D395F /* EditClassificationController.swift */; };
 		204CEEB9267F0BD1000D395F /* SettingTableController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 204CEEB8267F0BD1000D395F /* SettingTableController.swift */; };
 		204E80A829CACE9000B239EC /* DeviceKeyManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 204E80A729CACE9000B239EC /* DeviceKeyManager.swift */; };
+		204E80AA29CAE36F00B239EC /* GMSInfo.plist in Resources */ = {isa = PBXBuildFile; fileRef = 204E80A929CAE36F00B239EC /* GMSInfo.plist */; };
 		20544EFB268AFBD700D780E4 /* CalendarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20544EFA268AFBD700D780E4 /* CalendarController.swift */; };
 		206BCDE429C2F535009F5BFB /* Alert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 206BCDE329C2F535009F5BFB /* Alert.swift */; };
 		206BCDE629C2F5FB009F5BFB /* Segue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 206BCDE529C2F5FB009F5BFB /* Segue.swift */; };
@@ -58,6 +59,7 @@
 		204CEEB6267F0A3F000D395F /* EditClassificationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditClassificationController.swift; sourceTree = "<group>"; };
 		204CEEB8267F0BD1000D395F /* SettingTableController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingTableController.swift; sourceTree = "<group>"; };
 		204E80A729CACE9000B239EC /* DeviceKeyManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceKeyManager.swift; sourceTree = "<group>"; };
+		204E80A929CAE36F00B239EC /* GMSInfo.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = GMSInfo.plist; sourceTree = "<group>"; };
 		20544EFA268AFBD700D780E4 /* CalendarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarController.swift; sourceTree = "<group>"; };
 		206BCDE329C2F535009F5BFB /* Alert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Alert.swift; sourceTree = "<group>"; };
 		206BCDE529C2F5FB009F5BFB /* Segue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Segue.swift; sourceTree = "<group>"; };
@@ -286,6 +288,7 @@
 			children = (
 				20E3E2DE265E263A004BDFF6 /* Info.plist */,
 				20105EFA2664DA35007AA233 /* GoogleService-Info.plist */,
+				204E80A929CAE36F00B239EC /* GMSInfo.plist */,
 				2067AA1B266B82C200F7B891 /* Resources */,
 				20B80BD4294AF45B00CA0F2B /* Application */,
 				20AD213229BF051F00A92B1E /* Common */,
@@ -387,6 +390,7 @@
 			files = (
 				20E3E2DD265E263A004BDFF6 /* LaunchScreen.storyboard in Resources */,
 				20E3E2DA265E263A004BDFF6 /* Assets.xcassets in Resources */,
+				204E80AA29CAE36F00B239EC /* GMSInfo.plist in Resources */,
 				20105EFB2664DA35007AA233 /* GoogleService-Info.plist in Resources */,
 				20E3E2D8265E2639004BDFF6 /* Main.storyboard in Resources */,
 			);
