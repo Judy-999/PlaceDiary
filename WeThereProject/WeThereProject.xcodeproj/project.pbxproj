@@ -16,6 +16,7 @@
 		20451D4D294C355B00186A35 /* StorageManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20451D4C294C355B00186A35 /* StorageManager.swift */; };
 		204CEEB7267F0A3F000D395F /* EditClassificationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 204CEEB6267F0A3F000D395F /* EditClassificationController.swift */; };
 		204CEEB9267F0BD1000D395F /* SettingTableController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 204CEEB8267F0BD1000D395F /* SettingTableController.swift */; };
+		204E80A829CACE9000B239EC /* DeviceKeyManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 204E80A729CACE9000B239EC /* DeviceKeyManager.swift */; };
 		20544EFB268AFBD700D780E4 /* CalendarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20544EFA268AFBD700D780E4 /* CalendarController.swift */; };
 		206BCDE429C2F535009F5BFB /* Alert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 206BCDE329C2F535009F5BFB /* Alert.swift */; };
 		206BCDE629C2F5FB009F5BFB /* Segue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 206BCDE529C2F5FB009F5BFB /* Segue.swift */; };
@@ -56,6 +57,7 @@
 		20451D4C294C355B00186A35 /* StorageManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorageManager.swift; sourceTree = "<group>"; };
 		204CEEB6267F0A3F000D395F /* EditClassificationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditClassificationController.swift; sourceTree = "<group>"; };
 		204CEEB8267F0BD1000D395F /* SettingTableController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingTableController.swift; sourceTree = "<group>"; };
+		204E80A729CACE9000B239EC /* DeviceKeyManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceKeyManager.swift; sourceTree = "<group>"; };
 		20544EFA268AFBD700D780E4 /* CalendarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarController.swift; sourceTree = "<group>"; };
 		206BCDE329C2F535009F5BFB /* Alert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Alert.swift; sourceTree = "<group>"; };
 		206BCDE529C2F5FB009F5BFB /* Segue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Segue.swift; sourceTree = "<group>"; };
@@ -195,6 +197,7 @@
 				208D9FE8266DFD4A00FC2067 /* RatingManager.swift */,
 				20F553F2294C90F2001F69AD /* ImageCacheManager.swift */,
 				20978BFD29C45F4E00D845AD /* PlaceDataManager.swift */,
+				204E80A729CACE9000B239EC /* DeviceKeyManager.swift */,
 			);
 			path = Util;
 			sourceTree = "<group>";
@@ -457,6 +460,7 @@
 				20E3E2E5265E355D004BDFF6 /* MapViewController.swift in Sources */,
 				20AD213629BF16E100A92B1E /* UIViewController+.swift in Sources */,
 				20D4EA9E29C01412007B493B /* Date+.swift in Sources */,
+				204E80A829CACE9000B239EC /* DeviceKeyManager.swift in Sources */,
 				204CEEB9267F0BD1000D395F /* SettingTableController.swift in Sources */,
 				2088D238294E96C9009415C1 /* UIImage+.swift in Sources */,
 				2020E4E32667BE600091D569 /* Place.swift in Sources */,

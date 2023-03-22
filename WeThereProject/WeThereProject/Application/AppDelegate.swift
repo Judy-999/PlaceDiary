@@ -16,6 +16,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         FirebaseApp.configure()
         GMSServices.provideAPIKey("AIzaSyBMiQ08kcBL64U8SIvbUKnUddHtX0iZwF4")
         GMSPlacesClient.provideAPIKey("AIzaSyBMiQ08kcBL64U8SIvbUKnUddHtX0iZwF4")
+        DeviceKeyManager.shared.checkAppFirstRun()
         Thread.sleep(forTimeInterval: 0.1)
         setupTabbar()
         return true

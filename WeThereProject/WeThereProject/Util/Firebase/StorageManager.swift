@@ -14,12 +14,7 @@ final class StorageManager {
     private let id: String
     
     private init() {
-        guard let collectionID = UIDevice.current.identifierForVendor?.uuidString else {
-            id = ""
-            return
-        }
-        
-        id = collectionID
+        id = DeviceKeyManager.shared.read()
     }
     
     func saveImage(_ image: UIImage, name: String,
