@@ -14,8 +14,8 @@ import GooglePlaces
 class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         FirebaseApp.configure()
-        GMSServices.provideAPIKey("AIzaSyBMiQ08kcBL64U8SIvbUKnUddHtX0iZwF4")
-        GMSPlacesClient.provideAPIKey("AIzaSyBMiQ08kcBL64U8SIvbUKnUddHtX0iZwF4")
+        GMSServices.provideAPIKey(Bundle.main.gmsApiKey)
+        GMSPlacesClient.provideAPIKey(Bundle.main.gmsApiKey)
         DeviceKeyManager.shared.checkAppFirstRun()
         Thread.sleep(forTimeInterval: 0.1)
         setupTabbar()

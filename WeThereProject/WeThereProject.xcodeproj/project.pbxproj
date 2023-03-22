@@ -18,6 +18,7 @@
 		204CEEB9267F0BD1000D395F /* SettingTableController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 204CEEB8267F0BD1000D395F /* SettingTableController.swift */; };
 		204E80A829CACE9000B239EC /* DeviceKeyManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 204E80A729CACE9000B239EC /* DeviceKeyManager.swift */; };
 		204E80AA29CAE36F00B239EC /* GMSInfo.plist in Resources */ = {isa = PBXBuildFile; fileRef = 204E80A929CAE36F00B239EC /* GMSInfo.plist */; };
+		204E80AC29CAE57300B239EC /* Bundle+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 204E80AB29CAE57300B239EC /* Bundle+.swift */; };
 		20544EFB268AFBD700D780E4 /* CalendarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20544EFA268AFBD700D780E4 /* CalendarController.swift */; };
 		206BCDE429C2F535009F5BFB /* Alert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 206BCDE329C2F535009F5BFB /* Alert.swift */; };
 		206BCDE629C2F5FB009F5BFB /* Segue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 206BCDE529C2F5FB009F5BFB /* Segue.swift */; };
@@ -60,6 +61,7 @@
 		204CEEB8267F0BD1000D395F /* SettingTableController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingTableController.swift; sourceTree = "<group>"; };
 		204E80A729CACE9000B239EC /* DeviceKeyManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceKeyManager.swift; sourceTree = "<group>"; };
 		204E80A929CAE36F00B239EC /* GMSInfo.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = GMSInfo.plist; sourceTree = "<group>"; };
+		204E80AB29CAE57300B239EC /* Bundle+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Bundle+.swift"; sourceTree = "<group>"; };
 		20544EFA268AFBD700D780E4 /* CalendarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarController.swift; sourceTree = "<group>"; };
 		206BCDE329C2F535009F5BFB /* Alert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Alert.swift; sourceTree = "<group>"; };
 		206BCDE529C2F5FB009F5BFB /* Segue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Segue.swift; sourceTree = "<group>"; };
@@ -130,6 +132,7 @@
 				2088D237294E96C9009415C1 /* UIImage+.swift */,
 				20AD213529BF16E100A92B1E /* UIViewController+.swift */,
 				20D4EA9D29C01412007B493B /* Date+.swift */,
+				204E80AB29CAE57300B239EC /* Bundle+.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -155,6 +158,7 @@
 		20AD213229BF051F00A92B1E /* Common */ = {
 			isa = PBXGroup;
 			children = (
+				2088D236294E96B0009415C1 /* Extension */,
 				206BCDE229C2F526009F5BFB /* Namespace */,
 			);
 			path = Common;
@@ -296,7 +300,6 @@
 				20B80BD6294AF4A800CA0F2B /* Model */,
 				20B80BD3294AF43C00CA0F2B /* View */,
 				20B80BD2294AF41C00CA0F2B /* Controller */,
-				2088D236294E96B0009415C1 /* Extension */,
 			);
 			path = WeThereProject;
 			sourceTree = "<group>";
@@ -466,6 +469,7 @@
 				20D4EA9E29C01412007B493B /* Date+.swift in Sources */,
 				204E80A829CACE9000B239EC /* DeviceKeyManager.swift in Sources */,
 				204CEEB9267F0BD1000D395F /* SettingTableController.swift in Sources */,
+				204E80AC29CAE57300B239EC /* Bundle+.swift in Sources */,
 				2088D238294E96C9009415C1 /* UIImage+.swift in Sources */,
 				2020E4E32667BE600091D569 /* Place.swift in Sources */,
 				208D9FE9266DFD4A00FC2067 /* RatingManager.swift in Sources */,
