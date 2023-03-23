@@ -19,6 +19,7 @@
 		204E80A829CACE9000B239EC /* DeviceKeyManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 204E80A729CACE9000B239EC /* DeviceKeyManager.swift */; };
 		204E80AA29CAE36F00B239EC /* GMSInfo.plist in Resources */ = {isa = PBXBuildFile; fileRef = 204E80A929CAE36F00B239EC /* GMSInfo.plist */; };
 		204E80AC29CAE57300B239EC /* Bundle+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 204E80AB29CAE57300B239EC /* Bundle+.swift */; };
+		2052A03F29CC7ADF0075A954 /* PlaceRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2052A03E29CC7ADF0075A954 /* PlaceRepository.swift */; };
 		20544EFB268AFBD700D780E4 /* CalendarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20544EFA268AFBD700D780E4 /* CalendarController.swift */; };
 		206BCDE429C2F535009F5BFB /* Alert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 206BCDE329C2F535009F5BFB /* Alert.swift */; };
 		206BCDE629C2F5FB009F5BFB /* Segue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 206BCDE529C2F5FB009F5BFB /* Segue.swift */; };
@@ -65,6 +66,7 @@
 		204E80A729CACE9000B239EC /* DeviceKeyManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceKeyManager.swift; sourceTree = "<group>"; };
 		204E80A929CAE36F00B239EC /* GMSInfo.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = GMSInfo.plist; sourceTree = "<group>"; };
 		204E80AB29CAE57300B239EC /* Bundle+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Bundle+.swift"; sourceTree = "<group>"; };
+		2052A03E29CC7ADF0075A954 /* PlaceRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceRepository.swift; sourceTree = "<group>"; };
 		20544EFA268AFBD700D780E4 /* CalendarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarController.swift; sourceTree = "<group>"; };
 		206BCDE329C2F535009F5BFB /* Alert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Alert.swift; sourceTree = "<group>"; };
 		206BCDE529C2F5FB009F5BFB /* Segue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Segue.swift; sourceTree = "<group>"; };
@@ -218,6 +220,7 @@
 			isa = PBXGroup;
 			children = (
 				2020E4E22667BE600091D569 /* Place.swift */,
+				2052A03E29CC7ADF0075A954 /* PlaceRepository.swift */,
 			);
 			path = Data;
 			sourceTree = "<group>";
@@ -459,6 +462,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				20F88AC7266CD8820015B42E /* PlaceInfoTableViewController.swift in Sources */,
+				2052A03F29CC7ADF0075A954 /* PlaceRepository.swift in Sources */,
 				20978BFE29C45F4E00D845AD /* PlaceDataManager.swift in Sources */,
 				20B113832689BBC200A6A0FD /* PlaceCell.swift in Sources */,
 				20D7B4AF26EDEF5100DF954E /* StatisticsTableViewController.swift in Sources */,
