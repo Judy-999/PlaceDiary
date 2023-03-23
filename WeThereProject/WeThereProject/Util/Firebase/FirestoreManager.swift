@@ -5,6 +5,7 @@
 //  Created by 김주영 on 2021/06/02.
 //
 
+import RxSwift
 import FirebaseFirestore
 import UIKit
 
@@ -14,123 +15,115 @@ final class FirestoreManager {
     private let id: String
     
     private init() {
-        id = DeviceKeyManager.shared.read()
+        id = UIDevice.current.identifierForVendor!.uuidString
     }
     
-    func loadData(_ completion: @escaping (Result<[Place], FirebaseError>) -> Void) {
-        database.collection(id).order(by: PlaceData.date, descending: true)
-            .addSnapshotListener { querySnapshot, error in
+    func loadCollection() -> Observable<[QueryDocumentSnapshot]> {
+        let query = database.collection(id).order(by: PlaceData.date, descending: true)
+        return Observable.create { observable in
+            query.addSnapshotListener { querySnapshot, error in
                 if error != nil {
-                    completion(.failure(.fetch))
-                    return
+                    observable.onError(FirebaseError.fetch)
                 }
                 
                 if let documents = querySnapshot?.documents {
-                    let places = documents.compactMap { Place(from: $0) }
-                    completion(.success(places))
+                    observable.onNext(documents)
                 }
-            }
-    }
-    
-    func loadClassification(_ completion: @escaping (Result<([String], [String]), FirebaseError>) -> Void) {
-        database.collection(Classification.collection).document(id)
-            .getDocument { [weak self] document, error in
-                if let document = document, document.exists {
-                    guard let categories = document.get(PlaceData.category) as? [String],
-                          let groups = document.get(PlaceData.group) as? [String] else { return }
-                    
-                    completion(.success((categories, groups)))
-                    return
-                }
-                
-                self?.setupBasicClassification(completion)
-            }
-    }
-    
-    func updateClassification(_ classification: String, with items: [String]) {
-        database.collection(Classification.collection).document(id).updateData([
-            classification : items
-        ])
-    }
-    
-    func deletePlace(_ name: String,
-                     _ completion: @escaping (Result<Void, FirebaseError>) -> Void) {
-        database.collection(id).document(name).delete() { error in
-            if error != nil {
-                completion(.failure(.delete))
-                return
+                observable.onCompleted()
             }
             
-            completion(.success(()))
+            return Disposables.create()
         }
     }
     
-    func savePlace(_ place: Place,
-                   _ completion: @escaping (Result<Void, FirebaseError>) -> Void) {
-        let saveData: [String: Any] = [
-            PlaceData.name: place.name,
-            PlaceData.location: place.location,
-            PlaceData.date: place.date,
-            PlaceData.favorit: place.isFavorit,
-            PlaceData.rating: place.rating,
-            PlaceData.coment: place.coment,
-            PlaceData.category: place.category,
-            PlaceData.geopoint: place.geopoint,
-            PlaceData.group: place.group
-        ]
+    func loadDocument(at collection: String) -> Observable<DocumentSnapshot> {
+        let reference = database.collection(Classification.collection).document(id)
+        return Observable.create { observable in
+            reference.getDocument { document, error in
+                if error != nil {
+                    observable.onError(FirebaseError.fetch)
+                }
+                
+                if let document = document {
+                    if document.exists == false {
+                        observable.onError(ClassificationError.empty)
+                    }
+                    observable.onNext(document)
+                }
+                observable.onCompleted()
+            }
+            return Disposables.create()
+        }
+    }
+
+    func save(_ data: [String: Any], at collection: String?, document: String?) -> Observable<Void> {
+        let collection = collection ?? id
+        let document = document ?? id
+        let reference = database.collection(collection).document(document)
+        return Observable.create { observable in
+            reference.setData(data) { error in
+                if error != nil {
+                    observable.onError(FirebaseError.delete)
+                }
+                
+                observable.onCompleted()
+            }
+            return Disposables.create()
+        }
+    }
+    
+    func update(_ data: [String: Any],
+                at collection: String?,
+                document: String?) -> Observable<Void> {
+        let collection = collection ?? id
+        let document = document ?? id
+        let reference = database.collection(collection).document(document)
         
-        database.collection(id).document(place.name)
-            .setData(saveData) { error in
+        return Observable.create { observable in
+            reference.updateData(data) { error in
                 if error != nil {
-                    completion(.failure(.save))
+                    observable.onError(FirebaseError.save)
                     return
                 }
                 
-                completion(.success(()))
+                observable.onCompleted()
             }
+            return Disposables.create()
+        }
     }
     
-    func updateFavorit(_ favorit: Bool, placeName: String,
-                       _ completion: @escaping (Result<Void, FirebaseError>) -> Void) {
-        database.collection(id).document(placeName)
-            .updateData([PlaceData.favorit: favorit]) { error in
+    func delete(_ document: String) -> Observable<Void> {
+        let reference = database.collection(id).document(document)
+        return Observable.create { observable in
+            reference.delete() { error in
                 if error != nil {
-                    completion(.failure(.save))
-                    return
+                    observable.onError(FirebaseError.delete)
                 }
                 
-                completion(.success(()))
+                observable.onCompleted()
             }
-    }
-    
-    private func setupBasicClassification(_ completion: @escaping (Result<([String], [String]), FirebaseError>) -> Void) {
-        database.collection(Classification.collection).document(id)
-            .setData(Classification.basic) { error in
-                if error != nil {
-                    completion(.success(([], [])))
-                }
-                
-                self.loadClassification(completion)
-            }
+            return Disposables.create()
+        }
     }
 }
 
-private extension FirestoreManager {
-    enum Classification {
-        static let collection = "classification"
-        static let basic: [String: [String]] = [PlaceData.category: ["카페", "음식점", "디저트", "전시회", "액티비티", "야외"],
-                                                PlaceData.group: ["친구", "가족", "애인", "혼자"]]
-    }
-    
-    enum PlaceData {
-        static let name = "name"
-        static let location = "position"
-        static let date = "date"
-        static let favorit = "favorit"
-        static let rating = "rate"
-        static let coment = "coment"
-        static let category = "category"
-        static let geopoint = "geopoint"
-        static let group = "group"
-    }
+
+enum Classification {
+    static let collection = "classification"
+    static let basicCategory = ["카페", "음식점", "디저트", "전시회", "액티비티", "야외"]
+    static let basicGroup = ["친구", "가족", "애인", "혼자"]
+    static let basic: [String: [String]] = [PlaceData.category: basicCategory,
+                                            PlaceData.group: basicGroup]
+}
+
+enum PlaceData {
+    static let name = "name"
+    static let location = "position"
+    static let date = "date"
+    static let favorit = "favorit"
+    static let rating = "rate"
+    static let coment = "coment"
+    static let category = "category"
+    static let geopoint = "geopoint"
+    static let group = "group"
 }

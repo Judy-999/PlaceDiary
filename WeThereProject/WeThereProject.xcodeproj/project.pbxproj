@@ -214,12 +214,12 @@
 			path = Util;
 			sourceTree = "<group>";
 		};
-		20B80BD6294AF4A800CA0F2B /* Model */ = {
+		20B80BD6294AF4A800CA0F2B /* Data */ = {
 			isa = PBXGroup;
 			children = (
 				2020E4E22667BE600091D569 /* Place.swift */,
 			);
-			path = Model;
+			path = Data;
 			sourceTree = "<group>";
 		};
 		20D4EA9F29C0421F007B493B /* Main */ = {
@@ -303,7 +303,7 @@
 				20B80BD4294AF45B00CA0F2B /* Application */,
 				20AD213229BF051F00A92B1E /* Common */,
 				20B80BD5294AF46C00CA0F2B /* Util */,
-				20B80BD6294AF4A800CA0F2B /* Model */,
+				20B80BD6294AF4A800CA0F2B /* Data */,
 				20B80BD3294AF43C00CA0F2B /* View */,
 				20B80BD2294AF41C00CA0F2B /* Controller */,
 			);

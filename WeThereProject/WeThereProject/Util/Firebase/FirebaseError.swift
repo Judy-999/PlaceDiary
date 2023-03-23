@@ -23,3 +23,7 @@ enum FirebaseError: LocalizedError {
         }
     }
 }
+
+enum ClassificationError: LocalizedError {
+    case empty
+}
