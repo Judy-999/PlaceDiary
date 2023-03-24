@@ -6,7 +6,7 @@
 //
 
 import Firebase
-import UIKit
+import Foundation
 
 struct Place {
     var name: String
