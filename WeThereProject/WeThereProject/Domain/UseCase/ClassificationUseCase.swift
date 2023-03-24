@@ -10,7 +10,7 @@ import RxSwift
 struct ClassificationUseCase {
     private let placeRepository: PlaceRepository
     
-    init(placeRepository: PlaceRepository) {
+    init(placeRepository: PlaceRepository = PlaceRepository()) {
         self.placeRepository = placeRepository
     }
     

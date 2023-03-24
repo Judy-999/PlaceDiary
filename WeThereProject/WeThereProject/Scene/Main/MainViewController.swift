@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import RxSwift
 
 final class MainViewController: UIViewController {
     private enum ViewMode: Int {
@@ -14,8 +15,7 @@ final class MainViewController: UIViewController {
         case category
     }
     
-    private var categoryItems = [String]()
-    private var groupItems = [String]()
+    private var classification = Classification(category: [], group: [])
     private var placeType: [ViewMode: [String]] = [.all: [""]]
     private var places = [Place]() {
         didSet {
@@ -24,12 +24,13 @@ final class MainViewController: UIViewController {
             }
         }
     }
+    private let mainViewModel = MainViewModel()
+    private let disposeBag = DisposeBag()
     
     @IBOutlet weak var segmentedControl: UISegmentedControl!
     @IBOutlet weak var placeTableView: UITableView!
     
     override func viewWillAppear(_ animated: Bool) {
-        setupClassification()
         setupPlaces()
     }
     
@@ -40,54 +41,59 @@ final class MainViewController: UIViewController {
         configureRefreshControl()
     }
     
+    private func bind() {
+        mainViewModel.places
+            .subscribe(onNext: { [weak self] places in
+                self?.places = places
+            })
+            .disposed(by: disposeBag)
+        
+        mainViewModel.classification
+            .do(onNext: { [weak self] classification in
+                self?.placeType[.category] = classification.category
+                self?.placeType[.group] = classification.group
+            })
+            .subscribe(onNext: { [weak self] classification in
+                self?.classification = classification
+            })
+            .disposed(by: disposeBag)
+                
+        mainViewModel.errorMessage
+            .subscribe(onNext: { [weak self] message in
+                self?.showAlert(nil, message)
+            })
+            .disposed(by: disposeBag)
+    }
+    
     private func setupPlaces() {
         places = PlaceDataManager.shared.getPlaces()
     }
     
     private func configureRefreshControl() {
-        placeTableView.refreshControl = UIRefreshControl()
-        placeTableView.refreshControl?.addTarget(self,
-                                                 action: #selector(pullToRefresh),
-                                                 for: .valueChanged)
-    }
-
-    @objc private func pullToRefresh(_ refresh: UIRefreshControl) {
-        placeTableView.reloadData()
-        refresh.endRefreshing()
+        let refreshControl = UIRefreshControl()
+        placeTableView.refreshControl = refreshControl
+        
+        refreshControl.rx.controlEvent(.valueChanged)
+            .subscribe(onNext: { _ in
+                self.mainViewModel.loadPlaceData(self.disposeBag)
+            })
+            .disposed(by: disposeBag)
+        
+        mainViewModel.refreshing
+            .subscribe(onNext: { [weak self] isRefreshing in
+                if isRefreshing == false {
+                    self?.placeTableView.refreshControl?.endRefreshing()
+                }
+            })
+            .disposed(by: disposeBag)
     }
 
     private func loadPlaceData() {
-        PlaceDataManager.shared.loadPlaces() { [weak self] result in
-            switch result {
-            case .success(let places):
-                self?.places = places
-            case .failure(let failure):
-                self?.showAlert("실패", failure.localizedDescription)
-            }
-        }
+        mainViewModel.loadPlaceData(disposeBag)
     }
-
+        
     private func loadClassification() {
-        PlaceDataManager.shared.loadClassification { [weak self] result in
-            switch result {
-            case .success((let categoryItems, let groupItems)):
-                self?.categoryItems = categoryItems
-                self?.groupItems = groupItems
-                self?.placeType[.category] = categoryItems
-                self?.placeType[.group] = groupItems
-            case .failure(let error):
-                self?.showAlert("실패", error.localizedDescription)
-            }
-        }
-    }
-    
-    private func setupClassification() {
-        let calssification: (categoryItems: [String], groupItems: [String])
-        = PlaceDataManager.shared.getClassification()
-        categoryItems = calssification.categoryItems
-        groupItems = calssification.groupItems
-        placeType[.category] = calssification.categoryItems
-        placeType[.group] = calssification.groupItems
+        mainViewModel.loadClassification(disposeBag)
     }
 
     private func filteredPlaces(at section: Int) -> [Place] {
