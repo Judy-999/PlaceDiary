@@ -195,7 +195,7 @@
 			path = Common;
 			sourceTree = "<group>";
 		};
-		20B80BD2294AF41C00CA0F2B /* Controller */ = {
+		20B80BD2294AF41C00CA0F2B /* Scene */ = {
 			isa = PBXGroup;
 			children = (
 				20D4EA9F29C0421F007B493B /* Main */,
@@ -204,7 +204,7 @@
 				20D4EAA429C042B2007B493B /* Map */,
 				20D4EAA329C042A8007B493B /* Setting */,
 			);
-			path = Controller;
+			path = Scene;
 			sourceTree = "<group>";
 		};
 		20B80BD3294AF43C00CA0F2B /* View */ = {
@@ -331,7 +331,7 @@
 				20B80BD6294AF4A800CA0F2B /* Data */,
 				2052A04029CC83690075A954 /* Domain */,
 				20B80BD3294AF43C00CA0F2B /* View */,
-				20B80BD2294AF41C00CA0F2B /* Controller */,
+				20B80BD2294AF41C00CA0F2B /* Scene */,
 			);
 			path = WeThereProject;
 			sourceTree = "<group>";
