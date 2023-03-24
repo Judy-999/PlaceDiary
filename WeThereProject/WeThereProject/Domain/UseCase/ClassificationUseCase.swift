@@ -14,7 +14,7 @@ struct ClassificationUseCase {
         self.placeRepository = placeRepository
     }
     
-    func fetch() -> Observable<([String], [String])> {
+    func fetch() -> Observable<Classification> {
         return placeRepository.loadClassification()
     }
     

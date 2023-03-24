@@ -37,7 +37,7 @@ final class FirestoreManager {
     }
     
     func loadDocument(at collection: String) -> Observable<DocumentSnapshot> {
-        let reference = database.collection(Classification.collection).document(id)
+        let reference = database.collection(ClassificationData.collection).document(id)
         return Observable.create { observable in
             reference.getDocument { document, error in
                 if error != nil {
@@ -108,12 +108,11 @@ final class FirestoreManager {
 }
 
 
-enum Classification {
+enum ClassificationData {
     static let collection = "classification"
     static let basicCategory = ["카페", "음식점", "디저트", "전시회", "액티비티", "야외"]
     static let basicGroup = ["친구", "가족", "애인", "혼자"]
-    static let basic: [String: [String]] = [PlaceData.category: basicCategory,
-                                            PlaceData.group: basicGroup]
+    static let basic = Classification(category: basicCategory, group: basicGroup)
 }
 
 enum PlaceData {

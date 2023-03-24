@@ -16,8 +16,8 @@ struct PlaceRepository {
         }
     }
     
-    func loadClassification() -> Observable<([String], [String])> {
-        let document = FirestoreManager.shared.loadDocument(at: Classification.collection)
+    func loadClassification() -> Observable<Classification> {
+        let document = FirestoreManager.shared.loadDocument(at: ClassificationData.collection)
         
         return document
             .do(onError: { error in
@@ -26,14 +26,14 @@ struct PlaceRepository {
                 }
             })
             .compactMap { toClassfication($0) }
-            .catchAndReturn((Classification.basicCategory, Classification.basicGroup))
+            .catchAndReturn(ClassificationData.basic)
     }
     
     func updateClassification(_ classification: String,
                               with items: [String]) -> Observable<Void> {
         let data = [classification: items]
         return FirestoreManager.shared.update(data,
-                                              at: Classification.collection,
+                                              at: ClassificationData.collection,
                                               document: nil)
     }
     
@@ -67,18 +67,20 @@ struct PlaceRepository {
     }
     
     private func setupBasicClassification() {
-        _ = FirestoreManager.shared.save(Classification.basic,
-                                                at: Classification.collection,
+        let basicClassification = [PlaceData.group: ClassificationData.basicGroup,
+                                   PlaceData.category: ClassificationData.basicCategory]
+        _ = FirestoreManager.shared.save(basicClassification,
+                                                at: ClassificationData.collection,
                                                 document: nil)
     }
 }
 
 extension PlaceRepository {
-    private func toClassfication(_ document: DocumentSnapshot) -> ([String], [String])? {
+    private func toClassfication(_ document: DocumentSnapshot) -> Classification? {
         guard let categories = document.get(PlaceData.category) as? [String],
               let groups = document.get(PlaceData.group) as? [String] else { return nil }
         
-        return (categories, groups)
+        return Classification(category: categories, group: groups)
     }
     
     private func toPlaces(_ document: DocumentSnapshot) -> Place? {

@@ -52,6 +52,7 @@
 		20F553F3294C90F2001F69AD /* ImageCacheManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20F553F2294C90F2001F69AD /* ImageCacheManager.swift */; };
 		20F88AC7266CD8820015B42E /* PlaceInfoTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20F88AC6266CD8820015B42E /* PlaceInfoTableViewController.swift */; };
 		20FDE6F229CD7778002355FE /* FavoritUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20FDE6F129CD7778002355FE /* FavoritUseCase.swift */; };
+		20FDE6F629CD940C002355FE /* Classification.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20FDE6F529CD940C002355FE /* Classification.swift */; };
 		20FE6BCE26982C0F0007DC5C /* SearchResultCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20FE6BCD26982C0F0007DC5C /* SearchResultCell.swift */; };
 		35C68B51A850666DA800F6DF /* Pods_WeThereProject.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8124A72C19DB70DEF2931048 /* Pods_WeThereProject.framework */; };
 /* End PBXBuildFile section */
@@ -96,6 +97,7 @@
 		20F553F2294C90F2001F69AD /* ImageCacheManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCacheManager.swift; sourceTree = "<group>"; };
 		20F88AC6266CD8820015B42E /* PlaceInfoTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceInfoTableViewController.swift; sourceTree = "<group>"; };
 		20FDE6F129CD7778002355FE /* FavoritUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritUseCase.swift; sourceTree = "<group>"; };
+		20FDE6F529CD940C002355FE /* Classification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Classification.swift; sourceTree = "<group>"; };
 		20FE6BCD26982C0F0007DC5C /* SearchResultCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultCell.swift; sourceTree = "<group>"; };
 		8124A72C19DB70DEF2931048 /* Pods_WeThereProject.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_WeThereProject.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		8E864883B9C274FB9208AE78 /* Pods-WeThereProject.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WeThereProject.release.xcconfig"; path = "Target Support Files/Pods-WeThereProject/Pods-WeThereProject.release.xcconfig"; sourceTree = "<group>"; };
@@ -135,6 +137,7 @@
 			isa = PBXGroup;
 			children = (
 				2020E4E22667BE600091D569 /* Place.swift */,
+				20FDE6F529CD940C002355FE /* Classification.swift */,
 			);
 			path = Entity;
 			sourceTree = "<group>";
@@ -503,6 +506,7 @@
 				20E3E2D1265E2639004BDFF6 /* AppDelegate.swift in Sources */,
 				204CEEB7267F0A3F000D395F /* EditClassificationController.swift in Sources */,
 				20166C2F26830F55002AF187 /* SearchViewController.swift in Sources */,
+				20FDE6F629CD940C002355FE /* Classification.swift in Sources */,
 				202C3E0B2686F97D00E3881D /* ImageViewController.swift in Sources */,
 				2022249E29C73619008F4A2C /* FirebaseError.swift in Sources */,
 				2052A04529CC98860075A954 /* ClassificationUseCase.swift in Sources */,
