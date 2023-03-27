@@ -30,15 +30,12 @@ final class MainViewController: UIViewController {
     @IBOutlet weak var segmentedControl: UISegmentedControl!
     @IBOutlet weak var placeTableView: UITableView!
     
-    override func viewWillAppear(_ animated: Bool) {
-        setupPlaces()
-    }
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         loadPlaceData()
         loadClassification()
         configureRefreshControl()
+        bind()
     }
     
     private func bind() {
@@ -65,17 +62,13 @@ final class MainViewController: UIViewController {
             .disposed(by: disposeBag)
     }
     
-    private func setupPlaces() {
-        places = PlaceDataManager.shared.getPlaces()
-    }
-    
     private func configureRefreshControl() {
         let refreshControl = UIRefreshControl()
         placeTableView.refreshControl = refreshControl
         
         refreshControl.rx.controlEvent(.valueChanged)
-            .subscribe(onNext: { _ in
-                self.mainViewModel.loadPlaceData(self.disposeBag)
+            .subscribe(onNext: { [weak self] _ in
+                self?.loadPlaceData()
             })
             .disposed(by: disposeBag)
         
@@ -130,14 +123,7 @@ final class MainViewController: UIViewController {
                                            message: placeName + PlaceInfo.Main.confirmDelete,
                                            preferredStyle: .actionSheet)
         let okAlert = UIAlertAction(title: "삭제", style: .destructive) { [weak self] _ in
-            FirestoreManager.shared.deletePlace(placeName) { [weak self] result in
-                switch result {
-                case .success(_):
-                    break
-                case .failure(let failure):
-                    self?.showAlert("실패", failure.errorDescription)
-                }
-            }
+            self?.mainViewModel.deletePlace(placeName, self!.disposeBag)
             
             StorageManager.shared.deleteImage(name: placeName) { [weak self] result in
                 switch result {
@@ -187,21 +173,20 @@ final class MainViewController: UIViewController {
         alert.addAction(Alert.cancel)
         present(alert, animated: true)
     }
-
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == Segue.info.identifier {
-            guard let infoViewContorller = segue.destination as? PlaceInfoTableViewController,
-                  let cell = sender as? UITableViewCell,
-                  let indexPath = placeTableView.indexPath(for: cell) else { return }
-
-            let places = filteredPlaces(at: indexPath.section)
-            infoViewContorller.getPlaceInfo(places[indexPath.row])
-        }
+    
+    @IBAction private func addPlaceButtonTapped(_ sender: UIBarButtonItem) {
+        guard let addViewController = storyboard?.instantiateViewController(identifier: "AddViewController", creator: { creater in
+            let addViewController = AddPlaceTableViewController(viewModel: self.mainViewModel,
+                                                                coder: creater)
+            return addViewController
+        }) else { return }
+        
+        navigationController?.pushViewController(addViewController, animated: true)
     }
 }
 
 // MARK: - TableViewDataSource & TableViewDelegate
-extension MainViewController: UITableViewDataSource,  UITableViewDelegate {
+extension MainViewController: UITableViewDataSource, UITableViewDelegate {
     func numberOfSections(in tableView: UITableView) -> Int {
         let select = segmentedControl.selectedSegmentIndex
         guard let mode = ViewMode(rawValue: select),
@@ -260,6 +245,20 @@ extension MainViewController: UITableViewDataSource,  UITableViewDelegate {
         if editingStyle == .delete {
             deletePlace(indexPath)
         }
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let places = filteredPlaces(at: indexPath.section)
+        let selectedPlace = places[indexPath.row]
+        
+        guard let infoViewController = storyboard?.instantiateViewController(identifier: "InfoViewController", creator: { creater in
+            let infoViewController = PlaceInfoTableViewController(place: selectedPlace,
+                                                                  viewModel: self.mainViewModel,
+                                                                  coder: creater)
+            return infoViewController
+        }) else { return }
+        
+        navigationController?.pushViewController(infoViewController, animated: true)
     }
 }
 

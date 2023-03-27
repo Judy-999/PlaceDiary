@@ -6,10 +6,13 @@
 //
 
 import UIKit
+import RxSwift
 
 final class PlaceInfoTableViewController: UITableViewController, EditDelegate {
     private var receiveImage: UIImage?
-    private var place: Place?
+    private var place: Place
+    private let viewModel: MainViewModel
+    private let disposeBag = DisposeBag()
     
     @IBOutlet private weak var placeImage: UIImageView!
     @IBOutlet private weak var placeNameLabel: UILabel!
@@ -20,6 +23,16 @@ final class PlaceInfoTableViewController: UITableViewController, EditDelegate {
     @IBOutlet private weak var ratingLabel: UILabel!
     @IBOutlet private weak var comentTextView: UITextView!
     @IBOutlet private var starImageView: [UIImageView]!
+    
+    required init?(place: Place, viewModel: MainViewModel, coder: NSCoder) {
+        self.place = place
+        self.viewModel = viewModel
+        super.init(coder: coder)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -38,8 +51,6 @@ final class PlaceInfoTableViewController: UITableViewController, EditDelegate {
     }
     
     private func setupPlaceInfo() {
-        guard let place = place else { return }
-        
         ImageCacheManager.shared.setupImage(with: place.name) { [weak self] image in
             DispatchQueue.main.async {
                 self?.placeImage.image = image
@@ -106,7 +117,6 @@ final class PlaceInfoTableViewController: UITableViewController, EditDelegate {
     }
     
     @IBAction private func editButtonTapped(_ sender: UIButton) {
-        guard var place = place else { return }
         let changeFavorit = place.isFavorit ? PlaceInfo.Edit.unfavorite :  PlaceInfo.Edit.addFavorite
         let editAlert = UIAlertController(title: nil,
                                           message: nil,

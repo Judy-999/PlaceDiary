@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import RxSwift
 import MobileCoreServices
 import FirebaseFirestore
 import GooglePlaces
@@ -37,6 +38,17 @@ final class AddPlaceTableViewController: UITableViewController {
     private var editData: Place?
     weak var editDelegate: EditDelegate?
     var viewMode: ViewMode = .add
+    private let viewModel: MainViewModel
+    private let disposeBag = DisposeBag()
+    
+    required init?(viewModel: MainViewModel, coder: NSCoder) {
+        self.viewModel = viewModel
+        super.init(coder: coder)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)

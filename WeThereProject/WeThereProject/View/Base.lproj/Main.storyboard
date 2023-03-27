@@ -181,7 +181,6 @@
                                             <outlet property="infoLabel" destination="aD6-vK-5OY" id="yQI-VY-X6G"/>
                                             <outlet property="nameLabel" destination="Rgd-Qo-Sxg" id="M6K-jN-BfI"/>
                                             <outlet property="placeImageView" destination="LHp-4f-X6C" id="auy-Xf-yLq"/>
-                                            <segue destination="E07-mG-Yqk" kind="show" identifier="sgPlaceInfo" id="I6j-V1-nTt"/>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>
@@ -214,7 +213,7 @@
                         <barButtonItem key="rightBarButtonItem" systemItem="add" id="skL-iA-FMs">
                             <color key="tintColor" red="0.47843140360000003" green="0.9529411793" blue="0.94901961089999998" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                             <connections>
-                                <segue destination="Lcc-Ir-Tux" kind="show" identifier="sgAddPlace" id="qPa-7u-WXO"/>
+                                <action selector="addPlaceButtonTapped:" destination="cpN-Hq-ZC8" id="xSV-YU-ArJ"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
@@ -231,7 +230,7 @@
         <!--Place Info Table View Controller-->
         <scene sceneID="OtN-zh-Luo">
             <objects>
-                <tableViewController storyboardIdentifier="PlaceInfoView" hidesBottomBarWhenPushed="YES" id="E07-mG-Yqk" customClass="PlaceInfoTableViewController" customModule="WeThereProject" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="InfoViewController" hidesBottomBarWhenPushed="YES" id="E07-mG-Yqk" customClass="PlaceInfoTableViewController" customModule="WeThereProject" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="plain" separatorStyle="default" allowsSelection="NO" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="Ruy-Z9-Wbc">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -535,7 +534,7 @@
         <!--장소 정보 입력-->
         <scene sceneID="N9Z-zy-WpH">
             <objects>
-                <tableViewController hidesBottomBarWhenPushed="YES" id="Lcc-Ir-Tux" customClass="AddPlaceTableViewController" customModule="WeThereProject" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="AddViewController" hidesBottomBarWhenPushed="YES" id="Lcc-Ir-Tux" customClass="AddPlaceTableViewController" customModule="WeThereProject" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="plain" separatorStyle="default" allowsSelection="NO" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="bRd-43-Ku1">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -1320,8 +1319,7 @@
     </scenes>
     <inferredMetricsTieBreakers>
         <segue reference="LEn-q7-1yn"/>
-        <segue reference="2Kc-dU-Vel"/>
-        <segue reference="qPa-7u-WXO"/>
+        <segue reference="F5n-pi-x46"/>
         <segue reference="1cJ-Xl-0QN"/>
     </inferredMetricsTieBreakers>
     <resources>
