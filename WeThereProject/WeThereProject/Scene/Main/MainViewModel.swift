@@ -12,7 +12,7 @@ import UIKit
 protocol MainViewModelInput {
     func loadPlaceData(_ disposeBag: DisposeBag)
     func deletePlace(_ place: String, _ disposeBag: DisposeBag)
-    func updatePlace(_ place: Place, _ disposeBag: DisposeBag) 
+    func savePlace(_ place: Place, _ disposeBag: DisposeBag) 
 }
 
 protocol MainViewModelOutput {
@@ -54,7 +54,7 @@ struct MainViewModel: MainViewModelInput, MainViewModelOutput {
             .disposed(by: disposeBag)
     }
     
-    func updatePlace(_ place: Place, _ disposeBag: DisposeBag) {
+    func savePlace(_ place: Place, _ disposeBag: DisposeBag) {
         placeUseCase.save(place)
             .subscribe(onError: { error in
                 errorMessage.accept(error.localizedDescription)

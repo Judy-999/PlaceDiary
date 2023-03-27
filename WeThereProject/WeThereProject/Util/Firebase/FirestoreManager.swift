@@ -15,7 +15,7 @@ final class FirestoreManager {
     private let id: String
     
     private init() {
-        id = UIDevice.current.identifierForVendor!.uuidString
+        id = DeviceKeyManager.shared.read()
     }
     
     func loadCollection() -> Observable<[QueryDocumentSnapshot]> {

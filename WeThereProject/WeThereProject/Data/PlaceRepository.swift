@@ -92,7 +92,7 @@ extension PlaceRepository {
               let rating = document[PlaceData.rating] as? String,
               let coment = document[PlaceData.coment] as? String,
               let geopoint = document[PlaceData.geopoint] as? GeoPoint,
-              let group = document[PlaceData.geopoint] as? String else { return nil }
+              let group = document[PlaceData.group] as? String else { return nil }
         
        return Place(name: name,
                     location: location,
