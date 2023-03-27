@@ -117,14 +117,14 @@ final class PlaceInfoTableViewController: UITableViewController, EditDelegate {
     }
     
     @IBAction private func editButtonTapped(_ sender: UIButton) {
-        let changeFavorit = place.isFavorit ? PlaceInfo.Edit.unfavorite :  PlaceInfo.Edit.addFavorite
+        let changeFavorit = place.isFavorit ? PlaceInfo.Edit.unfavorite : PlaceInfo.Edit.addFavorite
         let editAlert = UIAlertController(title: nil,
                                           message: nil,
                                           preferredStyle: .actionSheet)
         
         let edit = UIAlertAction(title: PlaceInfo.Edit.editPlace,
                                  style: .default) { [weak self] _ in
-            self?.performSegue(withIdentifier: Segue.edit.identifier, sender: self)
+            self?.presentEditView()
         }
         
         let favorit = UIAlertAction(title: changeFavorit, style: .default){ [weak self] _ in
@@ -157,17 +157,20 @@ final class PlaceInfoTableViewController: UITableViewController, EditDelegate {
         self.performSegue(withIdentifier: Segue.detailImage.identifier, sender: self)
     }
     
+    private func presentEditView() {
+        guard let addViewController = storyboard?.instantiateViewController(identifier: "AddViewController", creator: { creater in
+            let addViewController = AddPlaceTableViewController(place: self.place,
+                                                                viewModel: self.viewModel,
+                                                                coder: creater)
+            addViewController?.editDelegate = self
+            return addViewController
+        }) else { return }
+        
+        navigationController?.pushViewController(addViewController, animated: true)
+    }
+    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         switch segue.identifier {
-        case Segue.edit.identifier:
-            guard let addPlaceViewController = segue.destination as? AddPlaceTableViewController,
-                  let place = place,
-                  let image = receiveImage else { return }
-                
-            addPlaceViewController.editDelegate = self
-            addPlaceViewController.viewMode = .edit
-            addPlaceViewController.setPlaceDataFromInfo(data: place,
-                                                        image: image)
         case Segue.detailImage.identifier:
             let imageView = segue.destination as? ImageViewController ?? ImageViewController()
             imageView.setupImage(with: placeImage.image)

@@ -35,13 +35,16 @@ final class AddPlaceTableViewController: UITableViewController {
     private var classification = Classification()
     private var receiveImage: UIImage?, receiveName: String = ""
     private var placeGeoPoint: GeoPoint?
-    private var editData: Place?
+    private var editingPlace: Place?
     weak var editDelegate: EditDelegate?
-    var viewMode: ViewMode = .add
+    private var viewMode: ViewMode {
+        return editingPlace == nil ? .add : .edit
+    }
     private let viewModel: MainViewModel
     private let disposeBag = DisposeBag()
     
-    required init?(viewModel: MainViewModel, coder: NSCoder) {
+    required init?(place: Place? = nil, viewModel: MainViewModel, coder: NSCoder) {
+        self.editingPlace = place
         self.viewModel = viewModel
         super.init(coder: coder)
     }
@@ -50,14 +53,10 @@ final class AddPlaceTableViewController: UITableViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        loadClassification()
-    }
-    
     override func viewDidLoad() {
         super.viewDidLoad()
-        loadClassification()
+        bind()
+        setupPickerView()
         setupTouchevent()
         
         switch viewMode {
@@ -68,8 +67,16 @@ final class AddPlaceTableViewController: UITableViewController {
         }
     }
     
+    private func bind() {
+        viewModel.classification
+            .subscribe(onNext: { [weak self] classification in
+                self?.classification = classification
+            })
+            .disposed(by: disposeBag)
+    }
+    
     func setPlaceDataFromInfo(data: Place, image: UIImage) {
-        editData = data
+        editingPlace = data
         receiveImage = image
     }
     
@@ -83,22 +90,21 @@ final class AddPlaceTableViewController: UITableViewController {
         comentTextView.textColor = Color.placeHolder
     }
     
-    private func loadClassification() {
-        let calssification: (categoryItems: [String], groupItems: [String])
-        = PlaceDataManager.shared.getClassification()
-        
-        categoryItems = calssification.categoryItems
-        groupItems = calssification.groupItems
-        setupPickerView()
-    }
-    
     private func setupPickerView() {
         categoryPickerView.delegate = self
         groupPickerView.delegate = self
     }
     
     private func configureEditView() {
-        guard let place = editData else { return }
+        guard let place = editingPlace else { return }
+        
+        ImageCacheManager.shared.setupImage(with: place.name) { [weak self] image in
+            DispatchQueue.main.async {
+                self?.placeImageView.image = image
+            }
+            
+            self?.receiveImage = image
+        }
         
         placeImageView.image = receiveImage
         nameTextField.text = place.name
@@ -112,11 +118,11 @@ final class AddPlaceTableViewController: UITableViewController {
         RatingManager().sliderStar(starImageViews,
                            rating: NSString(string: place.rating).floatValue)
         
-        guard let categoryIndex = categoryItems.firstIndex(of: place.category),
-              let groupIndex = groupItems.firstIndex(of: place.group) else { return }
+        guard let categoryIndex = classification.category.firstIndex(of: place.category),
+              let groupIndex = classification.group.firstIndex(of: place.group) else { return }
         
-        categoryPickerView.selectRow(categoryIndex, inComponent: 0, animated: false)
-        groupPickerView.selectRow(groupIndex, inComponent: 0, animated: false)
+        categoryPickerView.selectRow(categoryIndex, inComponent: .zero, animated: false)
+        groupPickerView.selectRow(groupIndex, inComponent: .zero, animated: false)
     }
     
     private func createPlace() -> Place? {
@@ -130,19 +136,19 @@ final class AddPlaceTableViewController: UITableViewController {
               let rate = rateLabel.text,
               let coment = comentTextView.text else { return nil }
         
-        let categoryIndex = categoryPickerView.selectedRow(inComponent: 0)
-        let groupIndex = groupPickerView.selectedRow(inComponent: 0)
-        let isFavorit = editData?.isFavorit ?? false
+        let categoryIndex = categoryPickerView.selectedRow(inComponent: .zero)
+        let groupIndex = groupPickerView.selectedRow(inComponent: .zero)
+        let isFavorit = editingPlace?.isFavorit ?? false
 
         return Place(name: name,
                      location: location,
                      date: datePicker.date,
                      isFavorit: isFavorit,
-                     category: categoryItems[categoryIndex],
+                     category: classification.category[categoryIndex],
                      rating: rate,
                      coment: coment,
                      geopoint: geoPoint,
-                     group: groupItems[groupIndex])
+                     group: classification.group[groupIndex])
     }
 
     @IBAction private func doneButtonTapped(_ sender: UIButton) {
@@ -188,14 +194,7 @@ final class AddPlaceTableViewController: UITableViewController {
     }
     
     private func deletePlaceData(name place: String) {
-        FirestoreManager.shared.deletePlace(place) { [weak self] result in
-            switch result {
-            case .success(_):
-                break
-            case .failure(let failure):
-                self?.showAlert("실패", failure.errorDescription)
-            }
-        }
+        viewModel.deletePlace(place, disposeBag)
         
         StorageManager.shared.deleteImage(name: place) { [weak self] result in
             switch result {
@@ -208,14 +207,7 @@ final class AddPlaceTableViewController: UITableViewController {
     }
 
     private func uploadData(place data: Place) {
-        FirestoreManager.shared.savePlace(data){ [weak self] result in
-            switch result {
-            case .success(_):
-                break
-            case .failure(let failure):
-                self?.showAlert("실패", failure.errorDescription)
-            }
-        }
+        viewModel.savePlace(data, disposeBag)
     }
     
     private func uploadImage(_ placeName: String, image: UIImage) {
@@ -293,7 +285,7 @@ extension AddPlaceTableViewController: GMSAutocompleteViewControllerDelegate {
         locationTextView.textColor = .label
         locationTextView.isEditable = true
         placeGeoPoint = GeoPoint(latitude: place.coordinate.latitude,
-                                      longitude: place.coordinate.longitude)
+                                 longitude: place.coordinate.longitude)
         dismiss(animated: true, completion: nil)
     }
     
@@ -316,18 +308,18 @@ extension AddPlaceTableViewController: UIPickerViewDelegate, UIPickerViewDataSou
     func pickerView(_ pickerView: UIPickerView,
                     numberOfRowsInComponent component: Int) -> Int {
         if pickerView == categoryPickerView {
-            return categoryItems.count
+            return classification.category.count
         }
-        return groupItems.count
+        return classification.group.count
     }
     
     func pickerView(_ pickerView: UIPickerView,
                     titleForRow row: Int,
                     forComponent component: Int) -> String? {
         if pickerView == categoryPickerView {
-            return categoryItems[row]
+            return classification.category[row]
         }
-        return groupItems[row]
+        return classification.group[row]
     }
 }
 
