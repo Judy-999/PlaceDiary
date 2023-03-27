@@ -51,7 +51,6 @@
 		20E3E2E5265E355D004BDFF6 /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20E3E2E4265E355D004BDFF6 /* MapViewController.swift */; };
 		20F553F3294C90F2001F69AD /* ImageCacheManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20F553F2294C90F2001F69AD /* ImageCacheManager.swift */; };
 		20F88AC7266CD8820015B42E /* PlaceInfoTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20F88AC6266CD8820015B42E /* PlaceInfoTableViewController.swift */; };
-		20FDE6F229CD7778002355FE /* FavoritUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20FDE6F129CD7778002355FE /* FavoritUseCase.swift */; };
 		20FDE6F429CD7960002355FE /* MainViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20FDE6F329CD7960002355FE /* MainViewModel.swift */; };
 		20FDE6F629CD940C002355FE /* Classification.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20FDE6F529CD940C002355FE /* Classification.swift */; };
 		20FE6BCE26982C0F0007DC5C /* SearchResultCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20FE6BCD26982C0F0007DC5C /* SearchResultCell.swift */; };
@@ -97,7 +96,6 @@
 		20E3E2E4265E355D004BDFF6 /* MapViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewController.swift; sourceTree = "<group>"; };
 		20F553F2294C90F2001F69AD /* ImageCacheManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCacheManager.swift; sourceTree = "<group>"; };
 		20F88AC6266CD8820015B42E /* PlaceInfoTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceInfoTableViewController.swift; sourceTree = "<group>"; };
-		20FDE6F129CD7778002355FE /* FavoritUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritUseCase.swift; sourceTree = "<group>"; };
 		20FDE6F329CD7960002355FE /* MainViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewModel.swift; sourceTree = "<group>"; };
 		20FDE6F529CD940C002355FE /* Classification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Classification.swift; sourceTree = "<group>"; };
 		20FE6BCD26982C0F0007DC5C /* SearchResultCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultCell.swift; sourceTree = "<group>"; };
@@ -347,7 +345,6 @@
 			children = (
 				2052A04129CC84680075A954 /* PlaceUseCase.swift */,
 				2052A04429CC98860075A954 /* ClassificationUseCase.swift */,
-				20FDE6F129CD7778002355FE /* FavoritUseCase.swift */,
 			);
 			path = UseCase;
 			sourceTree = "<group>";
@@ -515,7 +512,6 @@
 				2052A04529CC98860075A954 /* ClassificationUseCase.swift in Sources */,
 				20CB7C9C269F28130057EAF0 /* MainViewController.swift in Sources */,
 				20FE6BCE26982C0F0007DC5C /* SearchResultCell.swift in Sources */,
-				20FDE6F229CD7778002355FE /* FavoritUseCase.swift in Sources */,
 				20451D4D294C355B00186A35 /* StorageManager.swift in Sources */,
 				20E3E2D3265E2639004BDFF6 /* SceneDelegate.swift in Sources */,
 				202D7B06294C13990093D80A /* FirestoreManager.swift in Sources */,

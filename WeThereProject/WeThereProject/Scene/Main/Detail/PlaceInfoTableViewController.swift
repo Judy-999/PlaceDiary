@@ -84,14 +84,7 @@ final class PlaceInfoTableViewController: UITableViewController, EditDelegate {
                                             message: place.name + PlaceInfo.Main.confirmDelete,
                                             preferredStyle: .alert)
         let okAction = UIAlertAction(title: "삭제", style: .destructive) { [weak self] _ in
-            FirestoreManager.shared.deletePlace(place.name) { [weak self] result in
-                switch result {
-                case .success(_):
-                    break
-                case .failure(let failure):
-                    self?.showAlert("실패", failure.errorDescription)
-                }
-            }
+            self?.viewModel.deletePlace(place.name, self!.disposeBag)
             
             StorageManager.shared.deleteImage(name: place.name) { [weak self] result in
                 switch result {
@@ -127,26 +120,15 @@ final class PlaceInfoTableViewController: UITableViewController, EditDelegate {
             self?.presentEditView()
         }
         
-        let favorit = UIAlertAction(title: changeFavorit, style: .default){ [weak self] _ in
-            let changedFavorit = !(place.isFavorit)
-            
-            place.isFavorit = changedFavorit
-            FirestoreManager.shared.updateFavorit(changedFavorit,
-                                                  placeName: place.name)  { [weak self] result in
-                switch result {
-                case .success(_):
-                    break
-                case .failure(let failure):
-                    self?.showAlert("실패", failure.errorDescription)
-                }
-            }
-            
-            self?.showAlert(changeFavorit, PlaceInfo.Edit.changeFavorit)
+        let favorit = UIAlertAction(title: changeFavorit, style: .default) { [self] _ in
+            place.isFavorit = !(place.isFavorit)
+            viewModel.savePlace(place, disposeBag)
+            showAlert(changeFavorit, PlaceInfo.Edit.changeFavorit)
         }
-
+        
         let delete = UIAlertAction(title: PlaceInfo.Edit.deletePlace,
-                                   style: .destructive) { [weak self] _ in
-            self?.deletePlace(place)
+                                   style: .destructive) { [self] _ in
+            deletePlace(place)
         }
         
         [edit, favorit, delete, Alert.cancel].forEach { editAlert.addAction($0) }

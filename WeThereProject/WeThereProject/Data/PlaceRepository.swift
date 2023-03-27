@@ -37,13 +37,6 @@ struct PlaceRepository {
                                               document: nil)
     }
     
-    func updateFavorit(_ favorit: Bool, placeName: String) -> Observable<Void> {
-        let data = [PlaceData.favorit: favorit]
-        return FirestoreManager.shared.update(data,
-                                              at: nil,
-                                              document: placeName)
-    }
-    
     func deletePlace(_ placeName: String) -> Observable<Void> {
         return FirestoreManager.shared.delete(placeName)
     }

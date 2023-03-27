@@ -9,13 +9,13 @@ import Firebase
 import Foundation
 
 struct Place {
-    var name: String
-    var location: String
-    var date: Date
+    let name: String
+    let location: String
+    let date: Date
     var isFavorit: Bool
     var category : String
-    var rating: String
-    var coment: String
-    var geopoint: GeoPoint
+    let rating: String
+    let coment: String
+    let geopoint: GeoPoint
     var group: String
 }
