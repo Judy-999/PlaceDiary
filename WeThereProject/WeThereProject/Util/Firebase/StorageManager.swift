@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import RxSwift
 import FirebaseStorage
 
 final class StorageManager {
@@ -17,45 +18,53 @@ final class StorageManager {
         id = DeviceKeyManager.shared.read()
     }
     
-    func saveImage(_ image: UIImage, name: String,
-                   completion: @escaping (Result<Void, FirebaseError>) -> Void) {
-        guard let imageData = image.jpegData(compressionQuality: 0.8) else { return }
+    func saveImage(_ image: UIImage, name: String) -> Observable<Void> {
+        guard let imageData = image.jpegData(compressionQuality: 0.8) else { return Observable.empty() }
+        let reference = storage.child(id + "/" + name)
         let metaData = StorageMetadata()
         metaData.contentType = "image/jpeg"
-        
-        storage.child(id + "/" + name).putData(imageData, metadata: metaData) { _ , error in
-            if error != nil {
-                completion(.failure(.save))
-                return
+    
+        return Observable.create { observable in
+            reference.putData(imageData, metadata: metaData) { _ , error in
+                if error != nil {
+                    observable.onError(FirebaseError.save)
+                }
+                
+                observable.onCompleted()
             }
-            
-            completion(.success(()))
+            return Disposables.create()
         }
     }
     
-    func getImage(name: String,
-                  completion: @escaping (Result<UIImage, FirebaseError>) -> Void) {
+    func getImage(name: String) -> Observable<UIImage> {
         let size: Int64 = 1024 * 1024
-        storage.child(id + "/" + name).getData(maxSize: size) { data, error in
-            if error != nil {
-                completion(.failure(.fetch))
+        let reference = storage.child(id + "/" + name)
+        return Observable.create { observable in
+            reference.getData(maxSize: size) { data, error in
+                if error != nil {
+                    observable.onError(FirebaseError.fetch)
+                }
+                
+                if let data = data, let image = UIImage(data: data) {
+                    observable.onNext(image)
+                }
+                observable.onCompleted()
             }
-            
-            if let data = data, let image = UIImage(data: data) {
-                completion(.success(image))
-            }
+            return Disposables.create()
         }
     }
     
-    func deleteImage(name: String,
-                     completion: @escaping (Result<Void, FirebaseError>) -> Void) {
-        storage.child(id + "/" + name).delete { error in
-            if error != nil {
-                completion(.failure(.delete))
-                return
+    func deleteImage(name: String) -> Observable<Void> {
+        let reference = storage.child(id + "/" + name)
+        return Observable.create { observable in
+            reference.delete { error in
+                if error != nil {
+                    observable.onError(FirebaseError.delete)
+                }
+                
+                observable.onCompleted()
             }
-            
-            completion(.success(()))
+            return Disposables.create()
         }
     }
 }
