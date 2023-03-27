@@ -15,7 +15,7 @@ final class MainViewController: UIViewController {
         case category
     }
     
-    private var classification = Classification(category: [], group: [])
+    private var classification = Classification()
     private var placeType: [ViewMode: [String]] = [.all: [""]]
     private var places = [Place]() {
         didSet {

@@ -23,7 +23,7 @@ protocol MainViewModelOutput {
 struct MainViewModel: MainViewModelInput, MainViewModelOutput {
     var refreshing = BehaviorSubject<Bool>(value: false)
     var places = BehaviorRelay<[Place]>(value: [])
-    var classification = PublishRelay<Classification>()
+    var classification = BehaviorRelay<Classification>(value: Classification())
     var errorMessage = PublishRelay<String>()
     
     let placeUseCase = PlaceUseCase()

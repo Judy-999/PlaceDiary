@@ -32,7 +32,7 @@ final class AddPlaceTableViewController: UITableViewController {
     @IBOutlet weak var starSlider: StarRatingUISlider!
     @IBOutlet var starImageViews: [UIImageView]!
     
-    private var categoryItems = [String](), groupItems = [String]()
+    private var classification = Classification()
     private var receiveImage: UIImage?, receiveName: String = ""
     private var placeGeoPoint: GeoPoint?
     private var editData: Place?

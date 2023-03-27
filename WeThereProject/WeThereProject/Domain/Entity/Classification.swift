@@ -8,4 +8,9 @@
 struct Classification {
     let category: [String]
     let group: [String]
+    
+    init(category: [String] = [], group: [String] = []) {
+        self.category = category
+        self.group = group
+    }
 }
