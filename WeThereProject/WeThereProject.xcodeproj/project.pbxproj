@@ -26,6 +26,7 @@
 		20544EFB268AFBD700D780E4 /* CalendarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20544EFA268AFBD700D780E4 /* CalendarController.swift */; };
 		206BCDE429C2F535009F5BFB /* Alert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 206BCDE329C2F535009F5BFB /* Alert.swift */; };
 		206BCDE629C2F5FB009F5BFB /* Segue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 206BCDE529C2F5FB009F5BFB /* Segue.swift */; };
+		207547EB29D1DF5600117B99 /* ImageUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 207547EA29D1DF5600117B99 /* ImageUseCase.swift */; };
 		207E4F862660985D00AC0A6E /* AddPlaceTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 207E4F852660985D00AC0A6E /* AddPlaceTableViewController.swift */; };
 		2088D238294E96C9009415C1 /* UIImage+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2088D237294E96C9009415C1 /* UIImage+.swift */; };
 		208D9FE9266DFD4A00FC2067 /* RatingManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 208D9FE8266DFD4A00FC2067 /* RatingManager.swift */; };
@@ -78,6 +79,7 @@
 		20544EFA268AFBD700D780E4 /* CalendarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarController.swift; sourceTree = "<group>"; };
 		206BCDE329C2F535009F5BFB /* Alert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Alert.swift; sourceTree = "<group>"; };
 		206BCDE529C2F5FB009F5BFB /* Segue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Segue.swift; sourceTree = "<group>"; };
+		207547EA29D1DF5600117B99 /* ImageUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageUseCase.swift; sourceTree = "<group>"; };
 		207E4F852660985D00AC0A6E /* AddPlaceTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddPlaceTableViewController.swift; sourceTree = "<group>"; };
 		2088D237294E96C9009415C1 /* UIImage+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+.swift"; sourceTree = "<group>"; };
 		208D9FE8266DFD4A00FC2067 /* RatingManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RatingManager.swift; sourceTree = "<group>"; };
@@ -256,8 +258,7 @@
 		20B80BD6294AF4A800CA0F2B /* Data */ = {
 			isa = PBXGroup;
 			children = (
-				2052A03E29CC7ADF0075A954 /* PlaceRepository.swift */,
-				2026D2DC29D18D76001F6FEE /* ImageRepository.swift */,
+				207547E929D1DF4000117B99 /* Repository */,
 			);
 			path = Data;
 			sourceTree = "<group>";
@@ -357,6 +358,7 @@
 			children = (
 				2052A04129CC84680075A954 /* PlaceUseCase.swift */,
 				2052A04429CC98860075A954 /* ClassificationUseCase.swift */,
+				207547EA29D1DF5600117B99 /* ImageUseCase.swift */,
 			);
 			path = UseCase;
 			sourceTree = "<group>";
@@ -542,6 +544,7 @@
 				208D9FE9266DFD4A00FC2067 /* RatingManager.swift in Sources */,
 				20544EFB268AFBD700D780E4 /* CalendarController.swift in Sources */,
 				206BCDE429C2F535009F5BFB /* Alert.swift in Sources */,
+				207547EB29D1DF5600117B99 /* ImageUseCase.swift in Sources */,
 				20AD213429BF053100A92B1E /* PlaceInfo.swift in Sources */,
 				207E4F862660985D00AC0A6E /* AddPlaceTableViewController.swift in Sources */,
 			);
