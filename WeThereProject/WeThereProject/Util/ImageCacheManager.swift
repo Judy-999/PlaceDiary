@@ -13,29 +13,13 @@ final class ImageCacheManager {
     
     private init() {}
     
-    func setupImage(with name: String, completion: @escaping (UIImage?) -> ()) {
+    func save(_ image: UIImage, with name: String) {
         let cachedKey = NSString(string: name)
-        
-        if let image = cache.object(forKey: cachedKey) {
-            completion(image)
-            return
-        }
-    
-        StorageManager.shared.getImage(name: name) { [weak self] result in
-            switch result {
-            case .success(let image):
-                self?.cache.setObject(image, forKey: cachedKey)
-                completion(image)
-            case .failure(_):
-                completion(DiaryImage.placeholer)
-            }
-        }
+        cache.setObject(image, forKey: cachedKey)
     }
     
-    func updateImage(with name: String, new: String, _ image: UIImage) {
-        let oldCachedKey = NSString(string: name)
-        let newCachedKey = NSString(string: new)
-        cache.removeObject(forKey: oldCachedKey)
-        cache.setObject(image, forKey: newCachedKey)
+    func getImage(with name: String) -> UIImage? {
+        let cachedKey = NSString(string: name)
+        return cache.object(forKey: cachedKey)
     }
 }
