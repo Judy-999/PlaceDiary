@@ -98,13 +98,7 @@ final class AddPlaceTableViewController: UITableViewController {
     private func configureEditView() {
         guard let place = editingPlace else { return }
         
-        ImageCacheManager.shared.setupImage(with: place.name) { [weak self] image in
-            DispatchQueue.main.async {
-                self?.placeImageView.image = image
-            }
-            
-            self?.receiveImage = image
-        }
+        //TODO: Image load
         
         placeImageView.image = receiveImage
         nameTextField.text = place.name
@@ -175,13 +169,13 @@ final class AddPlaceTableViewController: UITableViewController {
         case .edit:
             if receiveName != newPlace.name {
                 deletePlaceData(name: receiveName)
-                ImageCacheManager.shared.updateImage(with: receiveName,
-                                                     new: newPlace.name, placeImage)
+                //TODO: Image save
+                
             }
             
             if placeImage != receiveImage || receiveName != newPlace.name {
-                ImageCacheManager.shared.updateImage(with: receiveName,
-                                                     new: newPlace.name, placeImage)
+                //TODO: Image save
+                
                 uploadImage(newPlace.name,
                             image: placeImage.resize(newWidth: 300))
             }
@@ -196,14 +190,7 @@ final class AddPlaceTableViewController: UITableViewController {
     private func deletePlaceData(name place: String) {
         viewModel.deletePlace(place, disposeBag)
         
-        StorageManager.shared.deleteImage(name: place) { [weak self] result in
-            switch result {
-            case .success(_):
-                break
-            case .failure(let failure):
-                self?.showAlert("실패", failure.errorDescription)
-            }
-        }
+        //TODO: Image delete
     }
 
     private func uploadData(place data: Place) {
@@ -211,14 +198,7 @@ final class AddPlaceTableViewController: UITableViewController {
     }
     
     private func uploadImage(_ placeName: String, image: UIImage) {
-        StorageManager.shared.saveImage(image, name: placeName) { [weak self] result in
-            switch result {
-            case .success(_):
-                break
-            case .failure(let failure):
-                self?.showAlert("실패", failure.errorDescription)
-            }
-        }
+        //TODO: Image save
     }
     
     @IBAction private func starSliderChanged(_ sender: Any) {

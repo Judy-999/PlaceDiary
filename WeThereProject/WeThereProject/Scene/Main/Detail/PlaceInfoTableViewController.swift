@@ -51,13 +51,7 @@ final class PlaceInfoTableViewController: UITableViewController, EditDelegate {
     }
     
     private func setupPlaceInfo() {
-        ImageCacheManager.shared.setupImage(with: place.name) { [weak self] image in
-            DispatchQueue.main.async {
-                self?.placeImage.image = image
-            }
-            
-            self?.receiveImage = image
-        }
+        //TODO: Image load
         
         placeNameLabel.text = place.name
         categoryLabel.text = place.category
@@ -86,14 +80,7 @@ final class PlaceInfoTableViewController: UITableViewController, EditDelegate {
         let okAction = UIAlertAction(title: "삭제", style: .destructive) { [weak self] _ in
             self?.viewModel.deletePlace(place.name, self!.disposeBag)
             
-            StorageManager.shared.deleteImage(name: place.name) { [weak self] result in
-                switch result {
-                case .success(_):
-                    break
-                case .failure(let failure):
-                    self?.showAlert("실패", failure.errorDescription)
-                }
-            }
+            //TODO: Storage - Image delete
             
             var places = PlaceDataManager.shared.getPlaces()
             if let index = places.firstIndex(where: { $0.name == place.name }) {

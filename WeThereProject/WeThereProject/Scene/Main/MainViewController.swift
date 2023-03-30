@@ -125,14 +125,7 @@ final class MainViewController: UIViewController {
         let okAlert = UIAlertAction(title: "삭제", style: .destructive) { [weak self] _ in
             self?.mainViewModel.deletePlace(placeName, self!.disposeBag)
             
-            StorageManager.shared.deleteImage(name: placeName) { [weak self] result in
-                switch result {
-                case .success(_):
-                    break
-                case .failure(let failure):
-                    self?.showAlert("실패", failure.errorDescription) 
-                }
-            }
+            //TODO: 이미지 삭제 storage 업데이트
      
             guard let removedIndex = self?.places.firstIndex(where: { $0.name == placeName }) else { return }
             

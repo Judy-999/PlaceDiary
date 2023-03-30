@@ -41,10 +41,7 @@ final class StatisticsTableViewController: UITableViewController {
     }
     
     private func loadClassification() {
-        let calssification: (categoryItems: [String], groupItems: [String])
-        = PlaceDataManager.shared.getClassification()
-        groupList = calssification.groupItems
-        categoryList = calssification.categoryItems
+        //TODO: calssification load
     }
     
     override func numberOfSections(in tableView: UITableView) -> Int {

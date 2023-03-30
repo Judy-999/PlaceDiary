@@ -35,20 +35,11 @@ final class EditClassificationController: UITableViewController {
     }
     
     private func loadClassification() {
-        let calssification: (categoryItems: [String], groupItems: [String])
-        = PlaceDataManager.shared.getClassification()
-
-        switch editType {
-        case .category:
-            editItems = calssification.categoryItems
-        case .group:
-            editItems = calssification.groupItems
-        }
+        //TODO: load Classification
     }
     
     private func updateClassification() {
-        FirestoreManager.shared.updateClassification(editType.rawValue,
-                                                     with: editItems)
+        //TODO: Firestore updateClassification
         
         PlaceDataManager.shared.setupClassification(with: editItems, type: editType)
     }
@@ -81,16 +72,7 @@ final class EditClassificationController: UITableViewController {
             filteredPlaces = places.filter { $0.group == newItem }
         }
         
-        filteredPlaces.forEach {
-            FirestoreManager.shared.savePlace($0) { [weak self] result in
-                switch result {
-                case .success(_):
-                    break
-                case .failure(let failure):
-                    self?.showAlert("실패", failure.errorDescription)
-                }
-            }
-        }
+        //TODO: filteredPlaces의 place save
         
         PlaceDataManager.shared.setupPlaces(with: places)
     }

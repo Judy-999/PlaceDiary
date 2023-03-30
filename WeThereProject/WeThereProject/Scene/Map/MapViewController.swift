@@ -70,10 +70,9 @@ final class MapViewController: UIViewController {
     }
     
     private func loadClassification() {
-        let calssification: (categoryItems: [String], groupItems: [String])
-        = PlaceDataManager.shared.getClassification()
-        groupList = [PlaceInfo.Map.allType] + calssification.groupItems
-        categoryList = [PlaceInfo.Map.allType] + calssification.categoryItems
+        //TODO: load Classification
+//        groupList = [PlaceInfo.Map.allType] + calssification.groupItems
+//        categoryList = [PlaceInfo.Map.allType] + calssification.categoryItems
     }
     
     private func selectMarker(at place: Place) {
