@@ -25,6 +25,7 @@ final class MainViewController: UIViewController {
         }
     }
     private let mainViewModel = MainViewModel()
+    private let imageRepository = ImageRepository()
     private let disposeBag = DisposeBag()
     
     @IBOutlet weak var segmentedControl: UISegmentedControl!
@@ -213,7 +214,7 @@ extension MainViewController: UITableViewDataSource, UITableViewDelegate {
         let cell = tableView.dequeueReusableCell(withIdentifier: "placeCell",
                                                  for: indexPath) as? PlaceCell ?? PlaceCell()
         let places = filteredPlaces(at: indexPath.section)
-        cell.configure(with: places[indexPath.row])
+        cell.configure(with: places[indexPath.row], imageRepository)
         
         return cell
     }

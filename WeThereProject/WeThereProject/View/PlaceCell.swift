@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import RxSwift
 
 final class PlaceCell: UITableViewCell {
     @IBOutlet weak var placeImageView: UIImageView!
@@ -14,24 +15,25 @@ final class PlaceCell: UITableViewCell {
     @IBOutlet weak var infoLabel: UILabel!
     @IBOutlet weak var favoritButton: UIButton!
     
+    private let disposeBag = DisposeBag()
     private var placeName = ""
     
-    func configure(with place: Place) {
-        let favoritImage = place.isFavorit ? DiaryImage.Favorit.isFavorit : DiaryImage.Favorit.isNotFavorit
-        favoritButton.setImage(favoritImage, for: .normal)
+    func configure(with place: Place,
+                   _ imageRepository: ImageRepository) {
         placeName = place.name
         nameLabel.text = place.name
         infoLabel.text = "\(place.group) ∙ \(place.category) ∙ \(place.rating) 점"
         dateLabel.text = place.date.toString
-        configureImage(with: place)
+        setupFavoritButton(with: place.isFavorit)
+        
+        imageRepository.load(place.name)
+            .bind(to: placeImageView.rx.image)
+            .disposed(by: disposeBag)
     }
     
-    private func configureImage(with place: Place) {
-        ImageCacheManager.shared.setupImage(with: place.name) { placeImage in
-            DispatchQueue.main.async {
-                self.placeImageView.image = placeImage
-            }
-        }
+    private func setupFavoritButton(with isFavorit: Bool) {
+        let favoritImage = isFavorit ? DiaryImage.Favorit.isFavorit : DiaryImage.Favorit.isNotFavorit
+        favoritButton.setImage(favoritImage, for: .normal)
     }
     
     override func prepareForReuse() {
@@ -51,13 +53,6 @@ final class PlaceCell: UITableViewCell {
             isFavorit = false
         }
         
-        FirestoreManager.shared.updateFavorit(isFavorit, placeName: placeName) { result in
-            switch result {
-            case .success(_):
-                break
-            case .failure(let failure):
-                print(failure.errorDescription)
-            }
-        }
+        //TODO: favorit 변경 firebase에 업데이트
     }
 }
