@@ -30,6 +30,7 @@
 		2056153829D725BC00427866 /* Search.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2056153729D725BC00427866 /* Search.storyboard */; };
 		2056153C29D7260300427866 /* Calendar.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2056153A29D7260300427866 /* Calendar.storyboard */; };
 		2056153F29D7269900427866 /* Map.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2056153E29D7269900427866 /* Map.storyboard */; };
+		2056154329D726D700427866 /* Setting.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2056154129D726D700427866 /* Setting.storyboard */; };
 		206BCDE429C2F535009F5BFB /* Alert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 206BCDE329C2F535009F5BFB /* Alert.swift */; };
 		206BCDE629C2F5FB009F5BFB /* Segue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 206BCDE529C2F5FB009F5BFB /* Segue.swift */; };
 		207547EB29D1DF5600117B99 /* ImageUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 207547EA29D1DF5600117B99 /* ImageUseCase.swift */; };
@@ -89,6 +90,7 @@
 		2056153729D725BC00427866 /* Search.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Search.storyboard; sourceTree = SOURCE_ROOT; };
 		2056153B29D7260300427866 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = WeThereProject/View/Base.lproj/Calendar.storyboard; sourceTree = SOURCE_ROOT; };
 		2056153E29D7269900427866 /* Map.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Map.storyboard; sourceTree = SOURCE_ROOT; };
+		2056154229D726D700427866 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = WeThereProject/View/Base.lproj/Setting.storyboard; sourceTree = SOURCE_ROOT; };
 		206BCDE329C2F535009F5BFB /* Alert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Alert.swift; sourceTree = "<group>"; };
 		206BCDE529C2F5FB009F5BFB /* Segue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Segue.swift; sourceTree = "<group>"; };
 		207547EA29D1DF5600117B99 /* ImageUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageUseCase.swift; sourceTree = "<group>"; };
@@ -194,6 +196,14 @@
 			isa = PBXGroup;
 			children = (
 				2056153E29D7269900427866 /* Map.storyboard */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		2056154029D726B300427866 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				2056154129D726D700427866 /* Setting.storyboard */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -359,6 +369,7 @@
 		20D4EAA329C042A8007B493B /* Setting */ = {
 			isa = PBXGroup;
 			children = (
+				2056154029D726B300427866 /* View */,
 				20D7B4AE26EDEF5100DF954E /* StatisticsTableViewController.swift */,
 				204CEEB6267F0A3F000D395F /* EditClassificationController.swift */,
 				204CEEB8267F0BD1000D395F /* SettingTableController.swift */,
@@ -523,6 +534,7 @@
 				20105EFB2664DA35007AA233 /* GoogleService-Info.plist in Resources */,
 				2056153C29D7260300427866 /* Calendar.storyboard in Resources */,
 				20E3E2D8265E2639004BDFF6 /* Main.storyboard in Resources */,
+				2056154329D726D700427866 /* Setting.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -639,6 +651,14 @@
 				2056153B29D7260300427866 /* Base */,
 			);
 			name = Calendar.storyboard;
+			sourceTree = "<group>";
+		};
+		2056154129D726D700427866 /* Setting.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				2056154229D726D700427866 /* Base */,
+			);
+			name = Setting.storyboard;
 			sourceTree = "<group>";
 		};
 		20E3E2D6265E2639004BDFF6 /* Main.storyboard */ = {
