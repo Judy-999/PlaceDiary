@@ -9,95 +9,6 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--검색-->
-        <scene sceneID="M3j-qe-UV3">
-            <objects>
-                <viewController id="wBP-Ne-UTD" customClass="SearchViewController" customModule="WeThereProject" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="7Tl-1V-4Ip">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="58" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="HFr-jd-imi">
-                                <rect key="frame" x="0.0" y="91" width="375" height="638"/>
-                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                                <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="searchCell" rowHeight="58" id="bmm-gA-W3f" customClass="SearchResultCell" customModule="WeThereProject" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="50" width="375" height="58"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="bmm-gA-W3f" id="NNH-Fz-LuC">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="58"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                            <subviews>
-                                                <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillProportionally" translatesAutoresizingMaskIntoConstraints="NO" id="soT-kz-Vxf">
-                                                    <rect key="frame" x="16" y="3" width="343" height="52"/>
-                                                    <subviews>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="이름" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Qaq-fn-VwT">
-                                                            <rect key="frame" x="0.0" y="0.0" width="343" height="32.666666666666664"/>
-                                                            <fontDescription key="fontDescription" style="UICTFontTextStyleTitle3"/>
-                                                            <nil key="textColor"/>
-                                                            <nil key="highlightedColor"/>
-                                                        </label>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="장소" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lNd-jf-V8E">
-                                                            <rect key="frame" x="0.0" y="32.666666666666664" width="343" height="19.333333333333336"/>
-                                                            <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
-                                                            <color key="textColor" systemColor="secondaryLabelColor"/>
-                                                            <nil key="highlightedColor"/>
-                                                        </label>
-                                                    </subviews>
-                                                </stackView>
-                                            </subviews>
-                                            <constraints>
-                                                <constraint firstItem="soT-kz-Vxf" firstAttribute="leading" secondItem="NNH-Fz-LuC" secondAttribute="leading" constant="16" id="DJO-d5-nUa"/>
-                                                <constraint firstAttribute="trailing" secondItem="soT-kz-Vxf" secondAttribute="trailing" constant="16" id="PL2-Lb-6gm"/>
-                                                <constraint firstItem="soT-kz-Vxf" firstAttribute="top" secondItem="NNH-Fz-LuC" secondAttribute="top" constant="3" id="bke-lA-VAi"/>
-                                                <constraint firstAttribute="bottom" secondItem="soT-kz-Vxf" secondAttribute="bottom" constant="3" id="fjH-hZ-c5c"/>
-                                            </constraints>
-                                        </tableViewCellContentView>
-                                        <connections>
-                                            <outlet property="lblLocation" destination="lNd-jf-V8E" id="2vl-yC-hcg"/>
-                                            <outlet property="lblName" destination="Qaq-fn-VwT" id="9f5-jK-LWB"/>
-                                            <segue destination="Lsw-yK-qqG" kind="show" identifier="sgSearchInfo" id="1cJ-Xl-0QN"/>
-                                        </connections>
-                                    </tableViewCell>
-                                </prototypes>
-                            </tableView>
-                        </subviews>
-                        <viewLayoutGuide key="safeArea" id="HXf-3m-I7q"/>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                        <constraints>
-                            <constraint firstItem="HFr-jd-imi" firstAttribute="leading" secondItem="HXf-3m-I7q" secondAttribute="leading" id="DVF-cE-04r"/>
-                            <constraint firstItem="HXf-3m-I7q" firstAttribute="trailing" secondItem="HFr-jd-imi" secondAttribute="trailing" id="anL-bg-Pgn"/>
-                            <constraint firstItem="HXf-3m-I7q" firstAttribute="bottom" secondItem="HFr-jd-imi" secondAttribute="bottom" id="ch1-s4-Qhc"/>
-                            <constraint firstItem="HFr-jd-imi" firstAttribute="top" secondItem="HXf-3m-I7q" secondAttribute="top" id="czh-jX-Kd9"/>
-                        </constraints>
-                    </view>
-                    <navigationItem key="navigationItem" title="검색" id="REl-1K-TE7"/>
-                    <connections>
-                        <outlet property="searchTableView" destination="HFr-jd-imi" id="HWx-VO-ePJ"/>
-                    </connections>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="sA3-8F-hSd" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="-618" y="1711"/>
-        </scene>
-        <!--검색-->
-        <scene sceneID="ezd-Ez-DLH">
-            <objects>
-                <navigationController id="4QB-6h-SGi" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="검색" image="magnifyingglass" catalog="system" selectedImage="magnifyingglass" id="sUj-Kg-ebc"/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="5MN-yD-S86">
-                        <rect key="frame" x="0.0" y="47" width="375" height="44"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                        <color key="tintColor" red="0.47843140360000003" green="0.9529411793" blue="0.94901961089999998" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-                    </navigationBar>
-                    <connections>
-                        <segue destination="wBP-Ne-UTD" kind="relationship" relationship="rootViewController" id="B33-7g-P2O"/>
-                    </connections>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="jnk-Ih-IIa" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="-618" y="986"/>
-        </scene>
         <!--지도-->
         <scene sceneID="KYc-fI-Syg">
             <objects>
@@ -419,7 +330,7 @@
                     </tabBar>
                     <connections>
                         <segue destination="uiD-mQ-5s4" kind="relationship" relationship="viewControllers" id="CAL-55-cfI"/>
-                        <segue destination="4QB-6h-SGi" kind="relationship" relationship="viewControllers" id="0uT-yc-7KM"/>
+                        <segue destination="CcM-3m-y8q" kind="relationship" relationship="viewControllers" id="0uT-yc-7KM"/>
                         <segue destination="et2-Wk-wJo" kind="relationship" relationship="viewControllers" id="peL-tF-7vi"/>
                         <segue destination="h8L-lw-dN1" kind="relationship" relationship="viewControllers" id="Fjf-EO-gKt"/>
                         <segue destination="qOY-eY-Ueu" kind="relationship" relationship="viewControllers" id="gyb-fh-iaK"/>
@@ -511,7 +422,7 @@
                 </viewControllerPlaceholder>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dBG-mY-uDw" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1613.5999999999999" y="2530.7881773399017"/>
+            <point key="canvasLocation" x="-401" y="2500"/>
         </scene>
         <!--InfoViewController-->
         <scene sceneID="4cb-Ff-fIu">
@@ -521,7 +432,17 @@
                 </viewControllerPlaceholder>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="oE9-5Q-YMh" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-183.19999999999999" y="2508.6206896551726"/>
+            <point key="canvasLocation" x="318" y="2500"/>
+        </scene>
+        <!--Search-->
+        <scene sceneID="cQp-SN-I8d">
+            <objects>
+                <viewControllerPlaceholder storyboardName="Search" id="CcM-3m-y8q" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="Item" id="jF0-NN-acd"/>
+                </viewControllerPlaceholder>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="m3B-Pa-HFL" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-618" y="986"/>
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
@@ -530,13 +451,9 @@
     </inferredMetricsTieBreakers>
     <resources>
         <image name="calendar" catalog="system" width="128" height="107"/>
-        <image name="magnifyingglass" catalog="system" width="128" height="117"/>
         <image name="map" catalog="system" width="128" height="112"/>
         <image name="person" catalog="system" width="128" height="121"/>
         <image name="slider.horizontal.3" catalog="system" width="128" height="99"/>
-        <systemColor name="secondaryLabelColor">
-            <color red="0.23529411764705882" green="0.23529411764705882" blue="0.2627450980392157" alpha="0.59999999999999998" colorSpace="custom" customColorSpace="sRGB"/>
-        </systemColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
