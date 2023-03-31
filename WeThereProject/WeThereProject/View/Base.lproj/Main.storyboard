@@ -51,24 +51,6 @@
             </objects>
             <point key="canvasLocation" x="1153" y="1691"/>
         </scene>
-        <!--캘린더-->
-        <scene sceneID="OfN-VQ-dso">
-            <objects>
-                <navigationController id="et2-Wk-wJo" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="캘린더" image="calendar" catalog="system" selectedImage="calendar" id="K8E-Ul-vYU"/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="Itw-RL-sGR">
-                        <rect key="frame" x="0.0" y="47" width="375" height="44"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                        <color key="tintColor" red="0.47843140360000003" green="0.9529411793" blue="0.94901961089999998" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-                    </navigationBar>
-                    <connections>
-                        <segue destination="VSK-5y-Ar7" kind="relationship" relationship="rootViewController" id="pea-f6-MVS"/>
-                    </connections>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="A1X-Ui-PJN" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="318" y="985"/>
-        </scene>
         <!--설정-->
         <scene sceneID="8cJ-Fp-wx5">
             <objects>
@@ -331,7 +313,7 @@
                     <connections>
                         <segue destination="uiD-mQ-5s4" kind="relationship" relationship="viewControllers" id="CAL-55-cfI"/>
                         <segue destination="CcM-3m-y8q" kind="relationship" relationship="viewControllers" id="0uT-yc-7KM"/>
-                        <segue destination="et2-Wk-wJo" kind="relationship" relationship="viewControllers" id="peL-tF-7vi"/>
+                        <segue destination="fxz-Tr-Eon" kind="relationship" relationship="viewControllers" id="peL-tF-7vi"/>
                         <segue destination="h8L-lw-dN1" kind="relationship" relationship="viewControllers" id="Fjf-EO-gKt"/>
                         <segue destination="qOY-eY-Ueu" kind="relationship" relationship="viewControllers" id="gyb-fh-iaK"/>
                     </connections>
@@ -339,70 +321,6 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="PCh-MB-9Oq" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="265" y="176"/>
-        </scene>
-        <!--캘린더-->
-        <scene sceneID="meb-fq-L7k">
-            <objects>
-                <viewController id="VSK-5y-Ar7" customClass="CalendarController" customModule="WeThereProject" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="kks-cp-da1">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <subviews>
-                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="7lq-lL-Lvd">
-                                <rect key="frame" x="0.0" y="91" width="375" height="638"/>
-                                <subviews>
-                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="WHc-c7-DM7" customClass="FSCalendar">
-                                        <rect key="frame" x="0.0" y="0.0" width="375" height="425.33333333333331"/>
-                                        <connections>
-                                            <outlet property="dataSource" destination="VSK-5y-Ar7" id="Uf8-d5-iSI"/>
-                                            <outlet property="delegate" destination="VSK-5y-Ar7" id="DVt-4y-JUi"/>
-                                        </connections>
-                                    </view>
-                                    <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="50" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="zYq-ul-kDH">
-                                        <rect key="frame" x="0.0" y="425.33333333333343" width="375" height="212.66666666666669"/>
-                                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                                        <prototypes>
-                                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="calCell" rowHeight="50" id="vvk-1V-yyL">
-                                                <rect key="frame" x="0.0" y="50" width="375" height="50"/>
-                                                <autoresizingMask key="autoresizingMask"/>
-                                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="vvk-1V-yyL" id="EXC-TL-V87">
-                                                    <rect key="frame" x="0.0" y="0.0" width="344.66666666666669" height="50"/>
-                                                    <autoresizingMask key="autoresizingMask"/>
-                                                </tableViewCellContentView>
-                                                <connections>
-                                                    <segue destination="Lsw-yK-qqG" kind="show" identifier="sgCalendarInfo" id="VOi-XO-Ujb"/>
-                                                </connections>
-                                            </tableViewCell>
-                                        </prototypes>
-                                        <connections>
-                                            <outlet property="dataSource" destination="VSK-5y-Ar7" id="eZk-mn-Y7T"/>
-                                            <outlet property="delegate" destination="VSK-5y-Ar7" id="Wgl-hT-gKT"/>
-                                        </connections>
-                                    </tableView>
-                                </subviews>
-                                <constraints>
-                                    <constraint firstItem="zYq-ul-kDH" firstAttribute="height" secondItem="WHc-c7-DM7" secondAttribute="height" multiplier="0.5" id="DS5-80-sxZ"/>
-                                </constraints>
-                            </stackView>
-                        </subviews>
-                        <viewLayoutGuide key="safeArea" id="NP3-Bh-SOH"/>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                        <constraints>
-                            <constraint firstItem="NP3-Bh-SOH" firstAttribute="bottom" secondItem="7lq-lL-Lvd" secondAttribute="bottom" id="4fN-XN-Cmz"/>
-                            <constraint firstItem="7lq-lL-Lvd" firstAttribute="top" secondItem="NP3-Bh-SOH" secondAttribute="top" id="5pF-jo-Xv8"/>
-                            <constraint firstAttribute="trailing" secondItem="7lq-lL-Lvd" secondAttribute="trailing" id="xhu-b2-NDm"/>
-                            <constraint firstItem="7lq-lL-Lvd" firstAttribute="leading" secondItem="NP3-Bh-SOH" secondAttribute="leading" id="yGH-zA-lDL"/>
-                        </constraints>
-                    </view>
-                    <navigationItem key="navigationItem" title="캘린더" id="Fda-43-Sq2"/>
-                    <connections>
-                        <outlet property="calendar" destination="WHc-c7-DM7" id="qe3-9C-LGD"/>
-                        <outlet property="tableView" destination="zYq-ul-kDH" id="UKb-Rc-oSw"/>
-                    </connections>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="hGV-uX-rG2" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="318" y="1691"/>
         </scene>
         <!--PlaceList-->
         <scene sceneID="cf0-h9-doj">
@@ -444,13 +362,21 @@
             </objects>
             <point key="canvasLocation" x="-618" y="986"/>
         </scene>
+        <!--Calendar-->
+        <scene sceneID="cnV-ne-wzN">
+            <objects>
+                <viewControllerPlaceholder storyboardName="Calendar" id="fxz-Tr-Eon" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="Item" id="IZE-QJ-hTB"/>
+                </viewControllerPlaceholder>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="3ST-XP-cZH" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="318" y="985"/>
+        </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="ngF-ER-ywh"/>
         <segue reference="LEn-q7-1yn"/>
     </inferredMetricsTieBreakers>
     <resources>
-        <image name="calendar" catalog="system" width="128" height="107"/>
         <image name="map" catalog="system" width="128" height="112"/>
         <image name="person" catalog="system" width="128" height="121"/>
         <image name="slider.horizontal.3" catalog="system" width="128" height="99"/>
