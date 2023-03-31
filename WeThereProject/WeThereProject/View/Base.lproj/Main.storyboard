@@ -49,7 +49,7 @@
                 </viewControllerPlaceholder>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dBG-mY-uDw" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-401" y="2500"/>
+            <point key="canvasLocation" x="-676" y="1632"/>
         </scene>
         <!--InfoViewController-->
         <scene sceneID="4cb-Ff-fIu">
@@ -59,7 +59,7 @@
                 </viewControllerPlaceholder>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="oE9-5Q-YMh" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="318" y="2500"/>
+            <point key="canvasLocation" x="199" y="1632"/>
         </scene>
         <!--Search-->
         <scene sceneID="cQp-SN-I8d">
@@ -97,7 +97,7 @@
                 <viewControllerPlaceholder storyboardIdentifier="UIViewController-uTe-NZ-0Gm" storyboardName="Map" referencedIdentifier="UIViewController-uTe-NZ-0Gm" id="SVe-PV-4Gs" sceneMemberID="viewController"/>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="czj-2w-fRd" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1153" y="1691"/>
+            <point key="canvasLocation" x="1031" y="1632"/>
         </scene>
         <!--Setting-->
         <scene sceneID="Tln-dz-IVt">

@@ -127,13 +127,14 @@ final class PlaceInfoTableViewController: UITableViewController, EditDelegate {
     }
     
     private func presentEditView() {
-        guard let addViewController = storyboard?.instantiateViewController(identifier: "AddViewController", creator: { creater in
+        let storyboard = UIStoryboard(name: "Add", bundle: nil)
+        let addViewController = storyboard.instantiateViewController(identifier: "AddViewController", creator: { creater in
             let addViewController = AddPlaceTableViewController(place: self.place,
                                                                 viewModel: self.viewModel,
                                                                 coder: creater)
             addViewController?.editDelegate = self
             return addViewController
-        }) else { return }
+        })
         
         navigationController?.pushViewController(addViewController, animated: true)
     }
