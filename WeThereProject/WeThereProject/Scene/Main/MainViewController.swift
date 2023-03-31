@@ -245,12 +245,13 @@ extension MainViewController: UITableViewDataSource, UITableViewDelegate {
         let places = filteredPlaces(at: indexPath.section)
         let selectedPlace = places[indexPath.row]
         
-        guard let infoViewController = storyboard?.instantiateViewController(identifier: "InfoViewController", creator: { creater in
+        let storyboard = UIStoryboard(name: "Detail", bundle: nil)
+        let infoViewController = storyboard.instantiateViewController(identifier: "InfoViewController", creator: { creater in
             let infoViewController = PlaceInfoTableViewController(place: selectedPlace,
                                                                   viewModel: self.mainViewModel,
                                                                   coder: creater)
             return infoViewController
-        }) else { return }
+        })
         
         navigationController?.pushViewController(infoViewController, animated: true)
     }
