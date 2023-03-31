@@ -125,8 +125,7 @@ final class MainViewController: UIViewController {
                                            preferredStyle: .actionSheet)
         let okAlert = UIAlertAction(title: "삭제", style: .destructive) { [weak self] _ in
             self?.mainViewModel.deletePlace(placeName, self!.disposeBag)
-            
-            //TODO: 이미지 삭제 storage 업데이트
+            self?.mainViewModel.deleteImage(placeName, self!.disposeBag)
      
             guard let removedIndex = self?.places.firstIndex(where: { $0.name == placeName }) else { return }
             

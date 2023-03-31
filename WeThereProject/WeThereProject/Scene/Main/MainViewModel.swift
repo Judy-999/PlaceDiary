@@ -28,11 +28,13 @@ struct MainViewModel: MainViewModelInput, MainViewModelOutput {
     
     let placeUseCase = PlaceUseCase()
     let classificationUseCase = ClassificationUseCase()
+    let imageUseCase = ImageUseCase()
 
     func loadPlaceData(_ disposeBag: DisposeBag) {
         refreshing.onNext(true)
         
         placeUseCase.fetch()
+            .take(1)
             .do(onNext: { _ in
                 refreshing.onNext(false)
             })
@@ -48,6 +50,7 @@ struct MainViewModel: MainViewModelInput, MainViewModelOutput {
     
     func deletePlace(_ place: String, _ disposeBag: DisposeBag) {
         placeUseCase.delete(place)
+            .take(1)
             .subscribe(onError: { error in
                 errorMessage.accept(error.localizedDescription)
             })
@@ -56,6 +59,7 @@ struct MainViewModel: MainViewModelInput, MainViewModelOutput {
     
     func savePlace(_ place: Place, _ disposeBag: DisposeBag) {
         placeUseCase.save(place)
+            .take(1)
             .subscribe(onError: { error in
                 errorMessage.accept(error.localizedDescription)
             })
@@ -64,6 +68,7 @@ struct MainViewModel: MainViewModelInput, MainViewModelOutput {
     
     func loadClassification(_ disposeBag: DisposeBag) {
         classificationUseCase.fetch()
+            .take(1)
             .bind(to: classification)
             .disposed(by: disposeBag)
     }
@@ -72,6 +77,25 @@ struct MainViewModel: MainViewModelInput, MainViewModelOutput {
                               _ classfications: [String],
                               _ disposeBag: DisposeBag) {
         classificationUseCase.update(type, classfications)
+            .take(1)
+            .subscribe(onError: { error in
+                errorMessage.accept(error.localizedDescription)
+            })
+            .disposed(by: disposeBag)
+    }
+    
+    func deleteImage(_ name: String, _ disposeBag: DisposeBag) {
+        imageUseCase.delte(name)
+            .take(1)
+            .subscribe(onError: { error in
+            errorMessage.accept(error.localizedDescription)
+        })
+        .disposed(by: disposeBag)
+    }
+    
+    func saveImage(_ image: UIImage, with name: String, _ disposeBag: DisposeBag) {
+        imageUseCase.save(image, with: name)
+            .take(1)
             .subscribe(onError: { error in
                 errorMessage.accept(error.localizedDescription)
             })
