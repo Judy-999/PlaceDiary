@@ -24,12 +24,24 @@ final class MainViewController: UIViewController {
             }
         }
     }
-    private let mainViewModel = MainViewModel()
-    private let imageRepository = ImageRepository()
+    private let mainViewModel: MainViewModel
+    private let imageRepository: ImageRepository
     private let disposeBag = DisposeBag()
     
     @IBOutlet weak var segmentedControl: UISegmentedControl!
     @IBOutlet weak var placeTableView: UITableView!
+    
+    required init?(with viewModel: MainViewModel,
+                   imageRepository: ImageRepository,
+                   coder: NSCoder) {
+        self.mainViewModel = viewModel
+        self.imageRepository = imageRepository
+        super.init(coder: coder)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()

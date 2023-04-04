@@ -52,6 +52,8 @@
 		20E0C54B29CC7693004770F0 /* RxCocoa in Frameworks */ = {isa = PBXBuildFile; productRef = 20E0C54A29CC7693004770F0 /* RxCocoa */; };
 		20E0C54D29CC7693004770F0 /* RxRelay in Frameworks */ = {isa = PBXBuildFile; productRef = 20E0C54C29CC7693004770F0 /* RxRelay */; };
 		20E0C54F29CC7693004770F0 /* RxSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 20E0C54E29CC7693004770F0 /* RxSwift */; };
+		20E3B0DA29DB0EEE002B8351 /* FlowCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20E3B0D929DB0EEE002B8351 /* FlowCoordinator.swift */; };
+		20E3B0DC29DB0F76002B8351 /* DIContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20E3B0DB29DB0F76002B8351 /* DIContainer.swift */; };
 		20E3E2D1265E2639004BDFF6 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20E3E2D0265E2639004BDFF6 /* AppDelegate.swift */; };
 		20E3E2D3265E2639004BDFF6 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20E3E2D2265E2639004BDFF6 /* SceneDelegate.swift */; };
 		20E3E2D8265E2639004BDFF6 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 20E3E2D6265E2639004BDFF6 /* Main.storyboard */; };
@@ -104,6 +106,8 @@
 		20CB7C9B269F28130057EAF0 /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
 		20D4EA9D29C01412007B493B /* Date+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+.swift"; sourceTree = "<group>"; };
 		20D7B4AE26EDEF5100DF954E /* StatisticsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatisticsTableViewController.swift; sourceTree = "<group>"; };
+		20E3B0D929DB0EEE002B8351 /* FlowCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlowCoordinator.swift; sourceTree = "<group>"; };
+		20E3B0DB29DB0F76002B8351 /* DIContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DIContainer.swift; sourceTree = "<group>"; };
 		20E3E2CD265E2639004BDFF6 /* WeThereProject.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WeThereProject.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		20E3E2D0265E2639004BDFF6 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		20E3E2D2265E2639004BDFF6 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -302,6 +306,8 @@
 			children = (
 				20E3E2D0265E2639004BDFF6 /* AppDelegate.swift */,
 				20E3E2D2265E2639004BDFF6 /* SceneDelegate.swift */,
+				20E3B0D929DB0EEE002B8351 /* FlowCoordinator.swift */,
+				20E3B0DB29DB0F76002B8351 /* DIContainer.swift */,
 			);
 			path = Application;
 			sourceTree = "<group>";
@@ -615,6 +621,7 @@
 				204CEEB9267F0BD1000D395F /* SettingTableController.swift in Sources */,
 				20FDE6F429CD7960002355FE /* MainViewModel.swift in Sources */,
 				204E80AC29CAE57300B239EC /* Bundle+.swift in Sources */,
+				20E3B0DA29DB0EEE002B8351 /* FlowCoordinator.swift in Sources */,
 				2088D238294E96C9009415C1 /* UIImage+.swift in Sources */,
 				2020E4E32667BE600091D569 /* Place.swift in Sources */,
 				208D9FE9266DFD4A00FC2067 /* RatingManager.swift in Sources */,
@@ -622,6 +629,7 @@
 				206BCDE429C2F535009F5BFB /* Alert.swift in Sources */,
 				207547EB29D1DF5600117B99 /* ImageUseCase.swift in Sources */,
 				20AD213429BF053100A92B1E /* PlaceInfo.swift in Sources */,
+				20E3B0DC29DB0F76002B8351 /* DIContainer.swift in Sources */,
 				207E4F862660985D00AC0A6E /* AddPlaceTableViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
