@@ -180,14 +180,7 @@ final class MainViewController: UIViewController {
     }
     
     @IBAction private func addPlaceButtonTapped(_ sender: UIBarButtonItem) {
-        let storyboard = UIStoryboard(name: "Add", bundle: nil)
-        let addViewController = storyboard.instantiateViewController(identifier: "AddViewController", creator: { creater in
-            let addViewController = AddPlaceTableViewController(viewModel: self.mainViewModel,
-                                                                coder: creater)
-            return addViewController
-        }) 
-        
-        navigationController?.pushViewController(addViewController, animated: true)
+        mainViewModel.showPlaceAdd()
     }
 }
 
@@ -257,15 +250,7 @@ extension MainViewController: UITableViewDataSource, UITableViewDelegate {
         let places = filteredPlaces(at: indexPath.section)
         let selectedPlace = places[indexPath.row]
         
-        let storyboard = UIStoryboard(name: "Detail", bundle: nil)
-        let infoViewController = storyboard.instantiateViewController(identifier: "InfoViewController", creator: { creater in
-            let infoViewController = PlaceInfoTableViewController(place: selectedPlace,
-                                                                  viewModel: self.mainViewModel,
-                                                                  coder: creater)
-            return infoViewController
-        })
-        
-        navigationController?.pushViewController(infoViewController, animated: true)
+        mainViewModel.showPlaceDetail(selectedPlace)
     }
 }
 

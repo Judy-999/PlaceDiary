@@ -48,10 +48,11 @@ struct PlaceSceneDIContainer: MoviesSearchFlowCoordinatorDependencies {
     }
     
     // MARK: - Place List
-    func makePlaceListViewController() -> UIViewController {
+    func makePlaceListViewController(action: PlaceViewModelAction) -> UIViewController {
         let storyboard = UIStoryboard(name: "PlaceList", bundle: nil)
-        let mainViewController = storyboard.instantiateViewController(identifier: "MainViewController", creator: { creater in
-            let mainViewController = MainViewController(with: self.makePlacesListViewModel(),
+        let mainViewController = storyboard.instantiateViewController(identifier: "MainViewController",
+                                                                      creator: { creater in
+            let mainViewController = MainViewController(with: self.makePlacesListViewModel(action: action),
                                                         imageRepository: self.makeImagesRepository(),
                                                         coder: creater)
             return mainViewController
@@ -60,34 +61,36 @@ struct PlaceSceneDIContainer: MoviesSearchFlowCoordinatorDependencies {
         return mainViewController
     }
     
-    func makePlacesListViewModel() -> MainViewModel {
-        return MainViewModel()
-    }
-    
-    func makePlaceDetailViewModel() -> MainViewModel {
-        return MainViewModel()
-    }
-    
-    func makeAddPlaceViewModel() -> MainViewModel {
-        return MainViewModel()
+    func makePlacesListViewModel(action: PlaceViewModelAction) -> MainViewModel {
+        return MainViewModel(placeUseCase: makePlaceUseCase(),
+                             action: action)
     }
     
     // MARK: - Place Details
-    func makePlaceDetailViewController(place: Place) -> UIViewController {
+    func makePlaceDetailViewController(place: Place,
+                                       action: DetailViewModelAction) -> UIViewController {
         let storyboard = UIStoryboard(name: "Detail", bundle: nil)
-        let infoViewController = storyboard.instantiateViewController(identifier: "InfoViewController", creator: { creater in
+        let infoViewController = storyboard.instantiateViewController(identifier: "InfoViewController",
+                                                                       creator: { creater in
             let infoViewController = PlaceInfoTableViewController(place: place,
-                                                                  viewModel: self.makePlaceDetailViewModel(),
+                                                                  viewModel: self.makePlaceDetailViewModel(action: action),
                                                                   coder: creater)
             return infoViewController
         })
         return infoViewController
     }
     
+    func makePlaceDetailViewModel(action: DetailViewModelAction) -> DetailViewModel {
+        return DetailViewModel(placeUseCase: makePlaceUseCase(),
+                               imageUseCase: makeImageUseCase(),
+                               action: action)
+    }
     
+    // MARK: - Add Place
     func makeAddPlaceViewController(with place: Place?) -> UIViewController {
         let storyboard = UIStoryboard(name: "Add", bundle: nil)
-        let addViewController = storyboard.instantiateViewController(identifier: "InfoViewController", creator: { creater in
+        let addViewController = storyboard.instantiateViewController(identifier: "AddViewController",
+                                                                     creator: { creater in
             let addViewController = AddPlaceTableViewController(place: place,
                                                                  viewModel: self.makeAddPlaceViewModel(),
                                                                  coder: creater)
@@ -95,13 +98,11 @@ struct PlaceSceneDIContainer: MoviesSearchFlowCoordinatorDependencies {
         })
         return addViewController
     }
-//    func makeMoviesDetailsViewModel(movie: Movie) -> MovieDetailsViewModel {
-//        DefaultMovieDetailsViewModel(
-//            movie: movie,
-//            posterImagesRepository: makePosterImagesRepository()
-//        )
-//    }
-//    }
+    
+    func makeAddPlaceViewModel() -> AddViewModel {
+        return AddViewModel(placeUseCase: makePlaceUseCase(),
+                            imageUseCase: makeImageUseCase())
+    }
 
     // MARK: - Flow Coordinators
     func makePlaceFlowCoordinator(navigationController: UINavigationController) -> PlcaeFlowCoordinator {
@@ -122,17 +123,15 @@ struct PlcaeFlowCoordinator {
     }
     
     func start() {
-        // Note: here we keep strong reference with actions, this way this flow do not need to be strong referenced
-        
         let action = PlaceViewModelAction(showPlaceDetails: showPlaceDetail,
                                           showPlaceAdd: showAddPlace)
-        let vc = container.makePlaceListViewController()
+        let vc = container.makePlaceListViewController(action: action)
         navigationController?.pushViewController(vc, animated: false)
-//        moviesListVC = vc
     }
 
     private func showPlaceDetail(place: Place) {
-        let vc = container.makePlaceDetailViewController(place: place)
+        let action = DetailViewModelAction(showPlaceAdd: showAddPlace)
+        let vc = container.makePlaceDetailViewController(place: place, action: action)
         navigationController?.pushViewController(vc, animated: true)
     }
     
@@ -142,9 +141,4 @@ struct PlcaeFlowCoordinator {
     }
 }
 
-struct PlaceViewModelAction {
-    /// Note: if you would need to edit movie inside Details screen and update this Movies List screen with updated movie then you would need this closure:
-    /// showMovieDetails: (Movie, @escaping (_ updated: Movie) -> Void) -> Void
-    let showPlaceDetails: (Place) -> Void
-    let showPlaceAdd: (Place?) -> Void
-}
+

@@ -9,6 +9,11 @@ import RxCocoa
 import RxSwift
 import UIKit
 
+struct PlaceViewModelAction {
+    let showPlaceDetails: (Place) -> Void
+    let showPlaceAdd: (Place?) -> Void
+}
+
 protocol MainViewModelInput {
     func loadPlaceData(_ disposeBag: DisposeBag)
     func deletePlace(_ place: String, _ disposeBag: DisposeBag)
@@ -26,10 +31,17 @@ struct MainViewModel: MainViewModelInput, MainViewModelOutput {
     var classification = BehaviorRelay<Classification>(value: Classification())
     var errorMessage = PublishRelay<String>()
     
-    let placeUseCase = PlaceUseCase()
+    private let placeUseCase: PlaceUseCase
     let classificationUseCase = ClassificationUseCase()
     let imageUseCase = ImageUseCase()
+    private let action: PlaceViewModelAction
 
+    init(placeUseCase: PlaceUseCase,
+        action: PlaceViewModelAction?) {
+        self.placeUseCase = placeUseCase
+        self.action = action!
+    }
+    
     func loadPlaceData(_ disposeBag: DisposeBag) {
         refreshing.onNext(true)
         
@@ -104,3 +116,12 @@ struct MainViewModel: MainViewModelInput, MainViewModelOutput {
 }
 
 
+extension MainViewModel {
+    func showPlaceAdd() {
+        action.showPlaceAdd(nil)
+    }
+
+    func showPlaceDetail(_ place: Place) {
+        action.showPlaceDetails(place)
+    }
+}

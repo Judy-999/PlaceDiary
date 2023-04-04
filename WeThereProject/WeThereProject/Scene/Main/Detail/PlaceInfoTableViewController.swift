@@ -11,7 +11,7 @@ import RxSwift
 final class PlaceInfoTableViewController: UITableViewController, EditDelegate {
     private var receiveImage: UIImage?
     private var place: Place
-    private let viewModel: MainViewModel
+    private let viewModel: DetailViewModel
     private let disposeBag = DisposeBag()
     
     @IBOutlet private weak var placeImage: UIImageView!
@@ -24,7 +24,7 @@ final class PlaceInfoTableViewController: UITableViewController, EditDelegate {
     @IBOutlet private weak var comentTextView: UITextView!
     @IBOutlet private var starImageView: [UIImageView]!
     
-    required init?(place: Place, viewModel: MainViewModel, coder: NSCoder) {
+    required init?(place: Place, viewModel: DetailViewModel, coder: NSCoder) {
         self.place = place
         self.viewModel = viewModel
         super.init(coder: coder)
@@ -127,16 +127,7 @@ final class PlaceInfoTableViewController: UITableViewController, EditDelegate {
     }
     
     private func presentEditView() {
-        let storyboard = UIStoryboard(name: "Add", bundle: nil)
-        let addViewController = storyboard.instantiateViewController(identifier: "AddViewController", creator: { creater in
-            let addViewController = AddPlaceTableViewController(place: self.place,
-                                                                viewModel: self.viewModel,
-                                                                coder: creater)
-            addViewController?.editDelegate = self
-            return addViewController
-        })
-        
-        navigationController?.pushViewController(addViewController, animated: true)
+        viewModel.showPlaceAdd(with: place)
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {

@@ -40,10 +40,10 @@ final class AddPlaceTableViewController: UITableViewController {
     private var viewMode: ViewMode {
         return editingPlace == nil ? .add : .edit
     }
-    private let viewModel: MainViewModel
+    private let viewModel: AddViewModel
     private let disposeBag = DisposeBag()
     
-    required init?(place: Place? = nil, viewModel: MainViewModel, coder: NSCoder) {
+    required init?(place: Place? = nil, viewModel: AddViewModel, coder: NSCoder) {
         self.editingPlace = place
         self.viewModel = viewModel
         super.init(coder: coder)
