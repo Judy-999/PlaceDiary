@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="21507" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="21507" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="h8L-lw-dN1">
     <device id="retina6_12" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
@@ -12,7 +12,7 @@
         <!--지도-->
         <scene sceneID="KYc-fI-Syg">
             <objects>
-                <viewController storyboardIdentifier="UIViewController-uTe-NZ-0Gm" id="uTe-NZ-0Gm" customClass="MapViewController" customModule="WeThereProject" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="MapViewController" id="uTe-NZ-0Gm" customClass="MapViewController" customModule="WeThereProject" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="Ud7-UE-MAc">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -54,7 +54,7 @@
         <!--지도-->
         <scene sceneID="NL5-BQ-98y">
             <objects>
-                <navigationController storyboardIdentifier="UINavigationController-h8L-lw-dN1" id="h8L-lw-dN1" sceneMemberID="viewController">
+                <navigationController id="h8L-lw-dN1" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="지도" image="map" catalog="system" selectedImage="map" id="eME-YV-PeX"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="zfz-7t-0Ry">
                         <rect key="frame" x="0.0" y="59" width="393" height="44"/>

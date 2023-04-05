@@ -81,23 +81,15 @@
             </objects>
             <point key="canvasLocation" x="318" y="985"/>
         </scene>
-        <!--UINavigationController-h8L-lw-dN1-->
+        <!--Map-->
         <scene sceneID="pDM-gX-ckJ">
             <objects>
-                <viewControllerPlaceholder storyboardName="Map" referencedIdentifier="UINavigationController-h8L-lw-dN1" id="Kfa-gi-Xxh" sceneMemberID="viewController">
+                <viewControllerPlaceholder storyboardName="Map" id="Kfa-gi-Xxh" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Item" id="ZEu-9p-Bf3"/>
                 </viewControllerPlaceholder>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="kVQ-6p-FY6" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1153" y="986"/>
-        </scene>
-        <!--UIViewController-uTe-NZ-0Gm-->
-        <scene sceneID="MCR-i1-SBb">
-            <objects>
-                <viewControllerPlaceholder storyboardIdentifier="UIViewController-uTe-NZ-0Gm" storyboardName="Map" referencedIdentifier="UIViewController-uTe-NZ-0Gm" id="SVe-PV-4Gs" sceneMemberID="viewController"/>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="czj-2w-fRd" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="1031" y="1632"/>
         </scene>
         <!--Setting-->
         <scene sceneID="Tln-dz-IVt">

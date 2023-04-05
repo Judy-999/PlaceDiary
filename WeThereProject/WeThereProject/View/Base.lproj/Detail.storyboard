@@ -324,10 +324,10 @@
             </objects>
             <point key="canvasLocation" x="-876" y="3004"/>
         </scene>
-        <!--UIViewController-uTe-NZ-0Gm-->
+        <!--MapViewController-->
         <scene sceneID="FcF-tq-pla">
             <objects>
-                <viewControllerPlaceholder storyboardName="Main" referencedIdentifier="UIViewController-uTe-NZ-0Gm" id="gZ7-74-4Ul" sceneMemberID="viewController"/>
+                <viewControllerPlaceholder storyboardIdentifier="MapViewController" storyboardName="Map" referencedIdentifier="MapViewController" id="gZ7-74-4Ul" sceneMemberID="viewController"/>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Xll-P2-87o" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="592" y="3004"/>
