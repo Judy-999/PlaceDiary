@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		200B164029DC541F0039CB89 /* TabBarPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 200B163F29DC541F0039CB89 /* TabBarPage.swift */; };
+		200B164229DC56590039CB89 /* TabCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 200B164129DC56590039CB89 /* TabCoordinator.swift */; };
+		200B164429DC60930039CB89 /* PlaceCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 200B164329DC60930039CB89 /* PlaceCoordinator.swift */; };
 		20105EFB2664DA35007AA233 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 20105EFA2664DA35007AA233 /* GoogleService-Info.plist */; };
 		20166C2F26830F55002AF187 /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20166C2E26830F55002AF187 /* SearchViewController.swift */; };
 		2020E4E32667BE600091D569 /* Place.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2020E4E22667BE600091D569 /* Place.swift */; };
@@ -71,6 +74,9 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		200B163F29DC541F0039CB89 /* TabBarPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarPage.swift; sourceTree = "<group>"; };
+		200B164129DC56590039CB89 /* TabCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabCoordinator.swift; sourceTree = "<group>"; };
+		200B164329DC60930039CB89 /* PlaceCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceCoordinator.swift; sourceTree = "<group>"; };
 		20105EFA2664DA35007AA233 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		20166C2E26830F55002AF187 /* SearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
 		2020E4E22667BE600091D569 /* Place.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Place.swift; sourceTree = "<group>"; };
@@ -313,6 +319,9 @@
 				20E3E2D2265E2639004BDFF6 /* SceneDelegate.swift */,
 				20E3B0D929DB0EEE002B8351 /* FlowCoordinator.swift */,
 				20E3B0DB29DB0F76002B8351 /* DIContainer.swift */,
+				200B163F29DC541F0039CB89 /* TabBarPage.swift */,
+				200B164329DC60930039CB89 /* PlaceCoordinator.swift */,
+				200B164129DC56590039CB89 /* TabCoordinator.swift */,
 			);
 			path = Application;
 			sourceTree = "<group>";
@@ -600,6 +609,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				20F88AC7266CD8820015B42E /* PlaceInfoTableViewController.swift in Sources */,
+				200B164429DC60930039CB89 /* PlaceCoordinator.swift in Sources */,
 				2052A03F29CC7ADF0075A954 /* PlaceRepository.swift in Sources */,
 				20978BFE29C45F4E00D845AD /* PlaceDataManager.swift in Sources */,
 				20B113832689BBC200A6A0FD /* PlaceCell.swift in Sources */,
@@ -621,11 +631,13 @@
 				202D7B06294C13990093D80A /* FirestoreManager.swift in Sources */,
 				20F553F3294C90F2001F69AD /* ImageCacheManager.swift in Sources */,
 				20E3E2E5265E355D004BDFF6 /* MapViewController.swift in Sources */,
+				200B164229DC56590039CB89 /* TabCoordinator.swift in Sources */,
 				20AD213629BF16E100A92B1E /* UIViewController+.swift in Sources */,
 				20755BA429DC275E0018B455 /* DetailViewModel.swift in Sources */,
 				20D4EA9E29C01412007B493B /* Date+.swift in Sources */,
 				2052A04229CC84680075A954 /* PlaceUseCase.swift in Sources */,
 				204E80A829CACE9000B239EC /* DeviceKeyManager.swift in Sources */,
+				200B164029DC541F0039CB89 /* TabBarPage.swift in Sources */,
 				204CEEB9267F0BD1000D395F /* SettingTableController.swift in Sources */,
 				20FDE6F429CD7960002355FE /* MainViewModel.swift in Sources */,
 				204E80AC29CAE57300B239EC /* Bundle+.swift in Sources */,

@@ -14,17 +14,7 @@ final class AppDIContainer {
     }
 }
 
-protocol MoviesSearchFlowCoordinatorDependencies  {
-//    func makeMoviesListViewController(
-//        actions: MoviesListViewModelActions
-//    ) -> MoviesListViewController
-//    func makeMoviesDetailsViewController(movie: Movie) -> UIViewController
-//    func makeMoviesQueriesSuggestionsListViewController(
-//        didSelect: @escaping MoviesQueryListViewModelDidSelectAction
-//    ) -> UIViewController
-}
-
-struct PlaceSceneDIContainer: MoviesSearchFlowCoordinatorDependencies {
+struct PlaceSceneDIContainer {
     // MARK: - Use Cases
     func makePlaceUseCase() -> PlaceUseCase {
         return PlaceUseCase(placeRepository: makePlaceRepository())
@@ -103,18 +93,72 @@ struct PlaceSceneDIContainer: MoviesSearchFlowCoordinatorDependencies {
         return AddViewModel(placeUseCase: makePlaceUseCase(),
                             imageUseCase: makeImageUseCase())
     }
+    
+    func makeSearchViewController() -> UIViewController {
+        let storyboard = UIStoryboard(name: "Search", bundle: nil)
+        let searchViewController = storyboard.instantiateViewController(identifier: "SearchViewController",
+                                                                     creator: { creater in
+            let searchViewController = SearchViewController()
+            return searchViewController
+        })
+        return searchViewController
+    }
+    
+    func makeMapViewController() -> UIViewController {
+        let storyboard = UIStoryboard(name: "Map", bundle: nil)
+        let mapViewController = storyboard.instantiateViewController(identifier: "MapViewController",
+                                                                     creator: { creater in
+            let mapViewController = MapViewController()
+            return mapViewController
+        })
+        return mapViewController
+    }
+    
+    func makeCalendarViewController() -> UIViewController {
+        let storyboard = UIStoryboard(name: "Calendar", bundle: nil)
+        let calendarViewController = storyboard.instantiateViewController(identifier: "CalendarController",
+                                                                     creator: { creater in
+            let calendarViewController = CalendarController()
+            return calendarViewController
+        })
+        return calendarViewController
+    }
+    
+    func makeSettingViewController() -> UIViewController {
+        let storyboard = UIStoryboard(name: "Setting", bundle: nil)
+        let settingViewController = storyboard.instantiateViewController(identifier: "SettingTableController",
+                                                                     creator: { creater in
+            let settingViewController = SettingTableController()
+            return settingViewController
+        })
+        return settingViewController
+    }
 
     // MARK: - Flow Coordinators
+    func makeTabFlowCoordinator(navigationController: UINavigationController) -> TabCoordinator {
+        return TabCoordinator(navigationController, container: self)
+    }
+    
     func makePlaceFlowCoordinator(navigationController: UINavigationController) -> PlcaeFlowCoordinator {
         return PlcaeFlowCoordinator(navigationController: navigationController,
-                                           container: self)
+                                    container: self)
+    }
+    
+    func makeDetailFlowCoordinator(navigationController: UINavigationController) -> DetailFlowCoordinator {
+        return DetailFlowCoordinator(navigationController: navigationController,
+                                     container: self)
+    }
+    
+    func makeSettingFlowCoordinator(navigationController: UINavigationController) -> SettingFlowCoordinator {
+        return SettingFlowCoordinator(navigationController: navigationController,
+                                      container: self)
     }
 }
 
-struct PlcaeFlowCoordinator {
-    private weak var navigationController: UINavigationController?
-    private weak var placeListViewController: MainViewController?
-    private let container: PlaceSceneDIContainer
+
+struct DetailFlowCoordinator: Coordinator {
+    weak var navigationController: UINavigationController?
+    let container: PlaceSceneDIContainer
     
     init(navigationController: UINavigationController,
          container: PlaceSceneDIContainer) {
@@ -128,17 +172,22 @@ struct PlcaeFlowCoordinator {
         let vc = container.makePlaceListViewController(action: action)
         navigationController?.pushViewController(vc, animated: false)
     }
-
-    private func showPlaceDetail(place: Place) {
-        let action = DetailViewModelAction(showPlaceAdd: showAddPlace)
-        let vc = container.makePlaceDetailViewController(place: place, action: action)
-        navigationController?.pushViewController(vc, animated: true)
-    }
-    
-    private func showAddPlace(with place: Place?) {
-        let vc = container.makeAddPlaceViewController(with: place)
-        navigationController?.pushViewController(vc, animated: true)
-    }
 }
 
-
+struct SettingFlowCoordinator: Coordinator {
+    weak var navigationController: UINavigationController?
+    let container: PlaceSceneDIContainer
+    
+    init(navigationController: UINavigationController,
+         container: PlaceSceneDIContainer) {
+        self.navigationController = navigationController
+        self.container = container
+    }
+    
+    func start() {
+//        let action = PlaceVsiewModelAction(showPlaceDetails: showPlaceDetail,
+//                                          showPlaceAdd: showAddPlace)
+        let vc = container.makeSettingViewController()
+        navigationController?.pushViewController(vc, animated: false)
+    }
+}
