@@ -8,25 +8,19 @@
 import UIKit
 
 final class AppFlowCoordinator {
-    var navigationController: UINavigationController
+    var tabBarController: UITabBarController
     var childCoordinators = [Coordinator]()
     private let appDIContainer: AppDIContainer
     
-    init(navigationController: UINavigationController,
+    init(tabBarController: UITabBarController,
         appDIContainer: AppDIContainer) {
-        self.navigationController = navigationController
+        self.tabBarController = tabBarController
         self.appDIContainer = appDIContainer
     }
-
-    func start() {
-//        let moviesSceneDIContainer = appDIContainer.makePlaceSceneDIContainer()
-//        let flow = moviesSceneDIContainer.makePlaceFlowCoordinator(navigationController: navigationController)
-//        flow.start()
-    }
     
-    func showMainFlow() {
+    func start() {
         let moviesSceneDIContainer = appDIContainer.makePlaceSceneDIContainer()
-        let tabCoordinator = moviesSceneDIContainer.makeTabFlowCoordinator(navigationController: navigationController)
+        let tabCoordinator = moviesSceneDIContainer.makeTabFlowCoordinator(with: tabBarController)
         
         tabCoordinator.start()
         childCoordinators.append(tabCoordinator)

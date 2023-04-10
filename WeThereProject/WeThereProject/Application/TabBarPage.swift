@@ -7,7 +7,7 @@
 
 import UIKit
 
-enum TabBarPage {
+enum TabBarPage: CaseIterable {
     case list
     case search
     case calendar

@@ -9,22 +9,17 @@ import UIKit
 
 class TabCoordinator: NSObject, Coordinator {
     let container: PlaceSceneDIContainer
-    var childCoordinators: [Coordinator] = []
     weak var navigationController: UINavigationController?
     var tabBarController: UITabBarController
     
-    required init(_ navigationController: UINavigationController,
+    required init(_ tabBarController: UITabBarController,
                   container: PlaceSceneDIContainer) {
-        self.navigationController = navigationController
-        self.tabBarController = .init()
+        self.tabBarController = tabBarController
         self.container = container
     }
 
     func start() {
-        let pages: [TabBarPage] = [.list, .search, .calendar, .map, .setting]
-            .sorted(by: { $0.number < $1.number })
-        
-        let controllers: [UINavigationController] = pages.map({ getTabController($0)})
+        let controllers: [UINavigationController] = TabBarPage.allCases.map { getTabController($0) }
         
         prepareTabBarController(withTabControllers: controllers)
     }
@@ -34,35 +29,33 @@ class TabCoordinator: NSObject, Coordinator {
         tabBarController.selectedIndex = TabBarPage.list.number
         tabBarController.tabBar.isTranslucent = false
         tabBarController.tabBar.tintColor = TabBarPage.selectedColor
-        navigationController?.viewControllers = [tabBarController]
     }
       
     private func getTabController(_ page: TabBarPage) -> UINavigationController {
-        let navController = UINavigationController()
-        navController.setNavigationBarHidden(false, animated: false)
-
-        navController.tabBarItem = UITabBarItem.init(title: page.title,
+        let navigationController = UINavigationController()
+        navigationController.setNavigationBarHidden(false, animated: false)
+        navigationController.tabBarItem = UITabBarItem.init(title: page.title,
                                                      image: page.icon,
                                                      tag: page.number)
         
         switch page {
         case .list:
-            let main = container.makePlaceFlowCoordinator(navigationController: navController)
+            let main = container.makePlaceFlowCoordinator(with: navigationController)
             main.start()
         case .search:
-            let main = UIViewController()
-            navController.pushViewController(main, animated: true)
+            let search = container.makeSearchFlowCoordinator(with: navigationController)
+            search.start()
         case .calendar:
-            let main = container.makePlaceFlowCoordinator(navigationController: navController)
-            main.start()
+            let calendar = container.makeCalendarFlowCoordinator(with: navigationController)
+            calendar.start()
         case .map:
-            let main = container.makePlaceFlowCoordinator(navigationController: navController)
-            main.start()
+            let map = container.makeMapFlowCoordinator(with: navigationController)
+            map.start()
         case .setting:
-            let main = container.makePlaceFlowCoordinator(navigationController: navController)
-            main.start()
+            let setting = container.makeSettingFlowCoordinator(with: navigationController)
+            setting.start()
         }
 
-        return navController
+        return navigationController
     }
 }

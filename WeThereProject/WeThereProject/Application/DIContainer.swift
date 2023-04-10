@@ -135,22 +135,37 @@ struct PlaceSceneDIContainer {
     }
 
     // MARK: - Flow Coordinators
-    func makeTabFlowCoordinator(navigationController: UINavigationController) -> TabCoordinator {
-        return TabCoordinator(navigationController, container: self)
+    func makeTabFlowCoordinator(with tabBarController: UITabBarController) -> TabCoordinator {
+        return TabCoordinator(tabBarController, container: self)
     }
     
-    func makePlaceFlowCoordinator(navigationController: UINavigationController) -> PlcaeFlowCoordinator {
+    func makePlaceFlowCoordinator(with navigationController: UINavigationController) -> PlcaeFlowCoordinator {
         return PlcaeFlowCoordinator(navigationController: navigationController,
                                     container: self)
     }
     
-    func makeDetailFlowCoordinator(navigationController: UINavigationController) -> DetailFlowCoordinator {
+    func makeDetailFlowCoordinator(with navigationController: UINavigationController) -> Coordinator {
         return DetailFlowCoordinator(navigationController: navigationController,
                                      container: self)
     }
     
-    func makeSettingFlowCoordinator(navigationController: UINavigationController) -> SettingFlowCoordinator {
+    func makeSettingFlowCoordinator(with navigationController: UINavigationController) -> Coordinator {
         return SettingFlowCoordinator(navigationController: navigationController,
+                                      container: self)
+    }
+    
+    func makeSearchFlowCoordinator(with navigationController: UINavigationController) -> Coordinator {
+        return SearchFlowCoordinator(navigationController: navigationController,
+                                      container: self)
+    }
+    
+    func makeCalendarFlowCoordinator(with navigationController: UINavigationController) -> Coordinator {
+        return CalendarFlowCoordinator(navigationController: navigationController,
+                                      container: self)
+    }
+    
+    func makeMapFlowCoordinator(with navigationController: UINavigationController) -> Coordinator {
+        return MapFlowCoordinator(navigationController: navigationController,
                                       container: self)
     }
 }
@@ -188,6 +203,60 @@ struct SettingFlowCoordinator: Coordinator {
 //        let action = PlaceVsiewModelAction(showPlaceDetails: showPlaceDetail,
 //                                          showPlaceAdd: showAddPlace)
         let vc = container.makeSettingViewController()
+        navigationController?.pushViewController(vc, animated: false)
+    }
+}
+
+struct SearchFlowCoordinator: Coordinator {
+    weak var navigationController: UINavigationController?
+    let container: PlaceSceneDIContainer
+    
+    init(navigationController: UINavigationController,
+         container: PlaceSceneDIContainer) {
+        self.navigationController = navigationController
+        self.container = container
+    }
+    
+    func start() {
+//        let action = PlaceVsiewModelAction(showPlaceDetails: showPlaceDetail,
+//                                          showPlaceAdd: showAddPlace)
+        let vc = container.makeSearchViewController()
+        navigationController?.pushViewController(vc, animated: false)
+    }
+}
+
+struct MapFlowCoordinator: Coordinator {
+    weak var navigationController: UINavigationController?
+    let container: PlaceSceneDIContainer
+    
+    init(navigationController: UINavigationController,
+         container: PlaceSceneDIContainer) {
+        self.navigationController = navigationController
+        self.container = container
+    }
+    
+    func start() {
+//        let action = PlaceVsiewModelAction(showPlaceDetails: showPlaceDetail,
+//                                          showPlaceAdd: showAddPlace)
+        let vc = container.makeMapViewController()
+        navigationController?.pushViewController(vc, animated: false)
+    }
+}
+
+struct CalendarFlowCoordinator: Coordinator {
+    weak var navigationController: UINavigationController?
+    let container: PlaceSceneDIContainer
+    
+    init(navigationController: UINavigationController,
+         container: PlaceSceneDIContainer) {
+        self.navigationController = navigationController
+        self.container = container
+    }
+    
+    func start() {
+//        let action = PlaceVsiewModelAction(showPlaceDetails: showPlaceDetail,
+//                                          showPlaceAdd: showAddPlace)
+        let vc = container.makeCalendarViewController()
         navigationController?.pushViewController(vc, animated: false)
     }
 }
