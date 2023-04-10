@@ -32,7 +32,6 @@ final class AddPlaceTableViewController: UITableViewController {
     @IBOutlet weak var starSlider: StarRatingUISlider!
     @IBOutlet var starImageViews: [UIImageView]!
     
-    private var classification = Classification()
     private var receiveImage: UIImage?, receiveName: String = ""
     private var placeGeoPoint: GeoPoint?
     private var editingPlace: Place?
@@ -40,10 +39,10 @@ final class AddPlaceTableViewController: UITableViewController {
     private var viewMode: ViewMode {
         return editingPlace == nil ? .add : .edit
     }
-    private let viewModel: AddViewModel
+    private let viewModel: MainViewModel
     private let disposeBag = DisposeBag()
     
-    required init?(place: Place? = nil, viewModel: AddViewModel, coder: NSCoder) {
+    required init?(place: Place? = nil, viewModel: MainViewModel, coder: NSCoder) {
         self.editingPlace = place
         self.viewModel = viewModel
         super.init(coder: coder)
@@ -55,7 +54,6 @@ final class AddPlaceTableViewController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        bind()
         setupPickerView()
         setupTouchevent()
         
@@ -65,19 +63,6 @@ final class AddPlaceTableViewController: UITableViewController {
         case .edit:
             configureEditView()
         }
-    }
-    
-    private func bind() {
-        viewModel.classification
-            .subscribe(onNext: { [weak self] classification in
-                self?.classification = classification
-            })
-            .disposed(by: disposeBag)
-    }
-    
-    func setPlaceDataFromInfo(data: Place, image: UIImage) {
-        editingPlace = data
-        receiveImage = image
     }
     
     private func configureTextView() {
@@ -95,11 +80,20 @@ final class AddPlaceTableViewController: UITableViewController {
         groupPickerView.delegate = self
     }
     
+    private func loadImage(with name: String) {
+        viewModel.loadImage(name)
+            .observe(on: MainScheduler.instance)
+            .subscribe(onNext: { [weak self] image in
+                self?.placeImageView.image = image
+                self?.receiveImage = image
+            })
+            .disposed(by: disposeBag)
+    }
+    
     private func configureEditView() {
         guard let place = editingPlace else { return }
-        
-        //TODO: Image load
-        
+
+        loadImage(with: place.name)
         placeImageView.image = receiveImage
         nameTextField.text = place.name
         locationTextView.text = place.location
@@ -112,6 +106,7 @@ final class AddPlaceTableViewController: UITableViewController {
         RatingManager().sliderStar(starImageViews,
                            rating: NSString(string: place.rating).floatValue)
         
+        let classification = viewModel.classification.value
         guard let categoryIndex = classification.category.firstIndex(of: place.category),
               let groupIndex = classification.group.firstIndex(of: place.group) else { return }
         
@@ -133,7 +128,8 @@ final class AddPlaceTableViewController: UITableViewController {
         let categoryIndex = categoryPickerView.selectedRow(inComponent: .zero)
         let groupIndex = groupPickerView.selectedRow(inComponent: .zero)
         let isFavorit = editingPlace?.isFavorit ?? false
-
+        let classification = viewModel.classification.value
+        
         return Place(name: name,
                      location: location,
                      date: datePicker.date,
@@ -146,7 +142,7 @@ final class AddPlaceTableViewController: UITableViewController {
     }
 
     @IBAction private func doneButtonTapped(_ sender: UIButton) {
-        let places = PlaceDataManager.shared.getPlaces()
+        let places = viewModel.places.value
         guard (places.first(where: { $0.name == nameTextField.text }) == nil ||
             receiveName == nameTextField.text) == true else {
             showAlert(.duplicatePlace)
@@ -169,13 +165,11 @@ final class AddPlaceTableViewController: UITableViewController {
         case .edit:
             if receiveName != newPlace.name {
                 deletePlaceData(name: receiveName)
-                //TODO: Image save
-                
+                uploadImage(newPlace.name,
+                            image: placeImage.resize(newWidth: 300))
             }
             
             if placeImage != receiveImage || receiveName != newPlace.name {
-                //TODO: Image save
-                
                 uploadImage(newPlace.name,
                             image: placeImage.resize(newWidth: 300))
             }
@@ -189,8 +183,7 @@ final class AddPlaceTableViewController: UITableViewController {
     
     private func deletePlaceData(name place: String) {
         viewModel.deletePlace(place, disposeBag)
-        
-        //TODO: Image delete
+        viewModel.deleteImage(place, disposeBag)
     }
 
     private func uploadData(place data: Place) {
@@ -198,7 +191,7 @@ final class AddPlaceTableViewController: UITableViewController {
     }
     
     private func uploadImage(_ placeName: String, image: UIImage) {
-        //TODO: Image save
+        viewModel.saveImage(image, with: placeName, disposeBag)
     }
     
     @IBAction private func starSliderChanged(_ sender: Any) {
@@ -287,6 +280,7 @@ extension AddPlaceTableViewController: UIPickerViewDelegate, UIPickerViewDataSou
     
     func pickerView(_ pickerView: UIPickerView,
                     numberOfRowsInComponent component: Int) -> Int {
+        let classification = viewModel.classification.value
         if pickerView == categoryPickerView {
             return classification.category.count
         }
@@ -296,6 +290,7 @@ extension AddPlaceTableViewController: UIPickerViewDelegate, UIPickerViewDataSou
     func pickerView(_ pickerView: UIPickerView,
                     titleForRow row: Int,
                     forComponent component: Int) -> String? {
+        let classification = viewModel.classification.value
         if pickerView == categoryPickerView {
             return classification.category[row]
         }

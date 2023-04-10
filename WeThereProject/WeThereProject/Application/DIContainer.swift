@@ -77,27 +77,22 @@ struct PlaceSceneDIContainer {
     }
     
     // MARK: - Add Place
-    func makeAddPlaceViewController(with place: Place?) -> UIViewController {
+    func makeAddPlaceViewController(with place: Place?, _ viewModel: MainViewModel) -> UIViewController {
         let storyboard = UIStoryboard(name: "Add", bundle: nil)
         let addViewController = storyboard.instantiateViewController(identifier: "AddViewController",
                                                                      creator: { creater in
             let addViewController = AddPlaceTableViewController(place: place,
-                                                                 viewModel: self.makeAddPlaceViewModel(),
-                                                                 coder: creater)
+                                                                viewModel: viewModel,
+                                                                coder: creater)
             return addViewController
         })
         return addViewController
     }
     
-    func makeAddPlaceViewModel() -> AddViewModel {
-        return AddViewModel(placeUseCase: makePlaceUseCase(),
-                            imageUseCase: makeImageUseCase())
-    }
-    
     func makeSearchViewController() -> UIViewController {
         let storyboard = UIStoryboard(name: "Search", bundle: nil)
         let searchViewController = storyboard.instantiateViewController(identifier: "SearchViewController",
-                                                                     creator: { creater in
+                                                                        creator: { creater in
             let searchViewController = SearchViewController(coder: creater)
             return searchViewController
         })
@@ -117,7 +112,7 @@ struct PlaceSceneDIContainer {
     func makeCalendarViewController() -> UIViewController {
         let storyboard = UIStoryboard(name: "Calendar", bundle: nil)
         let calendarViewController = storyboard.instantiateViewController(identifier: "CalendarController",
-                                                                     creator: { creater in
+                                                                          creator: { creater in
             let calendarViewController = CalendarController(coder: creater)
             return calendarViewController
         })
@@ -127,13 +122,13 @@ struct PlaceSceneDIContainer {
     func makeSettingViewController() -> UIViewController {
         let storyboard = UIStoryboard(name: "Setting", bundle: nil)
         let settingViewController = storyboard.instantiateViewController(identifier: "SettingTableController",
-                                                                     creator: { creater in
+                                                                         creator: { creater in
             let settingViewController = SettingTableController(coder: creater)
             return settingViewController
         })
         return settingViewController
     }
-
+    
     // MARK: - Flow Coordinators
     func makeTabFlowCoordinator(with tabBarController: UITabBarController) -> TabCoordinator {
         return TabCoordinator(tabBarController, container: self)
@@ -156,12 +151,12 @@ struct PlaceSceneDIContainer {
     
     func makeSearchFlowCoordinator(with navigationController: UINavigationController) -> Coordinator {
         return SearchFlowCoordinator(navigationController: navigationController,
-                                      container: self)
+                                     container: self)
     }
     
     func makeCalendarFlowCoordinator(with navigationController: UINavigationController) -> Coordinator {
         return CalendarFlowCoordinator(navigationController: navigationController,
-                                      container: self)
+                                       container: self)
     }
     
     func makeMapFlowCoordinator(with navigationController: UINavigationController) -> Coordinator {

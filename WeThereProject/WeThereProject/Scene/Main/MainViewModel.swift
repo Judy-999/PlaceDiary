@@ -11,7 +11,7 @@ import UIKit
 
 struct PlaceViewModelAction {
     let showPlaceDetails: (Place) -> Void
-    let showPlaceAdd: (Place?) -> Void
+    let showPlaceAdd: (Place?, MainViewModel) -> Void
 }
 
 protocol MainViewModelInput {
@@ -96,6 +96,10 @@ struct MainViewModel: MainViewModelInput, MainViewModelOutput {
             .disposed(by: disposeBag)
     }
     
+    func loadImage(_ name: String) -> Observable<UIImage> {
+        return imageUseCase.load(name)
+    }
+    
     func deleteImage(_ name: String, _ disposeBag: DisposeBag) {
         imageUseCase.delte(name)
             .take(1)
@@ -117,8 +121,8 @@ struct MainViewModel: MainViewModelInput, MainViewModelOutput {
 
 
 extension MainViewModel {
-    func showPlaceAdd() {
-        action.showPlaceAdd(nil)
+    func showPlaceAdd(with place: Place? = nil) {
+        action.showPlaceAdd(place, self)
     }
 
     func showPlaceDetail(_ place: Place) {

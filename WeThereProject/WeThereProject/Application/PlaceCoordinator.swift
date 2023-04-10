@@ -44,4 +44,8 @@ struct PlcaeFlowCoordinator: Coordinator {
         let vc = container.makePlaceListViewController(action: action)
         navigationController?.pushViewController(vc, animated: false)
     }
+    func showAddPlace(with place: Place?, _ viewModel: MainViewModel) {
+        let vc = container.makeAddPlaceViewController(with: place, viewModel)
+        navigationController?.pushViewController(vc, animated: true)
+    }
 }
