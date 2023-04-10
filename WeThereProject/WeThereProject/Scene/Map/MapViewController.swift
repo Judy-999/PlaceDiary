@@ -22,6 +22,10 @@ final class MapViewController: UIViewController {
     @IBOutlet private weak var entireView: UIView!
     @IBOutlet private weak var filterButton: UIBarButtonItem!
     
+    required init?(coder: NSCoder) {
+        super.init(coder: coder)
+    }
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         setupPlaces()

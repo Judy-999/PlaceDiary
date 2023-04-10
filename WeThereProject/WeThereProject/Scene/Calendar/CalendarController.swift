@@ -19,6 +19,10 @@ final class CalendarController: UIViewController {
     @IBOutlet private weak var calendar: FSCalendar!
     @IBOutlet private weak var tableView: UITableView!
     
+    required init?(coder: NSCoder) {
+        super.init(coder: coder)
+    }
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         setupPlaces()

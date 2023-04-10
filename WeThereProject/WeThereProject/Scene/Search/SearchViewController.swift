@@ -19,6 +19,10 @@ final class SearchViewController: UIViewController {
         let isSearchBarHasText = searchController?.searchBar.text?.isEmpty == false
         return isActive && isSearchBarHasText
     }
+    
+    required init?(coder: NSCoder) {
+        super.init(coder: coder)
+    }
 
     override func viewWillAppear(_ animated: Bool) {
         setupPlaces()

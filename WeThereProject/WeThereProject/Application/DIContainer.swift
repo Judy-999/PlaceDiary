@@ -98,7 +98,7 @@ struct PlaceSceneDIContainer {
         let storyboard = UIStoryboard(name: "Search", bundle: nil)
         let searchViewController = storyboard.instantiateViewController(identifier: "SearchViewController",
                                                                      creator: { creater in
-            let searchViewController = SearchViewController()
+            let searchViewController = SearchViewController(coder: creater)
             return searchViewController
         })
         return searchViewController
@@ -108,7 +108,7 @@ struct PlaceSceneDIContainer {
         let storyboard = UIStoryboard(name: "Map", bundle: nil)
         let mapViewController = storyboard.instantiateViewController(identifier: "MapViewController",
                                                                      creator: { creater in
-            let mapViewController = MapViewController()
+            let mapViewController = MapViewController(coder: creater)
             return mapViewController
         })
         return mapViewController
@@ -118,7 +118,7 @@ struct PlaceSceneDIContainer {
         let storyboard = UIStoryboard(name: "Calendar", bundle: nil)
         let calendarViewController = storyboard.instantiateViewController(identifier: "CalendarController",
                                                                      creator: { creater in
-            let calendarViewController = CalendarController()
+            let calendarViewController = CalendarController(coder: creater)
             return calendarViewController
         })
         return calendarViewController
@@ -128,7 +128,7 @@ struct PlaceSceneDIContainer {
         let storyboard = UIStoryboard(name: "Setting", bundle: nil)
         let settingViewController = storyboard.instantiateViewController(identifier: "SettingTableController",
                                                                      creator: { creater in
-            let settingViewController = SettingTableController()
+            let settingViewController = SettingTableController(coder: creater)
             return settingViewController
         })
         return settingViewController

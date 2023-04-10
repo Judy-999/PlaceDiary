@@ -12,6 +12,10 @@ final class SettingTableController: UITableViewController {
         super.viewDidLoad()
     }
     
+    required init?(coder: NSCoder) {
+        super.init(coder: coder)
+    }
+    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == Segue.category.identifier {
             guard let setting = segue.destination as? EditClassificationController else { return }

@@ -136,7 +136,7 @@ final class PlaceInfoTableViewController: UITableViewController, EditDelegate {
             let imageView = segue.destination as? ImageViewController ?? ImageViewController()
             imageView.setupImage(with: placeImage.image)
         case Segue.map.identifier:
-            let addressController = segue.destination as? MapViewController ?? MapViewController()
+            guard let addressController = segue.destination as? MapViewController else { return }
             addressController.onePlace = place
         default:
             break
