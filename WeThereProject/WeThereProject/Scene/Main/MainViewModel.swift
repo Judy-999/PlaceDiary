@@ -10,7 +10,7 @@ import RxSwift
 import UIKit
 
 struct PlaceViewModelAction {
-    let showPlaceDetails: (Place) -> Void
+    let showPlaceDetails: (Place, MainViewModel) -> Void
     let showPlaceAdd: (Place?, MainViewModel) -> Void
 }
 
@@ -126,6 +126,6 @@ extension MainViewModel {
     }
 
     func showPlaceDetail(_ place: Place) {
-        action.showPlaceDetails(place)
+        action.showPlaceDetails(place, self)
     }
 }

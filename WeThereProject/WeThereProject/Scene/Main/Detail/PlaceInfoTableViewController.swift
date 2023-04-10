@@ -9,9 +9,8 @@ import UIKit
 import RxSwift
 
 final class PlaceInfoTableViewController: UITableViewController, EditDelegate {
-    private var receiveImage: UIImage?
     private var place: Place
-    private let viewModel: DetailViewModel
+    private let viewModel: MainViewModel
     private let disposeBag = DisposeBag()
     
     @IBOutlet private weak var placeImage: UIImageView!
@@ -24,7 +23,7 @@ final class PlaceInfoTableViewController: UITableViewController, EditDelegate {
     @IBOutlet private weak var comentTextView: UITextView!
     @IBOutlet private var starImageView: [UIImageView]!
     
-    required init?(place: Place, viewModel: DetailViewModel, coder: NSCoder) {
+    required init?(place: Place, viewModel: MainViewModel, coder: NSCoder) {
         self.place = place
         self.viewModel = viewModel
         super.init(coder: coder)
@@ -50,8 +49,14 @@ final class PlaceInfoTableViewController: UITableViewController, EditDelegate {
         tableView.reloadData()
     }
     
+    private func loadImage(with name: String) {
+        viewModel.loadImage(name)
+            .bind(to: placeImage.rx.image)
+            .disposed(by: disposeBag)
+    }
+    
     private func setupPlaceInfo() {
-        //TODO: Image load
+        loadImage(with: place.name)
         
         placeNameLabel.text = place.name
         categoryLabel.text = place.category
@@ -78,17 +83,17 @@ final class PlaceInfoTableViewController: UITableViewController, EditDelegate {
                                             message: place.name + PlaceInfo.Main.confirmDelete,
                                             preferredStyle: .alert)
         let okAction = UIAlertAction(title: "삭제", style: .destructive) { [weak self] _ in
-            self?.viewModel.deletePlace(place.name, self!.disposeBag)
+            guard let self = self else { return }
+            self.viewModel.deletePlace(place.name, self.disposeBag)
+            self.viewModel.deleteImage(place.name, self.disposeBag)
             
-            //TODO: Storage - Image delete
-            
-            var places = PlaceDataManager.shared.getPlaces()
+            var places = self.viewModel.places.value
             if let index = places.firstIndex(where: { $0.name == place.name }) {
                 places.remove(at: index)
             }
-            PlaceDataManager.shared.setupPlaces(with: places)
+            self.viewModel.places.accept(places)
             
-            self?.navigationController?.popViewController(animated: true)
+            self.navigationController?.popViewController(animated: true)
         }
         
         deleteAlert.addAction(Alert.cancel)

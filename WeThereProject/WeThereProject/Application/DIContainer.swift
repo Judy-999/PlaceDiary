@@ -57,25 +57,19 @@ struct PlaceSceneDIContainer {
     }
     
     // MARK: - Place Details
-    func makePlaceDetailViewController(place: Place,
-                                       action: DetailViewModelAction) -> UIViewController {
+    func makePlaceDetailViewController(_ place: Place,
+                                       _ viewModel: MainViewModel) -> UIViewController {
         let storyboard = UIStoryboard(name: "Detail", bundle: nil)
         let infoViewController = storyboard.instantiateViewController(identifier: "InfoViewController",
-                                                                       creator: { creater in
+                                                                      creator: { creater in
             let infoViewController = PlaceInfoTableViewController(place: place,
-                                                                  viewModel: self.makePlaceDetailViewModel(action: action),
+                                                                  viewModel: viewModel,
                                                                   coder: creater)
             return infoViewController
         })
         return infoViewController
     }
-    
-    func makePlaceDetailViewModel(action: DetailViewModelAction) -> DetailViewModel {
-        return DetailViewModel(placeUseCase: makePlaceUseCase(),
-                               imageUseCase: makeImageUseCase(),
-                               action: action)
-    }
-    
+
     // MARK: - Add Place
     func makeAddPlaceViewController(with place: Place?, _ viewModel: MainViewModel) -> UIViewController {
         let storyboard = UIStoryboard(name: "Add", bundle: nil)
@@ -161,97 +155,6 @@ struct PlaceSceneDIContainer {
     
     func makeMapFlowCoordinator(with navigationController: UINavigationController) -> Coordinator {
         return MapFlowCoordinator(navigationController: navigationController,
-                                      container: self)
-    }
-}
-
-
-struct DetailFlowCoordinator: Coordinator {
-    weak var navigationController: UINavigationController?
-    let container: PlaceSceneDIContainer
-    
-    init(navigationController: UINavigationController,
-         container: PlaceSceneDIContainer) {
-        self.navigationController = navigationController
-        self.container = container
-    }
-    
-    func start() {
-        let action = PlaceViewModelAction(showPlaceDetails: showPlaceDetail,
-                                          showPlaceAdd: showAddPlace)
-        let vc = container.makePlaceListViewController(action: action)
-        navigationController?.pushViewController(vc, animated: false)
-    }
-}
-
-struct SettingFlowCoordinator: Coordinator {
-    weak var navigationController: UINavigationController?
-    let container: PlaceSceneDIContainer
-    
-    init(navigationController: UINavigationController,
-         container: PlaceSceneDIContainer) {
-        self.navigationController = navigationController
-        self.container = container
-    }
-    
-    func start() {
-//        let action = PlaceVsiewModelAction(showPlaceDetails: showPlaceDetail,
-//                                          showPlaceAdd: showAddPlace)
-        let vc = container.makeSettingViewController()
-        navigationController?.pushViewController(vc, animated: false)
-    }
-}
-
-struct SearchFlowCoordinator: Coordinator {
-    weak var navigationController: UINavigationController?
-    let container: PlaceSceneDIContainer
-    
-    init(navigationController: UINavigationController,
-         container: PlaceSceneDIContainer) {
-        self.navigationController = navigationController
-        self.container = container
-    }
-    
-    func start() {
-//        let action = PlaceVsiewModelAction(showPlaceDetails: showPlaceDetail,
-//                                          showPlaceAdd: showAddPlace)
-        let vc = container.makeSearchViewController()
-        navigationController?.pushViewController(vc, animated: false)
-    }
-}
-
-struct MapFlowCoordinator: Coordinator {
-    weak var navigationController: UINavigationController?
-    let container: PlaceSceneDIContainer
-    
-    init(navigationController: UINavigationController,
-         container: PlaceSceneDIContainer) {
-        self.navigationController = navigationController
-        self.container = container
-    }
-    
-    func start() {
-//        let action = PlaceVsiewModelAction(showPlaceDetails: showPlaceDetail,
-//                                          showPlaceAdd: showAddPlace)
-        let vc = container.makeMapViewController()
-        navigationController?.pushViewController(vc, animated: false)
-    }
-}
-
-struct CalendarFlowCoordinator: Coordinator {
-    weak var navigationController: UINavigationController?
-    let container: PlaceSceneDIContainer
-    
-    init(navigationController: UINavigationController,
-         container: PlaceSceneDIContainer) {
-        self.navigationController = navigationController
-        self.container = container
-    }
-    
-    func start() {
-//        let action = PlaceVsiewModelAction(showPlaceDetails: showPlaceDetail,
-//                                          showPlaceAdd: showAddPlace)
-        let vc = container.makeCalendarViewController()
-        navigationController?.pushViewController(vc, animated: false)
+                                  container: self)
     }
 }
