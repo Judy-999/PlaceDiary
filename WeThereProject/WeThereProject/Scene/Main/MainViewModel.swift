@@ -25,7 +25,7 @@ protocol MainViewModelOutput {
     var errorMessage: PublishRelay<String> { get }
 }
 
-struct MainViewModel: MainViewModelInput, MainViewModelOutput {
+final class MainViewModel: MainViewModelInput, MainViewModelOutput {
     var refreshing = BehaviorSubject<Bool>(value: false)
     var places = BehaviorRelay<[Place]>(value: [])
     var classification = BehaviorRelay<Classification>(value: Classification())
@@ -47,15 +47,15 @@ struct MainViewModel: MainViewModelInput, MainViewModelOutput {
         
         placeUseCase.fetch()
             .take(1)
-            .do(onNext: { _ in
-                refreshing.onNext(false)
+            .do(onNext: { [weak self] _ in
+                self?.refreshing.onNext(false)
             })
             .subscribe(
-                onNext: { placeData in
-                    places.accept(placeData)
+                onNext: { [weak self] placeData in
+                    self?.places.accept(placeData)
                 },
-                onError: { error in
-                    errorMessage.accept(error.localizedDescription)
+                onError: { [weak self] error in
+                    self?.errorMessage.accept(error.localizedDescription)
                 })
             .disposed(by: disposeBag)
     }
@@ -63,8 +63,8 @@ struct MainViewModel: MainViewModelInput, MainViewModelOutput {
     func deletePlace(_ place: String, _ disposeBag: DisposeBag) {
         placeUseCase.delete(place)
             .take(1)
-            .subscribe(onError: { error in
-                errorMessage.accept(error.localizedDescription)
+            .subscribe(onError: { [weak self] error in
+                self?.errorMessage.accept(error.localizedDescription)
             })
             .disposed(by: disposeBag)
     }
@@ -72,8 +72,8 @@ struct MainViewModel: MainViewModelInput, MainViewModelOutput {
     func savePlace(_ place: Place, _ disposeBag: DisposeBag) {
         placeUseCase.save(place)
             .take(1)
-            .subscribe(onError: { error in
-                errorMessage.accept(error.localizedDescription)
+            .subscribe(onError: { [weak self] error in
+                self?.errorMessage.accept(error.localizedDescription)
             })
             .disposed(by: disposeBag)
     }
@@ -90,8 +90,8 @@ struct MainViewModel: MainViewModelInput, MainViewModelOutput {
                               _ disposeBag: DisposeBag) {
         classificationUseCase.update(type, classfications)
             .take(1)
-            .subscribe(onError: { error in
-                errorMessage.accept(error.localizedDescription)
+            .subscribe(onError: { [weak self] error in
+                self?.errorMessage.accept(error.localizedDescription)
             })
             .disposed(by: disposeBag)
     }
@@ -103,8 +103,8 @@ struct MainViewModel: MainViewModelInput, MainViewModelOutput {
     func deleteImage(_ name: String, _ disposeBag: DisposeBag) {
         imageUseCase.delte(name)
             .take(1)
-            .subscribe(onError: { error in
-            errorMessage.accept(error.localizedDescription)
+            .subscribe(onError: { [weak self] error in
+                self?.errorMessage.accept(error.localizedDescription)
         })
         .disposed(by: disposeBag)
     }
@@ -112,8 +112,8 @@ struct MainViewModel: MainViewModelInput, MainViewModelOutput {
     func saveImage(_ image: UIImage, with name: String, _ disposeBag: DisposeBag) {
         imageUseCase.save(image, with: name)
             .take(1)
-            .subscribe(onError: { error in
-                errorMessage.accept(error.localizedDescription)
+            .subscribe(onError: { [weak self] error in
+                self?.errorMessage.accept(error.localizedDescription)
             })
             .disposed(by: disposeBag)
     }

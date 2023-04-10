@@ -38,11 +38,11 @@ struct PlaceSceneDIContainer {
     }
     
     // MARK: - Place List
-    func makePlaceListViewController(action: PlaceViewModelAction) -> UIViewController {
+    func makePlaceListViewController(with viewModel: MainViewModel) -> UIViewController {
         let storyboard = UIStoryboard(name: "PlaceList", bundle: nil)
         let mainViewController = storyboard.instantiateViewController(identifier: "MainViewController",
                                                                       creator: { creater in
-            let mainViewController = MainViewController(with: self.makePlacesListViewModel(action: action),
+            let mainViewController = MainViewController(with: viewModel,
                                                         imageRepository: self.makeImagesRepository(),
                                                         coder: creater)
             return mainViewController
@@ -83,31 +83,34 @@ struct PlaceSceneDIContainer {
         return addViewController
     }
     
-    func makeSearchViewController() -> UIViewController {
+    func makeSearchViewController(with viewModel: MainViewModel) -> UIViewController {
         let storyboard = UIStoryboard(name: "Search", bundle: nil)
         let searchViewController = storyboard.instantiateViewController(identifier: "SearchViewController",
                                                                         creator: { creater in
-            let searchViewController = SearchViewController(coder: creater)
+            let searchViewController = SearchViewController(viewModel: viewModel,
+                                                            coder: creater)
             return searchViewController
         })
         return searchViewController
     }
     
-    func makeMapViewController() -> UIViewController {
+    func makeMapViewController(with viewModel: MainViewModel) -> UIViewController {
         let storyboard = UIStoryboard(name: "Map", bundle: nil)
         let mapViewController = storyboard.instantiateViewController(identifier: "MapViewController",
                                                                      creator: { creater in
-            let mapViewController = MapViewController(coder: creater)
+            let mapViewController = MapViewController(viewModel: viewModel,
+                                                      coder: creater)
             return mapViewController
         })
         return mapViewController
     }
     
-    func makeCalendarViewController() -> UIViewController {
+    func makeCalendarViewController(with viewModel: MainViewModel) -> UIViewController {
         let storyboard = UIStoryboard(name: "Calendar", bundle: nil)
         let calendarViewController = storyboard.instantiateViewController(identifier: "CalendarController",
                                                                           creator: { creater in
-            let calendarViewController = CalendarController(coder: creater)
+            let calendarViewController = CalendarController(viewModel: viewModel,
+                                                            coder: creater)
             return calendarViewController
         })
         return calendarViewController
@@ -128,8 +131,10 @@ struct PlaceSceneDIContainer {
         return TabCoordinator(tabBarController, container: self)
     }
     
-    func makePlaceFlowCoordinator(with navigationController: UINavigationController) -> PlcaeFlowCoordinator {
+    func makePlaceFlowCoordinator(with navigationController: UINavigationController,
+                                  _ viewModel: MainViewModel) -> PlcaeFlowCoordinator {
         return PlcaeFlowCoordinator(navigationController: navigationController,
+                                    viewModel: viewModel,
                                     container: self)
     }
     
@@ -143,18 +148,24 @@ struct PlaceSceneDIContainer {
                                       container: self)
     }
     
-    func makeSearchFlowCoordinator(with navigationController: UINavigationController) -> Coordinator {
+    func makeSearchFlowCoordinator(with navigationController: UINavigationController,
+                                   _ viewModel: MainViewModel) -> Coordinator {
         return SearchFlowCoordinator(navigationController: navigationController,
+                                     viewModel: viewModel,
                                      container: self)
     }
     
-    func makeCalendarFlowCoordinator(with navigationController: UINavigationController) -> Coordinator {
+    func makeCalendarFlowCoordinator(with navigationController: UINavigationController,
+                                     _ viewModel: MainViewModel) -> Coordinator {
         return CalendarFlowCoordinator(navigationController: navigationController,
+                                       viewModel: viewModel,
                                        container: self)
     }
     
-    func makeMapFlowCoordinator(with navigationController: UINavigationController) -> Coordinator {
+    func makeMapFlowCoordinator(with navigationController: UINavigationController,
+                                _ viewModel: MainViewModel) -> Coordinator {
         return MapFlowCoordinator(navigationController: navigationController,
+                                  viewModel: viewModel,
                                   container: self)
     }
 }

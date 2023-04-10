@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import RxSwift
 import GoogleMaps
 import GooglePlaces
 
@@ -17,13 +18,20 @@ final class MapViewController: UIViewController {
     private var groupList = [String]()
     private var categoryList = [String]()
     private var optionedPlaces = [Place]()
+    private let viewModel: MainViewModel
+    private let disposeBag = DisposeBag()
     var onePlace: Place?
     
     @IBOutlet private weak var entireView: UIView!
     @IBOutlet private weak var filterButton: UIBarButtonItem!
     
-    required init?(coder: NSCoder) {
+    required init?(viewModel: MainViewModel, coder: NSCoder) {
+        self.viewModel = viewModel
         super.init(coder: coder)
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
     
     override func viewWillAppear(_ animated: Bool) {

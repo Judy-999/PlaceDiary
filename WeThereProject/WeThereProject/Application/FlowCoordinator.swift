@@ -19,8 +19,8 @@ final class AppFlowCoordinator {
     }
     
     func start() {
-        let moviesSceneDIContainer = appDIContainer.makePlaceSceneDIContainer()
-        let tabCoordinator = moviesSceneDIContainer.makeTabFlowCoordinator(with: tabBarController)
+        let placeDIContainer = appDIContainer.makePlaceSceneDIContainer()
+        let tabCoordinator = placeDIContainer.makeTabFlowCoordinator(with: tabBarController)
         
         tabCoordinator.start()
         childCoordinators.append(tabCoordinator)

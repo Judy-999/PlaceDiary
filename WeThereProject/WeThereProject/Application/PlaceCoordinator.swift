@@ -30,17 +30,18 @@ extension Coordinator {
 struct PlcaeFlowCoordinator: Coordinator {
     weak var navigationController: UINavigationController?
     let container: PlaceSceneDIContainer
+    let mainViewModel: MainViewModel
     
     init(navigationController: UINavigationController,
+         viewModel: MainViewModel,
          container: PlaceSceneDIContainer) {
         self.navigationController = navigationController
+        self.mainViewModel = viewModel
         self.container = container
     }
     
     func start() {
-        let action = PlaceViewModelAction(showPlaceDetails: showPlaceDetail,
-                                          showPlaceAdd: showAddPlace)
-        let vc = container.makePlaceListViewController(action: action)
+        let vc = container.makePlaceListViewController(with: mainViewModel)
         navigationController?.pushViewController(vc, animated: false)
     }
 }
@@ -74,8 +75,6 @@ struct SettingFlowCoordinator: Coordinator {
     }
     
     func start() {
-//        let action = PlaceVsiewModelAction(showPlaceDetails: showPlaceDetail,
-//                                          showPlaceAdd: showAddPlace)
         let vc = container.makeSettingViewController()
         navigationController?.pushViewController(vc, animated: false)
     }
@@ -84,17 +83,18 @@ struct SettingFlowCoordinator: Coordinator {
 struct SearchFlowCoordinator: Coordinator {
     weak var navigationController: UINavigationController?
     let container: PlaceSceneDIContainer
+    let mainViewModel: MainViewModel
     
     init(navigationController: UINavigationController,
+         viewModel: MainViewModel,
          container: PlaceSceneDIContainer) {
         self.navigationController = navigationController
+        self.mainViewModel = viewModel
         self.container = container
     }
     
     func start() {
-//        let action = PlaceVsiewModelAction(showPlaceDetails: showPlaceDetail,
-//                                          showPlaceAdd: showAddPlace)
-        let vc = container.makeSearchViewController()
+        let vc = container.makeSearchViewController(with: mainViewModel)
         navigationController?.pushViewController(vc, animated: false)
     }
 }
@@ -102,17 +102,18 @@ struct SearchFlowCoordinator: Coordinator {
 struct MapFlowCoordinator: Coordinator {
     weak var navigationController: UINavigationController?
     let container: PlaceSceneDIContainer
+    let mainViewModel: MainViewModel
     
     init(navigationController: UINavigationController,
+         viewModel: MainViewModel,
          container: PlaceSceneDIContainer) {
         self.navigationController = navigationController
+        self.mainViewModel = viewModel
         self.container = container
     }
     
     func start() {
-//        let action = PlaceVsiewModelAction(showPlaceDetails: showPlaceDetail,
-//                                          showPlaceAdd: showAddPlace)
-        let vc = container.makeMapViewController()
+        let vc = container.makeMapViewController(with: mainViewModel)
         navigationController?.pushViewController(vc, animated: false)
     }
 }
@@ -120,17 +121,18 @@ struct MapFlowCoordinator: Coordinator {
 struct CalendarFlowCoordinator: Coordinator {
     weak var navigationController: UINavigationController?
     let container: PlaceSceneDIContainer
+    let mainViewModel: MainViewModel
     
     init(navigationController: UINavigationController,
+         viewModel: MainViewModel,
          container: PlaceSceneDIContainer) {
         self.navigationController = navigationController
+        self.mainViewModel = viewModel
         self.container = container
     }
     
     func start() {
-//        let action = PlaceVsiewModelAction(showPlaceDetails: showPlaceDetail,
-//                                          showPlaceAdd: showAddPlace)
-        let vc = container.makeCalendarViewController()
+        let vc = container.makeCalendarViewController(with: mainViewModel)
         navigationController?.pushViewController(vc, animated: false)
     }
 }

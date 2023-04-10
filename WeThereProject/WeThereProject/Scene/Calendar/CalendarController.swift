@@ -6,9 +6,12 @@
 //
 
 import UIKit
+import RxSwift
 import FSCalendar
 
 final class CalendarController: UIViewController {
+    private let viewModel: MainViewModel
+    private let disposeBag = DisposeBag()
     private var places = [Place]()
     private var eventPlaces = [Place]() {
         didSet {
@@ -19,8 +22,13 @@ final class CalendarController: UIViewController {
     @IBOutlet private weak var calendar: FSCalendar!
     @IBOutlet private weak var tableView: UITableView!
     
-    required init?(coder: NSCoder) {
+    required init?(viewModel: MainViewModel, coder: NSCoder) {
+        self.viewModel = viewModel
         super.init(coder: coder)
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
     
     override func viewWillAppear(_ animated: Bool) {

@@ -6,13 +6,15 @@
 //
 
 import UIKit
+import RxSwift
 
 final class SearchViewController: UIViewController {
     @IBOutlet private var searchTableView: UITableView!
     
+    private let viewModel: MainViewModel
+    private let disposeBag = DisposeBag()
     private var filteredPlaces = [Place]()
     private var searchText = String()
-    private var places = [Place]()
     private var isSearching: Bool {
         let searchController = self.navigationItem.searchController
         let isActive = searchController?.isActive == true
@@ -20,24 +22,19 @@ final class SearchViewController: UIViewController {
         return isActive && isSearchBarHasText
     }
     
-    required init?(coder: NSCoder) {
+    required init?(viewModel: MainViewModel, coder: NSCoder) {
+        self.viewModel = viewModel
         super.init(coder: coder)
     }
 
-    override func viewWillAppear(_ animated: Bool) {
-        setupPlaces()
-        searchTableView.reloadData()
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        setupPlaces()
         setupSearchController()
         setupTableView()
-    }
-    
-    private func setupPlaces() {
-        places = PlaceDataManager.shared.getPlaces()
     }
     
     private func setupTableView() {
@@ -67,6 +64,7 @@ final class SearchViewController: UIViewController {
                   let cell = sender as? UITableViewCell,
                   let indexPath = searchTableView.indexPath(for: cell) else { return }
             
+            let places = viewModel.places.value
             let selectedPlaces: [Place] = isSearching ? filteredPlaces : places
 
             if let place = places.first(where: { $0.name == selectedPlaces[indexPath.row].name }) {
@@ -104,10 +102,10 @@ extension SearchViewController: UITableViewDataSource, UITableViewDelegate {
             
             return filteredPlaces.count
         } else {
+            let places = viewModel.places.value
             if places.isEmpty {
                 initializeTableView(with: PlaceInfo.Search.emptySearch)
             }
-            
             return places.count
         }
     }
@@ -132,7 +130,7 @@ extension SearchViewController: UITableViewDataSource, UITableViewDelegate {
             cell.lblLocation.attributedText = address
             
         } else {
-            let place = places[indexPath.row]
+            let place = viewModel.places.value[indexPath.row]
             cell.lblName.text = place.name
             cell.lblLocation.text = place.location
         }
@@ -144,7 +142,7 @@ extension SearchViewController: UITableViewDataSource, UITableViewDelegate {
 extension SearchViewController: UISearchResultsUpdating {
     func updateSearchResults(for searchController: UISearchController) {
         guard let text = searchController.searchBar.text?.lowercased() else { return }
-        
+        let places = viewModel.places.value
         searchText = text
         filteredPlaces = places.filter {
             $0.name.localizedCaseInsensitiveContains(searchText) ||
