@@ -12,7 +12,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         guard let windowScene = (scene as? UIWindowScene) else { return }
-
+        
         let tabBarController = UITabBarController()
         let appDIContainer = AppDIContainer()
         let appFlowCoordinator = AppFlowCoordinator(tabBarController: tabBarController,
@@ -24,7 +24,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         appFlowCoordinator.start()
     }
-
+    
     func sceneDidDisconnect(_ scene: UIScene) {
     }
 

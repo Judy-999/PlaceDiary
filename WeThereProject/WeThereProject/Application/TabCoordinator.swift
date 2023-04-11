@@ -27,6 +27,7 @@ class TabCoordinator: NSObject, Coordinator {
         tabBarController.setViewControllers(tabControllers, animated: true)
         tabBarController.selectedIndex = TabBarPage.list.number
         tabBarController.tabBar.isTranslucent = false
+        tabBarController.tabBar.backgroundColor = .systemBackground
         tabBarController.tabBar.tintColor = TabBarPage.selectedColor
     }
       

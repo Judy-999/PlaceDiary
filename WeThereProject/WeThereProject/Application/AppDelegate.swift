@@ -18,19 +18,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         GMSPlacesClient.provideAPIKey(Bundle.main.gmsApiKey)
         DeviceKeyManager.shared.checkAppFirstRun()
         Thread.sleep(forTimeInterval: 0.1)
-        setupTabbar()
         return true
-    }
-    
-    private func setupTabbar() {
-        if #available(iOS 15, *) {
-            let appearance = UITabBarAppearance()
-            let tabBar = UITabBar()
-            appearance.configureWithOpaqueBackground()
-            appearance.backgroundColor = .systemBackground
-            tabBar.standardAppearance = appearance
-            UITabBar.appearance().scrollEdgeAppearance = appearance
-        }
     }
 
     // MARK: UISceneSession Lifecycle
