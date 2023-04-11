@@ -94,7 +94,7 @@
 		2052A04129CC84680075A954 /* PlaceUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceUseCase.swift; sourceTree = "<group>"; };
 		2052A04429CC98860075A954 /* ClassificationUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClassificationUseCase.swift; sourceTree = "<group>"; };
 		20544EFA268AFBD700D780E4 /* CalendarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarController.swift; sourceTree = "<group>"; };
-		2056152829D71FD700427866 /* PlaceList.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = PlaceList.storyboard; sourceTree = SOURCE_ROOT; };
+		2056152829D71FD700427866 /* PlaceList.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = PlaceList.storyboard; path = WeThereProject/Scene/Main/View/PlaceList.storyboard; sourceTree = SOURCE_ROOT; };
 		2056152C29D7200000427866 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = WeThereProject/View/Base.lproj/Add.storyboard; sourceTree = SOURCE_ROOT; };
 		2056153329D7247400427866 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = WeThereProject/View/Base.lproj/Detail.storyboard; sourceTree = SOURCE_ROOT; };
 		2056153729D725BC00427866 /* Search.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Search.storyboard; sourceTree = SOURCE_ROOT; };
@@ -194,6 +194,7 @@
 			isa = PBXGroup;
 			children = (
 				2056153729D725BC00427866 /* Search.storyboard */,
+				20166C2E26830F55002AF187 /* SearchViewController.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -202,6 +203,7 @@
 			isa = PBXGroup;
 			children = (
 				2056153A29D7260300427866 /* Calendar.storyboard */,
+				20544EFA268AFBD700D780E4 /* CalendarController.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -210,6 +212,7 @@
 			isa = PBXGroup;
 			children = (
 				2056153E29D7269900427866 /* Map.storyboard */,
+				20E3E2E4265E355D004BDFF6 /* MapViewController.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -247,6 +250,66 @@
 				2026D2DC29D18D76001F6FEE /* ImageRepository.swift */,
 			);
 			path = Repository;
+			sourceTree = "<group>";
+		};
+		2085629529E5930000D54593 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				2056152829D71FD700427866 /* PlaceList.storyboard */,
+				20CB7C9B269F28130057EAF0 /* MainViewController.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		2085629829E5931E00D54593 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				20FDE6F329CD7960002355FE /* MainViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		2085629929E5932D00D54593 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				20B3F03D29E43EF100BDCB72 /* SearchViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		2085629A29E5934100D54593 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				2085629329E57F9A00D54593 /* CalendarViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		2085629B29E5935E00D54593 /* Coordinator */ = {
+			isa = PBXGroup;
+			children = (
+				2085629D29E5939400D54593 /* TabBar */,
+				20E3B0D929DB0EEE002B8351 /* FlowCoordinator.swift */,
+				200B164329DC60930039CB89 /* PlaceCoordinator.swift */,
+			);
+			path = Coordinator;
+			sourceTree = "<group>";
+		};
+		2085629C29E5936C00D54593 /* DIContainerNew Group */ = {
+			isa = PBXGroup;
+			children = (
+				20E3B0DB29DB0F76002B8351 /* DIContainer.swift */,
+			);
+			path = "DIContainerNew Group";
+			sourceTree = "<group>";
+		};
+		2085629D29E5939400D54593 /* TabBar */ = {
+			isa = PBXGroup;
+			children = (
+				200B163F29DC541F0039CB89 /* TabBarPage.swift */,
+				200B164129DC56590039CB89 /* TabCoordinator.swift */,
+			);
+			path = TabBar;
 			sourceTree = "<group>";
 		};
 		2088D236294E96B0009415C1 /* Extension */ = {
@@ -291,6 +354,8 @@
 		20B80BD2294AF41C00CA0F2B /* Scene */ = {
 			isa = PBXGroup;
 			children = (
+				20D4EAA229C0428C007B493B /* Detail */,
+				20ABBE8929C81DAA00F6AAFD /* Add */,
 				20D4EA9F29C0421F007B493B /* Main */,
 				20D4EAA029C0424B007B493B /* Search */,
 				20D4EAA129C0425B007B493B /* Calendar */,
@@ -316,11 +381,8 @@
 			children = (
 				20E3E2D0265E2639004BDFF6 /* AppDelegate.swift */,
 				20E3E2D2265E2639004BDFF6 /* SceneDelegate.swift */,
-				20E3B0D929DB0EEE002B8351 /* FlowCoordinator.swift */,
-				20E3B0DB29DB0F76002B8351 /* DIContainer.swift */,
-				200B163F29DC541F0039CB89 /* TabBarPage.swift */,
-				200B164329DC60930039CB89 /* PlaceCoordinator.swift */,
-				200B164129DC56590039CB89 /* TabCoordinator.swift */,
+				2085629C29E5936C00D54593 /* DIContainerNew Group */,
+				2085629B29E5935E00D54593 /* Coordinator */,
 			);
 			path = Application;
 			sourceTree = "<group>";
@@ -348,11 +410,8 @@
 		20D4EA9F29C0421F007B493B /* Main */ = {
 			isa = PBXGroup;
 			children = (
-				2056152829D71FD700427866 /* PlaceList.storyboard */,
-				20CB7C9B269F28130057EAF0 /* MainViewController.swift */,
-				20FDE6F329CD7960002355FE /* MainViewModel.swift */,
-				20ABBE8929C81DAA00F6AAFD /* Add */,
-				20D4EAA229C0428C007B493B /* Detail */,
+				2085629529E5930000D54593 /* View */,
+				2085629829E5931E00D54593 /* ViewModel */,
 			);
 			path = Main;
 			sourceTree = "<group>";
@@ -361,8 +420,7 @@
 			isa = PBXGroup;
 			children = (
 				2056153629D725A200427866 /* View */,
-				20166C2E26830F55002AF187 /* SearchViewController.swift */,
-				20B3F03D29E43EF100BDCB72 /* SearchViewModel.swift */,
+				2085629929E5932D00D54593 /* ViewModel */,
 			);
 			path = Search;
 			sourceTree = "<group>";
@@ -371,8 +429,7 @@
 			isa = PBXGroup;
 			children = (
 				2056153929D725E300427866 /* View */,
-				20544EFA268AFBD700D780E4 /* CalendarController.swift */,
-				2085629329E57F9A00D54593 /* CalendarViewModel.swift */,
+				2085629A29E5934100D54593 /* ViewModel */,
 			);
 			path = Calendar;
 			sourceTree = "<group>";
@@ -402,7 +459,6 @@
 			isa = PBXGroup;
 			children = (
 				2056153D29D7267B00427866 /* View */,
-				20E3E2E4265E355D004BDFF6 /* MapViewController.swift */,
 			);
 			path = Map;
 			sourceTree = "<group>";
