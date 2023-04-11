@@ -42,8 +42,8 @@ struct PlaceSceneDIContainer {
         let storyboard = UIStoryboard(name: "PlaceList", bundle: nil)
         let mainViewController = storyboard.instantiateViewController(identifier: "MainViewController",
                                                                       creator: { creater in
-            let mainViewController = MainViewController(with: self.makePlacesListViewModel(action: action),
-                                                        imageRepository: self.makeImagesRepository(),
+            let mainViewController = MainViewController(with: makePlacesListViewModel(action: action),
+                                                        imageRepository: makeImagesRepository(),
                                                         coder: creater)
             return mainViewController
         })
@@ -104,18 +104,23 @@ struct PlaceSceneDIContainer {
         let storyboard = UIStoryboard(name: "Map", bundle: nil)
         let mapViewController = storyboard.instantiateViewController(identifier: "MapViewController",
                                                                      creator: { creater in
-            let mapViewController = MapViewController(viewModel: self.makePlacesListViewModel(action: action),
+            let mapViewController = MapViewController(viewModel: makePlacesListViewModel(action: action),
                                                       coder: creater)
             return mapViewController
         })
         return mapViewController
     }
     
+    func makeCalendarViewModel(_ action: PlaceViewModelAction) -> CalendarViewModel {
+        return CalendarViewModel(placeUseCase: makePlaceUseCase(),
+                                 action: action)
+    }
+    
     func makeCalendarViewController(with action: PlaceViewModelAction) -> UIViewController {
         let storyboard = UIStoryboard(name: "Calendar", bundle: nil)
         let calendarViewController = storyboard.instantiateViewController(identifier: "CalendarController",
                                                                           creator: { creater in
-            let calendarViewController = CalendarController(viewModel: self.makePlacesListViewModel(action: action),
+            let calendarViewController = CalendarController(viewModel: makeCalendarViewModel(action),
                                                             coder: creater)
             return calendarViewController
         })

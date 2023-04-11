@@ -10,7 +10,7 @@ import RxSwift
 import FSCalendar
 
 final class CalendarController: UIViewController {
-    private let viewModel: MainViewModel
+    private let viewModel: PlaceViewModel
     private let disposeBag = DisposeBag()
     private var eventPlaces = [Place]() {
         didSet {
@@ -21,7 +21,7 @@ final class CalendarController: UIViewController {
     @IBOutlet private weak var calendar: FSCalendar!
     @IBOutlet private weak var tableView: UITableView!
     
-    required init?(viewModel: MainViewModel, coder: NSCoder) {
+    required init?(viewModel: PlaceViewModel, coder: NSCoder) {
         self.viewModel = viewModel
         super.init(coder: coder)
     }
@@ -33,7 +33,17 @@ final class CalendarController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupCalendar()
+        viewModel.loadPlaceData(disposeBag)
+        bind()
         calendar.reloadData()
+    }
+    
+    private func bind() {
+        viewModel.places
+            .subscribe { [weak self] _ in
+                self?.calendar.reloadData()
+            }
+            .disposed(by: disposeBag)
     }
     
     private func setupCalendar() {

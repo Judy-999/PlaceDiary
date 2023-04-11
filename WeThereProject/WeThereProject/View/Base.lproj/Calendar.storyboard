@@ -56,9 +56,6 @@
                                                     <rect key="frame" x="0.0" y="0.0" width="362.66666666666669" height="50"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                 </tableViewCellContentView>
-                                                <connections>
-                                                    <segue destination="Lsw-yK-qqG" kind="show" identifier="sgCalendarInfo" id="VOi-XO-Ujb"/>
-                                                </connections>
                                             </tableViewCell>
                                         </prototypes>
                                         <connections>

@@ -140,6 +140,7 @@ extension SearchViewController: UITableViewDataSource, UITableViewDelegate {
         if let place = places.first(where: { $0.name == selectedPlaces[indexPath.row].name }) {
             viewModel.showPlaceDetail(place)
         }
+        tableView.deselectRow(at: indexPath, animated: true)
     }
 }
 

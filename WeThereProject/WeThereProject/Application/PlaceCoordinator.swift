@@ -107,7 +107,9 @@ struct CalendarFlowCoordinator: Coordinator {
     }
     
     func start() {
-//        let vc = container.makeCalendarViewController(with: mainViewModel)
-//        navigationController?.pushViewController(vc, animated: false)
+        let action = PlaceViewModelAction(showPlaceDetails: showPlaceDetail,
+                                          showPlaceAdd: showAddPlace)
+        let vc = container.makeCalendarViewController(with: action)
+        navigationController?.pushViewController(vc, animated: false)
     }
 }
