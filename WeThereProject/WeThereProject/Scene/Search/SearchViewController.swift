@@ -11,7 +11,7 @@ import RxSwift
 final class SearchViewController: UIViewController {
     @IBOutlet private var searchTableView: UITableView!
     
-    private let viewModel: MainViewModel
+    private let viewModel: SearchViewModel
     private let disposeBag = DisposeBag()
     private var filteredPlaces = [Place]()
     private var searchText = String()
@@ -22,7 +22,7 @@ final class SearchViewController: UIViewController {
         return isActive && isSearchBarHasText
     }
     
-    required init?(viewModel: MainViewModel, coder: NSCoder) {
+    required init?(viewModel: SearchViewModel, coder: NSCoder) {
         self.viewModel = viewModel
         super.init(coder: coder)
     }
@@ -35,6 +35,16 @@ final class SearchViewController: UIViewController {
         super.viewDidLoad()
         setupSearchController()
         setupTableView()
+        bind()
+        viewModel.loadPlaceData(disposeBag)
+    }
+    
+    private func bind() {
+        viewModel.places
+            .subscribe { [weak self] _ in
+                self?.searchTableView.reloadData()
+            }
+            .disposed(by: disposeBag)
     }
     
     private func setupTableView() {
@@ -56,21 +66,6 @@ final class SearchViewController: UIViewController {
         self.navigationItem.searchController = searchController
         self.navigationItem.title = PlaceInfo.Search.title
         self.navigationItem.hidesSearchBarWhenScrolling = false
-    }
-    
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == Segue.serach.identifier {
-            guard let infoView = segue.destination as? PlaceInfoTableViewController,
-                  let cell = sender as? UITableViewCell,
-                  let indexPath = searchTableView.indexPath(for: cell) else { return }
-            
-            let places = viewModel.places.value
-            let selectedPlaces: [Place] = isSearching ? filteredPlaces : places
-
-            if let place = places.first(where: { $0.name == selectedPlaces[indexPath.row].name }) {
-                infoView.getPlaceInfo(place)
-            }
-        }
     }
 }
 
@@ -136,6 +131,15 @@ extension SearchViewController: UITableViewDataSource, UITableViewDelegate {
         }
         
         return cell
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let places = viewModel.places.value
+        let selectedPlaces: [Place] = isSearching ? filteredPlaces : places
+
+        if let place = places.first(where: { $0.name == selectedPlaces[indexPath.row].name }) {
+            viewModel.showPlaceDetail(place)
+        }
     }
 }
 

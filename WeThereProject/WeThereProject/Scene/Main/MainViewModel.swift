@@ -9,6 +9,22 @@ import RxCocoa
 import RxSwift
 import UIKit
 
+protocol PlaceViewModel {
+    var places: BehaviorRelay<[Place]> { get }
+    var errorMessage: PublishRelay<String> { get }
+    var classification: BehaviorRelay<Classification> { get }
+    var placeUseCase: PlaceUseCase { get }
+    var imageUseCase: ImageUseCase { get }
+    
+    func loadPlaceData(_ disposeBag: DisposeBag)
+    func deletePlace(_ place: String, _ disposeBag: DisposeBag)
+    func savePlace(_ place: Place, _ disposeBag: DisposeBag)
+    func deleteImage(_ name: String, _ disposeBag: DisposeBag)
+    func saveImage(_ image: UIImage, with name: String, _ disposeBag: DisposeBag)
+    func showPlaceAdd(with place: Place?)
+    func showPlaceDetail(_ place: Place)
+}
+
 struct PlaceViewModelAction {
     let showPlaceDetails: (Place, MainViewModel) -> Void
     let showPlaceAdd: (Place?, MainViewModel) -> Void
@@ -25,21 +41,21 @@ protocol MainViewModelOutput {
     var errorMessage: PublishRelay<String> { get }
 }
 
-final class MainViewModel: MainViewModelInput, MainViewModelOutput {
+struct MainViewModel: MainViewModelInput, MainViewModelOutput, PlaceViewModel {
     var refreshing = BehaviorSubject<Bool>(value: false)
     var places = BehaviorRelay<[Place]>(value: [])
     var classification = BehaviorRelay<Classification>(value: Classification())
     var errorMessage = PublishRelay<String>()
     
-    private let placeUseCase: PlaceUseCase
+    let placeUseCase: PlaceUseCase
     let classificationUseCase = ClassificationUseCase()
     let imageUseCase = ImageUseCase()
-    private let action: PlaceViewModelAction
+    let action: PlaceViewModelAction
 
     init(placeUseCase: PlaceUseCase,
-        action: PlaceViewModelAction?) {
+        action: PlaceViewModelAction) {
         self.placeUseCase = placeUseCase
-        self.action = action!
+        self.action = action
     }
     
     func loadPlaceData(_ disposeBag: DisposeBag) {
@@ -47,34 +63,16 @@ final class MainViewModel: MainViewModelInput, MainViewModelOutput {
         
         placeUseCase.fetch()
             .take(1)
-            .do(onNext: { [weak self] _ in
-                self?.refreshing.onNext(false)
+            .do(onNext: { _ in
+                refreshing.onNext(false)
             })
             .subscribe(
-                onNext: { [weak self] placeData in
-                    self?.places.accept(placeData)
+                onNext: { placeData in
+                    places.accept(placeData)
                 },
-                onError: { [weak self] error in
-                    self?.errorMessage.accept(error.localizedDescription)
+                onError: { error in
+                    errorMessage.accept(error.localizedDescription)
                 })
-            .disposed(by: disposeBag)
-    }
-    
-    func deletePlace(_ place: String, _ disposeBag: DisposeBag) {
-        placeUseCase.delete(place)
-            .take(1)
-            .subscribe(onError: { [weak self] error in
-                self?.errorMessage.accept(error.localizedDescription)
-            })
-            .disposed(by: disposeBag)
-    }
-    
-    func savePlace(_ place: Place, _ disposeBag: DisposeBag) {
-        placeUseCase.save(place)
-            .take(1)
-            .subscribe(onError: { [weak self] error in
-                self?.errorMessage.accept(error.localizedDescription)
-            })
             .disposed(by: disposeBag)
     }
     
@@ -90,30 +88,8 @@ final class MainViewModel: MainViewModelInput, MainViewModelOutput {
                               _ disposeBag: DisposeBag) {
         classificationUseCase.update(type, classfications)
             .take(1)
-            .subscribe(onError: { [weak self] error in
-                self?.errorMessage.accept(error.localizedDescription)
-            })
-            .disposed(by: disposeBag)
-    }
-    
-    func loadImage(_ name: String) -> Observable<UIImage> {
-        return imageUseCase.load(name)
-    }
-    
-    func deleteImage(_ name: String, _ disposeBag: DisposeBag) {
-        imageUseCase.delte(name)
-            .take(1)
-            .subscribe(onError: { [weak self] error in
-                self?.errorMessage.accept(error.localizedDescription)
-        })
-        .disposed(by: disposeBag)
-    }
-    
-    func saveImage(_ image: UIImage, with name: String, _ disposeBag: DisposeBag) {
-        imageUseCase.save(image, with: name)
-            .take(1)
-            .subscribe(onError: { [weak self] error in
-                self?.errorMessage.accept(error.localizedDescription)
+            .subscribe(onError: { error in
+                errorMessage.accept(error.localizedDescription)
             })
             .disposed(by: disposeBag)
     }
@@ -127,5 +103,47 @@ extension MainViewModel {
 
     func showPlaceDetail(_ place: Place) {
         action.showPlaceDetails(place, self)
+    }
+}
+
+extension PlaceViewModel {
+    func deletePlace(_ place: String, _ disposeBag: DisposeBag) {
+        placeUseCase.delete(place)
+            .take(1)
+            .subscribe(onError: { error in
+                errorMessage.accept(error.localizedDescription)
+            })
+            .disposed(by: disposeBag)
+    }
+    
+    func savePlace(_ place: Place, _ disposeBag: DisposeBag) {
+        placeUseCase.save(place)
+            .take(1)
+            .subscribe(onError: { error in
+                errorMessage.accept(error.localizedDescription)
+            })
+            .disposed(by: disposeBag)
+    }
+    
+    func loadImage(_ name: String) -> Observable<UIImage> {
+        return imageUseCase.load(name)
+    }
+    
+    func deleteImage(_ name: String, _ disposeBag: DisposeBag) {
+        imageUseCase.delte(name)
+            .take(1)
+            .subscribe(onError: { error in
+                errorMessage.accept(error.localizedDescription)
+        })
+        .disposed(by: disposeBag)
+    }
+    
+    func saveImage(_ image: UIImage, with name: String, _ disposeBag: DisposeBag) {
+        imageUseCase.save(image, with: name)
+            .take(1)
+            .subscribe(onError: { error in
+                errorMessage.accept(error.localizedDescription)
+            })
+            .disposed(by: disposeBag)
     }
 }

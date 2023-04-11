@@ -11,7 +11,6 @@ class TabCoordinator: NSObject, Coordinator {
     let container: PlaceSceneDIContainer
     weak var navigationController: UINavigationController?
     var tabBarController: UITabBarController
-    var mainViewModel: MainViewModel?
     
     required init(_ tabBarController: UITabBarController,
                   container: PlaceSceneDIContainer) {
@@ -20,15 +19,11 @@ class TabCoordinator: NSObject, Coordinator {
     }
 
     func start() {
-        let action = PlaceViewModelAction(showPlaceDetails: showPlaceDetail,
-                                                        showPlaceAdd: showAddPlace)
-        mainViewModel = container.makePlacesListViewModel(action: action)
-        
         let controllers = TabBarPage.allCases.map { getTabController($0) }
-        prepareTabBarController(withTabControllers: controllers)
+        prepareTabBarController(with: controllers)
     }
     
-    private func prepareTabBarController(withTabControllers tabControllers: [UIViewController]) {
+    private func prepareTabBarController(with tabControllers: [UIViewController]) {
         tabBarController.setViewControllers(tabControllers, animated: true)
         tabBarController.selectedIndex = TabBarPage.list.number
         tabBarController.tabBar.isTranslucent = false
@@ -36,7 +31,6 @@ class TabCoordinator: NSObject, Coordinator {
     }
       
     private func getTabController(_ page: TabBarPage) -> UINavigationController {
-        guard let viewModel = mainViewModel else { return UINavigationController() }
         let navigationController = UINavigationController()
         navigationController.setNavigationBarHidden(false, animated: false)
         navigationController.tabBarItem = UITabBarItem.init(title: page.title,
@@ -45,19 +39,19 @@ class TabCoordinator: NSObject, Coordinator {
         
         switch page {
         case .list:
-            let main = container.makePlaceFlowCoordinator(with: navigationController, viewModel)
+            let main = container.makePlaceFlowCoordinator(with: navigationController)
             main.start()
         case .search:
-            let search = container.makeSearchFlowCoordinator(with: navigationController, viewModel)
+            let search = container.makeSearchFlowCoordinator(with: navigationController)
             search.start()
         case .calendar:
-            let calendar = container.makeCalendarFlowCoordinator(with: navigationController, viewModel)
+            let calendar = container.makeCalendarFlowCoordinator(with: navigationController)
             calendar.start()
         case .map:
-            let map = container.makeMapFlowCoordinator(with: navigationController, viewModel)
+            let map = container.makeMapFlowCoordinator(with: navigationController)
             map.start()
         case .setting:
-            let setting = container.makeSettingFlowCoordinator(with: navigationController )
+            let setting = container.makeSettingFlowCoordinator(with: navigationController)
             setting.start()
         }
 

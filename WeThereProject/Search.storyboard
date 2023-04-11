@@ -56,7 +56,6 @@
                                         <connections>
                                             <outlet property="lblLocation" destination="lNd-jf-V8E" id="2vl-yC-hcg"/>
                                             <outlet property="lblName" destination="Qaq-fn-VwT" id="9f5-jK-LWB"/>
-                                            <segue destination="Lsw-yK-qqG" kind="show" identifier="sgSearchInfo" id="1cJ-Xl-0QN"/>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>

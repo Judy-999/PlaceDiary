@@ -10,7 +10,7 @@ import RxSwift
 
 final class PlaceInfoTableViewController: UITableViewController, EditDelegate {
     private var place: Place
-    private let viewModel: MainViewModel
+    private let viewModel: PlaceViewModel
     private let disposeBag = DisposeBag()
     
     @IBOutlet private weak var placeImage: UIImageView!
@@ -23,7 +23,7 @@ final class PlaceInfoTableViewController: UITableViewController, EditDelegate {
     @IBOutlet private weak var comentTextView: UITextView!
     @IBOutlet private var starImageView: [UIImageView]!
     
-    required init?(place: Place, viewModel: MainViewModel, coder: NSCoder) {
+    required init?(place: Place, viewModel: PlaceViewModel, coder: NSCoder) {
         self.place = place
         self.viewModel = viewModel
         super.init(coder: coder)

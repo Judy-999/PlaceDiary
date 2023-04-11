@@ -12,7 +12,6 @@ import FSCalendar
 final class CalendarController: UIViewController {
     private let viewModel: MainViewModel
     private let disposeBag = DisposeBag()
-    private var places = [Place]()
     private var eventPlaces = [Place]() {
         didSet {
             tableView.reloadData()
@@ -31,22 +30,12 @@ final class CalendarController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        setupPlaces()
-    }
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         setupCalendar()
-        setupPlaces()
         calendar.reloadData()
     }
     
-    private func setupPlaces() {
-        places = PlaceDataManager.shared.getPlaces()
-    }
-
     private func setupCalendar() {
         calendar.appearance.headerDateFormat = PlaceInfo.Calendar.headerFormat
         calendar.appearance.todayColor = Color.partialHighlight
@@ -60,21 +49,12 @@ final class CalendarController: UIViewController {
         calendar.appearance.eventSelectionColor = .systemRed
         calendar.backgroundColor = .systemBackground
     }
-    
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == Segue.calendar.identifier {
-            guard let infoView = segue.destination as? PlaceInfoTableViewController,
-                  let cell = sender as? UITableViewCell,
-                  let indexPath = self.tableView.indexPath(for: cell) else { return }
-
-            infoView.getPlaceInfo(eventPlaces[indexPath.row])
-        }
-    }
 }
 
 // MARK: FSCalendar
 extension CalendarController: FSCalendarDelegate, FSCalendarDataSource {
     func calendar(_ calendar: FSCalendar, numberOfEventsFor date: Date) -> Int {
+        let places = viewModel.places.value
         let eventDay = places.filter { $0.date.toRegular == date }
         return eventDay.count > PlaceInfo.Calendar.eventCount ?
         PlaceInfo.Calendar.eventCount : eventDay.count
@@ -83,7 +63,7 @@ extension CalendarController: FSCalendarDelegate, FSCalendarDataSource {
     func calendar(_ calendar: FSCalendar,
                   didSelect date: Date,
                   at monthPosition: FSCalendarMonthPosition) {
-        
+        let places = viewModel.places.value
         eventPlaces = places.filter { $0.date.toRegular == date }
     }
 }
@@ -117,5 +97,9 @@ extension CalendarController: UITableViewDelegate, UITableViewDataSource {
         cell.textLabel?.font = .preferredFont(forTextStyle: .title3)
         cell.textLabel?.text = eventPlaces[indexPath.row].name
         return cell
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        viewModel.showPlaceDetail(eventPlaces[indexPath.row])
     }
 }
