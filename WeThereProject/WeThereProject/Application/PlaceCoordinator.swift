@@ -11,18 +11,18 @@ protocol Coordinator {
     var navigationController: UINavigationController? { get set }
     var container: PlaceSceneDIContainer { get }
     func start()
-//    func showPlaceDetail(with place: Place, _ viewModel: MainViewModel)
-//    func showAddPlace(with place: Place?, _ viewModel: MainViewModel)
+    func showPlaceDetail(with place: Place, _ viewModel: PlaceViewModel)
+    func showAddPlace(with place: Place?, _ viewModel: PlaceViewModel)
 }
 
 
 extension Coordinator {
-    func showPlaceDetail<ViewModel: PlaceViewModel>(with place: Place, _ viewModel: ViewModel) {
+    func showPlaceDetail(with place: Place, _ viewModel: PlaceViewModel) {
         let vc = container.makePlaceDetailViewController(place, viewModel)
         navigationController?.pushViewController(vc, animated: true)
     }
     
-    func showAddPlace<ViewModel: PlaceViewModel>(with place: Place?, _ viewModel: ViewModel) {
+    func showAddPlace(with place: Place?, _ viewModel: PlaceViewModel) {
         let vc = container.makeAddPlaceViewController(with: place, viewModel)
         navigationController?.pushViewController(vc, animated: true)
     }
@@ -73,7 +73,8 @@ struct SearchFlowCoordinator: Coordinator {
     }
     
     func start() {
-        let action = SearchViewModelAction(showPlaceDetails: showPlaceDetail)
+        let action = PlaceViewModelAction(showPlaceDetails: showPlaceDetail,
+                                          showPlaceAdd: showAddPlace)
         let vc = container.makeSearchViewController(with: action)
         navigationController?.pushViewController(vc, animated: false)
     }

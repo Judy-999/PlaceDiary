@@ -13,6 +13,7 @@ protocol PlaceViewModel {
     var places: BehaviorRelay<[Place]> { get }
     var errorMessage: PublishRelay<String> { get }
     var classification: BehaviorRelay<Classification> { get }
+    var action: PlaceViewModelAction { get }
     var placeUseCase: PlaceUseCase { get }
     var imageUseCase: ImageUseCase { get }
     
@@ -26,8 +27,8 @@ protocol PlaceViewModel {
 }
 
 struct PlaceViewModelAction {
-    let showPlaceDetails: (Place, MainViewModel) -> Void
-    let showPlaceAdd: (Place?, MainViewModel) -> Void
+    let showPlaceDetails: (Place, any PlaceViewModel) -> Void
+    let showPlaceAdd: (Place?, any PlaceViewModel) -> Void
 }
 
 protocol MainViewModelInput {
@@ -107,6 +108,19 @@ extension MainViewModel {
 }
 
 extension PlaceViewModel {
+    func loadPlaceData(_ disposeBag: DisposeBag) {
+        placeUseCase.fetch()
+            .take(1)
+            .subscribe(
+                onNext: { placeData in
+                    places.accept(placeData)
+                },
+                onError: { error in
+                    errorMessage.accept(error.localizedDescription)
+                })
+            .disposed(by: disposeBag)
+    }
+    
     func deletePlace(_ place: String, _ disposeBag: DisposeBag) {
         placeUseCase.delete(place)
             .take(1)
@@ -145,5 +159,15 @@ extension PlaceViewModel {
                 errorMessage.accept(error.localizedDescription)
             })
             .disposed(by: disposeBag)
+    }
+}
+
+extension PlaceViewModel {
+    func showPlaceDetail(_ place: Place) {
+        action.showPlaceDetails(place, self)
+    }
+    
+    func showPlaceAdd(with place: Place? = nil) {
+        action.showPlaceAdd(place, self)
     }
 }

@@ -84,12 +84,12 @@ struct PlaceSceneDIContainer {
         return addViewController
     }
     
-    func makeSearchViewModel(_ action: SearchViewModelAction) -> SearchViewModel {
+    func makeSearchViewModel(_ action: PlaceViewModelAction) -> SearchViewModel {
         return SearchViewModel(placeUseCase: makePlaceUseCase(),
                                action: action)
     }
     
-    func makeSearchViewController(with action: SearchViewModelAction) -> UIViewController {
+    func makeSearchViewController(with action: PlaceViewModelAction) -> UIViewController {
         let storyboard = UIStoryboard(name: "Search", bundle: nil)
         let searchViewController = storyboard.instantiateViewController(identifier: "SearchViewController",
                                                                         creator: { creater in

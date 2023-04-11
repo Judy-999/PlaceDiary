@@ -20,34 +20,11 @@ struct SearchViewModel: PlaceViewModel {
     
     let placeUseCase: PlaceUseCase
     var imageUseCase: ImageUseCase = ImageUseCase()
-    let action: SearchViewModelAction
+    let action: PlaceViewModelAction
 
     init(placeUseCase: PlaceUseCase,
-        action: SearchViewModelAction) {
+        action: PlaceViewModelAction) {
         self.placeUseCase = placeUseCase
         self.action = action
-    }
-    
-    func loadPlaceData(_ disposeBag: DisposeBag) {
-        placeUseCase.fetch()
-            .take(1)
-            .subscribe(
-                onNext: { placeData in
-                    places.accept(placeData)
-                },
-                onError: { error in
-                    errorMessage.accept(error.localizedDescription)
-                })
-            .disposed(by: disposeBag)
-    }
-}
-
-extension SearchViewModel {
-    func showPlaceDetail(_ place: Place) {
-        action.showPlaceDetails(place, self)
-    }
-    
-    func showPlaceAdd(with place: Place? = nil) {
-        
     }
 }
