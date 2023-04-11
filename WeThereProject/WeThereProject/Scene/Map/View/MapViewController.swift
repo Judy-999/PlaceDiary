@@ -13,19 +13,16 @@ import GooglePlaces
 final class MapViewController: UIViewController {
     private let locationManager = CLLocationManager()
     private var mapView: GMSMapView?
-    private var places = [Place]()
-    private var selectedPlaceName = String()
-    private var groupList = [String]()
-    private var categoryList = [String]()
+    private var classification = Classification()
     private var optionedPlaces = [Place]()
-    private let viewModel: MainViewModel
+    private let viewModel: PlaceViewModel
     private let disposeBag = DisposeBag()
     var onePlace: Place?
     
     @IBOutlet private weak var entireView: UIView!
     @IBOutlet private weak var filterButton: UIBarButtonItem!
     
-    required init?(viewModel: MainViewModel, coder: NSCoder) {
+    required init?(viewModel: PlaceViewModel, coder: NSCoder) {
         self.viewModel = viewModel
         super.init(coder: coder)
     }
@@ -34,19 +31,13 @@ final class MapViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        setupPlaces()
-        loadClassification()
-    }
-    
     override func viewDidLoad() {
         super.viewDidLoad()
-        setupPlaces()
         loadClassification()
         setupLocationManager()
         setupMapView()
-        drawMarkers(with: places)
+        viewModel.loadPlaceData(disposeBag)
+        bind()
         filterButton.isEnabled = onePlace == nil
         
         if let place = onePlace {
@@ -54,8 +45,19 @@ final class MapViewController: UIViewController {
         }
     }
     
-    private func setupPlaces() {
-        places = PlaceDataManager.shared.getPlaces()
+    private func bind() {
+        viewModel.places
+            .subscribe(onNext: { [weak self] places in
+                self?.drawMarkers(with: places)
+            })
+            .disposed(by: disposeBag)
+        
+        viewModel.classification
+            .subscribe(onNext: { [weak self] classification in
+                self?.classification = Classification(category: [PlaceInfo.Map.allType] + classification.group,
+                                                      group: [PlaceInfo.Map.allType] + classification.category)
+            })
+            .disposed(by: disposeBag)
     }
     
     private func setupLocationManager() {
@@ -83,8 +85,6 @@ final class MapViewController: UIViewController {
     
     private func loadClassification() {
         //TODO: load Classification
-//        groupList = [PlaceInfo.Map.allType] + calssification.groupItems
-//        categoryList = [PlaceInfo.Map.allType] + calssification.categoryItems
     }
     
     private func selectMarker(at place: Place) {
@@ -144,14 +144,11 @@ final class MapViewController: UIViewController {
         present(filterAlert, animated: true, completion: nil)
     }
     
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == Segue.mapInfo.identifier {
-            guard let infoView = segue.destination as? PlaceInfoTableViewController,
-                  let selectedPlace = places.first(where: { $0.name == selectedPlaceName }) else { return }
+    private func showDetailView(with name: String) {
+        let places = viewModel.places.value
+        guard let selectedPlace = places.first(where: { $0.name == name }) else { return }
 
-            infoView.modalPresentationStyle = .fullScreen
-            infoView.getPlaceInfo(selectedPlace)
-        }
+        viewModel.showPlaceDetail(selectedPlace)
     }
 }
 
@@ -159,8 +156,8 @@ final class MapViewController: UIViewController {
 extension MapViewController: CLLocationManagerDelegate, GMSMapViewDelegate {
     func mapView(_ mapView: GMSMapView, didTapInfoWindowOf marker: GMSMarker) {
         if onePlace == nil {
-            selectedPlaceName = marker.title ?? ""
-            self.performSegue(withIdentifier: Segue.mapInfo.identifier, sender: self)
+            let selectedPlaceName = marker.title ?? ""
+            showDetailView(with: selectedPlaceName)
         } else {
             navigationController?.popViewController(animated: true)
         }
@@ -187,31 +184,31 @@ extension MapViewController: UIPickerViewDelegate, UIPickerViewDataSource {
     
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
         if component == 0 {
-            return groupList.count
+            return classification.group.count
         }
         
-        return categoryList.count
+        return classification.category.count
     }
     
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
         if component == 0 {
-            return groupList[row]
+            return classification.group[row]
         }
         
-        return categoryList[row]
+        return classification.category[row]
     }
     
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         let selectedGroup = pickerView.selectedRow(inComponent: 0)
         let selectedCategory = pickerView.selectedRow(inComponent: 1)
-        var filterdPlaces = places
+        var filterdPlaces = viewModel.places.value
         
         if selectedGroup != 0 {
-            filterdPlaces = filterdPlaces.filter { $0.group == groupList[selectedGroup] }
+            filterdPlaces = filterdPlaces.filter { $0.group == classification.group[selectedGroup] }
         }
         
         if selectedCategory != 0 {
-            filterdPlaces = filterdPlaces.filter { $0.category == categoryList[selectedCategory] }
+            filterdPlaces = filterdPlaces.filter { $0.category == classification.category[selectedCategory] }
         }
         
         optionedPlaces = filterdPlaces

@@ -44,7 +44,6 @@
                     <connections>
                         <outlet property="entireView" destination="SFI-v3-uRl" id="430-OP-ApU"/>
                         <outlet property="filterButton" destination="EN5-Gf-Ixd" id="iTj-eB-9iO"/>
-                        <segue destination="Lsw-yK-qqG" kind="show" identifier="sgMapInfo" id="ngF-ER-ywh"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="bxy-tf-cnT" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>

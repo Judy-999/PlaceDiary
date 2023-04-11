@@ -100,11 +100,16 @@ struct PlaceSceneDIContainer {
         return searchViewController
     }
     
+    func makeMapViewModel(_ action: PlaceViewModelAction) -> MapViewModel {
+        return MapViewModel(placeUseCase: makePlaceUseCase(),
+                            action: action)
+    }
+    
     func makeMapViewController(with action: PlaceViewModelAction) -> UIViewController {
         let storyboard = UIStoryboard(name: "Map", bundle: nil)
         let mapViewController = storyboard.instantiateViewController(identifier: "MapViewController",
                                                                      creator: { creater in
-            let mapViewController = MapViewController(viewModel: makePlacesListViewModel(action: action),
+            let mapViewController = MapViewController(viewModel: makeMapViewModel(action),
                                                       coder: creater)
             return mapViewController
         })

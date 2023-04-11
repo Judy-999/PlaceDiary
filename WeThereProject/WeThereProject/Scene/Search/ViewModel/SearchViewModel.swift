@@ -5,7 +5,6 @@
 //  Created by 김주영 on 2023/04/10.
 //
 
-import Foundation
 import RxSwift
 import RxCocoa
 

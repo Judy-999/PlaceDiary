@@ -15,7 +15,6 @@ protocol Coordinator {
     func showAddPlace(with place: Place?, _ viewModel: PlaceViewModel)
 }
 
-
 extension Coordinator {
     func showPlaceDetail(with place: Place, _ viewModel: PlaceViewModel) {
         let vc = container.makePlaceDetailViewController(place, viewModel)
@@ -91,8 +90,10 @@ struct MapFlowCoordinator: Coordinator {
     }
     
     func start() {
-//        let vc = container.makeMapViewController(with: mainViewModel)
-//        navigationController?.pushViewController(vc, animated: false)
+        let action = PlaceViewModelAction(showPlaceDetails: showPlaceDetail,
+                                          showPlaceAdd: showAddPlace)
+        let vc = container.makeMapViewController(with: action)
+        navigationController?.pushViewController(vc, animated: false)
     }
 }
 

@@ -1,5 +1,5 @@
 //
-//  CalendarViewModel.swift
+//  MapViewModel.swift
 //  WeThereProject
 //
 //  Created by 김주영 on 2023/04/11.
@@ -8,7 +8,7 @@
 import RxSwift
 import RxCocoa
 
-struct CalendarViewModel: PlaceViewModel {
+struct MapViewModel: PlaceViewModel {
     var classification = BehaviorRelay<Classification>(value: Classification())
     var places = BehaviorRelay<[Place]>(value: [])
     var errorMessage = PublishRelay<String>()
