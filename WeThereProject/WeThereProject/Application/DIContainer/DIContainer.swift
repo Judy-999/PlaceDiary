@@ -51,6 +51,7 @@ struct PlaceSceneDIContainer {
                                                                       creator: { creator in
             return MainViewController(with: makePlacesListViewModel(action: action),
                                       imageRepository: makeImagesRepository(),
+                                      placeRepository: makePlaceRepository(),
                                       coder: creator)
         })
         

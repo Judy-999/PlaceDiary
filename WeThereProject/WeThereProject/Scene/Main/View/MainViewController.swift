@@ -14,8 +14,7 @@ final class MainViewController: UIViewController {
         case group
         case category
     }
-    
-    private var classification = Classification()
+
     private var placeType: [ViewMode: [String]] = [.all: [""]]
     private var places = [Place]() {
         didSet {
@@ -26,6 +25,7 @@ final class MainViewController: UIViewController {
     }
     private let mainViewModel: MainViewModel
     private let imageRepository: ImageRepository
+    private let placeRepository: PlaceRepository
     private let disposeBag = DisposeBag()
     
     @IBOutlet weak var segmentedControl: UISegmentedControl!
@@ -33,9 +33,11 @@ final class MainViewController: UIViewController {
     
     required init?(with viewModel: MainViewModel,
                    imageRepository: ImageRepository,
+                   placeRepository: PlaceRepository,
                    coder: NSCoder) {
         self.mainViewModel = viewModel
         self.imageRepository = imageRepository
+        self.placeRepository = placeRepository
         super.init(coder: coder)
     }
     
@@ -55,16 +57,14 @@ final class MainViewController: UIViewController {
         mainViewModel.places
             .subscribe(onNext: { [weak self] places in
                 self?.places = places
+                self?.placeTableView.reloadData()
             })
             .disposed(by: disposeBag)
         
         mainViewModel.classification
-            .do(onNext: { [weak self] classification in
+            .subscribe(onNext: { [weak self] classification in
                 self?.placeType[.category] = classification.category
                 self?.placeType[.group] = classification.group
-            })
-            .subscribe(onNext: { [weak self] classification in
-                self?.classification = classification
             })
             .disposed(by: disposeBag)
                 
@@ -219,7 +219,7 @@ extension MainViewController: UITableViewDataSource, UITableViewDelegate {
         let cell = tableView.dequeueReusableCell(withIdentifier: "placeCell",
                                                  for: indexPath) as? PlaceCell ?? PlaceCell()
         let places = filteredPlaces(at: indexPath.section)
-        cell.configure(with: places[indexPath.row], imageRepository)
+        cell.configure(with: places[indexPath.row], imageRepository, placeRepository)
         
         return cell
     }

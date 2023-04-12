@@ -16,17 +16,26 @@ final class PlaceCell: UITableViewCell {
     @IBOutlet weak var favoritButton: UIButton!
     
     private let disposeBag = DisposeBag()
-    private var placeName = ""
+    private var imageRepository: ImageRepository?
+    private var placeRepository: PlaceRepository?
+    private var place: Place?
     
     func configure(with place: Place,
-                   _ imageRepository: ImageRepository) {
-        placeName = place.name
+                   _ imageRepository: ImageRepository,
+                   _ placeRepository: PlaceRepository) {
+        self.place = place
+        self.imageRepository = imageRepository
+        self.placeRepository = placeRepository
+        
         nameLabel.text = place.name
         infoLabel.text = "\(place.group) ∙ \(place.category) ∙ \(place.rating) 점"
         dateLabel.text = place.date.toString
         setupFavoritButton(with: place.isFavorit)
-        
-        imageRepository.load(place.name)
+        loadImage(with: place.name)
+    }
+    
+    private func loadImage(with name: String) {
+        imageRepository?.load(name)
             .bind(to: placeImageView.rx.image)
             .disposed(by: disposeBag)
     }
@@ -39,20 +48,19 @@ final class PlaceCell: UITableViewCell {
     override func prepareForReuse() {
         super.prepareForReuse()
         placeImageView.image = DiaryImage.placeholer
-        placeName = ""
     }
     
     @IBAction private func favoritButtonTapped(_ sender: UIButton) {
-        let isFavorit: Bool
+        guard var place = place else { return }
+
+        place.isFavorit = sender.currentImage == DiaryImage.Favorit.isNotFavorit
         
-        if sender.currentImage == DiaryImage.Favorit.isNotFavorit {
-            sender.setImage(DiaryImage.Favorit.isNotFavorit, for: .normal)
-            isFavorit = true
-        } else {
-            sender.setImage(DiaryImage.Favorit.isFavorit, for: .normal)
-            isFavorit = false
-        }
-        
-        //TODO: favorit 변경 firebase에 업데이트
+        placeRepository?.savePlace(place)
+            .subscribe(onCompleted: {
+                DispatchQueue.main.async {
+                    self.setupFavoritButton(with: place.isFavorit)
+                }
+            })
+            .disposed(by: disposeBag)
     }
 }

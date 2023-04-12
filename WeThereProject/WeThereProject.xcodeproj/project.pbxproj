@@ -274,6 +274,7 @@
 		2085629529E5930000D54593 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				20D840DE29E6FA5A007A44F9 /* Cell */,
 				2056152829D71FD700427866 /* PlaceList.storyboard */,
 				20CB7C9B269F28130057EAF0 /* MainViewController.swift */,
 			);
@@ -407,7 +408,6 @@
 			children = (
 				20E3E2D6265E2639004BDFF6 /* Main.storyboard */,
 				20E3E2DB265E263A004BDFF6 /* LaunchScreen.storyboard */,
-				20B113822689BBC200A6A0FD /* PlaceCell.swift */,
 				20FE6BCD26982C0F0007DC5C /* SearchResultCell.swift */,
 			);
 			path = View;
@@ -518,6 +518,14 @@
 				20D840DB29E6E26D007A44F9 /* PlaceViewModel.swift */,
 			);
 			path = Protocol;
+			sourceTree = "<group>";
+		};
+		20D840DE29E6FA5A007A44F9 /* Cell */ = {
+			isa = PBXGroup;
+			children = (
+				20B113822689BBC200A6A0FD /* PlaceCell.swift */,
+			);
+			path = Cell;
 			sourceTree = "<group>";
 		};
 		20E3E2C4265E2639004BDFF6 = {
