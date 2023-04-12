@@ -69,7 +69,6 @@
 		20E3B0DC29DB0F76002B8351 /* DIContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20E3B0DB29DB0F76002B8351 /* DIContainer.swift */; };
 		20E3E2D1265E2639004BDFF6 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20E3E2D0265E2639004BDFF6 /* AppDelegate.swift */; };
 		20E3E2D3265E2639004BDFF6 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20E3E2D2265E2639004BDFF6 /* SceneDelegate.swift */; };
-		20E3E2D8265E2639004BDFF6 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 20E3E2D6265E2639004BDFF6 /* Main.storyboard */; };
 		20E3E2DA265E263A004BDFF6 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 20E3E2D9265E263A004BDFF6 /* Assets.xcassets */; };
 		20E3E2DD265E263A004BDFF6 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 20E3E2DB265E263A004BDFF6 /* LaunchScreen.storyboard */; };
 		20E3E2E5265E355D004BDFF6 /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20E3E2E4265E355D004BDFF6 /* MapViewController.swift */; };
@@ -137,7 +136,6 @@
 		20E3E2CD265E2639004BDFF6 /* WeThereProject.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WeThereProject.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		20E3E2D0265E2639004BDFF6 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		20E3E2D2265E2639004BDFF6 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		20E3E2D7265E2639004BDFF6 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		20E3E2D9265E263A004BDFF6 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		20E3E2DC265E263A004BDFF6 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		20E3E2DE265E263A004BDFF6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -406,7 +404,6 @@
 		20B80BD3294AF43C00CA0F2B /* View */ = {
 			isa = PBXGroup;
 			children = (
-				20E3E2D6265E2639004BDFF6 /* Main.storyboard */,
 				20E3E2DB265E263A004BDFF6 /* LaunchScreen.storyboard */,
 				20FE6BCD26982C0F0007DC5C /* SearchResultCell.swift */,
 			);
@@ -674,7 +671,6 @@
 				2056153F29D7269900427866 /* Map.storyboard in Resources */,
 				20105EFB2664DA35007AA233 /* GoogleService-Info.plist in Resources */,
 				2056153C29D7260300427866 /* Calendar.storyboard in Resources */,
-				20E3E2D8265E2639004BDFF6 /* Main.storyboard in Resources */,
 				2056154329D726D700427866 /* Setting.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -815,14 +811,6 @@
 				2056154229D726D700427866 /* Base */,
 			);
 			name = Setting.storyboard;
-			sourceTree = "<group>";
-		};
-		20E3E2D6265E2639004BDFF6 /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				20E3E2D7265E2639004BDFF6 /* Base */,
-			);
-			name = Main.storyboard;
 			sourceTree = "<group>";
 		};
 		20E3E2DB265E263A004BDFF6 /* LaunchScreen.storyboard */ = {
