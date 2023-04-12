@@ -12,7 +12,7 @@ protocol Coordinator {
     var container: PlaceSceneDIContainer { get }
     func start()
     func showPlaceDetail(with place: Place, _ viewModel: PlaceViewModel)
-    func showAddPlace(with place: Place?, _ viewModel: PlaceViewModel)
+    func showAddPlace(with place: Place?, _ viewModel: DefaultViewModelType)
 }
 
 extension Coordinator {
@@ -21,7 +21,7 @@ extension Coordinator {
         navigationController?.pushViewController(vc, animated: true)
     }
     
-    func showAddPlace(with place: Place?, _ viewModel: PlaceViewModel) {
+    func showAddPlace(with place: Place?, _ viewModel: DefaultViewModelType) {
         let vc = container.makeAddPlaceViewController(with: place, viewModel)
         navigationController?.pushViewController(vc, animated: true)
     }
@@ -56,8 +56,21 @@ struct SettingFlowCoordinator: Coordinator {
     }
     
     func start() {
-//        let vc = container.makeSettingViewController()
-//        navigationController?.pushViewController(vc, animated: false)
+        let action = SettingViewModelAction(showEditClassification: showEditClassification,
+                                            showStatistics: showStatistics)
+        let vc = container.makeSettingViewController(with: action)
+        navigationController?.pushViewController(vc, animated: false)
+    }
+    
+    private func showEditClassification(type: ClassificationType,
+                                        _ viewmodel: SettingViewModel) {
+        let vc = container.makeEditClassificationViewController(with: viewmodel, type)
+        navigationController?.pushViewController(vc, animated: true)
+    }
+    
+    private func showStatistics(_ viewmodel: SettingViewModel) {
+        let vc = container.makeStatisticsViewController(with: viewmodel)
+        navigationController?.pushViewController(vc, animated: true)
     }
 }
 

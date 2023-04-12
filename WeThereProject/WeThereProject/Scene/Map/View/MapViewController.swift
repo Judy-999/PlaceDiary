@@ -15,14 +15,14 @@ final class MapViewController: UIViewController {
     private var mapView: GMSMapView?
     private var classification = Classification()
     private var optionedPlaces = [Place]()
-    private let viewModel: PlaceViewModel
+    private let viewModel: MapViewModel
     private let disposeBag = DisposeBag()
     var onePlace: Place?
     
     @IBOutlet private weak var entireView: UIView!
     @IBOutlet private weak var filterButton: UIBarButtonItem!
     
-    required init?(viewModel: PlaceViewModel, coder: NSCoder) {
+    required init?(viewModel: MapViewModel, coder: NSCoder) {
         self.viewModel = viewModel
         super.init(coder: coder)
     }

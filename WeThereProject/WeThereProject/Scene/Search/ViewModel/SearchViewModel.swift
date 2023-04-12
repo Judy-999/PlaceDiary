@@ -8,10 +8,6 @@
 import RxSwift
 import RxCocoa
 
-struct SearchViewModelAction {
-    let showPlaceDetails: (Place, SearchViewModel) -> Void
-}
-
 struct SearchViewModel: PlaceViewModel {
     var classification = BehaviorRelay<Classification>(value: Classification())
     var places = BehaviorRelay<[Place]>(value: [])

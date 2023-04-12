@@ -9,23 +9,6 @@ import RxCocoa
 import RxSwift
 import UIKit
 
-protocol PlaceViewModel {
-    var places: BehaviorRelay<[Place]> { get }
-    var errorMessage: PublishRelay<String> { get }
-    var classification: BehaviorRelay<Classification> { get }
-    var action: PlaceViewModelAction { get }
-    var placeUseCase: PlaceUseCase { get }
-    var imageUseCase: ImageUseCase { get }
-    
-    func loadPlaceData(_ disposeBag: DisposeBag)
-    func deletePlace(_ place: String, _ disposeBag: DisposeBag)
-    func savePlace(_ place: Place, _ disposeBag: DisposeBag)
-    func deleteImage(_ name: String, _ disposeBag: DisposeBag)
-    func saveImage(_ image: UIImage, with name: String, _ disposeBag: DisposeBag)
-    func showPlaceAdd(with place: Place?)
-    func showPlaceDetail(_ place: Place)
-}
-
 struct PlaceViewModelAction {
     let showPlaceDetails: (Place, any PlaceViewModel) -> Void
     let showPlaceAdd: (Place?, any PlaceViewModel) -> Void
@@ -96,18 +79,21 @@ struct MainViewModel: MainViewModelInput, MainViewModelOutput, PlaceViewModel {
     }
 }
 
-
-extension MainViewModel {
-    func showPlaceAdd(with place: Place? = nil) {
-        action.showPlaceAdd(place, self)
-    }
-
-    func showPlaceDetail(_ place: Place) {
-        action.showPlaceDetails(place, self)
-    }
+protocol DefaultViewModelType {
+    var places: BehaviorRelay<[Place]> { get }
+    var errorMessage: PublishRelay<String> { get }
+    var classification: BehaviorRelay<Classification> { get }
+    var placeUseCase: PlaceUseCase { get }
+    var imageUseCase: ImageUseCase { get }
+    
+    func loadPlaceData(_ disposeBag: DisposeBag)
+    func deletePlace(_ place: String, _ disposeBag: DisposeBag)
+    func savePlace(_ place: Place, _ disposeBag: DisposeBag)
+    func deleteImage(_ name: String, _ disposeBag: DisposeBag)
+    func saveImage(_ image: UIImage, with name: String, _ disposeBag: DisposeBag)
 }
 
-extension PlaceViewModel {
+extension DefaultViewModelType {
     func loadPlaceData(_ disposeBag: DisposeBag) {
         placeUseCase.fetch()
             .take(1)
@@ -160,6 +146,12 @@ extension PlaceViewModel {
             })
             .disposed(by: disposeBag)
     }
+}
+
+protocol PlaceViewModel: DefaultViewModelType {
+    var action: PlaceViewModelAction { get }
+    func showPlaceDetail(_ place: Place)
+    func showPlaceAdd(with place: Place?)
 }
 
 extension PlaceViewModel {

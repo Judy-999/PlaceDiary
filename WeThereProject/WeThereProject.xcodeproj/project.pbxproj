@@ -297,12 +297,12 @@
 			path = Coordinator;
 			sourceTree = "<group>";
 		};
-		2085629C29E5936C00D54593 /* DIContainerNew Group */ = {
+		2085629C29E5936C00D54593 /* DIContainer */ = {
 			isa = PBXGroup;
 			children = (
 				20E3B0DB29DB0F76002B8351 /* DIContainer.swift */,
 			);
-			path = "DIContainerNew Group";
+			path = DIContainer;
 			sourceTree = "<group>";
 		};
 		2085629D29E5939400D54593 /* TabBar */ = {
@@ -391,7 +391,7 @@
 			children = (
 				20E3E2D0265E2639004BDFF6 /* AppDelegate.swift */,
 				20E3E2D2265E2639004BDFF6 /* SceneDelegate.swift */,
-				2085629C29E5936C00D54593 /* DIContainerNew Group */,
+				2085629C29E5936C00D54593 /* DIContainer */,
 				2085629B29E5935E00D54593 /* Coordinator */,
 			);
 			path = Application;
