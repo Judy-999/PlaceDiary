@@ -33,7 +33,7 @@ final class CalendarController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupCalendar()
-        viewModel.loadPlaceData(disposeBag)
+        loadPlaces()
         bind()
         calendar.reloadData()
     }
@@ -44,6 +44,10 @@ final class CalendarController: UIViewController {
                 self?.calendar.reloadData()
             }
             .disposed(by: disposeBag)
+    }
+    
+    private func loadPlaces() {
+        viewModel.loadPlaceData(disposeBag)
     }
     
     private func setupCalendar() {

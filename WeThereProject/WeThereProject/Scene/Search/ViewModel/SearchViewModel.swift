@@ -14,12 +14,14 @@ struct SearchViewModel: PlaceViewModel {
     var errorMessage = PublishRelay<String>()
     
     let placeUseCase: PlaceUseCase
-    var imageUseCase: ImageUseCase = ImageUseCase()
+    let imageUseCase: ImageUseCase
     let action: PlaceViewModelAction
 
     init(placeUseCase: PlaceUseCase,
-        action: PlaceViewModelAction) {
+         imageUseCase: ImageUseCase,
+         action: PlaceViewModelAction) {
         self.placeUseCase = placeUseCase
+        self.imageUseCase = imageUseCase
         self.action = action
     }
 }

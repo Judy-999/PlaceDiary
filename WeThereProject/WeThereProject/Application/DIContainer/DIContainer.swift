@@ -38,22 +38,23 @@ struct PlaceSceneDIContainer {
     }
     
     // MARK: - Place List
+    private func makePlacesListViewModel(action: PlaceViewModelAction) -> MainViewModel {
+        return MainViewModel(placeUseCase: makePlaceUseCase(),
+                             imageUseCase: makeImageUseCase(),
+                             classificationUseCase: makeClassificationUseCase(),
+                             action: action)
+    }
+    
     func makePlaceListViewController(with action: PlaceViewModelAction) -> UIViewController {
         let storyboard = UIStoryboard(name: "PlaceList", bundle: nil)
         let mainViewController = storyboard.instantiateViewController(identifier: "MainViewController",
                                                                       creator: { creator in
-            let mainViewController = MainViewController(with: makePlacesListViewModel(action: action),
-                                                        imageRepository: makeImagesRepository(),
-                                                        coder: creator)
-            return mainViewController
+            return MainViewController(with: makePlacesListViewModel(action: action),
+                                      imageRepository: makeImagesRepository(),
+                                      coder: creator)
         })
         
         return mainViewController
-    }
-    
-    func makePlacesListViewModel(action: PlaceViewModelAction) -> MainViewModel {
-        return MainViewModel(placeUseCase: makePlaceUseCase(),
-                             action: action)
     }
     
     // MARK: - Place Details
@@ -62,31 +63,30 @@ struct PlaceSceneDIContainer {
         let storyboard = UIStoryboard(name: "Detail", bundle: nil)
         let infoViewController = storyboard.instantiateViewController(identifier: "InfoViewController",
                                                                       creator: { creator in
-            let infoViewController = PlaceInfoTableViewController(place: place,
-                                                                  viewModel: viewModel,
-                                                                  coder: creator)
-            return infoViewController
+            return PlaceInfoTableViewController(place: place,
+                                                viewModel: viewModel,
+                                                coder: creator)
         })
         return infoViewController
     }
-
+    
     // MARK: - Add Place
     func makeAddPlaceViewController(with place: Place?,
                                     _ viewModel: DefaultViewModelType) -> UIViewController {
         let storyboard = UIStoryboard(name: "Add", bundle: nil)
         let addViewController = storyboard.instantiateViewController(identifier: "AddViewController",
                                                                      creator: { creator in
-            let addViewController = AddPlaceTableViewController(place: place,
-                                                                viewModel: viewModel,
-                                                                coder: creator)
-            return addViewController
+            return AddPlaceTableViewController(place: place,
+                                               viewModel: viewModel,
+                                               coder: creator)
         })
         return addViewController
     }
     
     // MARK: - Search
-    func makeSearchViewModel(_ action: PlaceViewModelAction) -> SearchViewModel {
+    private func makeSearchViewModel(_ action: PlaceViewModelAction) -> SearchViewModel {
         return SearchViewModel(placeUseCase: makePlaceUseCase(),
+                               imageUseCase: makeImageUseCase(),
                                action: action)
     }
     
@@ -94,16 +94,17 @@ struct PlaceSceneDIContainer {
         let storyboard = UIStoryboard(name: "Search", bundle: nil)
         let searchViewController = storyboard.instantiateViewController(identifier: "SearchViewController",
                                                                         creator: { creator in
-            let searchViewController = SearchViewController(viewModel: makeSearchViewModel(action),
-                                                            coder: creator)
-            return searchViewController
+            return SearchViewController(viewModel: makeSearchViewModel(action),
+                                        coder: creator)
         })
         return searchViewController
     }
     
     // MARK: - Map
-    func makeMapViewModel(_ action: PlaceViewModelAction) -> MapViewModel {
+    private func makeMapViewModel(_ action: PlaceViewModelAction) -> MapViewModel {
         return MapViewModel(placeUseCase: makePlaceUseCase(),
+                            imageUseCase: makeImageUseCase(),
+                            classificationUseCase: makeClassificationUseCase(),
                             action: action)
     }
     
@@ -111,16 +112,16 @@ struct PlaceSceneDIContainer {
         let storyboard = UIStoryboard(name: "Map", bundle: nil)
         let mapViewController = storyboard.instantiateViewController(identifier: "MapViewController",
                                                                      creator: { creator in
-            let mapViewController = MapViewController(viewModel: makeMapViewModel(action),
-                                                      coder: creator)
-            return mapViewController
+            return MapViewController(viewModel: makeMapViewModel(action),
+                                     coder: creator)
         })
         return mapViewController
     }
     
     // MARK: - Calendar
-    func makeCalendarViewModel(_ action: PlaceViewModelAction) -> CalendarViewModel {
+    private func makeCalendarViewModel(_ action: PlaceViewModelAction) -> CalendarViewModel {
         return CalendarViewModel(placeUseCase: makePlaceUseCase(),
+                                 imageUseCase: makeImageUseCase(),
                                  action: action)
     }
     
@@ -128,15 +129,14 @@ struct PlaceSceneDIContainer {
         let storyboard = UIStoryboard(name: "Calendar", bundle: nil)
         let calendarViewController = storyboard.instantiateViewController(identifier: "CalendarController",
                                                                           creator: { creator in
-            let calendarViewController = CalendarController(viewModel: makeCalendarViewModel(action),
-                                                            coder: creator)
-            return calendarViewController
+            return CalendarController(viewModel: makeCalendarViewModel(action),
+                                      coder: creator)
         })
         return calendarViewController
     }
     
     // MARK: - Setting
-    func makeSettingViewModel(_ action: SettingViewModelAction) -> SettingViewModel {
+    private func makeSettingViewModel(_ action: SettingViewModelAction) -> SettingViewModel {
         return SettingViewModel(placeUseCase: makePlaceUseCase(),
                                 action: action)
     }
@@ -178,8 +178,8 @@ struct PlaceSceneDIContainer {
         return TabCoordinator(tabBarController, container: self)
     }
     
-    func makePlaceFlowCoordinator(with navigationController: UINavigationController) -> PlcaeFlowCoordinator {
-        return PlcaeFlowCoordinator(navigationController: navigationController,
+    func makePlaceFlowCoordinator(with navigationController: UINavigationController) -> MainFlowCoordinator {
+        return MainFlowCoordinator(navigationController: navigationController,
                                     container: self)
     }
     

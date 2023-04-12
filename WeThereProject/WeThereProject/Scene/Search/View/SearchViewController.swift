@@ -35,8 +35,8 @@ final class SearchViewController: UIViewController {
         super.viewDidLoad()
         setupSearchController()
         setupTableView()
+        loadPlaces()
         bind()
-        viewModel.loadPlaceData(disposeBag)
     }
     
     private func bind() {
@@ -45,6 +45,10 @@ final class SearchViewController: UIViewController {
                 self?.searchTableView.reloadData()
             }
             .disposed(by: disposeBag)
+    }
+    
+    private func loadPlaces() {
+        viewModel.loadPlaceData(disposeBag)
     }
     
     private func setupTableView() {

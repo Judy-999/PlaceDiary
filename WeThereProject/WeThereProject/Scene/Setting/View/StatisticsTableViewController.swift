@@ -25,6 +25,15 @@ final class StatisticsTableViewController: UITableViewController {
         super.viewDidLoad()
         setupPlaces()
         loadClassification()
+        bind()
+    }
+    
+    private func bind() {
+        viewModel.classification
+            .subscribe(onNext: { [weak self] _ in
+                self?.tableView.reloadData()
+            })
+            .disposed(by: disposeBag)
     }
     
     private func setupPlaces() {

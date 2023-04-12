@@ -14,12 +14,24 @@ struct MapViewModel: PlaceViewModel {
     var errorMessage = PublishRelay<String>()
     
     let placeUseCase: PlaceUseCase
-    let imageUseCase: ImageUseCase = ImageUseCase()
+    let imageUseCase: ImageUseCase
+    let classificationUseCase: ClassificationUseCase
     let action: PlaceViewModelAction
 
     init(placeUseCase: PlaceUseCase,
-        action: PlaceViewModelAction) {
+         imageUseCase: ImageUseCase,
+         classificationUseCase: ClassificationUseCase,
+         action: PlaceViewModelAction) {
         self.placeUseCase = placeUseCase
+        self.imageUseCase = imageUseCase
+        self.classificationUseCase = classificationUseCase
         self.action = action
+    }
+    
+    func loadClassification(_ disposeBag: DisposeBag) {
+        classificationUseCase.fetch()
+            .take(1)
+            .bind(to: classification)
+            .disposed(by: disposeBag)
     }
 }

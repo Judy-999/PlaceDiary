@@ -33,10 +33,10 @@ final class MapViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        loadPlaces()
         loadClassification()
         setupLocationManager()
         setupMapView()
-        viewModel.loadPlaceData(disposeBag)
         bind()
         filterButton.isEnabled = onePlace == nil
         
@@ -60,6 +60,14 @@ final class MapViewController: UIViewController {
             .disposed(by: disposeBag)
     }
     
+    private func loadClassification() {
+        viewModel.loadClassification(disposeBag)
+    }
+    
+    private func loadPlaces() {
+        viewModel.loadPlaceData(disposeBag)
+    }
+    
     private func setupLocationManager() {
         locationManager.delegate = self
         locationManager.requestWhenInUseAuthorization()
@@ -81,10 +89,6 @@ final class MapViewController: UIViewController {
         mapView?.delegate = self
         
         entireView.addSubview(mapView!)
-    }
-    
-    private func loadClassification() {
-        //TODO: load Classification
     }
     
     private func selectMarker(at place: Place) {

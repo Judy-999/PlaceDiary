@@ -7,12 +7,12 @@
 
 import UIKit
 
-class TabCoordinator: NSObject, Coordinator {
+struct TabCoordinator: Coordinator {
     let container: PlaceSceneDIContainer
     weak var navigationController: UINavigationController?
-    var tabBarController: UITabBarController
+    let tabBarController: UITabBarController
     
-    required init(_ tabBarController: UITabBarController,
+     init(_ tabBarController: UITabBarController,
                   container: PlaceSceneDIContainer) {
         self.tabBarController = tabBarController
         self.container = container

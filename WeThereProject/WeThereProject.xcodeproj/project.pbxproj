@@ -9,7 +9,7 @@
 /* Begin PBXBuildFile section */
 		200B164029DC541F0039CB89 /* TabBarPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 200B163F29DC541F0039CB89 /* TabBarPage.swift */; };
 		200B164229DC56590039CB89 /* TabCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 200B164129DC56590039CB89 /* TabCoordinator.swift */; };
-		200B164429DC60930039CB89 /* PlaceCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 200B164329DC60930039CB89 /* PlaceCoordinator.swift */; };
+		200B164429DC60930039CB89 /* MainFlowCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 200B164329DC60930039CB89 /* MainFlowCoordinator.swift */; };
 		20105EFB2664DA35007AA233 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 20105EFA2664DA35007AA233 /* GoogleService-Info.plist */; };
 		20166C2F26830F55002AF187 /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20166C2E26830F55002AF187 /* SearchViewController.swift */; };
 		2020E4E32667BE600091D569 /* Place.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2020E4E22667BE600091D569 /* Place.swift */; };
@@ -56,10 +56,16 @@
 		20CB7C9C269F28130057EAF0 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20CB7C9B269F28130057EAF0 /* MainViewController.swift */; };
 		20D4EA9E29C01412007B493B /* Date+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20D4EA9D29C01412007B493B /* Date+.swift */; };
 		20D7B4AF26EDEF5100DF954E /* StatisticsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20D7B4AE26EDEF5100DF954E /* StatisticsTableViewController.swift */; };
+		20D840D229E6DCBB007A44F9 /* Coordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20D840D129E6DCBB007A44F9 /* Coordinator.swift */; };
+		20D840D429E6E08F007A44F9 /* MapFlowCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20D840D329E6E08F007A44F9 /* MapFlowCoordinator.swift */; };
+		20D840D629E6E0AD007A44F9 /* SearchFlowCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20D840D529E6E0AD007A44F9 /* SearchFlowCoordinator.swift */; };
+		20D840D829E6E0D1007A44F9 /* CalendarFlowCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20D840D729E6E0D1007A44F9 /* CalendarFlowCoordinator.swift */; };
+		20D840DA29E6E0E6007A44F9 /* SettingFlowCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20D840D929E6E0E6007A44F9 /* SettingFlowCoordinator.swift */; };
+		20D840DC29E6E26D007A44F9 /* PlaceViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20D840DB29E6E26D007A44F9 /* PlaceViewModel.swift */; };
 		20E0C54B29CC7693004770F0 /* RxCocoa in Frameworks */ = {isa = PBXBuildFile; productRef = 20E0C54A29CC7693004770F0 /* RxCocoa */; };
 		20E0C54D29CC7693004770F0 /* RxRelay in Frameworks */ = {isa = PBXBuildFile; productRef = 20E0C54C29CC7693004770F0 /* RxRelay */; };
 		20E0C54F29CC7693004770F0 /* RxSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 20E0C54E29CC7693004770F0 /* RxSwift */; };
-		20E3B0DA29DB0EEE002B8351 /* FlowCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20E3B0D929DB0EEE002B8351 /* FlowCoordinator.swift */; };
+		20E3B0DA29DB0EEE002B8351 /* AppFlowCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20E3B0D929DB0EEE002B8351 /* AppFlowCoordinator.swift */; };
 		20E3B0DC29DB0F76002B8351 /* DIContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20E3B0DB29DB0F76002B8351 /* DIContainer.swift */; };
 		20E3E2D1265E2639004BDFF6 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20E3E2D0265E2639004BDFF6 /* AppDelegate.swift */; };
 		20E3E2D3265E2639004BDFF6 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20E3E2D2265E2639004BDFF6 /* SceneDelegate.swift */; };
@@ -78,7 +84,7 @@
 /* Begin PBXFileReference section */
 		200B163F29DC541F0039CB89 /* TabBarPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarPage.swift; sourceTree = "<group>"; };
 		200B164129DC56590039CB89 /* TabCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabCoordinator.swift; sourceTree = "<group>"; };
-		200B164329DC60930039CB89 /* PlaceCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceCoordinator.swift; sourceTree = "<group>"; };
+		200B164329DC60930039CB89 /* MainFlowCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainFlowCoordinator.swift; sourceTree = "<group>"; };
 		20105EFA2664DA35007AA233 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		20166C2E26830F55002AF187 /* SearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
 		2020E4E22667BE600091D569 /* Place.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Place.swift; sourceTree = "<group>"; };
@@ -120,7 +126,13 @@
 		20CB7C9B269F28130057EAF0 /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
 		20D4EA9D29C01412007B493B /* Date+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+.swift"; sourceTree = "<group>"; };
 		20D7B4AE26EDEF5100DF954E /* StatisticsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatisticsTableViewController.swift; sourceTree = "<group>"; };
-		20E3B0D929DB0EEE002B8351 /* FlowCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlowCoordinator.swift; sourceTree = "<group>"; };
+		20D840D129E6DCBB007A44F9 /* Coordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Coordinator.swift; sourceTree = "<group>"; };
+		20D840D329E6E08F007A44F9 /* MapFlowCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapFlowCoordinator.swift; sourceTree = "<group>"; };
+		20D840D529E6E0AD007A44F9 /* SearchFlowCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchFlowCoordinator.swift; sourceTree = "<group>"; };
+		20D840D729E6E0D1007A44F9 /* CalendarFlowCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarFlowCoordinator.swift; sourceTree = "<group>"; };
+		20D840D929E6E0E6007A44F9 /* SettingFlowCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingFlowCoordinator.swift; sourceTree = "<group>"; };
+		20D840DB29E6E26D007A44F9 /* PlaceViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceViewModel.swift; sourceTree = "<group>"; };
+		20E3B0D929DB0EEE002B8351 /* AppFlowCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppFlowCoordinator.swift; sourceTree = "<group>"; };
 		20E3B0DB29DB0F76002B8351 /* DIContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DIContainer.swift; sourceTree = "<group>"; };
 		20E3E2CD265E2639004BDFF6 /* WeThereProject.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WeThereProject.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		20E3E2D0265E2639004BDFF6 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -295,9 +307,9 @@
 		2085629B29E5935E00D54593 /* Coordinator */ = {
 			isa = PBXGroup;
 			children = (
+				20E3B0D929DB0EEE002B8351 /* AppFlowCoordinator.swift */,
 				2085629D29E5939400D54593 /* TabBar */,
-				20E3B0D929DB0EEE002B8351 /* FlowCoordinator.swift */,
-				200B164329DC60930039CB89 /* PlaceCoordinator.swift */,
+				20D840D029E6DCA9007A44F9 /* PlaceCoordinator */,
 			);
 			path = Coordinator;
 			sourceTree = "<group>";
@@ -368,6 +380,7 @@
 		20AD213229BF051F00A92B1E /* Common */ = {
 			isa = PBXGroup;
 			children = (
+				20D840DD29E6E2B1007A44F9 /* Protocol */,
 				2088D236294E96B0009415C1 /* Extension */,
 				206BCDE229C2F526009F5BFB /* Namespace */,
 			);
@@ -377,6 +390,7 @@
 		20B80BD2294AF41C00CA0F2B /* Scene */ = {
 			isa = PBXGroup;
 			children = (
+				20AD213229BF051F00A92B1E /* Common */,
 				20D4EAA229C0428C007B493B /* Detail */,
 				20ABBE8929C81DAA00F6AAFD /* Add */,
 				20D4EA9F29C0421F007B493B /* Main */,
@@ -410,7 +424,7 @@
 			path = Application;
 			sourceTree = "<group>";
 		};
-		20B80BD5294AF46C00CA0F2B /* Util */ = {
+		20B80BD5294AF46C00CA0F2B /* Service */ = {
 			isa = PBXGroup;
 			children = (
 				2090EC1E29C82F2B009E8215 /* Firebase */,
@@ -419,7 +433,7 @@
 				20978BFD29C45F4E00D845AD /* PlaceDataManager.swift */,
 				204E80A729CACE9000B239EC /* DeviceKeyManager.swift */,
 			);
-			path = Util;
+			path = Service;
 			sourceTree = "<group>";
 		};
 		20B80BD6294AF4A800CA0F2B /* Data */ = {
@@ -485,6 +499,27 @@
 			path = Map;
 			sourceTree = "<group>";
 		};
+		20D840D029E6DCA9007A44F9 /* PlaceCoordinator */ = {
+			isa = PBXGroup;
+			children = (
+				20D840D129E6DCBB007A44F9 /* Coordinator.swift */,
+				200B164329DC60930039CB89 /* MainFlowCoordinator.swift */,
+				20D840D529E6E0AD007A44F9 /* SearchFlowCoordinator.swift */,
+				20D840D729E6E0D1007A44F9 /* CalendarFlowCoordinator.swift */,
+				20D840D329E6E08F007A44F9 /* MapFlowCoordinator.swift */,
+				20D840D929E6E0E6007A44F9 /* SettingFlowCoordinator.swift */,
+			);
+			path = PlaceCoordinator;
+			sourceTree = "<group>";
+		};
+		20D840DD29E6E2B1007A44F9 /* Protocol */ = {
+			isa = PBXGroup;
+			children = (
+				20D840DB29E6E26D007A44F9 /* PlaceViewModel.swift */,
+			);
+			path = Protocol;
+			sourceTree = "<group>";
+		};
 		20E3E2C4265E2639004BDFF6 = {
 			isa = PBXGroup;
 			children = (
@@ -511,8 +546,7 @@
 				204E80A929CAE36F00B239EC /* GMSInfo.plist */,
 				2067AA1B266B82C200F7B891 /* Resources */,
 				20B80BD4294AF45B00CA0F2B /* Application */,
-				20AD213229BF051F00A92B1E /* Common */,
-				20B80BD5294AF46C00CA0F2B /* Util */,
+				20B80BD5294AF46C00CA0F2B /* Service */,
 				20B80BD6294AF4A800CA0F2B /* Data */,
 				2052A04029CC83690075A954 /* Domain */,
 				20B80BD3294AF43C00CA0F2B /* View */,
@@ -687,23 +721,26 @@
 			buildActionMask = 2147483647;
 			files = (
 				20F88AC7266CD8820015B42E /* PlaceInfoTableViewController.swift in Sources */,
-				200B164429DC60930039CB89 /* PlaceCoordinator.swift in Sources */,
+				200B164429DC60930039CB89 /* MainFlowCoordinator.swift in Sources */,
 				2052A03F29CC7ADF0075A954 /* PlaceRepository.swift in Sources */,
 				20978BFE29C45F4E00D845AD /* PlaceDataManager.swift in Sources */,
 				20B113832689BBC200A6A0FD /* PlaceCell.swift in Sources */,
 				20D7B4AF26EDEF5100DF954E /* StatisticsTableViewController.swift in Sources */,
 				206BCDE629C2F5FB009F5BFB /* Segue.swift in Sources */,
 				20E3E2D1265E2639004BDFF6 /* AppDelegate.swift in Sources */,
+				20D840D629E6E0AD007A44F9 /* SearchFlowCoordinator.swift in Sources */,
 				2026D2DD29D18D76001F6FEE /* ImageRepository.swift in Sources */,
 				208562A029E5943E00D54593 /* MapViewModel.swift in Sources */,
 				2085629429E57F9A00D54593 /* CalendarViewModel.swift in Sources */,
 				204CEEB7267F0A3F000D395F /* EditClassificationController.swift in Sources */,
 				20166C2F26830F55002AF187 /* SearchViewController.swift in Sources */,
 				20FDE6F629CD940C002355FE /* Classification.swift in Sources */,
+				20D840DA29E6E0E6007A44F9 /* SettingFlowCoordinator.swift in Sources */,
 				202C3E0B2686F97D00E3881D /* ImageViewController.swift in Sources */,
 				2022249E29C73619008F4A2C /* FirebaseError.swift in Sources */,
 				2052A04529CC98860075A954 /* ClassificationUseCase.swift in Sources */,
 				20CB7C9C269F28130057EAF0 /* MainViewController.swift in Sources */,
+				20D840D829E6E0D1007A44F9 /* CalendarFlowCoordinator.swift in Sources */,
 				20FE6BCE26982C0F0007DC5C /* SearchResultCell.swift in Sources */,
 				20451D4D294C355B00186A35 /* StorageManager.swift in Sources */,
 				20E3E2D3265E2639004BDFF6 /* SceneDelegate.swift in Sources */,
@@ -720,16 +757,19 @@
 				204CEEB9267F0BD1000D395F /* SettingTableController.swift in Sources */,
 				20FDE6F429CD7960002355FE /* MainViewModel.swift in Sources */,
 				204E80AC29CAE57300B239EC /* Bundle+.swift in Sources */,
-				20E3B0DA29DB0EEE002B8351 /* FlowCoordinator.swift in Sources */,
+				20E3B0DA29DB0EEE002B8351 /* AppFlowCoordinator.swift in Sources */,
 				2088D238294E96C9009415C1 /* UIImage+.swift in Sources */,
 				2020E4E32667BE600091D569 /* Place.swift in Sources */,
 				208D9FE9266DFD4A00FC2067 /* RatingManager.swift in Sources */,
 				20544EFB268AFBD700D780E4 /* CalendarController.swift in Sources */,
 				20B3F03E29E43EF100BDCB72 /* SearchViewModel.swift in Sources */,
+				20D840D229E6DCBB007A44F9 /* Coordinator.swift in Sources */,
 				206BCDE429C2F535009F5BFB /* Alert.swift in Sources */,
 				207547EB29D1DF5600117B99 /* ImageUseCase.swift in Sources */,
+				20D840D429E6E08F007A44F9 /* MapFlowCoordinator.swift in Sources */,
 				20AD213429BF053100A92B1E /* PlaceInfo.swift in Sources */,
 				20E3B0DC29DB0F76002B8351 /* DIContainer.swift in Sources */,
+				20D840DC29E6E26D007A44F9 /* PlaceViewModel.swift in Sources */,
 				207E4F862660985D00AC0A6E /* AddPlaceTableViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
