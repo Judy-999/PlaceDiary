@@ -27,7 +27,6 @@
 		2052A04229CC84680075A954 /* PlaceUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2052A04129CC84680075A954 /* PlaceUseCase.swift */; };
 		2052A04529CC98860075A954 /* ClassificationUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2052A04429CC98860075A954 /* ClassificationUseCase.swift */; };
 		20544EFB268AFBD700D780E4 /* CalendarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20544EFA268AFBD700D780E4 /* CalendarController.swift */; };
-		2056152929D71FD700427866 /* PlaceList.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2056152829D71FD700427866 /* PlaceList.storyboard */; };
 		2056152D29D7200000427866 /* Add.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2056152B29D7200000427866 /* Add.storyboard */; };
 		2056153429D7247400427866 /* Detail.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2056153229D7247400427866 /* Detail.storyboard */; };
 		2056153829D725BC00427866 /* Search.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2056153729D725BC00427866 /* Search.storyboard */; };
@@ -62,6 +61,7 @@
 		20D840D829E6E0D1007A44F9 /* CalendarFlowCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20D840D729E6E0D1007A44F9 /* CalendarFlowCoordinator.swift */; };
 		20D840DA29E6E0E6007A44F9 /* SettingFlowCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20D840D929E6E0E6007A44F9 /* SettingFlowCoordinator.swift */; };
 		20D840DC29E6E26D007A44F9 /* PlaceViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20D840DB29E6E26D007A44F9 /* PlaceViewModel.swift */; };
+		20D840E329E6FE50007A44F9 /* PlaceList.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 20D840E229E6FE4F007A44F9 /* PlaceList.storyboard */; };
 		20E0C54B29CC7693004770F0 /* RxCocoa in Frameworks */ = {isa = PBXBuildFile; productRef = 20E0C54A29CC7693004770F0 /* RxCocoa */; };
 		20E0C54D29CC7693004770F0 /* RxRelay in Frameworks */ = {isa = PBXBuildFile; productRef = 20E0C54C29CC7693004770F0 /* RxRelay */; };
 		20E0C54F29CC7693004770F0 /* RxSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 20E0C54E29CC7693004770F0 /* RxSwift */; };
@@ -101,7 +101,6 @@
 		2052A04129CC84680075A954 /* PlaceUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceUseCase.swift; sourceTree = "<group>"; };
 		2052A04429CC98860075A954 /* ClassificationUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClassificationUseCase.swift; sourceTree = "<group>"; };
 		20544EFA268AFBD700D780E4 /* CalendarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarController.swift; sourceTree = "<group>"; };
-		2056152829D71FD700427866 /* PlaceList.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = PlaceList.storyboard; path = WeThereProject/Scene/Main/View/PlaceList.storyboard; sourceTree = SOURCE_ROOT; };
 		2056152C29D7200000427866 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = WeThereProject/View/Base.lproj/Add.storyboard; sourceTree = SOURCE_ROOT; };
 		2056153329D7247400427866 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = WeThereProject/View/Base.lproj/Detail.storyboard; sourceTree = SOURCE_ROOT; };
 		2056153729D725BC00427866 /* Search.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Search.storyboard; sourceTree = SOURCE_ROOT; };
@@ -131,6 +130,7 @@
 		20D840D729E6E0D1007A44F9 /* CalendarFlowCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarFlowCoordinator.swift; sourceTree = "<group>"; };
 		20D840D929E6E0E6007A44F9 /* SettingFlowCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingFlowCoordinator.swift; sourceTree = "<group>"; };
 		20D840DB29E6E26D007A44F9 /* PlaceViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceViewModel.swift; sourceTree = "<group>"; };
+		20D840E229E6FE4F007A44F9 /* PlaceList.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = PlaceList.storyboard; sourceTree = "<group>"; };
 		20E3B0D929DB0EEE002B8351 /* AppFlowCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppFlowCoordinator.swift; sourceTree = "<group>"; };
 		20E3B0DB29DB0F76002B8351 /* DIContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DIContainer.swift; sourceTree = "<group>"; };
 		20E3E2CD265E2639004BDFF6 /* WeThereProject.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WeThereProject.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -207,6 +207,7 @@
 		2056153629D725A200427866 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				20D840E029E6FD35007A44F9 /* Cell */,
 				2056153729D725BC00427866 /* Search.storyboard */,
 				20166C2E26830F55002AF187 /* SearchViewController.swift */,
 			);
@@ -273,7 +274,7 @@
 			isa = PBXGroup;
 			children = (
 				20D840DE29E6FA5A007A44F9 /* Cell */,
-				2056152829D71FD700427866 /* PlaceList.storyboard */,
+				20D840E229E6FE4F007A44F9 /* PlaceList.storyboard */,
 				20CB7C9B269F28130057EAF0 /* MainViewController.swift */,
 			);
 			path = View;
@@ -386,10 +387,11 @@
 			path = Common;
 			sourceTree = "<group>";
 		};
-		20B80BD2294AF41C00CA0F2B /* Scene */ = {
+		20B80BD2294AF41C00CA0F2B /* Presentation */ = {
 			isa = PBXGroup;
 			children = (
 				20AD213229BF051F00A92B1E /* Common */,
+				20D840E129E6FD75007A44F9 /* Launch */,
 				20D4EAA229C0428C007B493B /* Detail */,
 				20ABBE8929C81DAA00F6AAFD /* Add */,
 				20D4EA9F29C0421F007B493B /* Main */,
@@ -398,16 +400,7 @@
 				20D4EAA429C042B2007B493B /* Map */,
 				20D4EAA329C042A8007B493B /* Setting */,
 			);
-			path = Scene;
-			sourceTree = "<group>";
-		};
-		20B80BD3294AF43C00CA0F2B /* View */ = {
-			isa = PBXGroup;
-			children = (
-				20E3E2DB265E263A004BDFF6 /* LaunchScreen.storyboard */,
-				20FE6BCD26982C0F0007DC5C /* SearchResultCell.swift */,
-			);
-			path = View;
+			path = Presentation;
 			sourceTree = "<group>";
 		};
 		20B80BD4294AF45B00CA0F2B /* Application */ = {
@@ -525,6 +518,22 @@
 			path = Cell;
 			sourceTree = "<group>";
 		};
+		20D840E029E6FD35007A44F9 /* Cell */ = {
+			isa = PBXGroup;
+			children = (
+				20FE6BCD26982C0F0007DC5C /* SearchResultCell.swift */,
+			);
+			path = Cell;
+			sourceTree = "<group>";
+		};
+		20D840E129E6FD75007A44F9 /* Launch */ = {
+			isa = PBXGroup;
+			children = (
+				20E3E2DB265E263A004BDFF6 /* LaunchScreen.storyboard */,
+			);
+			path = Launch;
+			sourceTree = "<group>";
+		};
 		20E3E2C4265E2639004BDFF6 = {
 			isa = PBXGroup;
 			children = (
@@ -554,8 +563,7 @@
 				20B80BD5294AF46C00CA0F2B /* Service */,
 				20B80BD6294AF4A800CA0F2B /* Data */,
 				2052A04029CC83690075A954 /* Domain */,
-				20B80BD3294AF43C00CA0F2B /* View */,
-				20B80BD2294AF41C00CA0F2B /* Scene */,
+				20B80BD2294AF41C00CA0F2B /* Presentation */,
 			);
 			path = WeThereProject;
 			sourceTree = "<group>";
@@ -666,9 +674,9 @@
 				2056152D29D7200000427866 /* Add.storyboard in Resources */,
 				2056153429D7247400427866 /* Detail.storyboard in Resources */,
 				2056153829D725BC00427866 /* Search.storyboard in Resources */,
-				2056152929D71FD700427866 /* PlaceList.storyboard in Resources */,
 				204E80AA29CAE36F00B239EC /* GMSInfo.plist in Resources */,
 				2056153F29D7269900427866 /* Map.storyboard in Resources */,
+				20D840E329E6FE50007A44F9 /* PlaceList.storyboard in Resources */,
 				20105EFB2664DA35007AA233 /* GoogleService-Info.plist in Resources */,
 				2056153C29D7260300427866 /* Calendar.storyboard in Resources */,
 				2056154329D726D700427866 /* Setting.storyboard in Resources */,

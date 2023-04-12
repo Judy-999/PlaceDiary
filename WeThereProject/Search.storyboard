@@ -54,8 +54,8 @@
                                             </constraints>
                                         </tableViewCellContentView>
                                         <connections>
-                                            <outlet property="lblLocation" destination="lNd-jf-V8E" id="2vl-yC-hcg"/>
-                                            <outlet property="lblName" destination="Qaq-fn-VwT" id="9f5-jK-LWB"/>
+                                            <outlet property="locationLabel" destination="lNd-jf-V8E" id="EN4-A3-wE2"/>
+                                            <outlet property="nameLabel" destination="Qaq-fn-VwT" id="SYY-1z-uc0"/>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>

@@ -125,13 +125,13 @@ extension SearchViewController: UITableViewDataSource, UITableViewDelegate {
                                  value: Color.highlight,
                                  range: (searchPlace.location as NSString).range(of: searchText))
             
-            cell.lblName.attributedText = name
-            cell.lblLocation.attributedText = address
+            cell.nameLabel.attributedText = name
+            cell.locationLabel.attributedText = address
             
         } else {
             let place = viewModel.places.value[indexPath.row]
-            cell.lblName.text = place.name
-            cell.lblLocation.text = place.location
+            cell.nameLabel.text = place.name
+            cell.locationLabel.text = place.location
         }
         
         return cell
