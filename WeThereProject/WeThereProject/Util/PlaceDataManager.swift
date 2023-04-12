@@ -24,7 +24,7 @@ final class PlaceDataManager {
         return classification
     }
     
-    func setupClassification(with new: [String], type: EditType) {
+    func setupClassification(with new: [String], type: ClassificationType) {
         switch type {
         case .category:
             classification = Classification(category: new, group: classification.group)

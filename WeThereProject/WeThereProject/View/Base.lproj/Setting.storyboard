@@ -39,9 +39,6 @@
                                                 <constraint firstItem="Tff-Vm-ItZ" firstAttribute="leading" secondItem="G6C-Rh-nAZ" secondAttribute="leading" constant="16" id="oa2-al-l9q"/>
                                             </constraints>
                                         </tableViewCellContentView>
-                                        <connections>
-                                            <segue destination="3Xb-jd-xhg" kind="show" identifier="sgCategory" id="LEn-q7-1yn"/>
-                                        </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" id="1YF-F0-NgF">
                                         <rect key="frame" x="0.0" y="93.666667938232422" width="393" height="43.666667938232422"/>
@@ -63,9 +60,6 @@
                                                 <constraint firstAttribute="trailingMargin" secondItem="mQs-1P-lR7" secondAttribute="trailing" constant="16" id="xRv-B8-GJg"/>
                                             </constraints>
                                         </tableViewCellContentView>
-                                        <connections>
-                                            <segue destination="3Xb-jd-xhg" kind="show" identifier="sgGroup" id="Ya6-Be-p4E"/>
-                                        </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" id="4aA-VK-Es5">
                                         <rect key="frame" x="0.0" y="137.33333587646484" width="393" height="43.666667938232422"/>
@@ -87,9 +81,6 @@
                                                 <constraint firstItem="zRX-bM-OJ5" firstAttribute="centerY" secondItem="XbG-m8-pee" secondAttribute="centerY" id="RR2-Df-ZoI"/>
                                             </constraints>
                                         </tableViewCellContentView>
-                                        <connections>
-                                            <segue destination="N5L-Ah-8k0" kind="show" identifier="sgStatistics" id="ldj-kZ-bR3"/>
-                                        </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" id="pdP-pC-iz4">
                                         <rect key="frame" x="0.0" y="181.00000381469727" width="393" height="43.666667938232422"/>
@@ -238,9 +229,6 @@
             <point key="canvasLocation" x="2950" y="1494"/>
         </scene>
     </scenes>
-    <inferredMetricsTieBreakers>
-        <segue reference="LEn-q7-1yn"/>
-    </inferredMetricsTieBreakers>
     <resources>
         <image name="person" catalog="system" width="128" height="121"/>
         <systemColor name="systemBackgroundColor">

@@ -6,28 +6,19 @@
 //
 
 import UIKit
+import RxSwift
 
 final class StatisticsTableViewController: UITableViewController {
-    private var places = [Place]()
-    private var categoryList = [String]() {
-        didSet {
-            DispatchQueue.main.async {
-                self.tableView.reloadData()
-            }
-        }
-    }
-    private var groupList = [String]() {
-        didSet {
-            DispatchQueue.main.async {
-                self.tableView.reloadData()
-            }
-        }
-    }
+    private let viewModel: SettingViewModel
+    private let disposeBag = DisposeBag()
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        setupPlaces()
-        loadClassification()
+    required init?(viewModel: SettingViewModel, coder: NSCoder) {
+        self.viewModel = viewModel
+        super.init(coder: coder)
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
     
     override func viewDidLoad() {
@@ -37,11 +28,11 @@ final class StatisticsTableViewController: UITableViewController {
     }
     
     private func setupPlaces() {
-        places = PlaceDataManager.shared.getPlaces()
+        viewModel.loadPlaceData(disposeBag)
     }
     
     private func loadClassification() {
-        //TODO: calssification load
+        viewModel.loadClassification(disposeBag)
     }
     
     override func numberOfSections(in tableView: UITableView) -> Int {
@@ -49,21 +40,27 @@ final class StatisticsTableViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if section == 0 {
-            return categoryList.count
+        guard let type = ClassificationType(rawValue: section) else { return 0 }
+        let classification = viewModel.classification.value
+        
+        switch type {
+        case .category:
+            return classification.category.count
+        case .group:
+            return classification.group.count
         }
-        return groupList.count
     }
     
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        if section == 0 {
-            return "분류"
-        }
-        return "그룹"
+        guard let type = ClassificationType(rawValue: section) else { return ClassificationType.category.title }
+        return type.title
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "statisticsCell", for: indexPath)
+        guard let type = ClassificationType(rawValue: indexPath.section) else { return cell }
+        let classification = viewModel.classification.value
+        let places = viewModel.places.value
         
         cell.textLabel?.font = .boldSystemFont(ofSize: 17)
         cell.detailTextLabel?.font = .preferredFont(forTextStyle: .body)
@@ -71,17 +68,17 @@ final class StatisticsTableViewController: UITableViewController {
         let title: String
         let count: Int
         
-        if indexPath.section == 0 {
-            title = categoryList[indexPath.row]
+        switch type {
+        case .category:
+            title = classification.category[indexPath.row]
             count = places.filter { $0.category == title }.count
-        } else {
-            title = groupList[indexPath.row]
+        case .group:
+            title = classification.group[indexPath.row]
             count = places.filter { $0.group == title }.count
         }
-        
+
         cell.textLabel?.text = title
         cell.detailTextLabel?.text = "\(count) 곳"
-        
         return cell
     }
 }

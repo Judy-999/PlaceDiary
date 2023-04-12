@@ -6,10 +6,12 @@
 //
 
 import UIKit
+import RxSwift
 
 final class EditClassificationController: UITableViewController {
-    var editType: EditType = .category
-    private var places = [Place]()
+    private let viewModel: SettingViewModel
+    private let disposeBag = DisposeBag()
+    private let editType: ClassificationType
     private var editItems = [String]() {
         didSet {
             DispatchQueue.main.async {
@@ -18,34 +20,61 @@ final class EditClassificationController: UITableViewController {
         }
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        setupPlaces()
-        loadClassification()
+    required init?(_ type: ClassificationType, viewModel: SettingViewModel, coder: NSCoder) {
+        self.editType = type
+        self.viewModel = viewModel
+        super.init(coder: coder)
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         setupPlaces()
         loadClassification()
+        bind()
+    }
+    
+    private func bind() {
+        viewModel.places
+            .subscribe { [weak self] _ in
+                self?.tableView.reloadData()
+            }
+            .disposed(by: disposeBag)
+        
+        viewModel.classification
+            .subscribe(onNext: { [weak self] calssification in
+                switch self?.editType {
+                case .category:
+                    self?.editItems = calssification.category
+                case .group:
+                    self?.editItems = calssification.group
+                case .none:
+                    break
+                }
+            })
+            .disposed(by: disposeBag)
     }
     
     private func setupPlaces() {
-        places = PlaceDataManager.shared.getPlaces()
+        viewModel.loadPlaceData(disposeBag)
     }
     
     private func loadClassification() {
-        //TODO: load Classification
+        viewModel.loadClassification(disposeBag)
     }
     
     private func updateClassification() {
-        //TODO: Firestore updateClassification
-        
-        PlaceDataManager.shared.setupClassification(with: editItems, type: editType)
+        viewModel.updateClassification(type: editType.description,
+                                       editItems,
+                                       disposeBag)
     }
     
     private func modifyCategory(_ oldItem: String, to newItem: String) {
         let filteredPlaces: [Place]
+        var places = viewModel.places.value
         
         switch editType {
         case .category:
@@ -72,17 +101,18 @@ final class EditClassificationController: UITableViewController {
             filteredPlaces = places.filter { $0.group == newItem }
         }
         
-        //TODO: filteredPlaces의 place save
-        
-        PlaceDataManager.shared.setupPlaces(with: places)
+        filteredPlaces.forEach {
+            viewModel.savePlace($0, disposeBag)
+        }
     }
     
     private func checkNotUsed(item: String) -> Bool {
+        let places = viewModel.places.value
         switch editType {
         case .category:
-            return places.filter { $0.category == item }.isEmpty
+            return places.contains(where: { $0.category == item }) == false
         case .group:
-            return places.filter { $0.group == item }.isEmpty
+            return places.contains(where: { $0.group == item }) == false
         }
     }
     
@@ -204,19 +234,5 @@ extension EditClassificationController {
         let cell = tableView.dequeueReusableCell(withIdentifier: "categoryCell", for: indexPath)
         cell.textLabel?.text = editItems[indexPath.row]
         return cell
-    }
-}
-
-enum EditType: String {
-    case category
-    case group
-    
-    var title: String {
-        switch self {
-        case .category:
-            return "분류"
-        case .group:
-            return "그룹"
-        }
     }
 }
