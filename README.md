@@ -14,7 +14,7 @@
 
 |[Judy](https://github.com/Judy-999)|
 |:---:|
-|<img src = "https://i.imgur.com/n304TQO.jpg" width="250" height="250"> | 
+|<img src = "https://github.com/Judy-999/ios-BoxOffice/assets/102353787/ebd9c08c-c5ac-4b51-8dd5-795a4282e31a" width="250" height="250">  | 
 
 <br>
 
